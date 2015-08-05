@@ -41,11 +41,12 @@
 
 .intro{
 	margin: 0%;
-	padding: 70px 0px 0px 0px;
+	padding: 5% 0px 0px 0px;
 	font-size: 500%;
 }
 
 .introcon{
+	margin-top: 0px;
 	background: background: rgba(255,255,255,1);
 background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 12%, rgba(209,209,209,1) 100%);
 background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(12%, rgba(255,255,255,1)), color-stop(100%, rgba(209,209,209,1)));
