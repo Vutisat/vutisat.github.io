@@ -24,7 +24,15 @@
 }
 
 .skillset{
-	background-color: #E2E2E2;
+	
+	background: background: rgba(255,255,255,1);
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 12%, rgba(209,209,209,1) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(12%, rgba(255,255,255,1)), color-stop(100%, rgba(209,209,209,1)));
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 12%, rgba(209,209,209,1) 100%);
+background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 12%, rgba(209,209,209,1) 100%);
+background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 12%, rgba(209,209,209,1) 100%);
+background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 12%, rgba(209,209,209,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#d1d1d1', GradientType=0 );
 	padding: 45px;
 	margin: 0%;
 	font-size: 40px;
@@ -104,10 +112,6 @@ hr.style-two{
 
 .connectpics2:hover{
 	content: twitcolor.png;
-}
-
-.techicalskills{
-	text-align: left;
 }
 
 .fittingin{
