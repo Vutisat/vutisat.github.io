@@ -2,6 +2,10 @@
    PORTFOLIO JS – POB VUTISALCHAVAKUL
    ============================================ */
 
+// Enable JS-gated animations — must happen before any reveal logic
+document.documentElement.classList.remove('no-js');
+document.documentElement.classList.add('js-loaded');
+
 // ---------- NAV SCROLL EFFECT ----------
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
