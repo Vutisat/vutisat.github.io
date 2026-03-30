@@ -135,6 +135,72 @@ a { text-decoration: none; color: inherit; }
 }
 .nav__cta:hover { background: rgba(99, 102, 241, 0.15); color: var(--clr-primary-h); }
 
+/* ---------- SECRET DROPDOWN ---------- */
+.nav__secret {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 24px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-primary);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 8px 32px rgba(99,102,241,0.25), var(--shadow-card);
+  opacity: 0;
+  transform: translateY(-8px) scale(0.95);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 200;
+  min-width: 180px;
+}
+.nav__secret::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 20px;
+  width: 9px;
+  height: 9px;
+  background: var(--clr-surface);
+  border-left: 1px solid var(--clr-primary);
+  border-top: 1px solid var(--clr-primary);
+  transform: rotate(45deg);
+}
+.nav__secret.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+.nav__secret-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--clr-muted);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition), color var(--transition);
+}
+.nav__secret-item i {
+  color: var(--clr-primary);
+  width: 14px;
+  text-align: center;
+}
+.nav__secret-item:hover {
+  background: rgba(99,102,241,0.12);
+  color: var(--clr-text);
+}
+.nav__logo.unlocking {
+  animation: logoShake 0.15s ease;
+}
+@keyframes logoShake {
+  0%, 100% { transform: translateX(0); }
+  33% { transform: translateX(-3px); }
+  66% { transform: translateX(3px); }
+}
+
 .nav__toggle {
   display: none;
   flex-direction: column;

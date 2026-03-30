@@ -45,10 +45,10 @@ document.querySelectorAll('.hero .reveal').forEach(el => {
 // ---------- TYPING EFFECT ----------
 const titleEl = document.getElementById('heroTitle');
 const titles  = [
-  'Senior Software Engineer',
   'Technology Leader',
+  'Staff Software Engineer',
   'Passionate Learner',
-  'Full-Stack Engineer',
+  'Agentic Systems Architect',
 ];
 let tIdx = 0, cIdx = 0, deleting = false;
 const MIN_WAIT = 80, DEL_WAIT = 45, PAUSE = 2200;
@@ -75,3 +75,45 @@ function type() {
   }
 }
 setTimeout(type, 1000);
+
+// ---------- SECRET MENU (click logo 5x) ----------
+(function () {
+  const logo   = document.getElementById('navLogo');
+  const secret = document.getElementById('navSecret');
+  if (!logo || !secret) return;
+
+  const REQUIRED = 5;
+  const RESET_MS = 1500;
+  let clicks = 0, timer = null;
+
+  logo.addEventListener('click', (e) => {
+    // only intercept when building up the combo, not a normal nav click
+    if (secret.classList.contains('is-open')) {
+      secret.classList.remove('is-open');
+      clicks = 0;
+      return;
+    }
+
+    clicks++;
+    clearTimeout(timer);
+
+    logo.classList.remove('unlocking');
+    void logo.offsetWidth; // reflow to restart animation
+    logo.classList.add('unlocking');
+
+    if (clicks >= REQUIRED) {
+      e.preventDefault();
+      clicks = 0;
+      secret.classList.add('is-open');
+    } else {
+      timer = setTimeout(() => { clicks = 0; }, RESET_MS);
+    }
+  });
+
+  // close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!logo.contains(e.target) && !secret.contains(e.target)) {
+      secret.classList.remove('is-open');
+    }
+  });
+})();
