@@ -4,23 +4,27 @@
 
 // ---------- NAV SCROLL EFFECT ----------
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 40);
-}, { passive: true });
+if (nav) {
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+}
 
 // ---------- MOBILE MENU ----------
 const toggle = document.getElementById('navToggle');
 const links  = document.getElementById('navLinks');
-toggle.addEventListener('click', () => {
-  toggle.classList.toggle('open');
-  links.classList.toggle('open');
-});
-links.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => {
-    toggle.classList.remove('open');
-    links.classList.remove('open');
+if (toggle && links) {
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('open');
+    links.classList.toggle('open');
   });
-});
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      toggle.classList.remove('open');
+      links.classList.remove('open');
+    });
+  });
+}
 
 // ---------- REVEAL ON SCROLL ----------
 const revealEls = document.querySelectorAll('.reveal');
