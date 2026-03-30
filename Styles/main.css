@@ -313,9 +313,9 @@ a { text-decoration: none; color: inherit; }
 .hero__tagline {
   font-size: clamp(1rem, 2vw, 1.15rem);
   color: var(--clr-muted);
-  max-width: 600px;
   margin: 0 auto 36px;
   line-height: 1.8;
+  text-align: center;
 }
 .hero__tagline em { color: var(--clr-text); font-style: normal; font-weight: 600; }
 

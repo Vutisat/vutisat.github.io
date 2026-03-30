@@ -16,262 +16,149 @@
   <link rel="stylesheet" href="Styles/main.css">
 
   <style>
-    .recs-hero {
-      min-height: 40vh;
-      display: flex;
+    .guide-page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 120px 24px 100px;
+    }
+    .guide-back {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 100px 24px 60px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--clr-muted);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-sm);
+      padding: 6px 14px;
+      transition: all var(--transition);
+      margin-bottom: 48px;
     }
-    .recs-hero__bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
+    .guide-back:hover { color: var(--clr-primary); border-color: var(--clr-primary); }
+
+    .guide-header {
+      margin-bottom: 56px;
     }
-    .recs-hero__grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
-    }
-    .recs-hero__glow {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.4;
-      pointer-events: none;
-    }
-    .recs-hero__glow--1 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%);
-      top: -100px; left: -50px;
-    }
-    .recs-hero__glow--2 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(34,211,238,0.2) 0%, transparent 70%);
-      bottom: -50px; right: -50px;
-    }
-    .recs-hero__content {
-      position: relative;
-      z-index: 1;
-    }
-    .recs-hero__label {
+    .guide-header__label {
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       color: var(--clr-accent);
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      margin-bottom: 16px;
       display: block;
+      margin-bottom: 12px;
     }
-    .recs-hero__title {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
+    .guide-header__title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
       font-weight: 900;
       letter-spacing: -2px;
-      line-height: 1.05;
       background: linear-gradient(135deg, var(--clr-text) 40%, var(--clr-primary-h) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
-    .recs-hero__sub {
-      font-size: 1.05rem;
+    .guide-header__sub {
+      font-size: 0.95rem;
       color: var(--clr-muted);
-      max-width: 500px;
-      margin: 0 auto;
       line-height: 1.7;
     }
 
-    /* Recs content */
-    .recs-page { padding: 80px 0 120px; }
-
-    .recs-region {
-      margin-bottom: 80px;
+    .guide-section {
+      margin-bottom: 48px;
     }
-    .recs-region:last-child { margin-bottom: 0; }
-
-    .region-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 40px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--clr-border);
-    }
-    .region-header__icon {
-      width: 48px; height: 48px;
-      border-radius: var(--radius-md);
-      background: rgba(99,102,241,0.15);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--clr-primary);
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-    .region-header__label {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--clr-accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-      display: block;
-    }
-    .region-header__title {
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--clr-text);
-    }
-
-    .region-desc {
-      font-size: 1rem;
-      color: var(--clr-muted);
-      line-height: 1.8;
-      margin-bottom: 40px;
-      max-width: 700px;
-    }
-
-    .places-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 24px;
-      margin-bottom: 40px;
-    }
-
-    .place-card {
-      background: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius-lg);
-      padding: 28px;
-      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
-    }
-    .place-card:hover {
-      border-color: rgba(99,102,241,0.35);
-      box-shadow: var(--shadow-glow);
-      transform: translateY(-2px);
-    }
-    .place-card--highlight {
-      border-color: rgba(99,102,241,0.3);
-      background: linear-gradient(135deg, var(--clr-surface) 0%, rgba(99,102,241,0.05) 100%);
-    }
-    .place-card__num {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--clr-primary);
-      letter-spacing: 0.1em;
-      margin-bottom: 10px;
-      display: block;
-    }
-    .place-card__name {
-      font-size: 1.15rem;
+    .guide-section__title {
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--clr-text);
-      margin-bottom: 12px;
+      margin-bottom: 4px;
     }
-    .place-card__desc {
+    .guide-section__meta {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--clr-accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .guide-section__intro {
       font-size: 0.9rem;
       color: var(--clr-muted);
       line-height: 1.75;
-    }
-    .place-card__desc strong { color: var(--clr-text); }
-    .place-card__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 14px;
-      padding: 5px 12px;
-      font-size: 0.75rem;
-      font-family: var(--font-mono);
-      font-weight: 500;
-      border-radius: var(--radius-sm);
-      background: rgba(99,102,241,0.12);
-      color: var(--clr-primary-h);
-      border: 1px solid rgba(99,102,241,0.25);
-    }
-    .place-card__badge--accent {
-      background: rgba(34,211,238,0.08);
-      color: var(--clr-accent);
-      border-color: rgba(34,211,238,0.2);
+      margin-bottom: 20px;
     }
 
-    /* Notes/tip blocks */
-    .tip-block {
-      background: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-left: 3px solid var(--clr-primary);
-      border-radius: 0 var(--radius-md) var(--radius-md) 0;
-      padding: 20px 24px;
-      margin-bottom: 16px;
-    }
-    .tip-block--warning {
-      border-left-color: #fbbf24;
-      background: rgba(251,191,36,0.04);
-    }
-    .tip-block--danger {
-      border-left-color: #f87171;
-      background: rgba(248,113,113,0.04);
-    }
-    .tip-block--success {
-      border-left-color: #34d399;
-      background: rgba(52,211,153,0.04);
-    }
-    .tip-block__header {
+    .place-list {
+      list-style: none;
       display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
+      flex-direction: column;
+      gap: 18px;
     }
-    .tip-block--warning .tip-block__header { color: #fbbf24; }
-    .tip-block--danger .tip-block__header { color: #f87171; }
-    .tip-block--success .tip-block__header { color: #34d399; }
-    .tip-block .tip-block__header { color: var(--clr-primary-h); }
-    .tip-block__text {
+    .place-list li {
+      padding-left: 16px;
+      position: relative;
       font-size: 0.9rem;
       color: var(--clr-muted);
       line-height: 1.7;
     }
-    .tip-block__text strong { color: var(--clr-text); }
-
-    .rules-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-    }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--clr-muted);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius-sm);
-      padding: 8px 16px;
-      transition: all var(--transition);
-      margin-bottom: 48px;
-    }
-    .back-link:hover {
+    .place-list li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
       color: var(--clr-primary);
-      border-color: var(--clr-primary);
-      background: rgba(99,102,241,0.08);
+      font-size: 0.75rem;
+      top: 3px;
+    }
+    .place-list li strong { color: var(--clr-text); }
+    .place-list li .star {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--clr-primary);
+      background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.25);
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
     }
 
-    @media (max-width: 768px) {
-      .places-grid { grid-template-columns: 1fr; }
-      .rules-grid { grid-template-columns: 1fr; }
+    .guide-note {
+      font-size: 0.85rem;
+      color: var(--clr-muted);
+      line-height: 1.7;
+      padding: 14px 16px;
+      border-left: 2px solid var(--clr-border);
+      margin: 16px 0;
     }
+    .guide-note--danger { border-left-color: #f87171; }
+    .guide-note--success { border-left-color: #34d399; }
+    .guide-note strong { color: var(--clr-text); }
+
+    .guide-divider {
+      border: none;
+      border-top: 1px solid var(--clr-border);
+      margin: 40px 0;
+    }
+
+    .sub-list {
+      list-style: none;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sub-list li {
+      font-size: 0.85rem;
+      color: var(--clr-muted);
+      padding-left: 20px;
+      position: relative;
+    }
+    .sub-list li::before {
+      content: '–';
+      position: absolute;
+      left: 6px;
+      color: var(--clr-muted);
+    }
+    .sub-list li strong { color: var(--clr-text); }
   </style>
 </head>
 <body>
@@ -301,245 +188,128 @@
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="recs-hero">
-    <div class="recs-hero__bg">
-      <div class="recs-hero__grid"></div>
-      <div class="recs-hero__glow recs-hero__glow--1"></div>
-      <div class="recs-hero__glow recs-hero__glow--2"></div>
+  <main class="guide-page">
+
+    <a href="index.html" class="guide-back">
+      <i class="fa-solid fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <div class="guide-header reveal">
+      <span class="guide-header__label"><i class="fa-solid fa-map-location-dot"></i> &nbsp; Pob's Travel Recs</span>
+      <h1 class="guide-header__title">Thailand</h1>
+      <p class="guide-header__sub">Personal recommendations from someone who grew up there. No tourist traps, just the good stuff.</p>
     </div>
-    <div class="recs-hero__content reveal">
-      <span class="recs-hero__label"><i class="fa-solid fa-map-location-dot"></i> &nbsp; Pob's Travel Recs</span>
-      <h1 class="recs-hero__title">Thailand</h1>
-      <p class="recs-hero__sub">Personal recommendations from someone who grew up there. No tourist traps, just the good stuff.</p>
+
+    <!-- THE NORTH -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Region 01</div>
+      <h2 class="guide-section__title">The North</h2>
+      <p class="guide-section__intro">
+        Mountains and forests. Chiang Mai and Chiang Rai are the main bases. If you can find accommodation near Phu Chi Fa — do it.
+      </p>
+      <ul class="place-list">
+        <li>
+          <strong>Phu Chi Fa</strong> <span class="star">★ must-do</span><br>
+          You climb high enough to be above the clouds. At sunrise, you're looking out over a sea of clouds — one of the most surreal sights in Thailand. You must arrive the night before to catch the morning show.
+        </li>
+        <li>
+          <strong>Wat Rong Khun</strong> <span class="star">★ must-do</span><br>
+          The White Temple. All-white architecture with mirror inlays — extraordinarily beautiful. Do not skip this.
+        </li>
+        <li>
+          <strong>Golden Triangle</strong><br>
+          Where Thailand, Laos, and Burma converge. You can stand at the border of three countries at once. Good accommodation nearby — don't let the crowds deter you.
+        </li>
+        <li>
+          <strong>Doi Tung</strong><br>
+          Beautiful gardens built to honor the King's mother. Worth visiting for the scenery.
+        </li>
+        <li>
+          <strong>Doi Inthanon</strong><br>
+          Highest peak in Thailand. The grand pagoda built in honor of the King and Queen is impressive. Worth it if you have time, but not top priority.
+        </li>
+      </ul>
     </div>
-  </section>
 
-  <!-- CONTENT -->
-  <main class="recs-page section">
-    <div class="container">
+    <hr class="guide-divider">
 
-      <a href="index.html" class="back-link reveal">
-        <i class="fa-solid fa-arrow-left"></i> Back to Portfolio
-      </a>
+    <!-- THE SOUTH -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Region 02</div>
+      <h2 class="guide-section__title">The South</h2>
+      <p class="guide-section__intro">
+        The most beautiful beaches are along the Andaman Coast — Trang, Krabi, and surrounding islands. Know where to go and what to skip.
+      </p>
 
-      <!-- THE NORTH -->
-      <div class="recs-region reveal">
-        <div class="region-header">
-          <div class="region-header__icon"><i class="fa-solid fa-mountain"></i></div>
-          <div>
-            <span class="region-header__label">Region 01</span>
-            <h2 class="region-header__title">The North</h2>
-          </div>
-        </div>
-
-        <p class="region-desc">
-          Northern Thailand is a world of mountains and forests. Chiang Mai and Chiang Rai are the two major cities and easy bases for accommodation. If you can find a legitimate place near Phu Chi Fa — highly recommended.
-        </p>
-
-        <div class="places-grid">
-
-          <div class="place-card place-card--highlight reveal">
-            <span class="place-card__num">01 / HIGHLY RECOMMENDED</span>
-            <h3 class="place-card__name">Phu Chi Fa</h3>
-            <p class="place-card__desc">
-              You climb so high up the mountains that you're <strong>above the clouds</strong>. At sunrise, you're looking out over a sea of clouds — one of the most surreal sights in all of Thailand. You must arrive the night before to catch the morning show.
-            </p>
-            <span class="place-card__badge"><i class="fa-solid fa-star"></i> Must stay overnight</span>
-          </div>
-
-          <div class="place-card reveal reveal--delay-1">
-            <span class="place-card__num">02</span>
-            <h3 class="place-card__name">Doi Tung</h3>
-            <p class="place-card__desc">
-              A famous and beautiful tourist destination featuring a stunning garden built to honor the <strong>King's mother</strong>. Well worth the visit for the scenery alone.
-            </p>
-            <span class="place-card__badge place-card__badge--accent"><i class="fa-solid fa-seedling"></i> Garden + Nature</span>
-          </div>
-
-          <div class="place-card reveal reveal--delay-2">
-            <span class="place-card__num">03</span>
-            <h3 class="place-card__name">Doi Inthanon</h3>
-            <p class="place-card__desc">
-              <em style="color: var(--clr-muted); font-style: normal;">Doi</em> means mountain peak. This is the highest point in Thailand, and will one day serve as the <strong>burial site of the King and Queen</strong>. There's a grand "jaydee" (pagoda) structure built in their honor. Worth it if you have time, but not the top priority.
-            </p>
-          </div>
-
-          <div class="place-card reveal">
-            <span class="place-card__num">04 / HIGHLY RECOMMENDED</span>
-            <h3 class="place-card__name">Wat Rong Khun</h3>
-            <p class="place-card__desc">
-              One of the most famous Buddhist temples in Thailand, beloved by both locals and tourists. The all-white architecture with mirror inlays is <strong>extraordinarily beautiful</strong> — do not skip this one.
-            </p>
-            <span class="place-card__badge"><i class="fa-solid fa-star"></i> Highly Recommended</span>
-          </div>
-
-          <div class="place-card reveal reveal--delay-1">
-            <span class="place-card__num">05</span>
-            <h3 class="place-card__name">Golden Triangle</h3>
-            <p class="place-card__desc">
-              The point where <strong>Thailand, Laos, and Burma</strong> converge — you can stand at the border of three countries at once. A neat place to cross into Laos or Burma if you want. Plenty of tourists means plenty of accommodation, and it's actually quite nice — don't let the crowds deter you.
-            </p>
-            <span class="place-card__badge place-card__badge--accent"><i class="fa-solid fa-globe"></i> 3-Country Border</span>
-          </div>
-
-        </div>
+      <div class="guide-note guide-note--danger">
+        <strong>Skip Phuket.</strong> Tourist trap with a massive party scene. Nothing is authentically Thai, beaches are subpar, prices inflated. Unless you're specifically looking for clubs and raves, there are much better options.
       </div>
 
-      <!-- THE SOUTH -->
-      <div class="recs-region reveal">
-        <div class="region-header">
-          <div class="region-header__icon"><i class="fa-solid fa-umbrella-beach"></i></div>
-          <div>
-            <span class="region-header__label">Region 02</span>
-            <h2 class="region-header__title">The South</h2>
-          </div>
-        </div>
+      <ul class="place-list">
+        <li>
+          <strong>Koh Lanta</strong> <span class="star">★ best base</span><br>
+          Popular but genuinely beautiful. Great range of accommodation. From here you can do day tours:
+          <ul class="sub-list">
+            <li><strong>Koh Rok</strong> — one of the most beautiful beaches, barely developed, you can even camp there</li>
+            <li>Snorkeling & diving — swimming with schools of thousands of fish</li>
+            <li>Sea cave tours</li>
+            <li><strong>Koh Mook</strong> — an emerald green beach inside a cave. Absolutely amazing.</li>
+            <li>Seasonal waterfall tours (best during rainy season)</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Koh Phi Phi</strong><br>
+          Another solid choice. More upscale and developed than Koh Lanta — genuinely beautiful, just pricier.
+        </li>
+        <li>
+          <strong>Ao Phang Nga National Park</strong><br>
+          Home to Koh Tapu (James Bond Island). The limestone karsts rising from emerald water are iconic.
+        </li>
+      </ul>
 
-        <p class="region-desc">
-          The most beautiful beaches are in Trang, Krabi, or really anywhere along the <strong>Andaman Coast</strong>. There are countless beaches and islands (called Koh or Ko). Know where to go and what to skip.
-        </p>
-
-        <div class="tip-block tip-block--danger reveal">
-          <div class="tip-block__header"><i class="fa-solid fa-circle-xmark"></i> Skip Phuket</div>
-          <p class="tip-block__text">Phuket is a tourist trap with a massive party scene. Nothing is authentically Thai, the beaches are subpar, and prices are inflated. Unless you're specifically looking for clubs and raves, there are much better options.</p>
-        </div>
-
-        <div class="places-grid">
-
-          <div class="place-card place-card--highlight reveal">
-            <span class="place-card__num">ISLAND / HIGHLY RECOMMENDED</span>
-            <h3 class="place-card__name">Koh Lanta</h3>
-            <p class="place-card__desc">
-              Very popular with tourists, but genuinely beautiful. Great range of accommodation from luxury hotels to budget rooms. From here you can take day tours to:
-            </p>
-            <ul style="margin-top: 12px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px;">
-              <li style="font-size: 0.875rem; color: var(--clr-muted); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--clr-primary);">▸</span><strong style="color: var(--clr-text);">Koh Rok</strong> — one of the most beautiful beaches available, barely developed, you can even camp there</li>
-              <li style="font-size: 0.875rem; color: var(--clr-muted); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--clr-primary);">▸</span>Snorkeling & diving — swimming with schools of thousands of fish</li>
-              <li style="font-size: 0.875rem; color: var(--clr-muted); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--clr-primary);">▸</span>Sea cave tours</li>
-              <li style="font-size: 0.875rem; color: var(--clr-muted); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--clr-primary);">▸</span><strong style="color: var(--clr-text);">Koh Mook</strong> — an emerald green beach <em style="color: var(--clr-muted);">inside a cave</em>. Absolutely amazing.</li>
-              <li style="font-size: 0.875rem; color: var(--clr-muted); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--clr-primary);">▸</span>Seasonal waterfall tours (best during rainy season)</li>
-            </ul>
-            <span class="place-card__badge"><i class="fa-solid fa-star"></i> Best Island Base Camp</span>
-          </div>
-
-          <div class="place-card reveal reveal--delay-1">
-            <span class="place-card__num">ISLAND</span>
-            <h3 class="place-card__name">Koh Phi Phi</h3>
-            <p class="place-card__desc">
-              Another popular and genuinely good choice. More upscale and well-developed for tourism. Still very beautiful — just more polished and pricier than Koh Lanta.
-            </p>
-            <span class="place-card__badge place-card__badge--accent"><i class="fa-solid fa-water"></i> More Upscale</span>
-          </div>
-
-          <div class="place-card reveal reveal--delay-2">
-            <span class="place-card__num">NATIONAL PARK</span>
-            <h3 class="place-card__name">Ao Phang Nga National Park</h3>
-            <p class="place-card__desc">
-              Home to <strong>Koh Tapu</strong> — also known as James Bond Island, famously featured in <em style="color: var(--clr-muted);">The Man with the Golden Gun</em>. The dramatic limestone karsts rising out of emerald water are iconic.
-            </p>
-          </div>
-
-        </div>
-
-        <div class="tip-block tip-block--success reveal" style="margin-top: 8px;">
-          <div class="tip-block__header"><i class="fa-solid fa-compass"></i> Off the Beaten Path</div>
-          <p class="tip-block__text">Many smaller islands are beautiful but remote and not very convenient — more adventurous than relaxing. Plenty of islands have campgrounds if that's your style.</p>
-        </div>
+      <div class="guide-note guide-note--success" style="margin-top: 20px;">
+        Many smaller islands are beautiful but remote — more adventurous than relaxing. Plenty have campgrounds if that's your style.
       </div>
-
-      <!-- CENTRAL -->
-      <div class="recs-region reveal">
-        <div class="region-header">
-          <div class="region-header__icon"><i class="fa-solid fa-city"></i></div>
-          <div>
-            <span class="region-header__label">Region 03</span>
-            <h2 class="region-header__title">Central — Bangkok</h2>
-          </div>
-        </div>
-
-        <div class="places-grid">
-
-          <div class="place-card reveal">
-            <span class="place-card__num">SHOPPING / FOOD</span>
-            <h3 class="place-card__name">Siam District</h3>
-            <p class="place-card__desc">
-              The heart of modern Bangkok. Explore <strong>Siam Paragon</strong> and walk down to <strong>Central World</strong> — both are larger than Mall of America, and they're a block from each other. Also nearby: Siam Discovery and Siam Center (more of a youth/trendy scene).
-            </p>
-          </div>
-
-          <div class="place-card reveal reveal--delay-1">
-            <span class="place-card__num">TEMPLES / HIGHLY RECOMMENDED</span>
-            <h3 class="place-card__name">Wat Phra Kaew & Grand Palace</h3>
-            <p class="place-card__desc">
-              Go to all the famous temples, and make <strong>Wat Phra Kaew</strong> (Temple of the Emerald Buddha) a priority. The Grand Palace complex is stunning — and even more breathtaking lit up at night.
-            </p>
-            <span class="place-card__badge"><i class="fa-solid fa-star"></i> Don't Miss</span>
-          </div>
-
-          <div class="place-card reveal reveal--delay-2">
-            <span class="place-card__num">DAY TRIP</span>
-            <h3 class="place-card__name">Amphawa Floating Market</h3>
-            <p class="place-card__desc">
-              About an hour south of Bangkok. The most recommended floating market — the <strong>liveliest with the most to see</strong>. Fair warning: it gets extremely crowded. Go early.
-            </p>
-            <span class="place-card__badge place-card__badge--accent"><i class="fa-solid fa-sailboat"></i> ~1hr from Bangkok</span>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- CULTURAL RULES -->
-      <div class="recs-region reveal">
-        <div class="region-header">
-          <div class="region-header__icon"><i class="fa-solid fa-book"></i></div>
-          <div>
-            <span class="region-header__label">Important</span>
-            <h2 class="region-header__title">Cultural Rules</h2>
-          </div>
-        </div>
-
-        <div class="rules-grid">
-          <div class="tip-block tip-block--danger reveal">
-            <div class="tip-block__header"><i class="fa-solid fa-ban"></i> Don't</div>
-            <p class="tip-block__text">
-              <strong>Touch anyone's head or hair</strong> — the head is considered the most sacred part of the body.
-            </p>
-          </div>
-          <div class="tip-block tip-block--danger reveal">
-            <div class="tip-block__header"><i class="fa-solid fa-ban"></i> Don't</div>
-            <p class="tip-block__text">
-              <strong>Step on money or books</strong> — feet are considered the lowest and most disrespectful part of the body.
-            </p>
-          </div>
-          <div class="tip-block tip-block--danger reveal">
-            <div class="tip-block__header"><i class="fa-solid fa-ban"></i> Don't</div>
-            <p class="tip-block__text">
-              <strong>Criticize the monarch</strong> — this is literally illegal under Thai law. Not a joke.
-            </p>
-          </div>
-          <div class="tip-block tip-block--danger reveal">
-            <div class="tip-block__header"><i class="fa-solid fa-ban"></i> Don't</div>
-            <p class="tip-block__text">
-              <strong>Touch any Buddhist sculpture</strong> — even seemingly casual contact is considered deeply disrespectful.
-            </p>
-          </div>
-          <div class="tip-block tip-block--danger reveal">
-            <div class="tip-block__header"><i class="fa-solid fa-ban"></i> Don't</div>
-            <p class="tip-block__text">
-              <strong>Keep your wallet in your back pocket.</strong> Nobody does it. Front pocket only — even if you think you're careful.
-            </p>
-          </div>
-          <div class="tip-block tip-block--success reveal">
-            <div class="tip-block__header"><i class="fa-solid fa-check"></i> Do</div>
-            <p class="tip-block__text">
-              <strong>Pause during the national anthem</strong> — it plays every day at 6pm and 8am. Remove your hat. People stop what they're doing.
-            </p>
-          </div>
-        </div>
-      </div>
-
     </div>
+
+    <hr class="guide-divider">
+
+    <!-- CENTRAL -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Region 03</div>
+      <h2 class="guide-section__title">Central — Bangkok</h2>
+      <ul class="place-list">
+        <li>
+          <strong>Wat Phra Kaew & Grand Palace</strong> <span class="star">★ must-do</span><br>
+          Go to all the famous temples, but prioritize this one. The Grand Palace complex is stunning — especially lit up at night.
+        </li>
+        <li>
+          <strong>Siam District</strong><br>
+          Heart of modern Bangkok. Siam Paragon and Central World are both larger than Mall of America and a block from each other. Also: Siam Discovery and Siam Center for a younger/trendier scene.
+        </li>
+        <li>
+          <strong>Amphawa Floating Market</strong><br>
+          About an hour south of Bangkok. The most recommended floating market — liveliest with the most to see. Gets extremely crowded; go early.
+        </li>
+      </ul>
+    </div>
+
+    <hr class="guide-divider">
+
+    <!-- CULTURAL RULES -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Important</div>
+      <h2 class="guide-section__title">Cultural Rules</h2>
+      <ul class="place-list">
+        <li><strong>Don't touch anyone's head or hair</strong> — the head is considered the most sacred part of the body.</li>
+        <li><strong>Don't step on money or books</strong> — feet are considered the lowest, most disrespectful part of the body.</li>
+        <li><strong>Don't criticize the monarch</strong> — this is literally illegal under Thai law. Not a joke.</li>
+        <li><strong>Don't touch any Buddhist sculpture</strong> — even seemingly casual contact is deeply disrespectful.</li>
+        <li><strong>Keep your wallet in your front pocket</strong> — never the back pocket, even if you think you're careful.</li>
+        <li><strong>Pause during the national anthem</strong> — it plays every day at 6pm and 8am. Remove your hat. People stop what they're doing.</li>
+      </ul>
+    </div>
+
   </main>
 
   <footer class="footer">
