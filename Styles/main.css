@@ -318,6 +318,10 @@ a { text-decoration: none; color: inherit; }
   text-align: center;
 }
 .hero__tagline em { color: var(--clr-text); font-style: normal; font-weight: 600; }
+.hero__tagline-line { display: inline; }
+@media (min-width: 768px) {
+  .hero__tagline-line { display: inline-block; white-space: nowrap; }
+}
 
 .hero__actions {
   display: flex;
