@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pob's Life List</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
+  <meta name="theme-color" content="#0a0e1a">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="Styles/main.css">
+
+  <style>
+    .guide-page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 120px 24px 100px;
+    }
+    .guide-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--clr-muted);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-sm);
+      padding: 6px 14px;
+      transition: all var(--transition);
+      margin-bottom: 48px;
+    }
+    .guide-back:hover { color: var(--clr-primary); border-color: var(--clr-primary); }
+
+    .guide-header {
+      margin-bottom: 56px;
+    }
+    .guide-header__label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--clr-accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .guide-header__title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, var(--clr-text) 40%, var(--clr-primary-h) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .guide-header__sub {
+      font-size: 0.95rem;
+      color: var(--clr-muted);
+      line-height: 1.7;
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section__title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--clr-text);
+      margin-bottom: 4px;
+    }
+    .guide-section__meta {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--clr-accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .guide-sub {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--clr-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 24px 0 10px;
+    }
+
+    .place-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .place-list li {
+      padding-left: 16px;
+      position: relative;
+      font-size: 0.9rem;
+      color: var(--clr-muted);
+      line-height: 1.7;
+    }
+    .place-list li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--clr-primary);
+      font-size: 0.75rem;
+      top: 3px;
+    }
+    .place-list li strong { color: var(--clr-text); }
+    .place-list li .tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--clr-primary);
+      background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.25);
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .guide-note {
+      font-size: 0.85rem;
+      color: var(--clr-muted);
+      line-height: 1.7;
+      padding: 14px 16px;
+      border-left: 2px solid var(--clr-border);
+      margin: 16px 0;
+    }
+    .guide-note strong { color: var(--clr-text); }
+
+    .guide-divider {
+      border: none;
+      border-top: 1px solid var(--clr-border);
+      margin: 40px 0;
+    }
+
+    /* Country grid */
+    .stat-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-bar__count {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -3px;
+      background: linear-gradient(135deg, var(--clr-primary) 0%, var(--clr-accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+    .stat-bar__label {
+      font-size: 0.85rem;
+      color: var(--clr-muted);
+      line-height: 1.4;
+    }
+    .stat-bar__label strong { color: var(--clr-text); display: block; }
+
+    .country-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .country-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: var(--clr-muted);
+      transition: all var(--transition);
+    }
+    .country-item:hover {
+      border-color: var(--clr-primary);
+      color: var(--clr-text);
+      background: rgba(99,102,241,0.06);
+    }
+    .country-item .flag {
+      font-size: 1.1rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .country-item .num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--clr-accent);
+      flex-shrink: 0;
+      min-width: 20px;
+    }
+
+    /* Concert list */
+    .concert-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .concert-item {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-sm);
+      transition: all var(--transition);
+    }
+    .concert-item:hover {
+      border-color: var(--clr-primary);
+      background: rgba(99,102,241,0.06);
+    }
+    .concert-item__artist {
+      font-weight: 600;
+      color: var(--clr-text);
+      font-size: 0.9rem;
+      flex: 1;
+    }
+    .concert-item__detail {
+      font-size: 0.8rem;
+      color: var(--clr-muted);
+      font-family: var(--font-mono);
+    }
+    .concert-item__year {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--clr-accent);
+      flex-shrink: 0;
+    }
+
+    /* People met */
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .person-card {
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-sm);
+      transition: all var(--transition);
+    }
+    .person-card:hover {
+      border-color: var(--clr-primary);
+      background: rgba(99,102,241,0.06);
+    }
+    .person-card__name {
+      font-weight: 600;
+      color: var(--clr-text);
+      font-size: 0.9rem;
+      margin-bottom: 2px;
+    }
+    .person-card__role {
+      font-size: 0.78rem;
+      color: var(--clr-muted);
+    }
+    .person-card__context {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--clr-accent);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .placeholder-note {
+      font-size: 0.8rem;
+      color: var(--clr-muted);
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+      padding: 10px 14px;
+      border: 1px dashed var(--clr-border);
+      border-radius: var(--radius-sm);
+      margin-top: 8px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" id="navLogo">pobv<span>.</span>dev</a>
+      <div class="nav__secret" id="navSecret">
+        <a href="thailand.html" class="nav__secret-item">
+          <i class="fa-solid fa-mountain"></i> Thailand Recs
+        </a>
+        <a href="nyc.html" class="nav__secret-item">
+          <i class="fa-solid fa-city"></i> NYC Recs
+        </a>
+      </div>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html#about" class="nav__link">About</a></li>
+        <li><a href="index.html#experience" class="nav__link">Experience</a></li>
+        <li><a href="index.html#skills" class="nav__link">Skills</a></li>
+        <li><a href="index.html#contact" class="nav__link">Contact</a></li>
+        <li><a href="resume.pdf" target="_blank" class="nav__cta">Resume <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="guide-page">
+
+    <a href="index.html" class="guide-back">
+      <i class="fa-solid fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <div class="guide-header reveal">
+      <span class="guide-header__label"><i class="fa-solid fa-star"></i> &nbsp; Things I've Done</span>
+      <h1 class="guide-header__title">Life List</h1>
+      <p class="guide-header__sub">A personal record of places, people, and experiences worth remembering. Always growing.</p>
+    </div>
+
+    <!-- COUNTRIES -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Chapter 01</div>
+      <h2 class="guide-section__title">Countries Visited</h2>
+
+      <div class="stat-bar">
+        <div class="stat-bar__count">76</div>
+        <div class="stat-bar__label">
+          <strong>countries & territories</strong>
+          and counting
+        </div>
+      </div>
+
+      <div class="guide-sub">Asia</div>
+      <div class="country-grid">
+        <div class="country-item"><span class="num">01</span><span class="flag">🇹🇭</span> Thailand</div>
+        <div class="country-item"><span class="num">02</span><span class="flag">🇭🇰</span> Hong Kong</div>
+        <div class="country-item"><span class="num">03</span><span class="flag">🇯🇵</span> Japan</div>
+        <div class="country-item"><span class="num">04</span><span class="flag">🇨🇳</span> China</div>
+        <div class="country-item"><span class="num">05</span><span class="flag">🇲🇲</span> Myanmar</div>
+        <div class="country-item"><span class="num">06</span><span class="flag">🇱🇦</span> Laos</div>
+        <div class="country-item"><span class="num">07</span><span class="flag">🇰🇭</span> Cambodia</div>
+        <div class="country-item"><span class="num">55</span><span class="flag">🇦🇪</span> United Arab Emirates</div>
+        <div class="country-item"><span class="num">62</span><span class="flag">🇹🇷</span> Turkey</div>
+        <div class="country-item"><span class="num">63</span><span class="flag">🇬🇪</span> Georgia</div>
+        <div class="country-item"><span class="num">64</span><span class="flag">🇦🇲</span> Armenia</div>
+        <div class="country-item"><span class="num">65</span><span class="flag">🇨🇾</span> Cyprus</div>
+        <div class="country-item"><span class="num">26</span><span class="flag">🇮🇳</span> India</div>
+        <div class="country-item"><span class="num">27</span><span class="flag">🇳🇵</span> Nepal</div>
+      </div>
+
+      <div class="guide-sub">North America & Oceania</div>
+      <div class="country-grid">
+        <div class="country-item"><span class="num">08</span><span class="flag">🇨🇦</span> Canada</div>
+        <div class="country-item"><span class="num">09</span><span class="flag">🇺🇸</span> USA</div>
+        <div class="country-item"><span class="num">21</span><span class="flag">🇲🇽</span> Mexico</div>
+        <div class="country-item"><span class="num">19</span><span class="flag">🇦🇺</span> Australia</div>
+        <div class="country-item"><span class="num">20</span><span class="flag">🇳🇿</span> New Zealand</div>
+      </div>
+
+      <div class="guide-sub">South America</div>
+      <div class="country-grid">
+        <div class="country-item"><span class="num">37</span><span class="flag">🇪🇨</span> Ecuador</div>
+        <div class="country-item"><span class="num">38</span><span class="flag">🇵🇪</span> Peru</div>
+        <div class="country-item"><span class="num">39</span><span class="flag">🇧🇴</span> Bolivia</div>
+        <div class="country-item"><span class="num">40</span><span class="flag">🇨🇱</span> Chile</div>
+        <div class="country-item"><span class="num">41</span><span class="flag">🇦🇷</span> Argentina</div>
+        <div class="country-item"><span class="num">42</span><span class="flag">🇺🇾</span> Uruguay</div>
+        <div class="country-item"><span class="num">43</span><span class="flag">🇧🇷</span> Brazil</div>
+        <div class="country-item"><span class="num">44</span><span class="flag">🇵🇾</span> Paraguay</div>
+      </div>
+
+      <div class="guide-sub">Africa</div>
+      <div class="country-grid">
+        <div class="country-item"><span class="num">45</span><span class="flag">🇿🇦</span> South Africa</div>
+        <div class="country-item"><span class="num">46</span><span class="flag">🇳🇦</span> Namibia</div>
+        <div class="country-item"><span class="num">47</span><span class="flag">🇧🇼</span> Botswana</div>
+        <div class="country-item"><span class="num">48</span><span class="flag">🇿🇼</span> Zimbabwe</div>
+        <div class="country-item"><span class="num">49</span><span class="flag">🇿🇲</span> Zambia</div>
+        <div class="country-item"><span class="num">50</span><span class="flag">🇲🇼</span> Malawi</div>
+        <div class="country-item"><span class="num">51</span><span class="flag">🇹🇿</span> Tanzania</div>
+        <div class="country-item"><span class="num">52</span><span class="flag">🇰🇪</span> Kenya</div>
+        <div class="country-item"><span class="num">53</span><span class="flag">🇺🇬</span> Uganda</div>
+        <div class="country-item"><span class="num">54</span><span class="flag">🇷🇼</span> Rwanda</div>
+        <div class="country-item"><span class="num">72</span><span class="flag">🇹🇳</span> Tunisia</div>
+      </div>
+
+      <div class="guide-sub">Western Europe</div>
+      <div class="country-grid">
+        <div class="country-item"><span class="num">10</span><span class="flag">🇬🇧</span> UK</div>
+        <div class="country-item"><span class="num">11</span><span class="flag">🇮🇪</span> Ireland</div>
+        <div class="country-item"><span class="num">14</span><span class="flag">🇩🇪</span> Germany</div>
+        <div class="country-item"><span class="num">15</span><span class="flag">🇳🇱</span> Netherlands</div>
+        <div class="country-item"><span class="num">16</span><span class="flag">🇧🇪</span> Belgium</div>
+        <div class="country-item"><span class="num">17</span><span class="flag">🇫🇷</span> France</div>
+        <div class="country-item"><span class="num">18</span><span class="flag">🇨🇭</span> Switzerland</div>
+        <div class="country-item"><span class="num">22</span><span class="flag">🇮🇹</span> Italy</div>
+        <div class="country-item"><span class="num">23</span><span class="flag">🇻🇦</span> Vatican City</div>
+        <div class="country-item"><span class="num">73</span><span class="flag">🇪🇸</span> Spain</div>
+        <div class="country-item"><span class="num">74</span><span class="flag">🇦🇩</span> Andorra</div>
+        <div class="country-item"><span class="num">75</span><span class="flag">🇲🇨</span> Monaco</div>
+        <div class="country-item"><span class="num">76</span><span class="flag">🇵🇹</span> Portugal</div>
+        <div class="country-item"><span class="num">33</span><span class="flag">🇦🇹</span> Austria</div>
+      </div>
+
+      <div class="guide-sub">Nordic & Baltic</div>
+      <div class="country-grid">
+        <div class="country-item"><span class="num">13</span><span class="flag">🇮🇸</span> Iceland</div>
+        <div class="country-item"><span class="num">24</span><span class="flag">🇳🇴</span> Norway</div>
+        <div class="country-item"><span class="num">25</span><span class="flag">🇩🇰</span> Denmark</div>
+        <div class="country-item"><span class="num">28</span><span class="flag">🇸🇪</span> Sweden</div>
+        <div class="country-item"><span class="num">29</span><span class="flag">🇫🇮</span> Finland</div>
+        <div class="country-item"><span class="num">30</span><span class="flag">🇪🇪</span> Estonia</div>
+        <div class="country-item"><span class="num">31</span><span class="flag">🇱🇻</span> Latvia</div>
+        <div class="country-item"><span class="num">32</span><span class="flag">🇱🇹</span> Lithuania</div>
+      </div>
+
+      <div class="guide-sub">Central & Eastern Europe</div>
+      <div class="country-grid">
+        <div class="country-item"><span class="num">12</span><span class="flag">🇭🇺</span> Hungary</div>
+        <div class="country-item"><span class="num">34</span><span class="flag">🇸🇰</span> Slovakia</div>
+        <div class="country-item"><span class="num">35</span><span class="flag">🇨🇿</span> Czechia</div>
+        <div class="country-item"><span class="num">36</span><span class="flag">🇵🇱</span> Poland</div>
+        <div class="country-item"><span class="num">66</span><span class="flag">🇷🇴</span> Romania</div>
+        <div class="country-item"><span class="num">70</span><span class="flag">🇧🇬</span> Bulgaria</div>
+      </div>
+
+      <div class="guide-sub">Balkans & Mediterranean</div>
+      <div class="country-grid">
+        <div class="country-item"><span class="num">56</span><span class="flag">🇬🇷</span> Greece</div>
+        <div class="country-item"><span class="num">57</span><span class="flag">🇦🇱</span> Albania</div>
+        <div class="country-item"><span class="num">58</span><span class="flag">🇲🇰</span> North Macedonia</div>
+        <div class="country-item"><span class="num">59</span><span class="flag">🇲🇪</span> Montenegro</div>
+        <div class="country-item"><span class="num">60</span><span class="flag">🇭🇷</span> Croatia</div>
+        <div class="country-item"><span class="num">61</span><span class="flag">🇸🇮</span> Slovenia</div>
+        <div class="country-item"><span class="num">67</span><span class="flag">🇧🇦</span> Bosnia and Herzegovina</div>
+        <div class="country-item"><span class="num">68</span><span class="flag">🇷🇸</span> Serbia</div>
+        <div class="country-item"><span class="num">69</span><span class="flag">🇽🇰</span> Kosovo</div>
+        <div class="country-item"><span class="num">71</span><span class="flag">🇲🇹</span> Malta</div>
+      </div>
+    </div>
+
+    <hr class="guide-divider">
+
+    <!-- CONCERTS -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Chapter 02</div>
+      <h2 class="guide-section__title">Concerts & Shows</h2>
+
+      <div class="guide-sub">Memorable ones</div>
+      <ul class="concert-list">
+        <li class="concert-item">
+          <span class="concert-item__artist">— to be added —</span>
+          <span class="concert-item__detail">Venue · City</span>
+          <span class="concert-item__year">YYYY</span>
+        </li>
+        <li class="concert-item">
+          <span class="concert-item__artist">— to be added —</span>
+          <span class="concert-item__detail">Venue · City</span>
+          <span class="concert-item__year">YYYY</span>
+        </li>
+        <li class="concert-item">
+          <span class="concert-item__artist">— to be added —</span>
+          <span class="concert-item__detail">Venue · City</span>
+          <span class="concert-item__year">YYYY</span>
+        </li>
+      </ul>
+      <div class="placeholder-note">// fill in artists, venues, and years</div>
+    </div>
+
+    <hr class="guide-divider">
+
+    <!-- PEOPLE MET -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Chapter 03</div>
+      <h2 class="guide-section__title">People Met</h2>
+      <p class="guide-header__sub" style="margin-bottom: 20px;">Notable encounters and people who left an impression.</p>
+
+      <div class="guide-sub">Notable</div>
+      <div class="people-grid">
+        <div class="person-card">
+          <div class="person-card__name">— to be added —</div>
+          <div class="person-card__role">Role / Description</div>
+          <div class="person-card__context">Context · Year</div>
+        </div>
+        <div class="person-card">
+          <div class="person-card__name">— to be added —</div>
+          <div class="person-card__role">Role / Description</div>
+          <div class="person-card__context">Context · Year</div>
+        </div>
+        <div class="person-card">
+          <div class="person-card__name">— to be added —</div>
+          <div class="person-card__role">Role / Description</div>
+          <div class="person-card__context">Context · Year</div>
+        </div>
+      </div>
+      <div class="placeholder-note">// fill in names, roles, and contexts</div>
+    </div>
+
+    <hr class="guide-divider">
+
+    <!-- OTHER EXPERIENCES -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Chapter 04</div>
+      <h2 class="guide-section__title">Other Experiences</h2>
+
+      <div class="guide-sub">Milestones & Bucket List</div>
+      <ul class="place-list">
+        <li>
+          <strong>— to be added —</strong><br>
+          Description of the experience.
+        </li>
+        <li>
+          <strong>— to be added —</strong><br>
+          Description of the experience.
+        </li>
+        <li>
+          <strong>— to be added —</strong><br>
+          Description of the experience.
+        </li>
+      </ul>
+      <div class="placeholder-note">// fill in experiences, adventures, and milestones</div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Pob's life list — <a href="index.html" style="color: var(--clr-primary);">back to portfolio</a></p>
+    </div>
+  </footer>
+
+  <script src="Styles/main.js"></script>
+</body>
+</html>

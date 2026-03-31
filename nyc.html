@@ -16,282 +16,150 @@
   <link rel="stylesheet" href="Styles/main.css">
 
   <style>
-    .recs-hero {
-      min-height: 40vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 100px 24px 60px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .recs-hero__bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-    .recs-hero__grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
-    }
-    .recs-hero__glow {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.4;
-      pointer-events: none;
-    }
-    .recs-hero__glow--1 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%);
-      top: -100px; left: -50px;
-    }
-    .recs-hero__glow--2 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(34,211,238,0.2) 0%, transparent 70%);
-      bottom: -50px; right: -50px;
-    }
-    .recs-hero__content {
-      position: relative;
-      z-index: 1;
-    }
-    .recs-hero__label {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--clr-accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      display: block;
-    }
-    .recs-hero__title {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 900;
-      letter-spacing: -2px;
-      line-height: 1.05;
-      background: linear-gradient(135deg, var(--clr-text) 40%, var(--clr-primary-h) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 16px;
-    }
-    .recs-hero__sub {
-      font-size: 1.05rem;
-      color: var(--clr-muted);
-      max-width: 500px;
+    .guide-page {
+      max-width: 680px;
       margin: 0 auto;
-      line-height: 1.7;
+      padding: 120px 24px 100px;
     }
-
-    /* Page layout */
-    .recs-page { padding: 80px 0 120px; }
-
-    .recs-section {
-      margin-bottom: 80px;
-    }
-    .recs-section:last-child { margin-bottom: 0; }
-
-    .region-header {
-      display: flex;
+    .guide-back {
+      display: inline-flex;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 40px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--clr-border);
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--clr-muted);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-sm);
+      padding: 6px 14px;
+      transition: all var(--transition);
+      margin-bottom: 48px;
     }
-    .region-header__icon {
-      width: 48px; height: 48px;
-      border-radius: var(--radius-md);
-      background: rgba(99,102,241,0.15);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--clr-primary);
-      font-size: 1.2rem;
-      flex-shrink: 0;
+    .guide-back:hover { color: var(--clr-primary); border-color: var(--clr-primary); }
+
+    .guide-header {
+      margin-bottom: 56px;
     }
-    .region-header__label {
+    .guide-header__label {
       font-family: var(--font-mono);
       font-size: 0.75rem;
       color: var(--clr-accent);
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      margin-bottom: 4px;
       display: block;
+      margin-bottom: 12px;
     }
-    .region-header__title {
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
-      font-weight: 800;
-      letter-spacing: -0.5px;
+    .guide-header__title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, var(--clr-text) 40%, var(--clr-primary-h) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .guide-header__sub {
+      font-size: 0.95rem;
+      color: var(--clr-muted);
+      line-height: 1.7;
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section__title {
+      font-size: 1.1rem;
+      font-weight: 700;
       color: var(--clr-text);
+      margin-bottom: 4px;
     }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .rec-card {
-      background: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius-lg);
-      padding: 24px 28px;
-      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
-    }
-    .rec-card:hover {
-      border-color: rgba(99,102,241,0.35);
-      box-shadow: var(--shadow-glow);
-      transform: translateY(-2px);
-    }
-    .rec-card--highlight {
-      border-color: rgba(99,102,241,0.3);
-      background: linear-gradient(135deg, var(--clr-surface) 0%, rgba(99,102,241,0.05) 100%);
-    }
-    .rec-card__type {
+    .guide-section__meta {
       font-family: var(--font-mono);
       font-size: 0.7rem;
       color: var(--clr-accent);
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 8px;
-      display: block;
-    }
-    .rec-card__name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--clr-text);
-      margin-bottom: 10px;
-    }
-    .rec-card__desc {
-      font-size: 0.875rem;
-      color: var(--clr-muted);
-      line-height: 1.75;
-    }
-    .rec-card__desc strong { color: var(--clr-text); }
-    .rec-card__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 14px;
-      padding: 5px 12px;
-      font-size: 0.72rem;
-      font-family: var(--font-mono);
-      font-weight: 500;
-      border-radius: var(--radius-sm);
-      background: rgba(99,102,241,0.12);
-      color: var(--clr-primary-h);
-      border: 1px solid rgba(99,102,241,0.25);
-    }
-    .rec-card__badge--accent {
-      background: rgba(34,211,238,0.08);
-      color: var(--clr-accent);
-      border-color: rgba(34,211,238,0.2);
-    }
-    .rec-card__badge--gold {
-      background: rgba(251,191,36,0.08);
-      color: #fbbf24;
-      border-color: rgba(251,191,36,0.2);
-    }
-    .rec-card__badge--green {
-      background: rgba(52,211,153,0.08);
-      color: #34d399;
-      border-color: rgba(52,211,153,0.2);
+      margin-bottom: 14px;
     }
 
-    /* Route cards */
-    .route-card {
-      background: var(--clr-surface);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius-lg);
-      padding: 28px 32px;
-      margin-bottom: 20px;
-      transition: border-color var(--transition), box-shadow var(--transition);
-    }
-    .route-card:hover {
-      border-color: rgba(99,102,241,0.35);
-      box-shadow: var(--shadow-glow);
-    }
-    .route-card__label {
+    .guide-sub {
       font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--clr-primary);
-      letter-spacing: 0.15em;
+      font-size: 0.7rem;
+      color: var(--clr-muted);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 8px;
-      display: block;
+      margin: 24px 0 10px;
     }
-    .route-card__title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--clr-text);
-      margin-bottom: 16px;
-    }
-    .route-steps {
+
+    .place-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 18px;
     }
-    .route-steps li {
+    .place-list li {
+      padding-left: 16px;
+      position: relative;
       font-size: 0.9rem;
       color: var(--clr-muted);
       line-height: 1.7;
-      padding-left: 20px;
-      position: relative;
     }
-    .route-steps li::before {
+    .place-list li::before {
       content: '▸';
       position: absolute;
       left: 0;
       color: var(--clr-primary);
-      font-size: 0.8rem;
-      top: 2px;
-    }
-    .route-steps li strong { color: var(--clr-text); }
-
-    /* Food sub-sections */
-    .food-category {
-      margin-bottom: 40px;
-    }
-    .food-category:last-child { margin-bottom: 0; }
-    .food-category__header {
-      font-family: var(--font-mono);
       font-size: 0.75rem;
-      color: var(--clr-accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--clr-border);
+      top: 3px;
     }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--clr-muted);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius-sm);
-      padding: 8px 16px;
-      transition: all var(--transition);
-      margin-bottom: 48px;
-    }
-    .back-link:hover {
+    .place-list li strong { color: var(--clr-text); }
+    .place-list li .star {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
       color: var(--clr-primary);
-      border-color: var(--clr-primary);
-      background: rgba(99,102,241,0.08);
+      background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.25);
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
     }
 
-    @media (max-width: 768px) {
-      .cards-grid { grid-template-columns: 1fr; }
+    .guide-note {
+      font-size: 0.85rem;
+      color: var(--clr-muted);
+      line-height: 1.7;
+      padding: 14px 16px;
+      border-left: 2px solid var(--clr-border);
+      margin: 16px 0;
     }
+    .guide-note strong { color: var(--clr-text); }
+
+    .guide-divider {
+      border: none;
+      border-top: 1px solid var(--clr-border);
+      margin: 40px 0;
+    }
+
+    .sub-list {
+      list-style: none;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sub-list li {
+      font-size: 0.85rem;
+      color: var(--clr-muted);
+      padding-left: 20px;
+      position: relative;
+    }
+    .sub-list li::before {
+      content: '–';
+      position: absolute;
+      left: 6px;
+      color: var(--clr-muted);
+    }
+    .sub-list li strong { color: var(--clr-text); }
   </style>
 </head>
 <body>
@@ -321,295 +189,150 @@
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="recs-hero">
-    <div class="recs-hero__bg">
-      <div class="recs-hero__grid"></div>
-      <div class="recs-hero__glow recs-hero__glow--1"></div>
-      <div class="recs-hero__glow recs-hero__glow--2"></div>
+  <main class="guide-page">
+
+    <a href="index.html" class="guide-back">
+      <i class="fa-solid fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <div class="guide-header reveal">
+      <span class="guide-header__label"><i class="fa-solid fa-map-location-dot"></i> &nbsp; Pob's Travel Recs</span>
+      <h1 class="guide-header__title">New York City</h1>
+      <p class="guide-header__sub">Local knowledge from a NYC resident. The real spots, the best eats, and what's actually worth your time.</p>
     </div>
-    <div class="recs-hero__content reveal">
-      <span class="recs-hero__label"><i class="fa-solid fa-map-location-dot"></i> &nbsp; Pob's Travel Recs</span>
-      <h1 class="recs-hero__title">New York City</h1>
-      <p class="recs-hero__sub">Local knowledge from a NYC resident. The real spots, the best eats, and what's actually worth your time.</p>
+
+    <!-- MUSEUMS -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Category 01</div>
+      <h2 class="guide-section__title">Museums</h2>
+
+      <div class="guide-sub">Art</div>
+      <ul class="place-list">
+        <li>
+          <strong>MoMA</strong> <span class="star">★ top pick</span><br>
+          One of the world's most prestigious art museums. First stop for art lovers — an absolute world-class collection.
+        </li>
+        <li>
+          <strong>The MET</strong><br>
+          Better if you want a mix of art and historical artifacts. While there, check out Central Park's Conservatory Garden and walk by the exterior of the Guggenheim.
+        </li>
+      </ul>
+
+      <div class="guide-sub">Non-Art</div>
+      <ul class="place-list">
+        <li>
+          <strong>Museum of Natural History</strong><br>
+          World-class, great for all ages. Highlights:
+          <ul class="sub-list">
+            <li><strong>Top floor full of dinosaur fossils</strong></li>
+            <li>Hall of Gems and Stones (personal favorite)</li>
+            <li>Ocean room with a giant whale replica</li>
+            <li>Planetarium — great 5-min show</li>
+          </ul>
+        </li>
+      </ul>
     </div>
-  </section>
 
-  <!-- CONTENT -->
-  <main class="recs-page section">
-    <div class="container">
+    <hr class="guide-divider">
 
-      <a href="index.html" class="back-link reveal">
-        <i class="fa-solid fa-arrow-left"></i> Back to Portfolio
-      </a>
+    <!-- WALKING ROUTES -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Category 02</div>
+      <h2 class="guide-section__title">Walking Routes</h2>
 
-      <!-- MUSEUMS -->
-      <div class="recs-section reveal">
-        <div class="region-header">
-          <div class="region-header__icon"><i class="fa-solid fa-landmark"></i></div>
-          <div>
-            <span class="region-header__label">Category 01</span>
-            <h2 class="region-header__title">Museums</h2>
-          </div>
-        </div>
+      <div class="guide-sub">Route A · West Side</div>
+      <ul class="place-list">
+        <li>Start at <strong>Hudson Yards and The Vessel</strong></li>
+        <li>Walk down the <strong>High Line</strong> — old railroad track converted into an elevated park</li>
+        <li><strong>Chelsea Market</strong> — great food hall. Thai restaurant is solid; the line for <strong>Los Tacos No. 1</strong> is worth it (get the Al Pastor)</li>
+        <li><strong>Little Island</strong> — a few minutes from Chelsea Market, unique floating park on the Hudson</li>
+      </ul>
 
-        <div class="food-category">
-          <div class="food-category__header">Art</div>
-          <div class="cards-grid">
-            <div class="rec-card rec-card--highlight reveal">
-              <span class="rec-card__type">Top Pick · Art</span>
-              <h3 class="rec-card__name">MoMA</h3>
-              <p class="rec-card__desc">
-                One of the world's most prestigious art museums. Highly recommended as the first stop for art lovers — an absolute world-class collection.
-              </p>
-              <span class="rec-card__badge"><i class="fa-solid fa-star"></i> World-Class</span>
-            </div>
-            <div class="rec-card reveal reveal--delay-1">
-              <span class="rec-card__type">Art + History</span>
-              <h3 class="rec-card__name">The MET</h3>
-              <p class="rec-card__desc">
-                If you want a mix of art and historical artifacts rather than pure contemporary art, the MET is your pick. While you're there, check out <strong>Central Park's Conservatory Garden</strong> and walk by the exterior of the <strong>Guggenheim building</strong> nearby.
-              </p>
-            </div>
-          </div>
-        </div>
+      <div class="guide-sub">Route B · Midtown</div>
+      <ul class="place-list">
+        <li>Times Square → <strong>Rockefeller Center</strong>, passing Radio City Music Hall on the way</li>
+        <li>Best view of Rockefeller is from <strong>Fifth Avenue</strong> — also where you go for high-end shopping</li>
+        <li><strong>Grand Central Station</strong> is a short walk — beautiful building worth seeing</li>
+      </ul>
 
-        <div class="food-category">
-          <div class="food-category__header">Non-Art</div>
-          <div class="cards-grid">
-            <div class="rec-card reveal">
-              <span class="rec-card__type">Family-Friendly · Science</span>
-              <h3 class="rec-card__name">Museum of Natural History</h3>
-              <p class="rec-card__desc">
-                Another world-class museum, great for all ages. Highlights include:
-              </p>
-              <ul style="margin-top: 10px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 6px;">
-                <li style="font-size: 0.85rem; color: var(--clr-muted); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--clr-primary);">▸</span><strong style="color: var(--clr-text);">Top floor full of dinosaur fossils</strong></li>
-                <li style="font-size: 0.85rem; color: var(--clr-muted); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--clr-primary);">▸</span>Hall of Gems and Stones (personal favorite)</li>
-                <li style="font-size: 0.85rem; color: var(--clr-muted); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--clr-primary);">▸</span>Ocean room with a giant whale replica</li>
-                <li style="font-size: 0.85rem; color: var(--clr-muted); padding-left: 16px; position: relative;"><span style="position: absolute; left: 0; color: var(--clr-primary);">▸</span>Planetarium with a great 5-min show</li>
-              </ul>
-              <span class="rec-card__badge place-card__badge--accent"><i class="fa-solid fa-clock"></i> Could spend a full day here</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="guide-sub">Route C · Brooklyn</div>
+      <ul class="place-list">
+        <li>Walk the <strong>Brooklyn Bridge</strong></li>
+        <li>Explore <strong>DUMBO</strong> — don't miss the iconic spot under the bridge (just Google it)</li>
+        <li><strong>Main Street Park</strong> — carousel and some of the best city skyline views</li>
+        <li><strong>Randolph Beer</strong> — great view of the city, excellent beer selection, games</li>
+      </ul>
 
-      <!-- WALKING ROUTES -->
-      <div class="recs-section reveal">
-        <div class="region-header">
-          <div class="region-header__icon"><i class="fa-solid fa-route"></i></div>
-          <div>
-            <span class="region-header__label">Category 02</span>
-            <h2 class="region-header__title">Walking Routes</h2>
-          </div>
-        </div>
-
-        <div class="route-card reveal">
-          <span class="route-card__label">Route A · West Side</span>
-          <h3 class="route-card__title">Hudson Yards → Chelsea</h3>
-          <ul class="route-steps">
-            <li>Start at <strong>Hudson Yards and The Vessel</strong></li>
-            <li>Walk down the <strong>High Line</strong> — a beautiful old railroad track converted into an elevated park</li>
-            <li>Stop at <strong>Chelsea Market</strong> — great food hall. The Thai restaurant is solid; the long line for <strong>Los Tacos No. 1</strong> is worth it (get the Al Pastor)</li>
-            <li>Visit <strong>Little Island</strong> — just a few minutes from Chelsea Market, a unique floating park on the Hudson</li>
-          </ul>
-        </div>
-
-        <div class="route-card reveal">
-          <span class="route-card__label">Route B · Midtown</span>
-          <h3 class="route-card__title">Times Square → Grand Central</h3>
-          <ul class="route-steps">
-            <li>From Times Square, walk to <strong>Rockefeller Center</strong> — pass <strong>Radio City Music Hall</strong> on the way</li>
-            <li>Best view of Rockefeller is from <strong>Fifth Avenue</strong></li>
-            <li>Fifth Avenue is also where you go for <strong>high-end shopping</strong></li>
-            <li><strong>Grand Central Station</strong> is a short walk — beautiful building worth seeing, there's a bathroom in the basement</li>
-          </ul>
-        </div>
-
-        <div class="route-card reveal">
-          <span class="route-card__label">Route C · Brooklyn</span>
-          <h3 class="route-card__title">Chinatown → DUMBO</h3>
-          <ul class="route-steps">
-            <li>Walk the <strong>Brooklyn Bridge</strong></li>
-            <li>Explore <strong>DUMBO</strong> — don't miss the iconic Instagram spot under the bridge (just Google it)</li>
-            <li>Visit <strong>Main Street Park</strong> and go by the carousel for some of the best city skyline views</li>
-            <li>There's a <strong>food hall</strong> nearby in DUMBO</li>
-            <li>For drinks: <strong>Randolph Beer</strong> — great view of the city, excellent beer selection, and a bunch of games</li>
-          </ul>
-        </div>
-
-        <div class="route-card reveal">
-          <span class="route-card__label">Neighborhood · Lower Manhattan</span>
-          <h3 class="route-card__title">SoHo / Washington Square Park</h3>
-          <ul class="route-steps">
-            <li><strong>SoHo / Prince St.</strong> is where all the cool people hang out — culture, influencers, celeb sightings</li>
-            <li><strong>Washington Square Park</strong> is a personal favorite — great glimpse into the city's energy and diversity</li>
-            <li>Nearby is <strong>Uncommons</strong>, a cool board game café</li>
-            <li><strong>Percy's Pizza</strong> is nearby — my favorite NYC-style pizza in the city</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- RESTAURANTS -->
-      <div class="recs-section reveal">
-        <div class="region-header">
-          <div class="region-header__icon"><i class="fa-solid fa-utensils"></i></div>
-          <div>
-            <span class="region-header__label">Category 03</span>
-            <h2 class="region-header__title">Restaurants</h2>
-          </div>
-        </div>
-
-        <div class="food-category">
-          <div class="food-category__header">Thai</div>
-          <div class="cards-grid">
-            <div class="rec-card reveal">
-              <span class="rec-card__type">Thai · Hell's Kitchen</span>
-              <h3 class="rec-card__name">Wondee Siam</h3>
-              <p class="rec-card__desc">Solid Thai in Hell's Kitchen. A reliable go-to.</p>
-            </div>
-            <div class="rec-card reveal reveal--delay-1">
-              <span class="rec-card__type">Thai · Chelsea</span>
-              <h3 class="rec-card__name">Aiyada (Chelsea Market)</h3>
-              <p class="rec-card__desc">Great Thai spot inside Chelsea Market — very convenient if you're doing Route A.</p>
-            </div>
-            <div class="rec-card rec-card--highlight reveal reveal--delay-2">
-              <span class="rec-card__type">Thai · LES · Top Pick</span>
-              <h3 class="rec-card__name">Som Tum Der</h3>
-              <p class="rec-card__desc">One of the <strong>best Thai restaurants in the city</strong>. Located toward the Lower East Side. Don't miss this one.</p>
-              <span class="rec-card__badge"><i class="fa-solid fa-star"></i> Best Thai in NYC</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="food-category">
-          <div class="food-category__header">Japanese</div>
-          <div class="cards-grid">
-            <div class="rec-card rec-card--highlight reveal">
-              <span class="rec-card__type">Sushi · Multiple Locations</span>
-              <h3 class="rec-card__name">Sugarfish</h3>
-              <p class="rec-card__desc">
-                <strong>Highly, highly recommended.</strong> You can get god-tier omakase for under $50 — an absolute steal. No reservations, walk in and put your name in.
-              </p>
-              <span class="rec-card__badge"><i class="fa-solid fa-star"></i> Must Try</span>
-            </div>
-            <div class="rec-card reveal reveal--delay-1">
-              <span class="rec-card__type">Japanese · Hand Rolls</span>
-              <h3 class="rec-card__name">Nami Nori</h3>
-              <p class="rec-card__desc">One of my personal favorites in the city. They specialize in amazing hand rolls. A unique and excellent experience.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="food-category">
-          <div class="food-category__header">New York Classics</div>
-          <div class="cards-grid">
-            <div class="rec-card reveal">
-              <span class="rec-card__type">Jewish Deli · Lower East Side</span>
-              <h3 class="rec-card__name">Katz's Delicatessen</h3>
-              <p class="rec-card__desc">
-                The OG New York experience. Get the <strong>Pastrami sandwich</strong>. This is non-negotiable.
-              </p>
-              <span class="rec-card__badge place-card__badge--gold"><i class="fa-solid fa-award"></i> NYC Institution</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="food-category">
-          <div class="food-category__header">Korean</div>
-          <div class="cards-grid">
-            <div class="rec-card reveal">
-              <span class="rec-card__type">Korean Fried Chicken · K-Town</span>
-              <h3 class="rec-card__name">Turntables</h3>
-              <p class="rec-card__desc">
-                Great Korean fried chicken in Koreatown. Really cool vibe and the food is excellent.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- BROADWAY -->
-      <div class="recs-section reveal">
-        <div class="region-header">
-          <div class="region-header__icon"><i class="fa-solid fa-masks-theater"></i></div>
-          <div>
-            <span class="region-header__label">Category 04</span>
-            <h2 class="region-header__title">Broadway</h2>
-          </div>
-        </div>
-
-        <div class="cards-grid">
-          <div class="rec-card reveal">
-            <span class="rec-card__type">Comedy · Family-Friendly</span>
-            <h3 class="rec-card__name">Chucked</h3>
-            <p class="rec-card__desc">A funny show — good for the whole family. A safe and entertaining pick.</p>
-          </div>
-          <div class="rec-card rec-card--highlight reveal reveal--delay-1">
-            <span class="rec-card__type">Spectacle · Music</span>
-            <h3 class="rec-card__name">Moulin Rouge</h3>
-            <p class="rec-card__desc">
-              For a flashier, more spectacular experience — especially if you love pop and classic music. A visually stunning show.
-            </p>
-            <span class="rec-card__badge"><i class="fa-solid fa-star"></i> Most Spectacular</span>
-          </div>
-          <div class="rec-card reveal reveal--delay-2">
-            <span class="rec-card__type">App · Ticketing</span>
-            <h3 class="rec-card__name">TodayTix</h3>
-            <p class="rec-card__desc">
-              Use this app for Broadway tickets — it gives you pretty solid pricing compared to buying direct. Hamilton is incredible but very expensive, just FYI.
-            </p>
-            <span class="rec-card__badge place-card__badge--accent"><i class="fa-solid fa-ticket"></i> Best Ticket Prices</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- BARS -->
-      <div class="recs-section reveal">
-        <div class="region-header">
-          <div class="region-header__icon"><i class="fa-solid fa-martini-glass"></i></div>
-          <div>
-            <span class="region-header__label">Category 05</span>
-            <h2 class="region-header__title">Bars & Nightlife</h2>
-          </div>
-        </div>
-
-        <div class="cards-grid">
-          <div class="rec-card reveal">
-            <span class="rec-card__type">Dive Bar · Live Music</span>
-            <h3 class="rec-card__name">Cellar Dog</h3>
-            <p class="rec-card__desc">
-              A great dive bar with live jazz. Also has ping pong, foosball, chess, and shuffleboard. Really good vibes — one of those places you stay way longer than planned.
-            </p>
-          </div>
-          <div class="rec-card rec-card--highlight reveal reveal--delay-1">
-            <span class="rec-card__type">Cocktail Bar · Rooftop</span>
-            <h3 class="rec-card__name">Gallow Green</h3>
-            <p class="rec-card__desc">
-              A beautiful rooftop bar with a lush <strong>green/forest/jungle</strong> aesthetic. Great cocktails, great atmosphere — a step up from the usual bar.
-            </p>
-            <span class="rec-card__badge place-card__badge--green"><i class="fa-solid fa-leaf"></i> Garden Rooftop Vibes</span>
-          </div>
-          <div class="rec-card reveal reveal--delay-2">
-            <span class="rec-card__type">Rooftop Club · Views</span>
-            <h3 class="rec-card__name">230 Fifth Rooftop Bar</h3>
-            <p class="rec-card__desc">
-              For clubbing with a stunning view — <strong>one of the best views of the Empire State Building</strong> in the city. A go-to for nights out with a wow factor.
-            </p>
-            <span class="rec-card__badge"><i class="fa-solid fa-building"></i> Empire State Views</span>
-          </div>
-          <div class="rec-card reveal reveal--delay-3">
-            <span class="rec-card__type">Club</span>
-            <h3 class="rec-card__name">Somewhere Nowhere</h3>
-            <p class="rec-card__desc">
-              Another fun clubbing option in the city. Good energy, good night out.
-            </p>
-          </div>
-        </div>
-      </div>
-
+      <div class="guide-sub">Neighborhood · Lower Manhattan</div>
+      <ul class="place-list">
+        <li><strong>SoHo / Prince St.</strong> — culture, influencers, celeb sightings. Where the cool people hang out.</li>
+        <li><strong>Washington Square Park</strong> — personal favorite, great glimpse into the city's energy and diversity</li>
+        <li><strong>Uncommons</strong> — cool board game café nearby</li>
+        <li><strong>Percy's Pizza</strong> — my favorite NYC-style pizza in the city</li>
+      </ul>
     </div>
+
+    <hr class="guide-divider">
+
+    <!-- RESTAURANTS -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Category 03</div>
+      <h2 class="guide-section__title">Restaurants</h2>
+
+      <div class="guide-sub">Thai</div>
+      <ul class="place-list">
+        <li><strong>Som Tum Der</strong> <span class="star">★ best Thai</span> — Lower East Side. One of the best Thai restaurants in the city. Don't miss this one.</li>
+        <li><strong>Aiyada</strong> — inside Chelsea Market. Great if you're doing Route A.</li>
+        <li><strong>Wondee Siam</strong> — Hell's Kitchen. Solid and reliable.</li>
+      </ul>
+
+      <div class="guide-sub">Japanese</div>
+      <ul class="place-list">
+        <li>
+          <strong>Sugarfish</strong> <span class="star">★ must-try</span><br>
+          God-tier omakase for under $50 — an absolute steal. No reservations, walk in and put your name in.
+        </li>
+        <li><strong>Nami Nori</strong> — hand rolls. One of my personal favorites. A unique and excellent experience.</li>
+      </ul>
+
+      <div class="guide-sub">New York Classics</div>
+      <ul class="place-list">
+        <li><strong>Katz's Delicatessen</strong> — Lower East Side. Get the Pastrami sandwich. Non-negotiable.</li>
+      </ul>
+
+      <div class="guide-sub">Korean</div>
+      <ul class="place-list">
+        <li><strong>Turntables</strong> — Korean fried chicken in Koreatown. Great vibe, excellent food.</li>
+      </ul>
+    </div>
+
+    <hr class="guide-divider">
+
+    <!-- BROADWAY -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Category 04</div>
+      <h2 class="guide-section__title">Broadway</h2>
+      <ul class="place-list">
+        <li><strong>Moulin Rouge</strong> <span class="star">★ most spectacular</span> — Flashy, visual, pop and classic music. A step above the usual Broadway experience.</li>
+        <li><strong>Chucked</strong> — Funny and family-friendly. A safe, entertaining pick.</li>
+        <li><strong>TodayTix</strong> — Use this app for tickets. Solid pricing vs. buying direct. Hamilton is incredible but very expensive, just FYI.</li>
+      </ul>
+    </div>
+
+    <hr class="guide-divider">
+
+    <!-- BARS -->
+    <div class="guide-section reveal">
+      <div class="guide-section__meta">Category 05</div>
+      <h2 class="guide-section__title">Bars & Nightlife</h2>
+      <ul class="place-list">
+        <li><strong>Gallow Green</strong> — Beautiful rooftop bar with a lush green/jungle aesthetic. Great cocktails and atmosphere.</li>
+        <li><strong>230 Fifth Rooftop Bar</strong> — For clubbing with a view. One of the best views of the Empire State Building in the city.</li>
+        <li><strong>Cellar Dog</strong> — Dive bar with live jazz, ping pong, foosball, chess, and shuffleboard. One of those places you stay way longer than planned.</li>
+        <li><strong>Somewhere Nowhere</strong> — Another fun clubbing option. Good energy.</li>
+      </ul>
+    </div>
+
   </main>
 
   <footer class="footer">
