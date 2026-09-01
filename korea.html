@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Korea Itinerary</title>
+<link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
+<style>
+  @page { margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    max-width: 1040px;
+    margin: 0 auto;
+    background: #F3EDE1;
+    font-family: 'Liberation Sans', sans-serif;
+    color: #2A2722;
+  }
+  .back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #0E463A;
+    text-decoration: none;
+    margin-bottom: 22px;
+    font-weight: bold;
+  }
+  .back-home:hover { color: #B4231F; }
+  .page { padding: 56px 64px 64px; }
+
+  /* Header */
+  .header {
+    background: #0E463A;
+    color: #F5F0E4;
+    padding: 46px 200px 46px 60px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Obangsaek — the five Korean cardinal colours: blue, red, yellow, white, black */
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg,
+      #17457F 0 20%,
+      #C1272D 20% 40%,
+      #E4B93C 40% 60%,
+      #F5F0E4 60% 80%,
+      #23201C 80% 100%);
+  }
+  .header .kicker {
+    font-family: 'Liberation Sans', sans-serif;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: #E4B93C;
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-family: 'Liberation Serif', serif;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 1.05;
+  }
+  .header .sub {
+    margin-top: 14px;
+    font-size: 17px;
+    color: #CFDAC8;
+  }
+  .header .badge {
+    position: absolute;
+    right: 56px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: right;
+  }
+  .header .badge .num {
+    font-family: 'Liberation Serif', serif;
+    font-size: 76px;
+    font-weight: bold;
+    color: #E4B93C;
+    line-height: 1;
+  }
+  .header .badge .lbl {
+    font-size: 14px;
+    color: #CFDAC8;
+    margin-top: 2px;
+  }
+
+  /* Day blocks */
+  .day {
+    margin-top: 30px;
+    background: #FFFDF8;
+    border: 1px solid #E2D8C2;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .day-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 22px 32px;
+    background: #EAE0CC;
+    border-bottom: 1px solid #E2D8C2;
+  }
+  .day-head .d {
+    font-family: 'Liberation Serif', serif;
+    font-weight: bold;
+    font-size: 28px;
+    color: #0E463A;
+  }
+  .day-head .dow {
+    font-size: 16px;
+    color: #6B6551;
+    letter-spacing: 0.5px;
+  }
+  .day-head .tag {
+    margin-left: auto;
+    font-size: 13px;
+    color: #B4231F;
+    font-style: italic;
+  }
+
+  .rows { padding: 8px 0; }
+  .row {
+    display: flex;
+    padding: 16px 32px;
+    border-bottom: 1px solid #F0EBDC;
+    gap: 22px;
+  }
+  .row:last-child { border-bottom: none; }
+  .row .time {
+    width: 130px;
+    flex-shrink: 0;
+    font-size: 14px;
+    color: #A0522D;
+    padding-top: 2px;
+    font-weight: bold;
+  }
+  .row .content { flex: 1; }
+  .row .activity {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1F1E1A;
+    margin-bottom: 3px;
+  }
+  .row .activity .food-mark {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: #FFFFFF;
+    background: #C1272D;
+    border-radius: 3px;
+    padding: 2px 7px;
+    margin-left: 10px;
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+  }
+  .row .notes {
+    font-size: 14.5px;
+    color: #56513F;
+    line-height: 1.45;
+    max-width: 700px;
+  }
+
+  .footer {
+    margin-top: 34px;
+    text-align: center;
+    font-size: 13px;
+    color: #8A836C;
+    letter-spacing: 0.3px;
+  }
+
+  /* Inline row tips — a collapsed photo-spot / gem / food toggle under a stop */
+  .row-tip { margin-top: 9px; }
+  .row-tip + .row-tip { margin-top: 6px; }
+  .row-tip > summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
+    font-weight: bold;
+    color: #A0522D;
+    letter-spacing: 0.2px;
+  }
+  .row-tip > summary::-webkit-details-marker { display: none; }
+  .row-tip.gem > summary { color: #0E463A; }
+  .row-tip.eat > summary { color: #C1272D; }
+  .row-tip > summary .rt-chev {
+    font-size: 14px;
+    color: #C8A24B;
+    width: 12px;
+    text-align: center;
+    transition: transform 0.2s ease;
+  }
+  .row-tip.gem > summary .rt-chev { color: #0E463A; }
+  .row-tip.eat > summary .rt-chev { color: #C1272D; }
+  .row-tip[open] > summary .rt-chev { transform: rotate(45deg); }
+  .row-tip p {
+    margin-top: 7px;
+    margin-bottom: 2px;
+    font-size: 13.5px;
+    color: #56513F;
+    line-height: 1.45;
+    max-width: 680px;
+    padding-left: 19px;
+    border-left: 2px solid #EAE0CC;
+  }
+
+  /* Mobile — reflow the fixed print layout */
+  @media (max-width: 640px) {
+    .page { padding: 22px 16px 44px; }
+    .back-home { margin-bottom: 18px; }
+    .header { padding: 26px 22px; }
+    .header h1 { font-size: 28px; }
+    .header .sub { font-size: 14.5px; margin-top: 12px; }
+    .header .badge {
+      position: static;
+      transform: none;
+      text-align: left;
+      margin-top: 16px;
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+    }
+    .header .badge .num { font-size: 40px; }
+    .header .badge .lbl { margin-top: 0; }
+    .day { margin-top: 18px; }
+    .day-head { padding: 16px 20px; flex-wrap: wrap; gap: 6px 12px; }
+    .day-head .d { font-size: 22px; }
+    .day-head .tag { margin-left: 0; flex-basis: 100%; }
+    .row { flex-direction: column; gap: 5px; padding: 14px 20px; }
+    .row .time {
+      width: auto;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .row .notes { max-width: none; }
+    .row-tip p { max-width: none; padding-left: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a href="index.html" class="back-home">&larr; back to pobv.dev</a>
+
+  <div class="header">
+    <div class="kicker">SEOUL &middot; BUSAN &middot; GYEONGJU</div>
+    <h1>Pob's Korea Adventure</h1>
+    <div class="sub">Sunday arrival, 2:05 pm &nbsp;&middot;&nbsp; Wednesday departure, 7:40 pm </div>
+    <div class="badge">
+      <div class="num">11</div>
+      <div class="lbl">days</div>
+    </div>
+  </div>
+
+  <!-- Day 1 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 1</span>
+      <span class="dow">Sunday, Dec 20</span>
+      <span class="tag">Arrival &amp; Myeongdong lights</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">2:05 pm</div>
+        <div class="content">
+          <div class="activity">Land at Incheon &amp; check in</div>
+          <div class="notes">Arrive at ICN, clear immigration, transfer into the city and drop bags before heading out.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Getting around</summary><p>Grab a <b>T-money</b> card at any convenience store and tap onto the spotless subway for everything. Airport &rarr; city is easiest on the <b>AREX</b> train (~43 min direct to Seoul Station) or a KakaoTaxi (~₩60&ndash;70k, 70 min). It&rsquo;ll be cold &mdash; December in Seoul runs around -5&deg;C to 3&deg;C, so pack a proper coat on top.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Late afternoon</div>
+        <div class="content">
+          <div class="activity">Myeongdong</div>
+          <div class="notes">Neon shopping streets strung with Christmas lights &mdash; skincare, socks and the city&rsquo;s most famous street-food lane.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the Christmas display</summary><p>The giant illuminated tree and light tunnels around <b>Myeongdong Cathedral</b> and the Shinsegae / Lotte department-store facades are Seoul&rsquo;s most over-the-top winter displays &mdash; go after dark when they&rsquo;re fully lit.</p></details>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Don&rsquo;t miss &mdash; the street-food lane</summary><p>Graze your way down the main drag: gooey <b>tornado potato</b>, cheese-pull corn dogs, <b>gyeranppang</b> (egg bread), grilled cheese lobster tails and torched wagyu skewers. Great cheap dinner-on-your-feet on arrival night.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Evening</div>
+        <div class="content">
+          <div class="activity">Namsan Seoul Tower</div>
+          <div class="notes">The city&rsquo;s hilltop landmark &mdash; ride the cable car up for the glittering night skyline.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the night skyline</summary><p>The observation deck gives you Seoul lit up in every direction. For the tower itself, shoot from the base plaza looking up, or catch it framed above the trees on the walk up from Myeongdong.</p></details>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> For two &mdash; the love locks</summary><p>The terraces below the tower are covered in thousands of padlocks left by couples. Bring one (they&rsquo;re sold on-site), clip it on and keep the key &mdash; a classic Seoul date-night thing to do.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Dinner</div>
+        <div class="content">
+          <div class="activity">Myeongdong Kyoja<span class="food-mark">FOOD</span></div>
+          <div class="notes">Institution near the shopping streets &mdash; one menu, done perfectly: hand-cut <b>kalguksu</b> noodles and fat <b>mandu</b> (dumplings).</div>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Warm-up alternative</summary><p>Freezing? Duck into any <b>tteokbokki</b> spot for chewy rice cakes in spicy-sweet gochujang sauce, or a bowl of <b>sundubu jjigae</b> (soft-tofu stew) &mdash; the ultimate cold-weather comfort food.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 2 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 2</span>
+      <span class="dow">Monday, Dec 21</span>
+      <span class="tag">Palaces &amp; hanok villages</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Morning</div>
+        <div class="content">
+          <div class="activity">Gyeongbokgung Palace</div>
+          <div class="notes">Seoul&rsquo;s grandest Joseon-era palace &mdash; catch the <b>changing of the royal guard</b> ceremony at the main gate (usually 10am &amp; 2pm).</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Insider tip &mdash; wear a hanbok, get in free</summary><p>Rent a <b>hanbok</b> (traditional dress) from any shop by the gate and palace entry is <b>free</b> &mdash; and you&rsquo;ll get the best photos of the trip. Closed Tuesdays, so today (Monday) is perfect.</p></details>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; Gyeonghoeru Pavilion</summary><p>The pavilion on stilts over the pond is the classic frame; also line up the throne hall (Geunjeongjeon) straight through the gates. In winter the bare-tree-and-tiled-roof look is stark and beautiful.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Late morning</div>
+        <div class="content">
+          <div class="activity">Bukchon Hanok Village</div>
+          <div class="notes">A living neighbourhood of restored traditional houses on the hillside between the palaces &mdash; quiet lanes and tiled rooftops.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; Bukchon-ro 11-gil</summary><p>The famous sloped alley looking down over hanok rooftops toward the city (and Namsan Tower on a clear day) is <i>the</i> shot. Please keep your voice down &mdash; people actually live here, and visits are limited after 5pm.</p></details>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; Jeongdok Library viewpoint</summary><p>Skip the crowds at the Gahoe-dong alleys and head to the slightly raised terrace by <b>Jeongdok Public Library</b> for a calm panorama of rooftops backed by the mountains.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Lunch</div>
+        <div class="content">
+          <div class="activity">Tosokchon Samgyetang<span class="food-mark">FOOD</span></div>
+          <div class="notes">Just west of Gyeongbokgung &mdash; Seoul&rsquo;s most famous <b>samgyetang</b> (whole young chicken stuffed with rice &amp; ginseng in a milky broth). Perfect winter warmer.</div>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Nearby alternative &mdash; Seochon</summary><p>The <b>Seochon</b> village on the palace&rsquo;s west side is quieter than Bukchon and packed with cosy lunch spots and cafes &mdash; a lovely low-key wander if the queue&rsquo;s too long.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Afternoon</div>
+        <div class="content">
+          <div class="activity">Ikseondong</div>
+          <div class="notes">Seoul&rsquo;s oldest hanok quarter, reborn as narrow alleys of trendy cafes, boutiques and pubs tucked inside old courtyard houses.</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; a hanok cafe stop</summary><p>Warm up over coffee in a courtyard: <b>Cheong Su Dang</b> (bamboo-lined, gorgeous), or Ikseon-dong&rsquo;s dessert cafes for a fluffy soufflé pancake. Quieter and more atmospheric than Bukchon.</p></details>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the lantern alleys</summary><p>The narrow lanes strung with paper lanterns and glowing shopfronts photograph beautifully once the light drops.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Evening</div>
+        <div class="content">
+          <div class="activity">Cheonggyecheon Stream</div>
+          <div class="notes">A restored stream running right through downtown &mdash; a peaceful walk below street level.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the winter lanterns</summary><p>Around the holidays the stream hosts glowing <b>lantern displays</b> along the water. Start at the big illuminated spiral (Spring sculpture) near Gwanghwamun and stroll east as everything reflects off the stream.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 3 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 3</span>
+      <span class="dow">Tuesday, Dec 22</span>
+      <span class="tag">DMZ &amp; a Korean spa</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Morning</div>
+        <div class="content">
+          <div class="activity">DMZ tour</div>
+          <div class="notes">Half- or full-day guided tour to the Demilitarized Zone &mdash; the Third Infiltration Tunnel, Dora Observatory looking into North Korea, and the border stations.</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Book ahead &mdash; passports required</summary><p>The DMZ is <b>only accessible on an authorised tour</b> and popular dates sell out &mdash; reserve in advance. Bring your <b>passports</b> (checked at the border), and note the JSA/Panmunjom portion has stricter rules and sometimes closes, so confirm what your tour actually includes.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Late afternoon</div>
+        <div class="content">
+          <div class="activity">Back to Seoul</div>
+          <div class="notes">Tours usually return mid-to-late afternoon &mdash; regroup, warm up and rest your feet.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Evening</div>
+        <div class="content">
+          <div class="activity">Jjimjilbang &mdash; Korean spa</div>
+          <div class="notes">The quintessential Korean unwind: hot-spring baths, sauna rooms and a heated common floor. The perfect antidote to a cold day on your feet.</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Where to go &amp; how it works</summary><p><b>Dragon Hill Spa</b> (Yongsan) is the big, tourist-friendly classic. Baths are <b>gender-separated and nude</b> (shower first); in the shared sauna zone you wear the provided cotton pyjamas. Grab a <b>sikhye</b> (sweet rice drink) and a <b>baked egg</b> on the heated floor &mdash; that&rsquo;s the ritual.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Dinner</div>
+        <div class="content">
+          <div class="activity">Korean BBQ<span class="food-mark">FOOD</span></div>
+          <div class="notes">Grill-at-your-table night &mdash; <b>samgyeopsal</b> (pork belly) or marinated <b>galbi</b>, wrapped in lettuce with garlic, ssamjang and a shot of soju.</div>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Do it right</summary><p>Let the staff help with the grilling if it&rsquo;s busy, and order the <b>doenjang jjigae</b> (soybean stew) + steamed egg on the side to round it out. Hongdae and Euljiro are full of buzzy, late-night BBQ joints.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 4 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 4</span>
+      <span class="dow">Wednesday, Dec 23</span>
+      <span class="tag">Markets, DDP &amp; KTX to Busan</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Morning</div>
+        <div class="content">
+          <div class="activity">Gwangjang Market<span class="food-mark">FOOD</span></div>
+          <div class="notes">Seoul&rsquo;s oldest market (1905) &mdash; the definitive Korean street-food hall. Come hungry, eat elbow-to-elbow at the stalls.</div>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Don&rsquo;t miss &mdash; the classics</summary><p>Crispy <b>bindaetteok</b> (mung-bean pancake, ground fresh at the stall), the Netflix-famous <b>mayak gimbap</b> (&ldquo;drug&rdquo; mini rolls) with mustard-soy dip, <b>yukhoe</b> (seasoned raw beef), and hand-cut <b>kalguksu</b>. Wash it down with makgeolli.</p></details>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the food-stall haze</summary><p>The tightly-packed stalls under yellow lights, steam rising off the griddles, ajummas flipping pancakes &mdash; it&rsquo;s one of the most atmospheric photo scenes in Seoul.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Late morning</div>
+        <div class="content">
+          <div class="activity">Dongdaemun Design Plaza (DDP)</div>
+          <div class="notes">Zaha Hadid&rsquo;s swooping silver spaceship of a building &mdash; a short walk from the market.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the curves &amp; LED roses</summary><p>Walk the exterior ramps for the flowing metallic-panel shots, and if the <b>LED Rose Garden</b> installation is running, the field of glowing roses against the building at dusk is stunning.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Afternoon</div>
+        <div class="content">
+          <div class="activity">KTX to Busan</div>
+          <div class="notes">High-speed rail from Seoul Station down to Busan &mdash; about 2.5 hours, city centre to city centre.</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Book your seats ahead</summary><p>Reserve the <b>KTX</b> in advance (Korail app or at the station) &mdash; it&rsquo;s the day before Christmas Eve, so trains fill up. Sit on the correct side and you may catch coastline glimpses near the end.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Evening</div>
+        <div class="content">
+          <div class="activity">Arrive Busan &mdash; Seomyeon<span class="food-mark">FOOD</span></div>
+          <div class="notes">Check in near <b>Busan Station</b> or <b>Seomyeon</b> (where the Gyeongju tours pick up), then head out for dinner.</div>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Don&rsquo;t miss &mdash; dwaeji gukbap</summary><p>Busan&rsquo;s signature dish is <b>dwaeji gukbap</b> &mdash; a hearty pork-and-rice soup you season yourself with chives, shrimp paste and chilli. There&rsquo;s a whole &ldquo;gukbap alley&rdquo; near Seomyeon. Deeply warming after the train.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 5 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 5</span>
+      <span class="dow">Thursday, Dec 24</span>
+      <span class="tag">Gyeongju day tour</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Morning</div>
+        <div class="content">
+          <div class="activity">Gyeongju &mdash; UNESCO day tour</div>
+          <div class="notes">Guided day trip from Busan to Gyeongju, the ancient Silla-dynasty capital &mdash; often called &ldquo;the museum without walls.&rdquo;</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Tour pickup</summary><p>The GetYourGuide UNESCO Legacy tour picks up in Busan &mdash; another reason to stay near Busan Station / Seomyeon. Confirm the pickup point and time the night before.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Midday</div>
+        <div class="content">
+          <div class="activity">Bulguksa Temple</div>
+          <div class="notes">8th-century hillside temple, a UNESCO World Heritage site &mdash; stone bridges, pagodas and beautifully painted eaves.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the stone stairways</summary><p>Frame the temple&rsquo;s twin stone staircase-bridges (Cheongungyo / Baegungyo) leading up to the gate, and the Dabotap &amp; Seokgatap pagodas in the main courtyard.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Afternoon</div>
+        <div class="content">
+          <div class="activity">Daereungwon &amp; Hwangnidan-gil<span class="food-mark">FOOD</span></div>
+          <div class="notes">The grassy royal burial mounds of Daereungwon, then the trendy cafe-and-shop street of Hwangnidan-gil right beside them.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the tumuli &amp; lone tree</summary><p>The rolling green burial mounds are surreal; the famous solitary tree (&ldquo;Michu-wang tree&rdquo;) framed against a mound is Gyeongju&rsquo;s most-shared shot.</p></details>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Don&rsquo;t miss &mdash; Hwangnam-ppang</summary><p>Grab a box of warm <b>Hwangnam-ppang</b> &mdash; Gyeongju&rsquo;s famous thin red-bean cakes &mdash; and browse the aesthetic cafes lining Hwangnidan-gil.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Dusk</div>
+        <div class="content">
+          <div class="activity">Donggung Palace &amp; Wolji Pond</div>
+          <div class="notes">Reconstructed Silla royal pavilions beside a reflecting pond &mdash; the tour&rsquo;s grand finale, best right as the lights come on.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the night reflection</summary><p>This is one of Korea&rsquo;s most beautiful night scenes: the illuminated pavilions mirrored in the still pond. Stay until it&rsquo;s properly dark for the postcard reflection shot.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 6 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 6</span>
+      <span class="dow">Friday, Dec 25</span>
+      <span class="tag">Busan highlights &middot; Christmas Day</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Morning</div>
+        <div class="content">
+          <div class="activity">Haedong Yonggungsa Temple</div>
+          <div class="notes">A rare Buddhist temple built right on the seaside cliffs &mdash; waves crashing below the shrines. Magical, and free.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; temple over the sea</summary><p>Shoot from the far side of the little cove looking back at the temple layered against the rocks and ocean. Go early to beat the crowds; the light is best in the morning.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Late morning</div>
+        <div class="content">
+          <div class="activity">Gamcheon Culture Village</div>
+          <div class="notes">Pastel-painted refugee-era houses stacked up a hillside, now full of murals, tiny galleries and cafes &mdash; Busan&rsquo;s &ldquo;Santorini.&rdquo;</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the Little Prince</summary><p>The <b>Little Prince &amp; the Fox</b> statue overlooking the coloured rooftops is the iconic frame (expect a short queue). Wander the back alleys for quieter mural shots too.</p></details>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; Huinyeoul Culture Village</summary><p>If you have time, the nearby <b>Huinyeoul</b> coastal walk &mdash; white houses on a cliff above the sea, with a photogenic seaside tunnel &mdash; is far less touristy and gorgeous.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Afternoon</div>
+        <div class="content">
+          <div class="activity">Haeundae Blueline Park</div>
+          <div class="notes">The coastal rail line reborn as a tourist ride &mdash; the open-air <b>Beach Train</b> and the pastel <b>Sky Capsule</b> gliding above the shoreline.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the Sky Capsule</summary><p>The candy-coloured capsules on the elevated track over the sea are the shot &mdash; book the Sky Capsule ahead as it sells out. The Cheongsapo section with the twin lighthouses is especially pretty.</p></details>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; Cheongsapo Daritdol Observatory</summary><p>Near the Blueline route, this glass-floored skywalk juts out over the water &mdash; a quick, dramatic ocean view most tour groups skip.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Evening</div>
+        <div class="content">
+          <div class="activity">Jagalchi Market<span class="food-mark">FOOD</span></div>
+          <div class="notes">Korea&rsquo;s biggest fish market &mdash; pick your seafood downstairs and they&rsquo;ll cook it for you upstairs, minutes fresh.</div>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Don&rsquo;t miss &mdash; how it works</summary><p>Choose from the tanks (hwe / sashimi, grilled fish, king crab, or grilled <b>jangeo</b> eel), agree a price, then take it upstairs to be prepared. Nearby <b>BIFF Square</b> has the famous <b>ssiat hotteok</b> &mdash; seed-stuffed fried sweet pancakes &mdash; for dessert.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 7 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 7</span>
+      <span class="dow">Saturday, Dec 26</span>
+      <span class="tag">Busan art &amp; back to Seoul</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Morning</div>
+        <div class="content">
+          <div class="activity">F1963</div>
+          <div class="notes">A 1960s wire-rope factory reborn as an arts complex &mdash; galleries, a design bookshop, a craft brewery and a beautiful bamboo courtyard cafe.</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Alternative &mdash; Busan Museum of Art</summary><p>If you&rsquo;d rather a proper gallery, the <b>Busan Museum of Art</b> (with its Space Lee Ufan annex) is right by Haeundae/BEXCO &mdash; a calm, quality art stop before the train.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Afternoon</div>
+        <div class="content">
+          <div class="activity">KTX back to Seoul</div>
+          <div class="notes">Return high-speed train up to Seoul &mdash; ~2.5 hrs. Check back into your Seoul base for the last stretch of the trip.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Evening</div>
+        <div class="content">
+          <div class="activity">MMCA Seoul</div>
+          <div class="notes">The National Museum of Modern &amp; Contemporary Art, next to Gyeongbokgung &mdash; open late on Saturdays (often free evening entry), so it&rsquo;s a great arrival-night stop.</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; the neighbourhood after</summary><p>The museum sits in <b>Samcheong-dong</b> / Bukchon &mdash; wander the surrounding alleys for cosy wine bars and dinner spots to ease back into Seoul.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 8 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 8</span>
+      <span class="dow">Sunday, Dec 27</span>
+      <span class="tag">Nami, alpacas &amp; morning calm</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Full day</div>
+        <div class="content">
+          <div class="activity">Countryside day tour</div>
+          <div class="notes">A classic Seoul day trip east into Gangwon: <b>Alpaca World</b>, <b>Nami Island</b>, the <b>Garden of Morning Calm</b>, and rail-bike / Eobi Ice Valley depending on the tour.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; Nami&rsquo;s tree-lined avenue</summary><p>Nami Island&rsquo;s dead-straight <b>Metasequoia Lane</b> (of <i>Winter Sonata</i> fame) is the money shot &mdash; especially dusted with snow. Feed the ostriches and squirrels while you&rsquo;re there.</p></details>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; the Lighting Festival</summary><p>The <b>Garden of Morning Calm</b> runs its <b>Lighting Festival</b> through winter &mdash; hundreds of thousands of lights blanketing the garden after dark. If your tour includes the evening, this is the highlight; if not, it&rsquo;s worth checking the timing.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 9 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 9</span>
+      <span class="dow">Monday, Dec 28</span>
+      <span class="tag">Art, books &amp; a slow day</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Afternoon</div>
+        <div class="content">
+          <div class="activity">Starfield Library (COEX)</div>
+          <div class="notes">The giant open library inside the COEX Mall in Gangnam &mdash; two-storey shelves and a soaring atrium. Free to walk through.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the towering shelves</summary><p>Shoot from the lower floor looking up at the 13m bookshelves and hanging lights. It&rsquo;s busy &mdash; a weekday afternoon is your best shot at a clean frame.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Later</div>
+        <div class="content">
+          <div class="activity">Leeum Museum of Art</div>
+          <div class="notes">Samsung&rsquo;s superb private museum in Itaewon &mdash; traditional Korean art and blue-chip contemporary work in buildings by three star architects. (Closed Mondays &mdash; swap to another day if needed.)</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; the neighbourhood</summary><p>Leeum sits above <b>Itaewon / Hannam-dong</b>, one of Seoul&rsquo;s most design-forward areas &mdash; flagship concept stores, indie coffee and good dinner nearby.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Evening</div>
+        <div class="content">
+          <div class="activity">Free evening<span class="food-mark">FOOD</span></div>
+          <div class="notes">A relaxed dinner &mdash; a good night for something you haven&rsquo;t had yet.</div>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Don&rsquo;t miss &mdash; jjimdak or naengmyeon</summary><p>Try <b>Andong jjimdak</b> (braised soy-glazed chicken with glass noodles) to share, or go regional with a <b>bossam</b> (boiled pork with kimchi wraps). Hongdae and Gangnam are full of options.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 10 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 10</span>
+      <span class="dow">Tuesday, Dec 29</span>
+      <span class="tag">Last full day in Seoul</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Daytime</div>
+        <div class="content">
+          <div class="activity">Insadong &amp; around</div>
+          <div class="notes">Traditional crafts, tea houses, galleries and souvenir lanes &mdash; the place to pick up last gifts (ceramics, stationery, hanji paper).</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; a traditional tea house</summary><p>Duck into one of Insadong&rsquo;s tucked-away <b>tea houses</b> for citron (yuja) or ginger tea &mdash; a warm, quiet break from the cold and the crowds.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Afternoon</div>
+        <div class="content">
+          <div class="activity">MMCA or one more museum</div>
+          <div class="notes">If you skipped it earlier, circle back to MMCA Seoul &mdash; or pick whichever art stop you missed.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Evening</div>
+        <div class="content">
+          <div class="activity">Euljiro &amp; farewell dinner<span class="food-mark">FOOD</span></div>
+          <div class="notes">Wrap the trip in <b>Euljiro (Hip-jiro)</b> &mdash; retro machine-shop alleys hiding some of Seoul&rsquo;s coolest bars and restaurants.</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; the hidden bars</summary><p>Euljiro is a maze of unmarked doors and rooftop bars above old print shops &mdash; part of the fun is finding one. A memorable last night out.</p></details>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Don&rsquo;t miss &mdash; a final feast</summary><p>Go all-in one last time: sizzling <b>galbi</b>, a bubbling <b>budae jjigae</b> (army stew), or fried chicken &amp; beer (<b>chimaek</b>) &mdash; the perfect Korean send-off.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 11 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 11</span>
+      <span class="dow">Wednesday, Dec 30</span>
+      <span class="tag">Departure</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Morning</div>
+        <div class="content">
+          <div class="activity">Last-minute Seoul</div>
+          <div class="notes">Hangout, do last minute things</div>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> One for the road</summary><p>Grab a warm <b>hotteok</b> or a <b>gyeranppang</b> from a street cart, and stock up on snacks (Market Kurly / a convenience store) for the flight.</p></details>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Afternoon</div>
+        <div class="content">
+          <div class="activity">Head to Incheon</div>
+          <div class="notes">Leave with a comfortable buffer for the <b>7:40 pm</b> flight &mdash; the AREX or a taxi to ICN, and arrive ~3 hours ahead for an international departure.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> At the airport</summary><p>ICN Terminal&nbsp;1 &amp; 2 both have a <b>Traditional Korean Cultural Experience</b> zone and plenty of last-minute food and duty-free &mdash; leave a little extra time to enjoy the airport itself.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Seoul &middot; Busan &middot; Gyeongju &nbsp;&mdash;&nbsp; December 2026 &nbsp;&middot;&nbsp; 안녕히 가세요
+  </div>
+
+</div>
+</body>
+</html>
