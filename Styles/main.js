@@ -132,6 +132,7 @@
     { g: "Off the clock", label: "Thailand Recs", sub: "Where to go & eat", addr: "/thailand", href: "thailand.html", icon: ic.pin, kw: "travel food bangkok" },
     { g: "Off the clock", label: "NYC Recs", sub: "My New York", addr: "/nyc", href: "nyc.html", icon: ic.pin, kw: "travel food new york city" },
     { g: "Off the clock", label: "Singapore Itinerary", sub: "4-day plan", addr: "/singapore", href: "singapore.html", icon: ic.pin, kw: "travel food itinerary trip asia marina bay gardens" },
+    { g: "Off the clock", label: "Pob World Tour", sub: "An atlas of a 375-day journey", addr: "/worldtour", href: "worldtour.html", icon: ic.globe, kw: "travel world tour atlas countries journey map europe africa south america" },
     { g: "Find me", label: "Email", sub: "PobVuti@gmail.com", addr: "mailto", href: "mailto:PobVuti@gmail.com", icon: ic.mail, kw: "contact hello" },
     { g: "Find me", label: "LinkedIn", sub: "in/vutisat", addr: "↗", href: "https://www.linkedin.com/in/vutisat/", ext: true, icon: ic.link, kw: "social" },
     { g: "Find me", label: "GitHub", sub: "@vutisat", addr: "↗", href: "https://www.github.com/vutisat", ext: true, icon: ic.link, kw: "social code" },
