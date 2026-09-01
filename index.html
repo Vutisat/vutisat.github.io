@@ -3,395 +3,367 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pob Vutisalchavakul – Staff Software Engineer</title>
+  <title>Pob Vutisalchavakul — Staff Software Engineer</title>
+  <meta name="description" content="Pob Vutisalchavakul — Staff Software Engineer in NYC. Systems at scale — billing at billions of dollars, petabyte pipelines, 10M+ requests a day — built and led with kindness.">
+  <meta name="theme-color" content="#F4F1EA">
 
   <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon-180x180.png">
   <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
   <link rel="icon" type="image/png" href="icons/favicon-16x16.png" sizes="16x16">
-  <meta name="theme-color" content="#0a0e1a">
-  <meta name="description" content="Pob Vutisalchavakul – Staff Software Engineer passionate about continuous learning, leading high-performing teams, and building systems at scale.">
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+  <link rel="preload" href="fonts/spectral-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="Styles/main.css">
 </head>
 <body>
+<!--
+  DIRECTION CONTRACT — pobv.dev — seed d1dd32ba (direction/persuade, index 5 "The Reference", raised by IMPECCABLE'S PICK index 1 as hero)
+  THESIS: A career documented as a system you can watch run. The homepage opens on a live architecture Pob built, not a hero banner. Refuses the dark-neon dev-portfolio rut AND the sterile résumé.
+  OWN-WORLD: Warm bone paper (#F4F1EA) on a faint drafting grid, near-black ink, cobalt (#2540D6) as the structural accent that owns the diagram region, vermilion (#C63D28) reserved only for the live/active mark. Spectral display serif, Hanken Grotesk text, JetBrains Mono for real data. Hairline rules, figure/version numbers, margin notes, ⌘K addressing.
+  STORY: A recruiter sees an engineer who runs systems at verified scale, led with kindness; understands the impact in seconds; reaches out.
+  FIRST VIEWPORT: Left — name in Spectral display + one-line thesis + primary CTA. Right — a running system diagram (Ingest→Event Capture→Petabyte Warehouse; Billing; hot target.com Edge) with cobalt packets flowing and node metrics. ⌘K palette in the masthead.
+  FORM: System-architecture diagram (my index 1) as hero, inside the API-reference world (rolled index 5); seed d1dd32ba.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
+-->
+  <a href="#overview" class="skip">Skip to content</a>
 
-  
-  <!-- ========== NAVIGATION ========== -->
-  <nav class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="#hero" class="nav__logo" id="navLogo">pobv<span>.</span>dev</a>
-      <div class="nav__secret" id="navSecret">
-        <a href="thailand.html" class="nav__secret-item">
-          <i class="fa-solid fa-mountain"></i> Thailand Recs
-        </a>
-        <a href="nyc.html" class="nav__secret-item">
-          <i class="fa-solid fa-city"></i> NYC Recs
-        </a>
-      </div>
-      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
+  <!-- ========== MASTHEAD ========== -->
+  <header class="masthead" id="masthead">
+    <div class="wrap masthead__in">
+      <a href="#top" class="brand">pobv<span class="dot">.</span>dev</a>
+      <div class="masthead__spacer"></div>
+      <nav class="masthead__nav" aria-label="Primary">
+        <a href="#overview">Overview</a>
+        <a href="#changelog">Changelog</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#contact">Contact</a>
+        <a href="resume.pdf" target="_blank" rel="noopener">Résumé</a>
+      </nav>
+      <button class="cmdk-btn" id="cmdkBtn" aria-haspopup="dialog" aria-label="Open command menu">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <span class="lbl">Jump to…</span>
+        <kbd>⌘K</kbd>
       </button>
-      <ul class="nav__links" id="navLinks">
-        <li><a href="#about" class="nav__link">About</a></li>
-        <li><a href="#experience" class="nav__link">Experience</a></li>
-        <li><a href="#skills" class="nav__link">Skills</a></li>
-        <li><a href="#contact" class="nav__link">Contact</a></li>
-        <li><a href="resume.pdf" target="_blank" class="nav__cta">Resume <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-      </ul>
     </div>
-  </nav>
+  </header>
 
-  <!-- ========== HERO ========== -->
-  <section class="hero" id="hero">
-    <div class="hero__bg">
-      <div class="hero__grid"></div>
-      <div class="hero__glow hero__glow--1"></div>
-      <div class="hero__glow hero__glow--2"></div>
-    </div>
-    <div class="hero__content">
-      <p class="hero__greeting reveal">Hi, I'm</p>
-      <h1 class="hero__name reveal reveal--delay-1">Pob Vutisalchavakul</h1>
-      <div class="hero__title reveal reveal--delay-2">
-        <span class="hero__title-text" id="heroTitle">Staff Software Engineer</span>
-        <span class="hero__cursor">|</span>
+  <main id="top">
+    <!-- ========== HERO — the living system ========== -->
+    <section class="hero wrap" id="hero" aria-labelledby="heroName">
+      <div class="hero__doc">
+        <span class="meta">REF · <b>pobv.dev</b> · Staff Software Engineer</span>
+        <span class="hero__live"><span class="dot" aria-hidden="true"></span> systems online</span>
       </div>
-      <p class="hero__tagline reveal reveal--delay-3">
-        <span class="hero__tagline-line">Energetic technology leader with a passion for <em>continuous learning</em> and</span><br><span class="hero__tagline-line">building systems that scale to <em>petabytes of data</em> and <em>millions of daily users</em>.</span><br><span class="hero__tagline-line">Traveled to <em>~80 countries</em>, bringing a global perspective to every team.</span>
-      </p>
-      <div class="hero__actions reveal reveal--delay-4">
-        <a href="#experience" class="btn btn--primary">See My Work</a>
-        <a href="#contact" class="btn btn--ghost">Get In Touch</a>
-      </div>
-      <div class="hero__stats reveal reveal--delay-5">
-        <div class="stat">
-          <span class="stat__value">10+</span>
-          <span class="stat__label">Years of Experience</span>
-        </div>
-        <div class="stat__divider"></div>
-        <div class="stat">
-          <span class="stat__value">$B+</span>
-          <span class="stat__label">Systems Supported</span>
-        </div>
-        <div class="stat__divider"></div>
-        <div class="stat">
-          <span class="stat__value">10M+</span>
-          <span class="stat__label">Daily Requests Handled</span>
-        </div>
-      </div>
-    </div>
-    <a href="#about" class="hero__scroll" aria-label="Scroll down">
-      <i class="fa-solid fa-chevron-down"></i>
-    </a>
-  </section>
 
-  <!-- ========== ABOUT ========== -->
-  <section class="section" id="about">
-    <div class="container">
-      <div class="section__header reveal">
-        <span class="section__label">01. About</span>
-        <h2 class="section__title">Who I Am</h2>
-      </div>
-      <div class="about__grid">
-        <div class="about__text reveal">
-          <p>
-            I'm a <strong>Staff Software Engineer</strong> based in NYC with a passion for building clean, robust systems at scale. I thrive at the intersection of great engineering and great culture, celebrated as a servant leader who brings the best out of teams.
+      <div class="hero__grid">
+        <div class="hero__lede reveal">
+          <h1 class="display" id="heroName">Pob Vutisalchavakul
+            <span class="sub">Staff Software Engineer, building systems at scale — led with kindness.</span>
+          </h1>
+          <p class="hero__thesis">
+            A decade turning hard backend problems into calm, running systems: billing accurate to
+            <em>every penny at billions of dollars</em>, pipelines moving <em>petabytes</em>, and edges
+            answering <em>10M+ requests a day</em>. I care as much about the people building them.
           </p>
-          <p>
-            My career has spanned backend engineering, distributed systems, and technical leadership across companies like <strong>Automox</strong>, <strong>Datasite</strong>, and <strong>Target</strong>. I've built everything from MDM solutions and billing systems processing billions of dollars, to data pipelines ingesting petabytes of information, to infrastructure powering target.com, one of the <strong>top 60 most-visited sites in the US</strong>.
-          </p>
-          <p>
-            Outside of code, I'm endlessly curious about the world. I've traveled to <strong>~80 countries</strong>, I'm fluent in Thai and English, and always learning more. I genuinely love developing people: I've coached interns and junior engineers through code, career, and everything in between, watching them grow into confident, autonomous seniors. I care just as much about the team as the individual, and I work hard to build environments where everyone does their best work. I believe the best engineers never stop learning, and I live that every day. <strong>Above all, I try to show up with kindness and thoughtfulness, in code and in life.</strong>
-          </p>
-          <div class="about__links">
-            <a href="https://www.linkedin.com/in/vutisat/" target="_blank" rel="noopener" class="about__social">
-              <i class="fa-brands fa-linkedin"></i> LinkedIn
+          <div class="hero__cta">
+            <a href="#changelog" class="btn">
+              Read the changelog
+              <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
             </a>
-            <a href="https://www.github.com/vutisat" target="_blank" rel="noopener" class="about__social">
-              <i class="fa-brands fa-github"></i> GitHub
-            </a>
-            <a href="https://twitter.com/pob_v" target="_blank" rel="noopener" class="about__social">
-              <i class="fa-brands fa-x-twitter"></i> Twitter
-            </a>
+            <a href="#contact" class="btn btn--ghost">Get in touch</a>
           </div>
         </div>
-        <div class="about__highlights reveal reveal--delay-1">
-          <div class="highlight-card">
-            <div class="highlight-card__icon"><i class="fa-solid fa-graduation-cap"></i></div>
-            <div>
-              <h3>Education</h3>
-              <p>B.S. Computer Science — Miami University, 2016</p>
-              <p>Mini-MBA — Farmer School of Business, 2021</p>
+
+        <!-- SYSTEM DIAGRAM -->
+        <figure class="sys reveal" data-d="1" aria-label="Diagram: representative systems Pob has built and their scale">
+          <figcaption class="sys__cap">
+            <span class="ttl">FIG.1 — <b>systems.built()</b></span>
+            <span class="sys__clock" id="sysClock" aria-hidden="true">session · 00:00:00</span>
+          </figcaption>
+          <svg class="sys__svg" id="sysSvg" viewBox="0 0 560 400" role="img" aria-hidden="true">
+            <!-- edges -->
+            <path class="edge edge--live" id="e-ab" d="M164,200 C190,150 184,96 205,74"></path>
+            <path class="edge edge--live" id="e-bd" d="M355,71 L396,71"></path>
+            <path class="edge" id="e-cd" d="M280,298 C300,210 344,150 400,100"></path>
+            <path class="edge edge--live" id="e-ac" d="M164,200 C186,252 184,308 205,326"></path>
+            <path class="edge edge--live" id="e-ae" d="M164,200 C280,240 330,329 396,329"></path>
+
+            <!-- node A : Ingest -->
+            <g class="node">
+              <rect x="14" y="169" width="150" height="62" rx="8"></rect>
+              <text class="n-name" x="30" y="197">Ingest</text>
+              <text class="n-sub"  x="30" y="215">events · traffic</text>
+            </g>
+            <!-- node B : Event Capture -->
+            <g class="node">
+              <rect x="205" y="40" width="150" height="62" rx="8"></rect>
+              <text class="n-name" x="221" y="68">Event Capture</text>
+              <text class="n-l2" x="221" y="86" font-family="'JetBrains Mono',monospace"><tspan class="n-metric">firm-wide</tspan><tspan class="n-sub"> · lib</tspan></text>
+            </g>
+            <!-- node D : Warehouse -->
+            <g class="node">
+              <rect x="396" y="40" width="150" height="62" rx="8"></rect>
+              <text class="n-name" x="412" y="68">Petabyte Warehouse</text>
+              <text class="n-l2" x="412" y="86" font-family="'JetBrains Mono',monospace"><tspan class="n-metric">PB-scale</tspan><tspan class="n-sub"> · SOX/FEC</tspan></text>
+            </g>
+            <!-- node C : Billing -->
+            <g class="node">
+              <rect x="205" y="298" width="150" height="62" rx="8"></rect>
+              <text class="n-name" x="221" y="326">Billing Engine</text>
+              <text class="n-l2" x="221" y="344" font-family="'JetBrains Mono',monospace"><tspan class="n-metric">$B+</tspan><tspan class="n-sub"> · penny-exact</tspan></text>
+            </g>
+            <!-- node E : Edge (hot) -->
+            <g class="node is-active" id="nodeEdge">
+              <rect x="396" y="298" width="150" height="62" rx="8"></rect>
+              <text class="n-name" x="412" y="326">target.com Edge</text>
+              <text class="n-l2" x="412" y="344" font-family="'JetBrains Mono',monospace"><tspan class="n-metric" id="edgeMetric">10M+/day</tspan><tspan class="n-sub"> · 95% &lt;1s</tspan></text>
+            </g>
+
+            <!-- packets (positioned by JS) -->
+            <circle class="packet" id="p1" r="3.2" cx="0" cy="0"></circle>
+            <circle class="packet" id="p2" r="3.2" cx="0" cy="0"></circle>
+            <circle class="packet" id="p3" r="3.2" cx="0" cy="0"></circle>
+            <circle class="packet packet--hot" id="p4" r="3.6" cx="0" cy="0"></circle>
+          </svg>
+          <div class="sys__legend" aria-hidden="true">
+            <span><i class="c"></i> data flow</span>
+            <span><i class="v"></i> live / hot path</span>
+            <span class="mono">— real systems, real numbers —</span>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ========== OVERVIEW ========== -->
+    <section class="section" id="overview" aria-labelledby="overviewH">
+      <div class="wrap">
+        <div class="s-head reveal">
+          <h2 class="display" id="overviewH">Overview</h2>
+          <span class="addr">§1 · <b>/overview</b></span>
+        </div>
+        <div class="overview">
+          <div class="prose reveal">
+            <p>I'm a <strong>Staff Software Engineer</strong> in NYC who builds clean, robust systems at scale — and who's just as invested in the people building them. I've spent a decade at the seam where good engineering meets good culture, and I'm known as a <strong class="lead-mark">servant leader</strong> who brings the best out of a team.</p>
+            <p>My work has spanned backend engineering, distributed systems, and technical leadership at <strong>Automox</strong>, <strong>Datasite</strong>, and <strong>Target</strong> — from device-management platforms and billing systems processing billions of dollars, to pipelines ingesting petabytes, to infrastructure powering target.com, one of the top-60 most-visited sites in the US.</p>
+            <p>Outside of code I'm endlessly curious about the world. I've traveled to <strong>~80 countries</strong>, I'm fluent in Thai and English, and I'm always learning. I love developing people — I've coached interns and junior engineers through code, career, and everything in between, watching them grow into confident seniors. <strong>Above all, I try to show up with kindness and thoughtfulness, in code and in life.</strong></p>
+            <div class="about-links">
+              <a href="https://www.linkedin.com/in/vutisat/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"></path></svg> LinkedIn</a>
+              <a href="https://www.github.com/vutisat" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg> GitHub</a>
+              <a href="https://twitter.com/pob_v" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg> Twitter</a>
             </div>
           </div>
-          <div class="highlight-card">
-            <div class="highlight-card__icon"><i class="fa-solid fa-location-dot"></i></div>
-            <div>
-              <h3>Location</h3>
-              <p>Remote / NYC</p>
+          <aside class="margin-notes reveal" data-d="1" aria-label="At a glance">
+            <div class="mnote"><div class="k">Based in</div><div class="v">New York City <b>·</b> remote-friendly</div></div>
+            <div class="mnote"><div class="k">Education</div><div class="v">B.S. Computer Science, Miami University <b>·</b> Mini-MBA, Farmer School of Business</div></div>
+            <div class="mnote"><div class="k">Languages</div><div class="v">Fluent in <b>Thai &amp; English</b></div></div>
+            <div class="mnote"><div class="k">Off the clock</div><div class="v">Traveler to <b>~80 countries</b>, mentor, volunteer</div></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CHANGELOG / EXPERIENCE ========== -->
+    <section class="section section--panel" id="changelog" aria-labelledby="changelogH">
+      <div class="wrap">
+        <div class="s-head reveal">
+          <h2 class="display" id="changelogH">Changelog</h2>
+          <span class="addr">§2 · <b>/experience</b></span>
+        </div>
+
+        <div class="log">
+          <article class="entry reveal">
+            <div class="entry__meta">
+              <div class="entry__ver">v4.0 — Staff</div>
+              <div class="entry__date">Sep 2021 – Mar 2024</div>
+              <div class="entry__dur">Automox</div>
             </div>
+            <div class="entry__body">
+              <h3>Staff Software Engineer</h3>
+              <a class="entry__co" href="https://www.automox.com" target="_blank" rel="noopener">Automox <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
+              <ul class="entry__list">
+                <li>Led a team to create an <strong>MDM solution</strong> letting IT admins remotely manage Apple devices end-to-end — from concept to production, with Executives, Product, Legal, Marketing, and Design.</li>
+                <li>Recruited and formed a dedicated team; planned and executed the entire development lifecycle.</li>
+                <li>Stabilized a massive legacy system through a <strong>50% reduction in force</strong>, preserving critical knowledge and business continuity.</li>
+              </ul>
+              <div class="tags"><span class="chip">Java</span><span class="chip">Kotlin</span><span class="chip">MDM</span><span class="chip">Apple</span><span class="chip">Kubernetes</span><span class="chip">Microservices</span></div>
+            </div>
+          </article>
+
+          <article class="entry reveal">
+            <div class="entry__meta">
+              <div class="entry__ver">v3.0 — Senior</div>
+              <div class="entry__date">2018 – 2021</div>
+              <div class="entry__dur">Datasite</div>
+            </div>
+            <div class="entry__body">
+              <h3>Senior Software Engineer</h3>
+              <a class="entry__co" href="https://www.datasite.com" target="_blank" rel="noopener">Datasite <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
+              <ul class="entry__list">
+                <li>Built and maintained a sensitive <strong>billing system processing billions of dollars</strong>, accurate to every penny — directly impacting thousands of clients.</li>
+                <li>Built an internal <strong>event-capture library</strong> now used across teams, powering a <strong>petabyte-scale warehouse</strong> for analytics and SOX/FEC reporting.</li>
+                <li>Architected a secure <strong>email service</strong> used firm-wide for all outgoing communications.</li>
+                <li>Led the team that revamped Datasite's landing page, and was lead contributor on <strong>Datasite Outreach</strong> — GraphQL/Node/SpringBoot APIs, a Salesforce integration, and production-readiness infrastructure.</li>
+                <li>Contributed to major architectural decisions and mentored junior developers across the org.</li>
+              </ul>
+              <div class="tags"><span class="chip">Java</span><span class="chip">Groovy</span><span class="chip">GraphQL</span><span class="chip">Node.js</span><span class="chip">SpringBoot</span><span class="chip">React</span><span class="chip">Snowflake</span><span class="chip">Kafka</span><span class="chip">Salesforce</span></div>
+            </div>
+          </article>
+
+          <article class="entry reveal">
+            <div class="entry__meta">
+              <div class="entry__ver">v2.0 — Engineer</div>
+              <div class="entry__date">2016 – 2018</div>
+              <div class="entry__dur">Target</div>
+            </div>
+            <div class="entry__body">
+              <h3>Software Engineer</h3>
+              <a class="entry__co" href="https://www.target.com" target="_blank" rel="noopener">Target <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
+              <ul class="entry__list">
+                <li>Built a feature in Target.com's data aggregator serving <strong>real-time in-store pricing</strong> — over <strong>10M hits/day</strong> at 95%+ sub-second responses.</li>
+                <li>Built the front-end for Social Migration in the Cartwheel app, experienced by <strong>15M users</strong>.</li>
+                <li>Spearheaded a full-stack project letting Target expedite <strong>$100k+ of orders</strong>, end-to-end.</li>
+                <li>Stood up an API surfacing in-store item locations, and built <strong>D3/C3.js</strong> visualizations for Target's Big Data (Hadoop) dashboards.</li>
+              </ul>
+              <div class="tags"><span class="chip">Java</span><span class="chip">JavaScript</span><span class="chip">D3.js</span><span class="chip">Hadoop</span><span class="chip">REST</span><span class="chip">Microservices</span></div>
+            </div>
+          </article>
+
+          <article class="entry reveal">
+            <div class="entry__meta">
+              <div class="entry__ver">v1.0 — Engineer</div>
+              <div class="entry__date">2015 – 2016</div>
+              <div class="entry__dur">StudySync</div>
+            </div>
+            <div class="entry__body">
+              <h3>Software Engineer</h3>
+              <a class="entry__co" href="https://www.studysync.com" target="_blank" rel="noopener">StudySync — McGraw-Hill <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
+              <ul class="entry__list">
+                <li>Built a third-party API integration syncing users' book libraries into StudySync courses, in <strong>CoffeeScript, Node.js, and AngularJS</strong>.</li>
+                <li>Shipped iterative front-end features straight from teacher and student feedback.</li>
+              </ul>
+              <div class="tags"><span class="chip">Node.js</span><span class="chip">AngularJS</span><span class="chip">CoffeeScript</span><span class="chip">REST</span></div>
+            </div>
+          </article>
+
+          <article class="entry reveal">
+            <div class="entry__meta">
+              <div class="entry__ver">v0.1 — Fellow</div>
+              <div class="entry__date">2013 – 2016</div>
+              <div class="entry__dur">Lockheed Martin</div>
+            </div>
+            <div class="entry__body">
+              <h3>Leadership Fellow</h3>
+              <span class="entry__co">Lockheed Martin Leadership Institute</span>
+              <ul class="entry__list">
+                <li>Completed a <strong>three-year certificate</strong> in technical, business, and ethical leadership — workshops and sessions with Fortune 500 executives.</li>
+                <li>Sparked a movement against engineer stereotypes, igniting the global Twitter trend <strong>#IAmAnEngineer</strong>.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <div class="signoff reveal">
+          <span class="sig">— Pob</span>
+          <span class="stamp">signed &amp; current as of <b>2025</b> · full history in <a href="resume.pdf" target="_blank" rel="noopener" style="color:var(--cobalt);border-bottom:1.5px solid var(--line)">résumé.pdf</a></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CAPABILITIES / SKILLS ========== -->
+    <section class="section" id="capabilities" aria-labelledby="capsH">
+      <div class="wrap">
+        <div class="s-head reveal">
+          <h2 class="display" id="capsH">Capabilities</h2>
+          <span class="addr">§3 · <b>/skills</b></span>
+        </div>
+        <div class="caps">
+          <div class="cap reveal">
+            <div class="cap__h"><h3>Core</h3><span class="lvl">Strong</span></div>
+            <div class="cap__list"><span>Java</span><span>Kotlin</span><span>Groovy</span><span>JVM</span><span>Spring Boot</span><span>Microservices</span><span>Spock</span><span>TDD</span></div>
           </div>
-          <div class="highlight-card">
-            <div class="highlight-card__icon"><i class="fa-solid fa-heart"></i></div>
-            <div>
-              <h3>Interests</h3>
-              <p>Continuous learning, traveling (~80 countries), mentoring, volunteering</p>
-            </div>
+          <div class="cap reveal" data-d="1">
+            <div class="cap__h"><h3>Full-stack</h3><span class="lvl">Proficient</span></div>
+            <div class="cap__list"><span>Python</span><span>TypeScript</span><span>Node.js</span><span>React / Redux</span><span>GraphQL</span><span>D3.js</span><span>SQL</span><span>NoSQL</span><span>HTML / CSS</span></div>
+          </div>
+          <div class="cap reveal">
+            <div class="cap__h"><h3>Infrastructure &amp; Data</h3><span class="lvl">Daily</span></div>
+            <div class="cap__list"><span>Kubernetes</span><span>Docker</span><span>Kafka</span><span>RabbitMQ</span><span>PostgreSQL</span><span>MongoDB</span><span>Snowflake</span><span>ELK</span><span>AWS / Azure</span><span>Drone CI</span></div>
+          </div>
+          <div class="cap reveal" data-d="1">
+            <div class="cap__h"><h3>Leadership &amp; Process</h3><span class="lvl">Practiced</span></div>
+            <div class="cap__list"><span>Servant Leadership</span><span>Agile / Scrum</span><span>Mentoring</span><span>Design Thinking</span><span>Usability Studies</span><span>System Architecture</span></div>
+          </div>
+          <div class="cap reveal">
+            <div class="cap__h"><h3>AI &amp; Tooling</h3><span class="lvl">Current</span></div>
+            <div class="cap__list"><span>Claude (Anthropic Certified)</span><span>AI-Assisted Development</span></div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ========== EXPERIENCE ========== -->
-  <section class="section section--dark" id="experience">
-    <div class="container">
-      <div class="section__header reveal">
-        <span class="section__label">02. Experience</span>
-        <h2 class="section__title">Where I've Worked</h2>
-      </div>
-
-      <div class="timeline">
-
-        <div class="timeline__item reveal">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__header">
-              <div>
-                <h3 class="timeline__role">Staff Software Engineer</h3>
-                <a href="https://www.automox.com" target="_blank" rel="noopener" class="timeline__company">Automox <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-              </div>
-              <span class="timeline__date">Sep 2021 – Mar 2024</span>
+    <!-- ========== CONTACT ========== -->
+    <section class="section section--panel" id="contact" aria-labelledby="contactH">
+      <div class="wrap">
+        <div class="contact">
+          <div class="contact__lede reveal">
+            <h2 class="display" id="contactH">Let's build something.</h2>
+            <p>Whether you have an opportunity, a hard problem, or just want to talk engineering — my inbox is open, and I answer.</p>
+            <div class="contact__actions">
+              <a href="mailto:PobVuti@gmail.com" class="btn">
+                <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
+                Say hello
+              </a>
+              <a href="resume.pdf" target="_blank" rel="noopener" class="btn btn--ghost">
+                <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v5h5"></path><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                Résumé (PDF)
+              </a>
             </div>
-            <ul class="timeline__list">
-              <li>Led a team to create an <strong>MDM solution</strong> enabling IT admins to remotely manage Apple Devices end-to-end — driving the initiative from initial concept through production, collaborating with Executives, Product, Legal, Marketing, and Design.</li>
-              <li>Recruited and formed a dedicated team; planned and executed the entire development lifecycle.</li>
-              <li>Maintained and stabilized a massive legacy system during significant organizational reduction in force, preserving critical institutional knowledge and ensuring business continuity after a 50% workforce reduction.</li>
+            <div class="socials">
+              <a href="https://www.linkedin.com/in/vutisat/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"></path></svg></a>
+              <a href="https://www.github.com/vutisat" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a>
+              <a href="https://twitter.com/pob_v" target="_blank" rel="noopener" aria-label="Twitter / X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></a>
+            </div>
+          </div>
+
+          <div class="open-to reveal" data-d="1">
+            <div class="k"><span class="dot" aria-hidden="true"></span> Currently open to</div>
+            <ul>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg> Staff / Principal backend &amp; platform roles</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg> Teams that value mentorship and scale</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg> NYC or remote</li>
             </ul>
-            <div class="timeline__tags">
-              <span class="tag">Java</span><span class="tag">Kotlin</span><span class="tag">MDM</span><span class="tag">Apple</span><span class="tag">Kubernetes</span><span class="tag">Microservices</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="timeline__item reveal">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__header">
-              <div>
-                <h3 class="timeline__role">Senior Software Engineer</h3>
-                <a href="https://www.datasite.com" target="_blank" rel="noopener" class="timeline__company">Datasite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-              </div>
-              <span class="timeline__date">Summer 2018 – Fall 2021</span>
-            </div>
-            <ul class="timeline__list">
-              <li>Developed and maintained a highly sensitive <strong>billing system</strong> processing <strong>billions of dollars</strong> with accuracy down to every penny — directly impacting thousands of clients and the company's bottom line.</li>
-              <li>Built an internal event-capture library now used by many teams, powering a <strong>petabyte-scale data warehouse</strong> for analytics and SOX/FEC reporting.</li>
-              <li>Architected and delivered a secure <strong>email service</strong> used firm-wide for all outgoing communications.</li>
-              <li>Led the team that <strong>completely revamped Datasite's landing page</strong>, revolutionizing its look & feel and streamlining usage with real-time notifications and insightful analytics.</li>
-              <li>Lead contributor on <strong>Datasite Outreach</strong> — designed GraphQL, Node, and SpringBoot APIs; implemented a Salesforce data integration system; and orchestrated the full production-readiness infrastructure (monitoring, alerts, scaling).</li>
-              <li>Contributed to major architectural decisions and mentored junior developers across the organization.</li>
-            </ul>
-            <div class="timeline__tags">
-              <span class="tag">Java</span><span class="tag">Groovy</span><span class="tag">GraphQL</span><span class="tag">Node.js</span><span class="tag">SpringBoot</span><span class="tag">React</span><span class="tag">Snowflake</span><span class="tag">Kafka</span><span class="tag">Kubernetes</span><span class="tag">Salesforce</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="timeline__item reveal">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__header">
-              <div>
-                <h3 class="timeline__role">Software Engineer</h3>
-                <a href="https://www.target.com" target="_blank" rel="noopener" class="timeline__company">Target <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-              </div>
-              <span class="timeline__date">Summer 2016 – Summer 2018</span>
-            </div>
-            <ul class="timeline__list">
-              <li>Built a feature in Target.com's data aggregator to deliver <strong>real-time in-store item pricing</strong> — serving over <strong>10 million hits per day</strong> at 95%+ sub-second response times.</li>
-              <li>Developed the front-end for the Social Migration feature in the Cartwheel app, experienced by <strong>15 million users</strong>.</li>
-              <li>Spearheaded a full-stack project enabling Target to expedite <strong>$100k+ of orders</strong> (and growing), end-to-end.</li>
-              <li>Stood up a new API enabling Target Mobile Apps to display <strong>in-store item locations</strong> for guests.</li>
-              <li>Used <strong>D3.js and C3.js</strong> to build elegant data visualizations for Target's Big Data Platform (Hadoop) consumer dashboards.</li>
-            </ul>
-            <div class="timeline__tags">
-              <span class="tag">Java</span><span class="tag">JavaScript</span><span class="tag">D3.js</span><span class="tag">C3.js</span><span class="tag">Hadoop</span><span class="tag">REST APIs</span><span class="tag">Microservices</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="timeline__item reveal">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__header">
-              <div>
-                <h3 class="timeline__role">Software Engineer</h3>
-                <a href="https://www.studysync.com" target="_blank" rel="noopener" class="timeline__company">StudySync (McGraw-Hill Education) <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-              </div>
-              <span class="timeline__date">Fall 2015 – Summer 2016</span>
-            </div>
-            <ul class="timeline__list">
-              <li>Developed a third-party API integration allowing users to access their library of books synced to StudySync courses, using <strong>CoffeeScript, Node.js, and AngularJS</strong>.</li>
-              <li>Implemented myriad front-end features directly from teacher and student feedback, shipping iterative improvements.</li>
-            </ul>
-            <div class="timeline__tags">
-              <span class="tag">Node.js</span><span class="tag">AngularJS</span><span class="tag">CoffeeScript</span><span class="tag">REST APIs</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="timeline__item reveal">
-          <div class="timeline__marker timeline__marker--alt"></div>
-          <div class="timeline__content">
-            <div class="timeline__header">
-              <div>
-                <h3 class="timeline__role">Leadership Fellow</h3>
-                <span class="timeline__company">Lockheed Martin Leadership Institute</span>
-              </div>
-              <span class="timeline__date">Fall 2013 – Summer 2016</span>
-            </div>
-            <ul class="timeline__list">
-              <li>Completed a <strong>three-year certificate program</strong> developing technical leadership, business acumen, and ethical leadership through workshops and sessions with Fortune 500 executives.</li>
-              <li>Ignited a movement to fight engineer stereotypes, sparking the global Twitter trend <strong>#IAmAnEngineer</strong>.</li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== SKILLS ========== -->
-  <section class="section" id="skills">
-    <div class="container">
-      <div class="section__header reveal">
-        <span class="section__label">03. Skills</span>
-        <h2 class="section__title">What I Work With</h2>
-      </div>
-
-      <div class="skills__grid">
-        <div class="skill-group reveal">
-          <div class="skill-group__header">
-            <div class="skill-group__icon"><i class="fa-solid fa-star"></i></div>
-            <h3>Strong</h3>
-          </div>
-          <div class="skill-group__tags">
-            <span class="tag tag--strong">Java</span>
-            <span class="tag tag--strong">Kotlin</span>
-            <span class="tag tag--strong">Groovy</span>
-            <span class="tag tag--strong">JVM</span>
-            <span class="tag tag--strong">Spring Boot</span>
-            <span class="tag tag--strong">Microservices</span>
-            <span class="tag tag--strong">Spock</span>
-            <span class="tag tag--strong">TDD</span>
-          </div>
-        </div>
-        <div class="skill-group reveal reveal--delay-1">
-          <div class="skill-group__header">
-            <div class="skill-group__icon"><i class="fa-solid fa-bolt"></i></div>
-            <h3>Proficient</h3>
-          </div>
-          <div class="skill-group__tags">
-            <span class="tag tag--proficient">Python</span>
-            <span class="tag tag--proficient">TypeScript</span>
-            <span class="tag tag--proficient">Node.js</span>
-<span class="tag tag--proficient">React / Redux</span>
-            <span class="tag tag--proficient">GraphQL</span>
-            <span class="tag tag--proficient">D3.js</span>
-            <span class="tag tag--proficient">SQL</span>
-            <span class="tag tag--proficient">NoSQL</span>
-            <span class="tag tag--proficient">HTML/CSS</span>
-          </div>
-        </div>
-        <div class="skill-group reveal reveal--delay-2">
-          <div class="skill-group__header">
-            <div class="skill-group__icon"><i class="fa-solid fa-server"></i></div>
-            <h3>Infrastructure & Data</h3>
-          </div>
-          <div class="skill-group__tags">
-            <span class="tag tag--infra">Kubernetes</span>
-            <span class="tag tag--infra">Docker</span>
-            <span class="tag tag--infra">Kafka</span>
-            <span class="tag tag--infra">RabbitMQ</span>
-            <span class="tag tag--infra">PostgreSQL</span>
-            <span class="tag tag--infra">MongoDB</span>
-            <span class="tag tag--infra">Snowflake</span>
-            <span class="tag tag--infra">ELK Stack</span>
-            <span class="tag tag--infra">AWS / Azure</span>
-            <span class="tag tag--infra">Drone CI</span>
-          </div>
-        </div>
-        <div class="skill-group reveal reveal--delay-3">
-          <div class="skill-group__header">
-            <div class="skill-group__icon"><i class="fa-solid fa-people-group"></i></div>
-            <h3>Leadership & Process</h3>
-          </div>
-          <div class="skill-group__tags">
-            <span class="tag tag--leadership">Servant Leadership</span>
-            <span class="tag tag--leadership">Agile / Scrum</span>
-            <span class="tag tag--leadership">Mentoring</span>
-            <span class="tag tag--leadership">Design Thinking</span>
-            <span class="tag tag--leadership">Usability Studies</span>
-            <span class="tag tag--leadership">System Architecture</span>
-          </div>
-        </div>
-        <div class="skill-group reveal reveal--delay-4">
-          <div class="skill-group__header">
-            <div class="skill-group__icon"><i class="fa-solid fa-robot"></i></div>
-            <h3>AI & Tools</h3>
-          </div>
-          <div class="skill-group__tags">
-            <span class="tag tag--ai">Claude (Anthropic Certified)</span>
-            <span class="tag tag--ai">AI-Assisted Development</span>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ========== CONTACT ========== -->
-  <section class="section section--dark" id="contact">
-    <div class="container">
-      <div class="section__header reveal">
-        <span class="section__label">04. Contact</span>
-        <h2 class="section__title">Let's Connect</h2>
-      </div>
-      <div class="contact__body reveal">
-        <p class="contact__copy">
-          Whether you have an opportunity, a challenging problem, or just want to talk engineering — my inbox is open!
-        </p>
-        <a href="mailto:PobVuti@gmail.com" class="btn btn--primary btn--lg">
-          <i class="fa-solid fa-envelope"></i> Say Hello
-        </a>
-        <div class="contact__socials">
-          <a href="https://www.linkedin.com/in/vutisat/" target="_blank" rel="noopener" class="social-icon" aria-label="LinkedIn">
-            <i class="fa-brands fa-linkedin-in"></i>
-          </a>
-          <a href="https://www.github.com/vutisat" target="_blank" rel="noopener" class="social-icon" aria-label="GitHub">
-            <i class="fa-brands fa-github"></i>
-          </a>
-          <a href="https://twitter.com/pob_v" target="_blank" rel="noopener" class="social-icon" aria-label="Twitter / X">
-            <i class="fa-brands fa-x-twitter"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- ========== FOOTER ========== -->
-  <footer class="footer">
-    <div class="container">
-      <p>Designed & built by <strong>Pob Vutisalchavakul</strong></p>
+  <footer class="foot">
+    <div class="wrap foot__in">
+      <a class="foot__door" href="life.html">
+        Off the clock
+        <span class="arw" aria-hidden="true">→</span>
+      </a>
+      <div class="foot__meta">
+        <b>Pob Vutisalchavakul</b> · Staff Software Engineer · NYC<br>
+        designed &amp; built by hand · <span class="mono">press ⌘K anywhere</span>
+      </div>
     </div>
   </footer>
+
+  <!-- ========== COMMAND PALETTE ========== -->
+  <div class="cmdk" id="cmdk" role="dialog" aria-modal="true" aria-label="Command menu">
+    <div class="cmdk__scrim" data-close></div>
+    <div class="cmdk__panel">
+      <div class="cmdk__search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <input id="cmdkInput" type="text" placeholder="Jump to a section, page, or find me…" autocomplete="off" spellcheck="false" aria-label="Search commands">
+        <span class="cmdk__hint">esc</span>
+      </div>
+      <div class="cmdk__list" id="cmdkList" role="listbox" aria-label="Results"></div>
+    </div>
+  </div>
 
   <script src="Styles/main.js"></script>
 </body>

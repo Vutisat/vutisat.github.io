@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "Styles/main.css"
+        ],
+        "createdAt": "2026-08-31T21:19:01.805Z",
+        "reason": "designer intent: faint drafting-grid is the committed 'reference/blueprint' world named in the direction contract (seed d1dd32ba OWN-WORLD); a domain-appropriate measurement substrate, masked to the hero corner"
+      }
+    ]
+  }
+}

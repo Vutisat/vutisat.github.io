@@ -7,195 +7,26 @@
   <meta name="robots" content="noindex, nofollow">
 
   <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
-  <meta name="theme-color" content="#0a0e1a">
+  <meta name="theme-color" content="#F4F1EA">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preload" href="fonts/spectral-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="Styles/main.css">
-
-  <style>
-    .guide-page {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 120px 24px 100px;
-    }
-    .guide-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      color: var(--clr-muted);
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius-sm);
-      padding: 6px 14px;
-      transition: all var(--transition);
-      margin-bottom: 48px;
-    }
-    .guide-back:hover { color: var(--clr-primary); border-color: var(--clr-primary); }
-
-    .guide-header {
-      margin-bottom: 56px;
-    }
-    .guide-header__label {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--clr-accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 12px;
-    }
-    .guide-header__title {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 900;
-      letter-spacing: -2px;
-      background: linear-gradient(135deg, var(--clr-text) 40%, var(--clr-primary-h) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 12px;
-    }
-    .guide-header__sub {
-      font-size: 0.95rem;
-      color: var(--clr-muted);
-      line-height: 1.7;
-    }
-
-    .guide-section {
-      margin-bottom: 48px;
-    }
-    .guide-section__title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--clr-text);
-      margin-bottom: 4px;
-    }
-    .guide-section__meta {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--clr-accent);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-    .guide-section__intro {
-      font-size: 0.9rem;
-      color: var(--clr-muted);
-      line-height: 1.75;
-      margin-bottom: 20px;
-    }
-
-    .place-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-    .place-list li {
-      padding-left: 16px;
-      position: relative;
-      font-size: 0.9rem;
-      color: var(--clr-muted);
-      line-height: 1.7;
-    }
-    .place-list li::before {
-      content: '▸';
-      position: absolute;
-      left: 0;
-      color: var(--clr-primary);
-      font-size: 0.75rem;
-      top: 3px;
-    }
-    .place-list li strong { color: var(--clr-text); }
-    .place-list li .star {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--clr-primary);
-      background: rgba(99,102,241,0.12);
-      border: 1px solid rgba(99,102,241,0.25);
-      padding: 1px 7px;
-      border-radius: 4px;
-      margin-left: 6px;
-      vertical-align: middle;
-    }
-
-    .guide-note {
-      font-size: 0.85rem;
-      color: var(--clr-muted);
-      line-height: 1.7;
-      padding: 14px 16px;
-      border-left: 2px solid var(--clr-border);
-      margin: 16px 0;
-    }
-    .guide-note--danger { border-left-color: #f87171; }
-    .guide-note--success { border-left-color: #34d399; }
-    .guide-note strong { color: var(--clr-text); }
-
-    .guide-divider {
-      border: none;
-      border-top: 1px solid var(--clr-border);
-      margin: 40px 0;
-    }
-
-    .sub-list {
-      list-style: none;
-      margin-top: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .sub-list li {
-      font-size: 0.85rem;
-      color: var(--clr-muted);
-      padding-left: 20px;
-      position: relative;
-    }
-    .sub-list li::before {
-      content: '–';
-      position: absolute;
-      left: 6px;
-      color: var(--clr-muted);
-    }
-    .sub-list li strong { color: var(--clr-text); }
-  </style>
 </head>
 <body>
 
   <!-- NAVIGATION -->
-  <nav class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="index.html" class="nav__logo" id="navLogo">pobv<span>.</span>dev</a>
-      <div class="nav__secret" id="navSecret">
-        <a href="thailand.html" class="nav__secret-item">
-          <i class="fa-solid fa-mountain"></i> Thailand Recs
-        </a>
-        <a href="nyc.html" class="nav__secret-item">
-          <i class="fa-solid fa-city"></i> NYC Recs
-        </a>
-      </div>
-      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav__links" id="navLinks">
-        <li><a href="index.html#about" class="nav__link">About</a></li>
-        <li><a href="index.html#experience" class="nav__link">Experience</a></li>
-        <li><a href="index.html#skills" class="nav__link">Skills</a></li>
-        <li><a href="index.html#contact" class="nav__link">Contact</a></li>
-        <li><a href="resume.pdf" target="_blank" class="nav__cta">Resume <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-      </ul>
+  <nav class="subnav">
+    <div class="wrap subnav__in">
+      <a href="index.html" class="brand">pobv<span class="dot">.</span>dev</a>
+      <a href="index.html" class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg> Home</a>
     </div>
   </nav>
 
   <main class="guide-page">
 
-    <a href="index.html" class="guide-back">
-      <i class="fa-solid fa-arrow-left"></i> Back to Portfolio
-    </a>
-
     <div class="guide-header reveal">
-      <span class="guide-header__label"><i class="fa-solid fa-map-location-dot"></i> &nbsp; Pob's Travel Recs</span>
+      <span class="guide-header__label">Pob's Travel Recs</span>
       <h1 class="guide-header__title">Thailand</h1>
       <p class="guide-header__sub">Personal recommendations from someone who grew up there. No tourist traps, just the good stuff.</p>
     </div>
@@ -312,10 +143,8 @@
 
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p>Pob's personal recs — <a href="index.html" style="color: var(--clr-primary);">back to portfolio</a></p>
-    </div>
+  <footer class="guide-foot">
+    <div class="wrap"><p>Pob's personal recs · <a href="index.html">back to pobv.dev</a></p></div>
   </footer>
 
   <script src="Styles/main.js"></script>

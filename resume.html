@@ -1,60 +1,59 @@
-<!doctype html>
-<html>
-	<head>
-		<title>Meet Pob Vutisalchavakul</title>
-		<link rel="stylesheet" href="Styles/main.css">
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résumé — Pob Vutisalchavakul</title>
+  <meta name="theme-color" content="#F4F1EA">
+  <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
+  <link rel="preload" href="fonts/spectral-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="Styles/main.css">
+  <style>
+    .pdf-frame{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--paper-2);box-shadow:0 24px 60px -44px rgba(24,24,27,.5);margin-top:2rem}
+    .pdf-frame object{display:block;width:100%;height:min(1180px,120vh);border:0}
+    .pdf-fallback{padding:2.5rem;text-align:center;color:var(--ink-2)}
+  </style>
+</head>
+<body>
+  <nav class="subnav">
+    <div class="wrap subnav__in">
+      <a href="index.html" class="brand">pobv<span class="dot">.</span>dev</a>
+      <a href="index.html" class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg> Home</a>
+    </div>
+  </nav>
 
-		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="index.html">ThePobV</a>
-				</div>
+  <main class="guide-page" style="width:min(1000px,100%)">
+    <div class="guide-header">
+      <span class="guide-header__label">Reference</span>
+      <h1 class="guide-header__title">Résumé</h1>
+      <p class="guide-header__sub">The full history — roles, scope, and scale on one page. Prefer the story? Read the <a href="index.html#changelog" style="color:var(--cobalt);border-bottom:1px solid var(--line)">changelog</a>.</p>
+      <div class="hero__cta" style="margin-top:1.6rem">
+        <a href="resume.pdf" download class="btn">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>
+          Download PDF
+        </a>
+        <a href="resume.pdf" target="_blank" rel="noopener" class="btn btn--ghost">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
+          Open in new tab
+        </a>
+      </div>
+    </div>
 
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="pdf-frame">
+      <object data="resume.pdf" type="application/pdf" aria-label="Pob Vutisalchavakul résumé (PDF)">
+        <div class="pdf-fallback">
+          Your browser can't display the embedded PDF.
+          <a href="resume.pdf" target="_blank" rel="noopener" style="color:var(--cobalt);border-bottom:1px solid var(--line)">Open the résumé here.</a>
+        </div>
+      </object>
+    </div>
+  </main>
 
-					<ul class="nav navbar-nav">
+  <footer class="guide-foot">
+    <div class="wrap"><p>Pob Vutisalchavakul · <a href="index.html">back to pobv.dev</a></p></div>
+  </footer>
 
-						<li ><a href="index.html"> Home <span class="sr-only"></span></a></li>
-
-						<li ><a href="resume.html"> Resume <span class="sr-only"></span></a></li>
-
-						<li ><a href="https://www.linkedin.com/in/vutisat" target="_blank"> LinkedIn <span class="sr-only"></span></a></li>
-
-						<li><a href="https://www.github.com/vutisat" target="_blank" >Github</a></li>
-
-					</ul>
-
-
-				</div><!-- /.navbar-collapse -->
-			</div><!-- /.container-fluid -->
-		</nav>
-	</head>
-
-	<body>
-		<div class="resume col-sm-12 center">
-			<center>
-			<embed class="span7 center" src="resume.pdf" width="800px" height="1010px">
-				</center>
-		</div>
-		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<!-- Include all compiled plugins (below), or include individual files as needed -->
-		<script src="js/bootstrap.min.js"></script>
-	</body>
-	</html>
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	</body>
+  <script src="Styles/main.js"></script>
+</body>
 </html>

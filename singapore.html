@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Singapore Itinerary</title>
+<link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
+<style>
+  @page { margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    max-width: 1040px;
+    margin: 0 auto;
+    background: #F6F1E6;
+    font-family: 'Liberation Sans', sans-serif;
+    color: #2B2A26;
+  }
+  .back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #123832;
+    text-decoration: none;
+    margin-bottom: 22px;
+    font-weight: bold;
+  }
+  .back-home:hover { color: #8A6A2D; }
+  .page { padding: 56px 64px 64px; }
+
+  /* Header */
+  .header {
+    background: #123832;
+    color: #F6F1E6;
+    padding: 46px 200px 46px 60px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header .kicker {
+    font-family: 'Liberation Sans', sans-serif;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: #C9A24B;
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-family: 'Liberation Serif', serif;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 1.05;
+  }
+  .header .sub {
+    margin-top: 14px;
+    font-size: 17px;
+    color: #D9D2BF;
+  }
+  .header .badge {
+    position: absolute;
+    right: 56px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: right;
+  }
+  .header .badge .num {
+    font-family: 'Liberation Serif', serif;
+    font-size: 76px;
+    font-weight: bold;
+    color: #C9A24B;
+    line-height: 1;
+  }
+  .header .badge .lbl {
+    font-size: 14px;
+    color: #D9D2BF;
+    margin-top: 2px;
+  }
+
+  /* Day blocks */
+  .day {
+    margin-top: 30px;
+    background: #FFFEFB;
+    border: 1px solid #E4DCC7;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .day-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 22px 32px;
+    background: #EFE7D4;
+    border-bottom: 1px solid #E4DCC7;
+  }
+  .day-head .d {
+    font-family: 'Liberation Serif', serif;
+    font-weight: bold;
+    font-size: 28px;
+    color: #123832;
+  }
+  .day-head .dow {
+    font-size: 16px;
+    color: #6B6551;
+    letter-spacing: 0.5px;
+  }
+  .day-head .tag {
+    margin-left: auto;
+    font-size: 13px;
+    color: #8A6A2D;
+    font-style: italic;
+  }
+
+  .rows { padding: 8px 0; }
+  .row {
+    display: flex;
+    padding: 16px 32px;
+    border-bottom: 1px solid #F0EBDC;
+    gap: 22px;
+  }
+  .row:last-child { border-bottom: none; }
+  .row .time {
+    width: 130px;
+    flex-shrink: 0;
+    font-size: 14px;
+    color: #8A6A2D;
+    padding-top: 2px;
+    font-weight: bold;
+  }
+  .row .content { flex: 1; }
+  .row .activity {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1F1E1A;
+    margin-bottom: 3px;
+  }
+  .row .activity .food-mark {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: #FFFFFF;
+    background: #B4552F;
+    border-radius: 3px;
+    padding: 2px 7px;
+    margin-left: 10px;
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+  }
+  .row .notes {
+    font-size: 14.5px;
+    color: #56513F;
+    line-height: 1.45;
+    max-width: 700px;
+  }
+
+  .footer {
+    margin-top: 34px;
+    text-align: center;
+    font-size: 13px;
+    color: #8A836C;
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a href="index.html" class="back-home">&larr; back to pobv.dev</a>
+
+  <div class="header">
+    <h1>Pob &amp; Katy's Singapore Adventure</h1>
+    <div class="sub">Thursday arrival, 11:20 am &nbsp;&middot;&nbsp; Sunday departure, 9:40pm</div>
+    <div class="badge">
+      <div class="num">4</div>
+      <div class="lbl">days</div>
+    </div>
+  </div>
+
+  <!-- Day 1 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 1</span>
+      <span class="dow">Thursday</span>
+      <span class="tag">Marina Bay &amp; arrival</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">11:20 am</div>
+        <div class="content">
+          <div class="activity">Land &amp; check in</div>
+          <div class="notes">Arrive at Changi, transfer to hotel, drop bags and freshen up.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Late afternoon</div>
+        <div class="content">
+          <div class="activity">Merlion Park</div>
+          <div class="notes">Singapore's iconic mascot statue &mdash; quick photo stop, free, open 24/7.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Sunset</div>
+        <div class="content">
+          <div class="activity">Marina Bay Sands SkyPark</div>
+          <div class="notes">Signature skyline view as day turns to night &mdash; book tickets in advance.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Evening</div>
+        <div class="content">
+          <div class="activity">Lau Pa Sat<span class="food-mark">FOOD</span></div>
+          <div class="notes">Dinner option &mdash; famous for Satay Street at night, skewers grilled right at your table.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">8 / 9pm</div>
+        <div class="content">
+          <div class="activity">Spectra show</div>
+          <div class="notes">Free light &amp; water show right outside Marina Bay Sands.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 2 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 2</span>
+      <span class="dow">Friday</span>
+      <span class="tag">Gardens by the Bay</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Morning</div>
+        <div class="content">
+          <div class="activity">Cloud Forest</div>
+          <div class="notes">Gardens by the Bay &mdash; indoor waterfall &amp; misty rainforest dome.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Late morning</div>
+        <div class="content">
+          <div class="activity">Flower Dome</div>
+          <div class="notes">Cooler dome with Mediterranean-climate flowers.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Early afternoon</div>
+        <div class="content">
+          <div class="activity">Satay by the Bay<span class="food-mark">FOOD</span></div>
+          <div class="notes">Food court right by Gardens by the Bay &mdash; good hawker variety without leaving the area.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Afternoon</div>
+        <div class="content">
+          <div class="activity">Supertree Grove</div>
+          <div class="notes">The iconic giant tree structures &mdash; great photos.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">7:45 or 8:45pm</div>
+        <div class="content">
+          <div class="activity">Garden Rhapsody</div>
+          <div class="notes">Free nightly light &amp; sound show at the Supertrees.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 3 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 3</span>
+      <span class="dow">Saturday</span>
+      <span class="tag">Gardens &amp; Civic District</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Morning</div>
+        <div class="content">
+          <div class="activity">Singapore Botanic Gardens</div>
+          <div class="notes">UNESCO World Heritage park &mdash; shaded paths and lakes, free entry.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Late morning</div>
+        <div class="content">
+          <div class="activity">National Orchid Garden</div>
+          <div class="notes">Thousands of orchid varieties inside the Botanic Gardens &mdash; paid entry.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Early afternoon</div>
+        <div class="content">
+          <div class="activity">Lunch near Bras Basah<span class="food-mark">FOOD</span></div>
+          <div class="notes">Casual local chain near the Civic District &mdash; good hainanese chicken rice.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Afternoon</div>
+        <div class="content">
+          <div class="activity">National Gallery Singapore</div>
+          <div class="notes">Art museum in the restored former City Hall / Supreme Court.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Evening</div>
+        <div class="content">
+          <div class="activity">Free evening</div>
+          <div class="notes">Rest, a casual walk, or hangout with Marvin.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 4 -->
+  <div class="day">
+    <div class="day-head">
+      <span class="d">Day 4</span>
+      <span class="dow">Sunday</span>
+      <span class="tag">Kampong Glam, Chinatown &amp; departure</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div class="time">Morning</div>
+        <div class="content">
+          <div class="activity">Kampong Glam</div>
+          <div class="notes">Sultan Mosque, Haji Lane murals and cafes &mdash; compact, quick to explore.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">~11am</div>
+        <div class="content">
+          <div class="activity">Hill Street Tai Hwa Pork Noodle<span class="food-mark">FOOD</span></div>
+          <div class="notes">Singapore's only current Michelin-starred hawker stall &mdash; bak chor mee noodles, ~S$9 (expect a long queue).</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Midday</div>
+        <div class="content">
+          <div class="activity">Chinatown</div>
+          <div class="notes">Buddha Tooth Relic Temple, shophouse streets.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Early afternoon</div>
+        <div class="content">
+          <div class="activity">Liao Fan Soya Sauce Chicken Rice &amp; Noodle @ Maxwell<span class="food-mark">FOOD</span></div>
+          <div class="notes">Hawker Chan's soy sauce chicken (former Michelin star, still cheap and iconic) &mdash; skip if full.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">~5&ndash;5:30pm</div>
+        <div class="content">
+          <div class="activity">Head to Changi</div>
+          <div class="notes">Leave time for Jewel before your 9:40pm flight.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="time">Pre-flight</div>
+        <div class="content">
+          <div class="activity">Jewel Changi Airport</div>
+          <div class="notes">Rain Vortex waterfall + Canopy Park.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
