@@ -161,6 +161,77 @@
     color: #8A836C;
     letter-spacing: 0.3px;
   }
+
+  /* Inline row tips — a collapsed photo-spot / gem / food toggle under a stop */
+  .row-tip { margin-top: 9px; }
+  .row-tip + .row-tip { margin-top: 6px; }
+  .row-tip > summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
+    font-weight: bold;
+    color: #8A6A2D;
+    letter-spacing: 0.2px;
+  }
+  .row-tip > summary::-webkit-details-marker { display: none; }
+  .row-tip.gem > summary { color: #123832; }
+  .row-tip.eat > summary { color: #B4552F; }
+  .row-tip > summary .rt-chev {
+    font-size: 14px;
+    color: #C9A24B;
+    width: 12px;
+    text-align: center;
+    transition: transform 0.2s ease;
+  }
+  .row-tip.gem > summary .rt-chev { color: #123832; }
+  .row-tip.eat > summary .rt-chev { color: #B4552F; }
+  .row-tip[open] > summary .rt-chev { transform: rotate(45deg); }
+  .row-tip p {
+    margin-top: 7px;
+    margin-bottom: 2px;
+    font-size: 13.5px;
+    color: #56513F;
+    line-height: 1.45;
+    max-width: 680px;
+    padding-left: 19px;
+    border-left: 2px solid #EFE7D4;
+  }
+
+  /* Mobile — reflow the fixed print layout */
+  @media (max-width: 640px) {
+    .page { padding: 22px 16px 44px; }
+    .back-home { margin-bottom: 18px; }
+    .header { padding: 26px 22px; }
+    .header h1 { font-size: 28px; }
+    .header .sub { font-size: 14.5px; margin-top: 12px; }
+    .header .badge {
+      position: static;
+      transform: none;
+      text-align: left;
+      margin-top: 16px;
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+    }
+    .header .badge .num { font-size: 40px; }
+    .header .badge .lbl { margin-top: 0; }
+    .day { margin-top: 18px; }
+    .day-head { padding: 16px 20px; flex-wrap: wrap; gap: 6px 12px; }
+    .day-head .d { font-size: 22px; }
+    .day-head .tag { margin-left: 0; flex-basis: 100%; }
+    .row { flex-direction: column; gap: 5px; padding: 14px 20px; }
+    .row .time {
+      width: auto;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .row .notes { max-width: none; }
+    .row-tip p { max-width: none; padding-left: 16px; }
+  }
 </style>
 </head>
 <body>
@@ -190,6 +261,7 @@
         <div class="content">
           <div class="activity">Land &amp; check in</div>
           <div class="notes">Arrive at Changi, transfer to hotel, drop bags and freshen up.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Getting around</summary><p>Grab (rideshare) door-to-door, or the MRT &mdash; fast, spotless and cheap; tap in with a contactless card or phone (SimplyGo). Changi ↔ city is ~20&ndash;30 min by Grab (~S$20&ndash;30).</p></details>
         </div>
       </div>
       <div class="row">
@@ -197,6 +269,7 @@
         <div class="content">
           <div class="activity">Merlion Park</div>
           <div class="notes">Singapore's iconic mascot statue &mdash; quick photo stop, free, open 24/7.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the classic Merlion shot</summary><p>Stand across the promenade and line the Merlion up &ldquo;spouting&rdquo; into the Marina Bay Sands backdrop. Free and open 24/7 &mdash; golden hour here is gorgeous.</p></details>
         </div>
       </div>
       <div class="row">
@@ -204,6 +277,8 @@
         <div class="content">
           <div class="activity">Marina Bay Sands SkyPark</div>
           <div class="notes">Signature skyline view as day turns to night &mdash; book tickets in advance.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; Helix Bridge, blue hour</summary><p>Just below the SkyPark: the double-helix bridge frames the MBS + skyline reflection. Shoot around 7pm as the lights come up for the postcard shot.</p></details>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> For two &mdash; a sunset drink</summary><p>CÉ LA VI sits right on top of Marina Bay Sands; Lantern at Fullerton Bay Hotel is a lower-key rooftop right over the water.</p></details>
         </div>
       </div>
       <div class="row">
@@ -211,6 +286,7 @@
         <div class="content">
           <div class="activity">Lau Pa Sat<span class="food-mark">FOOD</span></div>
           <div class="notes">Dinner option &mdash; famous for Satay Street at night, skewers grilled right at your table.</div>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Alternative &mdash; chilli crab</summary><p>If you&rsquo;d rather a sit-down seafood dinner, Jumbo Seafood at Clarke Quay does the national dish &mdash; order fried mantou buns to mop up the sauce.</p></details>
         </div>
       </div>
       <div class="row">
@@ -218,6 +294,7 @@
         <div class="content">
           <div class="activity">Spectra show</div>
           <div class="notes">Free light &amp; water show right outside Marina Bay Sands.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo tip &mdash; best viewpoint</summary><p>Watch from the Event Plaza steps outside the MBS shops for the full water-and-light spread; arrive ~10 min early for a front-row spot.</p></details>
         </div>
       </div>
     </div>
@@ -236,6 +313,8 @@
         <div class="content">
           <div class="activity">Cloud Forest</div>
           <div class="notes">Gardens by the Bay &mdash; indoor waterfall &amp; misty rainforest dome.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the indoor waterfall</summary><p>The 35m waterfall is the money shot &mdash; go right at opening (9am) to beat both the crowds and the lens-fogging mist.</p></details>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Before you go &mdash; kaya toast</summary><p>Fuel up the local way: coconut-jam toast, soft-boiled eggs and kopi at Ya Kun or Killiney. (kopi = coffee w/ condensed milk; add <i>kosong</i> for no sugar.)</p></details>
         </div>
       </div>
       <div class="row">
@@ -257,6 +336,7 @@
         <div class="content">
           <div class="activity">Supertree Grove</div>
           <div class="notes">The iconic giant tree structures &mdash; great photos.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; OCBC Skyway</summary><p>Walk the 22m aerial walkway strung between the Supertrees for the aerial row shot; cheap tickets, open till ~9pm &mdash; time it with Garden Rhapsody below.</p></details>
         </div>
       </div>
       <div class="row">
@@ -264,6 +344,7 @@
         <div class="content">
           <div class="activity">Garden Rhapsody</div>
           <div class="notes">Free nightly light &amp; sound show at the Supertrees.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo tip &mdash; lie back for it</summary><p>Lie on the ground near the center of the grove and shoot straight up as the Supertrees light up in sync with the music.</p></details>
         </div>
       </div>
     </div>
@@ -282,6 +363,7 @@
         <div class="content">
           <div class="activity">Singapore Botanic Gardens</div>
           <div class="notes">UNESCO World Heritage park &mdash; shaded paths and lakes, free entry.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; Swan Lake & Bandstand</summary><p>The white Victorian bandstand on its little hill and the Swan Lake gazebo are the garden&rsquo;s prettiest, quietest frames early in the morning.</p></details>
         </div>
       </div>
       <div class="row">
@@ -289,6 +371,7 @@
         <div class="content">
           <div class="activity">National Orchid Garden</div>
           <div class="notes">Thousands of orchid varieties inside the Botanic Gardens &mdash; paid entry.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the orchid arches</summary><p>The Golden Shower archway and the cool VIP Orchid house are the standouts &mdash; endless colour, best mid-morning before it fills up.</p></details>
         </div>
       </div>
       <div class="row">
@@ -303,6 +386,8 @@
         <div class="content">
           <div class="activity">National Gallery Singapore</div>
           <div class="notes">Art museum in the restored former City Hall / Supreme Court.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; Old Hill Street shutters</summary><p>A 5-min walk away: the rainbow-shuttered facade of the old Hill Street Police Station &mdash; one of Singapore&rsquo;s most photographed spots, best in soft light.</p></details>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; Fort Canning tree tunnel</summary><p>Also nearby: the spiral staircase framed by a canopy &ldquo;tree tunnel&rdquo; in Fort Canning Park. Quietest earlier in the day.</p></details>
         </div>
       </div>
       <div class="row">
@@ -310,6 +395,8 @@
         <div class="content">
           <div class="activity">Free evening</div>
           <div class="notes">Rest, a casual walk, or hangout with Marvin.</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; Henderson Waves at sunset</summary><p>A sculptural wave-form bridge on the Southern Ridges forest walk &mdash; beautiful at golden hour and a peaceful way to end the day.</p></details>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> Hidden gem &mdash; Tiong Bahru</summary><p>Or Singapore&rsquo;s coolest old quarter: Art-Deco walk-ups, murals, Tiong Bahru Bakery and indie shops, with very few tourists.</p></details>
         </div>
       </div>
     </div>
@@ -328,6 +415,7 @@
         <div class="content">
           <div class="activity">Kampong Glam</div>
           <div class="notes">Sultan Mosque, Haji Lane murals and cafes &mdash; compact, quick to explore.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; Haji Lane & Sultan Mosque</summary><p>Shoot Haji Lane&rsquo;s murals and pastel shophouses, then frame the golden-domed Sultan Mosque straight down Bussorah Street &mdash; you&rsquo;re here in good morning light.</p></details>
         </div>
       </div>
       <div class="row">
@@ -342,6 +430,7 @@
         <div class="content">
           <div class="activity">Chinatown</div>
           <div class="notes">Buddha Tooth Relic Temple, shophouse streets.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; Buddha Tooth Relic Temple</summary><p>The ornate red-and-gold temple on South Bridge Road, plus the lantern-strung shophouse lanes (Pagoda & Trengganu Streets).</p></details>
         </div>
       </div>
       <div class="row">
@@ -349,6 +438,7 @@
         <div class="content">
           <div class="activity">Liao Fan Soya Sauce Chicken Rice &amp; Noodle @ Maxwell<span class="food-mark">FOOD</span></div>
           <div class="notes">Hawker Chan's soy sauce chicken (former Michelin star, still cheap and iconic) &mdash; skip if full.</div>
+          <details class="row-tip eat"><summary><span class="rt-chev">+</span> Also at Maxwell &mdash; Tian Tian</summary><p>While you&rsquo;re in this hawker centre, Tian Tian Hainanese Chicken Rice is the other legend here &mdash; grab a plate before the queue builds.</p></details>
         </div>
       </div>
       <div class="row">
@@ -356,6 +446,7 @@
         <div class="content">
           <div class="activity">Head to Changi</div>
           <div class="notes">Leave time for Jewel before your 9:40pm flight.</div>
+          <details class="row-tip gem"><summary><span class="rt-chev">+</span> If you&rsquo;re ahead &mdash; Katong detour</summary><p>A quick detour east: Koon Seng Road&rsquo;s rainbow Peranakan houses and 328 Katong Laksa. Only if you&rsquo;re comfortably early for the airport.</p></details>
         </div>
       </div>
       <div class="row">
@@ -363,6 +454,7 @@
         <div class="content">
           <div class="activity">Jewel Changi Airport</div>
           <div class="notes">Rain Vortex waterfall + Canopy Park.</div>
+          <details class="row-tip"><summary><span class="rt-chev">+</span> Photo spot &mdash; the Rain Vortex</summary><p>The world&rsquo;s tallest indoor waterfall; the evening light & sound show (on the hour) is the shot. Leave a buffer before your 9:40pm flight.</p></details>
         </div>
       </div>
     </div>
