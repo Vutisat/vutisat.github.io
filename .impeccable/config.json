@@ -29,6 +29,12 @@
         ],
         "createdAt": "2026-09-01T01:53:42.997Z",
         "reason": "user confirmed: brief pinned a glowing planetarium ('more colors, cool gimmicks, most impressive'); neon glow is the committed world"
+      },
+      {
+        "rule": "marketing-buzzword",
+        "value": "cutting-edge",
+        "createdAt": "2026-09-02T19:04:08.960Z",
+        "reason": "user-authored copy on their own personal site about a real S&R project; user was offered a more specific rewrite and chose not to change it"
       }
     ]
   }

@@ -188,10 +188,15 @@ a{color:inherit;text-decoration:none}
 /* ---------- RESPONSIVE ---------- */
 @media (max-width:1000px){
   .world{grid-template-columns:1fr}
-  .globe-dock{grid-column:1;grid-row:1;position:sticky;top:54px;height:46vh;
+  .globe-dock{grid-column:1;grid-row:1;position:sticky;top:54px;height:46vh;z-index:40;
     border-bottom:1px solid var(--panel-line);
-    background:radial-gradient(80% 100% at 50% 40%,rgba(20,28,64,.5),transparent)}
-  .track{grid-column:1;grid-row:2;justify-self:stretch;max-width:none;padding-top:1rem}
+    box-shadow:0 18px 34px -18px rgba(0,0,0,.85);
+    /* opaque base so the journal scrolls cleanly BEHIND the pinned globe */
+    background:
+      radial-gradient(80% 100% at 50% 40%,rgba(20,28,64,.55),transparent 72%),
+      var(--space);}
+  .track{grid-column:1;grid-row:2;justify-self:stretch;max-width:none;padding-top:1.4rem;
+    position:relative;z-index:1}
   .intro{min-height:auto;padding-block:2.5rem 3rem}
   .compass-hint{display:none}
   .telemetry{max-width:60%}
