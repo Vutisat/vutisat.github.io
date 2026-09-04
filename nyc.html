@@ -3,172 +3,429 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pob's NYC Recs</title>
-  <meta name="robots" content="noindex, nofollow">
+  <title>Pob's NYC Field Guide</title>
+  <meta name="description" content="A local's honest guide to New York City — the museums worth your day, the routes I'd walk, and where I actually eat. Mapped like the subway.">
+  <meta property="og:title" content="Pob's NYC Field Guide">
+  <meta property="og:description" content="The museums worth your day, the routes I'd walk, and where I actually eat. Mapped like the subway.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#FBFAF6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0D0D10" media="(prefers-color-scheme: dark)">
 
   <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
-  <meta name="theme-color" content="#F4F1EA">
-
-  <link rel="preload" href="fonts/spectral-500.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="Styles/main.css">
+  <link rel="preload" href="fonts/jetbrains-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="Styles/nyc.css">
 </head>
 <body>
 
-  <!-- NAVIGATION -->
-  <nav class="subnav">
-    <div class="wrap subnav__in">
-      <a href="index.html" class="brand">pobv<span class="dot">.</span>dev</a>
-      <a href="index.html" class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg> Home</a>
+  <!-- TOP BAR -->
+  <header class="bar" id="bar">
+    <div class="wrap bar__in">
+      <a href="#top" class="mark"><span class="badge">N</span> NYC&nbsp;FIELD&nbsp;GUIDE</a>
+      <span class="bar__spacer"></span>
+      <a href="index.html" class="bar__back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg> <span class="lbl">pobv.dev</span></a>
     </div>
-  </nav>
+  </header>
 
-  <main class="guide-page">
+  <main id="top">
 
-    <div class="guide-header reveal">
-      <span class="guide-header__label">Pob's Travel Recs</span>
-      <h1 class="guide-header__title">New York City</h1>
-      <p class="guide-header__sub">Local knowledge from a NYC resident. The real spots, the best eats, and what's actually worth your time.</p>
-    </div>
+    <!-- HERO -->
+    <section class="hero wrap">
+      <p class="hero__over">Pob's Field Guide</p>
+      <h1>New <span class="yc">York</span> City</h1>
+      <p class="hero__sub">Everything I actually send friends when they visit. The museums worth a whole day, the routes I'd walk, and where I go to eat. <b>Mapped like the subway</b>, so you can jump straight to what you need.</p>
+      <div class="hero__meta">
+        <span class="clk"><span class="live"></span><span id="nyClock">New York</span></span>
+        <span class="sep">/</span>
+        <span>40+ spots</span>
+        <span class="sep">/</span>
+        <span>local, opinionated, no tourist traps</span>
+      </div>
 
-    <!-- MUSEUMS -->
-    <div class="guide-section reveal">
-      <div class="guide-section__meta">Category 01</div>
-      <h2 class="guide-section__title">Museums</h2>
+      <nav class="ribbon" aria-label="Jump to a line">
+        <a href="#museums"  style="--c:var(--l-museums)"><span class="bull" style="--c:var(--l-museums);--c-ink:var(--l-museums-ink)">M</span>Museums</a>
+        <a href="#routes"   style="--c:var(--l-routes)"><span class="bull" style="--c:var(--l-routes);--c-ink:var(--l-routes-ink)">R</span>Walking Routes</a>
+        <a href="#eat"      style="--c:var(--l-eat)"><span class="bull" style="--c:var(--l-eat);--c-ink:var(--l-eat-ink)">E</span>Eat</a>
+        <a href="#broadway" style="--c:var(--l-broadway)"><span class="bull" style="--c:var(--l-broadway);--c-ink:var(--l-broadway-ink)">B</span>Broadway</a>
+        <a href="#bars"     style="--c:var(--l-bars)"><span class="bull" style="--c:var(--l-bars);--c-ink:var(--l-bars-ink)">N</span>Bars &amp; Nightlife</a>
+        <a href="#comedy"   style="--c:var(--l-comedy)"><span class="bull" style="--c:var(--l-comedy);--c-ink:var(--l-comedy-ink)">C</span>Comedy</a>
+        <a href="#tips"     style="--c:var(--l-tips)"><span class="bull" style="--c:var(--l-tips);--c-ink:var(--l-tips-ink)">i</span>Know Before You Go</a>
+      </nav>
+    </section>
 
-      <div class="guide-sub">Art</div>
-      <ul class="place-list">
-        <li>
-          <strong>MoMA</strong> <span class="star">★ top pick</span><br>
-          One of the world's most prestigious art museums. First stop for art lovers — an absolute world-class collection.
-        </li>
-        <li>
-          <strong>The MET</strong><br>
-          Better if you want a mix of art and historical artifacts. While there, check out Central Park's Conservatory Garden and walk by the exterior of the Guggenheim.
-        </li>
-      </ul>
+    <!-- MOBILE INDEX -->
+    <nav class="index--mobile wrap" aria-label="Sections">
+      <a href="#museums"  data-spy="museums"  style="--c:var(--l-museums)"><span class="bull" style="--c:var(--l-museums);--c-ink:var(--l-museums-ink)">M</span>Museums</a>
+      <a href="#routes"   data-spy="routes"   style="--c:var(--l-routes)"><span class="bull" style="--c:var(--l-routes);--c-ink:var(--l-routes-ink)">R</span>Routes</a>
+      <a href="#eat"      data-spy="eat"      style="--c:var(--l-eat)"><span class="bull" style="--c:var(--l-eat);--c-ink:var(--l-eat-ink)">E</span>Eat</a>
+      <a href="#broadway" data-spy="broadway" style="--c:var(--l-broadway)"><span class="bull" style="--c:var(--l-broadway);--c-ink:var(--l-broadway-ink)">B</span>Broadway</a>
+      <a href="#bars"     data-spy="bars"     style="--c:var(--l-bars)"><span class="bull" style="--c:var(--l-bars);--c-ink:var(--l-bars-ink)">N</span>Bars</a>
+      <a href="#comedy"   data-spy="comedy"   style="--c:var(--l-comedy)"><span class="bull" style="--c:var(--l-comedy);--c-ink:var(--l-comedy-ink)">C</span>Comedy</a>
+      <a href="#tips"     data-spy="tips"     style="--c:var(--l-tips)"><span class="bull" style="--c:var(--l-tips);--c-ink:var(--l-tips-ink)">i</span>Tips</a>
+    </nav>
 
-      <div class="guide-sub">Non-Art</div>
-      <ul class="place-list">
-        <li>
-          <strong>Museum of Natural History</strong><br>
-          World-class, great for all ages. Highlights:
-          <ul class="sub-list">
-            <li><strong>Top floor full of dinosaur fossils</strong></li>
-            <li>Hall of Gems and Stones (personal favorite)</li>
-            <li>Ocean room with a giant whale replica</li>
-            <li>Planetarium — great 5-min show</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <div class="wrap layout">
 
-    <hr class="guide-divider">
+      <!-- STICKY DESKTOP INDEX -->
+      <aside class="index" aria-label="Guide index">
+        <p class="index__cap">The Lines</p>
+        <a href="#museums"  data-spy="museums"  style="--c:var(--l-museums)"><span class="bull" style="--c:var(--l-museums);--c-ink:var(--l-museums-ink)">M</span>Museums</a>
+        <a href="#routes"   data-spy="routes"   style="--c:var(--l-routes)"><span class="bull" style="--c:var(--l-routes);--c-ink:var(--l-routes-ink)">R</span>Walking Routes</a>
+        <a href="#eat"      data-spy="eat"      style="--c:var(--l-eat)"><span class="bull" style="--c:var(--l-eat);--c-ink:var(--l-eat-ink)">E</span>Eat</a>
+        <a href="#broadway" data-spy="broadway" style="--c:var(--l-broadway)"><span class="bull" style="--c:var(--l-broadway);--c-ink:var(--l-broadway-ink)">B</span>Broadway</a>
+        <a href="#bars"     data-spy="bars"     style="--c:var(--l-bars)"><span class="bull" style="--c:var(--l-bars);--c-ink:var(--l-bars-ink)">N</span>Bars &amp; Nightlife</a>
+        <a href="#comedy"   data-spy="comedy"   style="--c:var(--l-comedy)"><span class="bull" style="--c:var(--l-comedy);--c-ink:var(--l-comedy-ink)">C</span>Comedy</a>
+        <a href="#tips"     data-spy="tips"     style="--c:var(--l-tips)"><span class="bull" style="--c:var(--l-tips);--c-ink:var(--l-tips-ink)">i</span>Know Before You Go</a>
+      </aside>
 
-    <!-- WALKING ROUTES -->
-    <div class="guide-section reveal">
-      <div class="guide-section__meta">Category 02</div>
-      <h2 class="guide-section__title">Walking Routes</h2>
+      <div class="content">
 
-      <div class="guide-sub">Route A · West Side</div>
-      <ul class="place-list">
-        <li>Start at <strong>Hudson Yards and The Vessel</strong></li>
-        <li>Walk down the <strong>High Line</strong> — old railroad track converted into an elevated park</li>
-        <li><strong>Chelsea Market</strong> — great food hall. Thai restaurant is solid; the line for <strong>Los Tacos No. 1</strong> is worth it (get the Al Pastor)</li>
-        <li><strong>Little Island</strong> — a few minutes from Chelsea Market, unique floating park on the Hudson</li>
-      </ul>
+        <!-- ===================== MUSEUMS ===================== -->
+        <section class="sec rv" id="museums" style="--lc:var(--l-museums);--lc-ink:var(--l-museums-ink)">
+          <div class="sec__head">
+            <span class="bull" style="--c:var(--l-museums);--c-ink:var(--l-museums-ink)">M</span>
+            <h2>Museums</h2>
+            <span class="count">5 stops</span>
+          </div>
 
-      <div class="guide-sub">Route B · Midtown</div>
-      <ul class="place-list">
-        <li>Times Square → <strong>Rockefeller Center</strong>, passing Radio City Music Hall on the way</li>
-        <li>Best view of Rockefeller is from <strong>Fifth Avenue</strong> — also where you go for high-end shopping</li>
-        <li><strong>Grand Central Station</strong> is a short walk — beautiful building worth seeing</li>
-      </ul>
+          <div class="note">
+            <span class="k">Free</span>
+            <span>Loads of museums are free or pay-what-you-wish on certain days. Check <a href="https://www.nycforfree.co/free-museums" target="_blank" rel="noopener">nycforfree.co</a> for the current schedule before you buy a ticket.</span>
+          </div>
 
-      <div class="guide-sub">Route C · Brooklyn</div>
-      <ul class="place-list">
-        <li>Walk the <strong>Brooklyn Bridge</strong></li>
-        <li>Explore <strong>DUMBO</strong> — don't miss the iconic spot under the bridge (just Google it)</li>
-        <li><strong>Main Street Park</strong> — carousel and some of the best city skyline views</li>
-        <li><strong>Randolph Beer</strong> — great view of the city, excellent beer selection, games</li>
-      </ul>
+          <p class="grp">Art</p>
+          <div class="spots">
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">MoMA</span><span class="spot__loc">Midtown</span><span class="pick">Top pick</span></div>
+              <p class="spot__note">One of the most prestigious art museums in the world, and my first stop for any art lover. Heads up: <b>Starry Night is on loan to the Met</b> right now, so check where it is before you go.</p>
+            </article>
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">The Met</span><span class="spot__loc">Museum Mile</span></div>
+              <p class="spot__note">Go here if you want art with a bit more history and artifacts in the mix. While you're up there, walk through Central Park's <b>Conservatory Garden</b> and past the exterior of the Guggenheim.</p>
+            </article>
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Salon 94</span><span class="spot__loc">Upper East Side</span><span class="pick">Hidden gem</span></div>
+              <p class="spot__note">A small free gallery right by the Guggenheim. Usually something cool inside and easy to miss, so pop in while you're in the neighborhood.</p>
+            </article>
+          </div>
 
-      <div class="guide-sub">Neighborhood · Lower Manhattan</div>
-      <ul class="place-list">
-        <li><strong>SoHo / Prince St.</strong> — culture, influencers, celeb sightings. Where the cool people hang out.</li>
-        <li><strong>Washington Square Park</strong> — personal favorite, great glimpse into the city's energy and diversity</li>
-        <li><strong>Uncommons</strong> — cool board game café nearby</li>
-        <li><strong>Percy's Pizza</strong> — my favorite NYC-style pizza in the city</li>
-      </ul>
-    </div>
+          <p class="grp">Not Art</p>
+          <div class="spots">
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">American Museum of Natural History</span><span class="spot__loc">Upper West Side</span></div>
+              <p class="spot__note">World-class, and great whether you've got kids or not. Highlights: the top floor full of <b>dinosaur fossils</b>, the Hall of Gems and Minerals (my favorite), the ocean room with the giant whale, and a planetarium with a great 5-minute show. You could spend a whole day here, so pick and choose.</p>
+            </article>
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Statue of Liberty &amp; Ellis Island</span><span class="spot__loc">Battery Park ferry</span></div>
+              <p class="spot__note">Half a day, well spent. I put this off for years thinking it was too touristy, but it's genuinely neat. The real surprise is the <b>Ellis Island Museum of Immigration</b>, which is beautifully done. One ticket covers both islands (Manhattan, then Liberty, then Ellis, then back). If you only want to see the Statue from the water, the <b>Staten Island Ferry does it for free</b>.</p>
+            </article>
+          </div>
+        </section>
 
-    <hr class="guide-divider">
+        <!-- ===================== ROUTES ===================== -->
+        <section class="sec rv" id="routes" style="--lc:var(--l-routes);--lc-ink:var(--l-routes-ink)">
+          <div class="sec__head">
+            <span class="bull" style="--c:var(--l-routes);--c-ink:var(--l-routes-ink)">R</span>
+            <h2>Walking Routes</h2>
+            <span class="count">3 routes + 1 zone</span>
+          </div>
+          <p class="sec__intro">The best way to see the city is on foot. Here are three routes I'd actually walk, stop by stop.</p>
 
-    <!-- RESTAURANTS -->
-    <div class="guide-section reveal">
-      <div class="guide-section__meta">Category 03</div>
-      <h2 class="guide-section__title">Restaurants</h2>
+          <div class="route">
+            <div class="route__head">
+              <span class="route__letter">A</span>
+              <h3>West Side</h3>
+              <span class="tag">Hudson Yards → Little Island</span>
+            </div>
+            <ul class="stops">
+              <li class="stop"><b>Hudson Yards &amp; The Vessel</b><p>Start here.</p></li>
+              <li class="stop"><b>The High Line</b><p>Walk south down this old elevated railroad that's been turned into a park.</p></li>
+              <li class="stop"><b>Chelsea Market</b><p>A great food hall. The Thai spot is good, and the long line at Los Tacos No. 1 is worth it (get the al pastor).</p></li>
+              <li class="stop"><b>Little Island</b><p>A few minutes further, a small park floating out on the Hudson.</p></li>
+            </ul>
+          </div>
 
-      <div class="guide-sub">Thai</div>
-      <ul class="place-list">
-        <li><strong>Som Tum Der</strong> <span class="star">★ best Thai</span> — Lower East Side. One of the best Thai restaurants in the city. Don't miss this one.</li>
-        <li><strong>Aiyada</strong> — inside Chelsea Market. Great if you're doing Route A.</li>
-        <li><strong>Wondee Siam</strong> — Hell's Kitchen. Solid and reliable.</li>
-      </ul>
+          <div class="route">
+            <div class="route__head">
+              <span class="route__letter">B</span>
+              <h3>Midtown</h3>
+              <span class="tag">Times Square → Bryant Park</span>
+            </div>
+            <ul class="stops">
+              <li class="stop"><b>Times Square</b><p>Start here, then walk over.</p></li>
+              <li class="stop"><b>Rockefeller Center</b><p>Pass Radio City Music Hall on the way. The best view of Rockefeller is from Fifth Avenue.</p></li>
+              <li class="stop"><b>Fifth Avenue</b><p>Where to go if you're up for some high-end shopping.</p></li>
+              <li class="stop"><b>Grand Central Terminal</b><p>A short walk, and a beautiful building worth seeing. Bathrooms are in the basement.</p></li>
+              <li class="stop"><b>New York Public Library</b><p>Right nearby. Book a tour ahead to see the Rose Reading Room. Bryant Park is right behind it.</p></li>
+            </ul>
+          </div>
 
-      <div class="guide-sub">Japanese</div>
-      <ul class="place-list">
-        <li>
-          <strong>Sugarfish</strong> <span class="star">★ must-try</span><br>
-          God-tier omakase for under $50 — an absolute steal. No reservations, walk in and put your name in.
-        </li>
-        <li><strong>Nami Nori</strong> — hand rolls. One of my personal favorites. A unique and excellent experience.</li>
-      </ul>
+          <div class="route">
+            <div class="route__head">
+              <span class="route__letter">C</span>
+              <h3>Brooklyn</h3>
+              <span class="tag">Brooklyn Bridge → DUMBO</span>
+            </div>
+            <ul class="stops">
+              <li class="stop"><b>Brooklyn Bridge</b><p>Start near Chinatown and walk across.</p></li>
+              <li class="stop"><b>DUMBO</b><p>Don't miss the iconic photo spot under the bridge (Google "DUMBO Washington Street").</p></li>
+              <li class="stop"><b>Main Street Park</b><p>Ride the carousel and catch some of the best skyline views in the city. There's a food hall nearby too.</p></li>
+              <li class="stop"><b>Randolph Beer</b><p>Great view of the city, a big beer selection, and games if you're up for a drink.</p></li>
+            </ul>
+          </div>
 
-      <div class="guide-sub">New York Classics</div>
-      <ul class="place-list">
-        <li><strong>Katz's Delicatessen</strong> — Lower East Side. Get the Pastrami sandwich. Non-negotiable.</li>
-      </ul>
+          <div class="zone">
+            <h3>SoHo &amp; the Village</h3>
+            <p class="sub mono">Lower Manhattan · wander, don't plan</p>
+            <ul>
+              <li><b>SoHo / Prince St.</b> Culture, influencers, the occasional celeb sighting. Where the cool kids hang out.</li>
+              <li><b>Washington Square Park</b> My favorite. The best glimpse of the city's energy and the mix of people who make it.</li>
+              <li><b>Uncommons</b> A great board game café right by the park.</li>
+            </ul>
+          </div>
+        </section>
 
-      <div class="guide-sub">Korean</div>
-      <ul class="place-list">
-        <li><strong>Turntables</strong> — Korean fried chicken in Koreatown. Great vibe, excellent food.</li>
-      </ul>
-    </div>
+        <!-- ===================== EAT ===================== -->
+        <section class="sec rv" id="eat" style="--lc:var(--l-eat);--lc-ink:var(--l-eat-ink)">
+          <div class="sec__head">
+            <span class="bull" style="--c:var(--l-eat);--c-ink:var(--l-eat-ink)">E</span>
+            <h2>Eat</h2>
+            <span class="count">18 spots</span>
+          </div>
+          <p class="sec__intro">The big one. Filter by what you're craving.</p>
 
-    <hr class="guide-divider">
+          <div class="filters" id="eatFilters" role="group" aria-label="Filter restaurants by cuisine">
+            <button data-filter="all" class="is-on" aria-pressed="true">All</button>
+            <button data-filter="thai" aria-pressed="false">Thai</button>
+            <button data-filter="japanese" aria-pressed="false">Japanese</button>
+            <button data-filter="korean" aria-pressed="false">Korean</button>
+            <button data-filter="chinese" aria-pressed="false">Chinese</button>
+            <button data-filter="egyptian" aria-pressed="false">Egyptian</button>
+            <button data-filter="classic" aria-pressed="false">NY Classics</button>
+            <button data-filter="cheap" aria-pressed="false">Cheap Eats</button>
+            <button data-filter="fancy" aria-pressed="false">Fancy</button>
+          </div>
 
-    <!-- BROADWAY -->
-    <div class="guide-section reveal">
-      <div class="guide-section__meta">Category 04</div>
-      <h2 class="guide-section__title">Broadway</h2>
-      <ul class="place-list">
-        <li><strong>Moulin Rouge</strong> <span class="star">★ most spectacular</span> — Flashy, visual, pop and classic music. A step above the usual Broadway experience.</li>
-        <li><strong>Chucked</strong> — Funny and family-friendly. A safe, entertaining pick.</li>
-        <li><strong>TodayTix</strong> — Use this app for tickets. Solid pricing vs. buying direct. Hamilton is incredible but very expensive, just FYI.</li>
-      </ul>
-    </div>
+          <div class="eat-grid">
+            <article class="dish spot" data-cuisine="thai">
+              <div class="spot__top"><span class="spot__name">Som Tum Der</span><span class="spot__loc">Lower East Side</span><span class="pick">Best Thai</span></div>
+              <p class="spot__note">One of the best Thai restaurants in the whole city. Don't miss this one.</p>
+            </article>
+            <article class="dish spot" data-cuisine="thai">
+              <div class="spot__top"><span class="spot__name">Aiyada</span><span class="spot__loc">Chelsea Market</span></div>
+              <p class="spot__note">Solid Thai inside Chelsea Market. Perfect if you're already doing Route A.</p>
+            </article>
+            <article class="dish spot" data-cuisine="thai">
+              <div class="spot__top"><span class="spot__name">Wondee Siam</span><span class="spot__loc">Hell's Kitchen</span></div>
+              <p class="spot__note">Reliable and good every time.</p>
+            </article>
+            <article class="dish spot" data-cuisine="thai">
+              <div class="spot__top"><span class="spot__name">Pai Boat Noodles</span><span class="spot__loc">Astoria, Queens</span></div>
+              <p class="spot__note">Great boat noodles if you make it out to Queens.</p>
+            </article>
 
-    <hr class="guide-divider">
+            <article class="dish spot" data-cuisine="japanese">
+              <div class="spot__top"><span class="spot__name">Sugarfish</span><span class="spot__loc">Walk-in</span><span class="pick">Must try</span></div>
+              <p class="spot__note">God-tier omakase for under $50, an absolute steal. No reservations, so just show up and put your name in.</p>
+            </article>
+            <article class="dish spot" data-cuisine="japanese">
+              <div class="spot__top"><span class="spot__name">Nami Nori</span><span class="spot__loc">West Village</span></div>
+              <p class="spot__note">Amazing hand rolls, and one of my favorite places in the city.</p>
+            </article>
+            <article class="dish spot" data-cuisine="japanese">
+              <div class="spot__top"><span class="spot__name">Kenka</span><span class="spot__loc">East Village</span></div>
+              <p class="spot__note">Loads of small Japanese plates, so go with friends, share, and drink. Reasonably priced, and you can make your own cotton candy after. The line can get long.</p>
+            </article>
 
-    <!-- BARS -->
-    <div class="guide-section reveal">
-      <div class="guide-section__meta">Category 05</div>
-      <h2 class="guide-section__title">Bars & Nightlife</h2>
-      <ul class="place-list">
-        <li><strong>Gallow Green</strong> — Beautiful rooftop bar with a lush green/jungle aesthetic. Great cocktails and atmosphere.</li>
-        <li><strong>230 Fifth Rooftop Bar</strong> — For clubbing with a view. One of the best views of the Empire State Building in the city.</li>
-        <li><strong>Cellar Dog</strong> — Dive bar with live jazz, ping pong, foosball, chess, and shuffleboard. One of those places you stay way longer than planned.</li>
-        <li><strong>Somewhere Nowhere</strong> — Another fun clubbing option. Good energy.</li>
-      </ul>
-    </div>
+            <article class="dish spot" data-cuisine="korean">
+              <div class="spot__top"><span class="spot__name">Turntables</span><span class="spot__loc">Koreatown</span></div>
+              <p class="spot__note">Korean fried chicken with really cool vibes and good food.</p>
+            </article>
+            <article class="dish spot" data-cuisine="korean">
+              <div class="spot__top"><span class="spot__name">Food Gallery 32</span><span class="spot__loc">Koreatown</span></div>
+              <p class="spot__note">A Korean food court. Get <b>Kobeque</b> inside, it's fantastic.</p>
+            </article>
 
+            <article class="dish spot" data-cuisine="chinese">
+              <div class="spot__top"><span class="spot__name">Great NY Noodletown</span><span class="spot__loc">Chinatown</span></div>
+              <p class="spot__note">Get the soft shell crab or the Hong Kong-style roast pork noodles.</p>
+            </article>
+            <article class="dish spot" data-cuisine="chinese">
+              <div class="spot__top"><span class="spot__name">La Dinastia</span><span class="spot__loc">Upper West Side</span></div>
+              <p class="spot__note">A Cuban and Chinese mix, which is more fun than it sounds.</p>
+            </article>
+            <article class="dish spot" data-cuisine="chinese">
+              <div class="spot__top"><span class="spot__name">Asian Jewels</span><span class="spot__loc">Flushing</span><span class="pick">Dim sum</span></div>
+              <p class="spot__note">Worth the trip to Flushing. Get the red shrimp wrapped in fried taro, one of the best dim sum bites I've ever had.</p>
+            </article>
+
+            <article class="dish spot" data-cuisine="egyptian">
+              <div class="spot__top"><span class="spot__name">Ibn Hamido</span><span class="spot__loc">Queens</span></div>
+              <p class="spot__note">Awesome seafood, and you get to pick how you want it cooked.</p>
+            </article>
+
+            <article class="dish spot" data-cuisine="classic">
+              <div class="spot__top"><span class="spot__name">Katz's Delicatessen</span><span class="spot__loc">Lower East Side</span><span class="pick">Non-negotiable</span></div>
+              <p class="spot__note">The OG New York Jewish deli. Get the pastrami sandwich, no exceptions.</p>
+            </article>
+            <article class="dish spot" data-cuisine="classic cheap">
+              <div class="spot__top"><span class="spot__name">Grey's Papaya</span><span class="spot__loc">Upper West Side</span></div>
+              <p class="spot__note">A New York institution. Cheap hot dogs, exactly as they should be.</p>
+            </article>
+
+            <article class="dish spot" data-cuisine="cheap">
+              <div class="spot__top"><span class="spot__name">Empanada Mama</span><span class="spot__loc">Hell's Kitchen</span></div>
+              <p class="spot__note">Cheap, fast, and always hits.</p>
+            </article>
+            <article class="dish spot" data-cuisine="cheap">
+              <div class="spot__top"><span class="spot__name">Ollie's</span><span class="spot__loc">Multiple</span></div>
+              <p class="spot__note">Go for the Chinese lunch special. And honestly, most of Chinatown is a cheap, great meal.</p>
+            </article>
+
+            <article class="dish spot" data-cuisine="fancy">
+              <div class="spot__top"><span class="spot__name">Kochi</span><span class="spot__loc">Hell's Kitchen</span><span class="pick">Splurge</span></div>
+              <p class="spot__note">Michelin-starred and really good. It's Korean, and they serve everything on a stick.</p>
+            </article>
+          </div>
+          <p class="eat-empty mono" id="eatEmpty">No spots for that filter yet.</p>
+        </section>
+
+        <!-- ===================== BROADWAY ===================== -->
+        <section class="sec rv" id="broadway" style="--lc:var(--l-broadway);--lc-ink:var(--l-broadway-ink)">
+          <div class="sec__head">
+            <span class="bull" style="--c:var(--l-broadway);--c-ink:var(--l-broadway-ink)">B</span>
+            <h2>Broadway</h2>
+            <span class="count">3 shows</span>
+          </div>
+          <p class="sec__intro">You're in New York. See a show.</p>
+
+          <div class="note">
+            <span class="k">Tickets</span>
+            <span>Use the <b>TodayTix</b> app for solid pricing instead of buying direct.</span>
+          </div>
+
+          <div class="spots">
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Moulin Rouge</span><span class="pick">Most spectacle</span></div>
+              <p class="spot__note">Flashy and visual, with pop and classic hits woven through. A step above the usual Broadway experience, especially if you love catchy music.</p>
+            </article>
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Chucked</span></div>
+              <p class="spot__note">Funny and family-friendly. A safe, entertaining pick.</p>
+            </article>
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Hamilton</span></div>
+              <p class="spot__note">Everyone raves about it, and it lives up to the hype. Just know the tickets are very expensive.</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- ===================== BARS ===================== -->
+        <section class="sec rv" id="bars" style="--lc:var(--l-bars);--lc-ink:var(--l-bars-ink)">
+          <div class="sec__head">
+            <span class="bull" style="--c:var(--l-bars);--c-ink:var(--l-bars-ink)">N</span>
+            <h2>Bars &amp; Nightlife</h2>
+            <span class="count">5 spots</span>
+          </div>
+
+          <div class="spots">
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Cellar Dog</span><span class="pick">My kind of night</span></div>
+              <p class="spot__note">A dive bar with live jazz, ping pong, foosball, chess, and shuffleboard. One of those places you stay way longer than planned.</p>
+            </article>
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Wonderville</span><span class="spot__loc">Brooklyn</span></div>
+              <p class="spot__note">One of my favorite bars in the city: it's packed with homemade, prototype arcade machines and new-age music. A bit deeper into Brooklyn, but worth it.</p>
+            </article>
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Gallow Green</span></div>
+              <p class="spot__note">A beautiful rooftop bar with a lush green, jungle-ish feel. Great cocktails and atmosphere.</p>
+            </article>
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">230 Fifth</span></div>
+              <p class="spot__note">Rooftop clubbing with one of the best views of the Empire State Building in the city.</p>
+            </article>
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Somewhere Nowhere</span></div>
+              <p class="spot__note">Another fun clubbing option with good energy.</p>
+            </article>
+          </div>
+
+          <div class="note">
+            <span class="k">Ask me</span>
+            <span>Wherever you end up, hit me up and I'll tell you the best spots in that area.</span>
+          </div>
+        </section>
+
+        <!-- ===================== COMEDY ===================== -->
+        <section class="sec rv" id="comedy" style="--lc:var(--l-comedy);--lc-ink:var(--l-comedy-ink)">
+          <div class="sec__head">
+            <span class="bull" style="--c:var(--l-comedy);--c-ink:var(--l-comedy-ink)">C</span>
+            <h2>Comedy</h2>
+            <span class="count">2 spots</span>
+          </div>
+
+          <div class="spots">
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Comedy Cellar</span><span class="spot__loc">MacDougal St.</span><span class="pick">Best quality</span></div>
+              <p class="spot__note">The best quality comedy in the city. Get the MacDougal St. location specifically. Tickets go fast, so book ahead.</p>
+            </article>
+            <article class="spot">
+              <div class="spot__top"><span class="spot__name">Second City</span><span class="spot__loc">Williamsburg</span></div>
+              <p class="spot__note">For improv, you can't go wrong here. They're fantastic.</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- ===================== TIPS ===================== -->
+        <section class="sec rv" id="tips" style="--lc:var(--l-tips);--lc-ink:var(--l-tips-ink)">
+          <div class="sec__head">
+            <span class="bull" style="--c:var(--l-tips);--c-ink:var(--l-tips-ink)">i</span>
+            <h2>Know Before You Go</h2>
+            <span class="count">5 tips</span>
+          </div>
+
+          <div class="tips">
+            <div class="tip">
+              <h4><span class="n">01</span> Tap to pay</h4>
+              <p>Just tap your card or phone on the subway turnstile or bus reader. Easiest way to get around, no MetroCard needed.</p>
+            </div>
+            <div class="tip">
+              <h4><span class="n">02</span> Wear good shoes</h4>
+              <p>Expect to walk a lot. Comfortable shoes make or break the day.</p>
+            </div>
+            <div class="tip">
+              <h4><span class="n">03</span> Jaywalking is legal</h4>
+              <p>It's officially allowed here now, so cross like a local (just look both ways).</p>
+            </div>
+            <div class="tip">
+              <h4><span class="n">04</span> Watch for scams</h4>
+              <p>If someone asks for money or "donations," especially around Times Square or Rockefeller, it's almost always a scam. That includes the fake monks.</p>
+            </div>
+            <div class="tip">
+              <h4><span class="n">05</span> Don't block the sidewalk</h4>
+              <p>Step to the side if you need to check your phone or look at a map. New Yorkers walk with purpose.</p>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /.content -->
+    </div><!-- /.layout -->
   </main>
 
-  <footer class="guide-foot">
-    <div class="wrap"><p>Pob's personal recs · <a href="index.html">back to pobv.dev</a></p></div>
+  <footer class="foot">
+    <div class="wrap foot__in">
+      <div class="foot__sig">
+        Have a great trip.
+        <span class="wave">That's my New York. If you want spots for a specific neighborhood, just ask.</span>
+      </div>
+      <div class="foot__meta">
+        Pob's NYC Field Guide<br>
+        <a href="index.html">back to pobv.dev</a>
+      </div>
+    </div>
   </footer>
 
-  <script src="Styles/main.js"></script>
+  <script src="Styles/nyc.js"></script>
 </body>
 </html>

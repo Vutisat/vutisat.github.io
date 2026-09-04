@@ -60,6 +60,47 @@
     }
   }
 
+  /* ---- easter egg: click the name 5× to reveal the off-the-clock menu ---- */
+  var brand = document.getElementById("brand");
+  var egg = document.getElementById("egg");
+  if (brand && egg) {
+    var taps = 0, tapTimer = null, eggOpen = false;
+
+    function openEgg() {
+      egg.hidden = false;
+      requestAnimationFrame(function () { egg.classList.add("is-open"); });
+      eggOpen = true;
+    }
+    function closeEgg() {
+      egg.classList.remove("is-open");
+      eggOpen = false;
+      var done = function () { if (!eggOpen) egg.hidden = true; egg.removeEventListener("transitionend", done); };
+      if (reduce) { egg.hidden = true; } else { egg.addEventListener("transitionend", done); }
+    }
+
+    brand.addEventListener("click", function (e) {
+      // let the menu's own links work; only the brand toggles the counter
+      taps++;
+      clearTimeout(tapTimer);
+      tapTimer = setTimeout(function () { taps = 0; }, 700);
+
+      if (taps >= 5) {
+        e.preventDefault();          // swallow the jump-to-top on the reveal tap
+        taps = 0;
+        clearTimeout(tapTimer);
+        eggOpen ? closeEgg() : openEgg();
+      }
+    });
+
+    // dismiss on outside click or Escape
+    document.addEventListener("click", function (e) {
+      if (eggOpen && !egg.contains(e.target) && e.target !== brand && !brand.contains(e.target)) closeEgg();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (eggOpen && e.key === "Escape") closeEgg();
+    });
+  }
+
   /* ---- hero headline: staggered line rise (transform only) ---- */
   if (!reduce) {
     var lines = document.querySelectorAll(".hero h1 .l > span");

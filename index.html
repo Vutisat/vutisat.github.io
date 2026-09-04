@@ -34,7 +34,16 @@
   <!-- ============ NAV ============ -->
   <header class="nav" id="nav">
     <div class="wrap nav__in">
-      <a href="#top" class="brand">Pob Vutisalchavakul<span class="d">.</span></a>
+      <div class="brand-wrap">
+        <a href="#top" class="brand" id="brand">Pob Vutisalchavakul<span class="d">.</span></a>
+        <!-- easter egg: click the name 5× -->
+        <div class="egg" id="egg" role="menu" aria-label="Off the clock" hidden>
+          <span class="egg__label">↯ you found the secret menu</span>
+          <a href="thailand.html" role="menuitem"><span class="egg__pin">📍</span> Thailand Recs</a>
+          <a href="nyc.html" role="menuitem"><span class="egg__pin">🗽</span> NYC Recs</a>
+          <a href="worldtour.html" role="menuitem"><span class="egg__pin">🌍</span> Pob World Tour</a>
+        </div>
+      </div>
       <nav class="nav__links" aria-label="Primary">
         <a href="#scale">Scale</a>
         <a href="#work">Work</a>
