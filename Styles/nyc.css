@@ -201,6 +201,62 @@ img{max-width:100%}
 .note b{color:var(--ink);font-weight:600}
 .note a{color:var(--ink);border-bottom:1.5px solid var(--lc);font-weight:600}
 
+/* ---------- FREE / DISCOUNTED ADMISSION ---------- */
+.free{margin-top:2.5rem;padding-top:2rem;border-top:1px dashed color-mix(in srgb,var(--lc) 40%,var(--line))}
+.free__lead{color:var(--ink-2);max-width:66ch;margin:-.4rem 0 0;font-size:1.02rem;line-height:1.55}
+.free__lead b{color:var(--ink);font-weight:600}
+
+.free-cat{margin-top:2rem}
+.free-cat__head{display:flex;align-items:baseline;flex-wrap:wrap;gap:.6rem;margin-bottom:1rem}
+.free-cat__head h3{font-weight:800;font-size:1.18rem;letter-spacing:-.015em;color:var(--ink)}
+.free-cat__head .deal{
+  font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:.18rem .5rem;border-radius:999px;background:var(--lc);color:var(--lc-ink);
+}
+.free-cat__head .deal.pw{
+  background:color-mix(in srgb,var(--lc) 14%,var(--panel));color:var(--lc);
+  border:1px solid color-mix(in srgb,var(--lc) 38%,var(--line));
+}
+
+/* compact list — always-free / pay-what-you-wish */
+.free-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
+.free-item{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  border-left:3px solid color-mix(in srgb,var(--lc) 55%,var(--line));
+  padding:.75rem .9rem;transition:transform .16s var(--ease),box-shadow .22s,border-color .2s;
+}
+.free-item:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-left-color:var(--lc)}
+.free-item .nm{font-weight:700;font-size:1rem;color:var(--ink);letter-spacing:-.01em}
+.free-item .loc{
+  font-family:var(--mono);font-size:.66rem;color:var(--ink-3);border:1px solid var(--line);
+  border-radius:5px;padding:.05rem .35rem;margin-left:.4rem;white-space:nowrap;
+}
+.free-item p{color:var(--ink-2);font-size:.9rem;line-height:1.45;margin-top:.25rem}
+.free-item p b{color:var(--ink);font-weight:600}
+
+/* timetable — grouped by day */
+.sched{display:flex;flex-direction:column;gap:1rem;margin-top:.25rem}
+.sched__day{display:grid;grid-template-columns:96px minmax(0,1fr);gap:.6rem 1rem;align-items:start}
+.sched__label{
+  font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--lc);padding-top:.6rem;
+}
+.sched__rows{display:flex;flex-direction:column;gap:.5rem;min-width:0}
+.sched__row{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem .6rem;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  border-left:3px solid color-mix(in srgb,var(--lc) 50%,var(--line));
+  padding:.6rem .8rem;transition:border-color .2s;
+}
+.sched__row:hover{border-left-color:var(--lc)}
+.sched__row .nm{font-weight:700;font-size:.98rem;color:var(--ink);letter-spacing:-.01em}
+.sched__time{
+  font-family:var(--mono);font-size:.66rem;font-weight:700;color:var(--lc);
+  white-space:nowrap;letter-spacing:.02em;
+}
+.sched__row p{flex-basis:100%;color:var(--ink-2);font-size:.88rem;line-height:1.4;margin:.1rem 0 0}
+.sched__row p b{color:var(--ink);font-weight:600}
+
 /* ---------- ROUTE DIAGRAM (transit stops) ---------- */
 .route{
   background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);
@@ -292,9 +348,11 @@ img{max-width:100%}
   .index--mobile a .bull{width:20px;height:20px;font-size:.7rem}
 }
 @media (max-width:560px){
-  .eat-grid,.tips{grid-template-columns:1fr}
+  .eat-grid,.tips,.free-list{grid-template-columns:1fr}
   .hero__meta{gap:.4rem .8rem}
   .bar__back .lbl{display:none}
+  .sched__day{grid-template-columns:1fr;gap:.4rem}
+  .sched__label{padding-top:0}
 }
 
 @media (prefers-reduced-motion:reduce){
