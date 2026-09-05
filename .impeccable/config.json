@@ -35,6 +35,24 @@
         "value": "cutting-edge",
         "createdAt": "2026-09-02T19:04:08.960Z",
         "reason": "user-authored copy on their own personal site about a real S&R project; user was offered a more specific rewrite and chose not to change it"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "Styles/nyc.css"
+        ],
+        "createdAt": "2026-09-05T03:20:07.043Z",
+        "reason": "design system: page conceit is 'mapped like the subway, each place a stop on a colored line' (CSS header comment + every .spot/.stop/.dish/.tip); colored edge accent is the intended motif"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "Styles/nyc.css"
+        ],
+        "createdAt": "2026-09-05T03:20:07.137Z",
+        "reason": "design system: same subway-line accent motif on rounded stop cards (.tip top accent, etc.), intentional and consistent across the page"
       }
     ]
   }
