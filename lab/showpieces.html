@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Lab — interactive showpieces</title>
+<meta name="robots" content="noindex">
+<link rel="preload" href="../fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/splinemono-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../Styles/home.css">
+<style>
+  body{padding-bottom:6rem}
+  .lab-head{max-width:var(--wrap);margin:3rem auto 0;padding-inline:clamp(1.25rem,5vw,3rem)}
+  .lab-head .kick{font-family:"Spline",monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-ink)}
+  .lab-head h1{font-size:clamp(2rem,1.4rem+3vw,3.6rem);letter-spacing:-.035em;color:var(--ink);font-weight:800;line-height:1;margin-top:.6rem}
+  .lab-head p{margin-top:.9rem;color:var(--ink-2);max-width:70ch}
+  .lab-head code{font-family:"Spline",monospace;font-size:.85em;background:var(--accent-wash);color:var(--accent-ink);padding:.1em .4em;border-radius:5px}
+
+  .piece{max-width:var(--wrap);margin:clamp(3rem,6vw,5rem) auto 0;padding-inline:clamp(1.25rem,5vw,3rem)}
+  .piece__head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+  .piece__title{display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap}
+  .piece__n{font-family:"Spline",monospace;font-size:.72rem;letter-spacing:.16em;color:var(--accent-ink);background:var(--accent-wash);padding:.35em .7em;border-radius:100px}
+  .piece__title h2{font-size:clamp(1.4rem,1.1rem+1.4vw,2rem);letter-spacing:-.02em;color:var(--ink);font-weight:800;line-height:1}
+  .piece__hint{font-family:"Spline",monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+  .piece__desc{color:var(--ink-2);max-width:66ch;margin-bottom:1.1rem}
+  .piece__file{font-family:"Spline",monospace;font-size:.72rem;color:var(--ink-3)}
+
+  .stage{position:relative;height:clamp(360px,52vh,480px);border-radius:20px;overflow:hidden;
+    border:1px solid var(--line);background:var(--paper);box-shadow:0 30px 60px -40px rgba(19,19,22,.4)}
+  .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:crosshair}
+  .stage--grab canvas{cursor:grab}
+  .stage--grab canvas:active{cursor:grabbing}
+  .stage__btn{position:absolute;top:.9rem;right:.9rem;z-index:3;
+    background:var(--ink);color:var(--paper);border-radius:100px;padding:.5em 1em;font-size:.82rem;font-weight:600;
+    box-shadow:0 8px 20px -8px rgba(19,19,22,.5)}
+  .stage__btn:hover{transform:translateY(-1px)}
+
+  @media (prefers-reduced-motion:reduce){
+    .piece__hint::after{content:" (motion reduced — showing static frame)";text-transform:none;letter-spacing:0}
+  }
+</style>
+</head>
+<body>
+  <header class="lab-head">
+    <span class="kick">pobv.dev · component lab</span>
+    <h1>Interactive showpieces</h1>
+    <p>Four candidate "wow" components, each a self-contained vanilla Canvas 2D module (no libraries, no build step) matching the site's paper + blue language. Move your cursor over each stage. Each lives in its own file under <code>/lab/</code> and can be dropped into any page: <code>Lab.name(canvasEl, opts)</code>. Every module auto-pauses when off-screen and honors reduced-motion.</p>
+  </header>
+
+  <!-- 1 · FLUID INK -->
+  <section class="piece">
+    <div class="piece__head">
+      <div class="piece__title"><span class="piece__n">01</span><h2>Fluid ink</h2></div>
+      <span class="piece__hint">drag to swirl</span>
+    </div>
+    <p class="piece__desc">A real fluid simulation (Stam stable-fluids). Drag to inject velocity and dye; the ink swirls, advects, and slowly settles back into paper.</p>
+    <div class="stage"><canvas id="c-fluid"></canvas><button class="stage__btn" id="b-fluid">Splash</button></div>
+    <p class="piece__file">lab/fluid-ink.js · <code>Lab.fluidInk(el,&#123;n,dt,fade,ink&#125;)</code></p>
+  </section>
+
+  <!-- 2 · FLOW FIELD -->
+  <section class="piece">
+    <div class="piece__head">
+      <div class="piece__title"><span class="piece__n">02</span><h2>Flowing silk</h2></div>
+      <span class="piece__hint">move to part the stream</span>
+    </div>
+    <p class="piece__desc">Thousands of particles trace a value-noise flow field, leaving fading trails so the motion reads as flowing silk. Your cursor repels them and the stream parts around it.</p>
+    <div class="stage"><canvas id="c-flow"></canvas></div>
+    <p class="piece__file">lab/flow-field.js · <code>Lab.flowField(el,&#123;count,scale,speed&#125;)</code></p>
+  </section>
+
+  <!-- 3 · MAGNETIC GRID -->
+  <section class="piece">
+    <div class="piece__head">
+      <div class="piece__title"><span class="piece__n">03</span><h2>Magnetic field</h2></div>
+      <span class="piece__hint">move to warp the mesh</span>
+    </div>
+    <p class="piece__desc">A grid of dots joined by fine lines. The cursor is a gravity well: nearby dots slide toward it and swell, the mesh stretching like liquid metal, then springing back.</p>
+    <div class="stage"><canvas id="c-mag"></canvas></div>
+    <p class="piece__file">lab/magnetic-grid.js · <code>Lab.magneticGrid(el,&#123;gap,range,pull&#125;)</code></p>
+  </section>
+
+  <!-- 4 · PHYSICS TYPE -->
+  <section class="piece">
+    <div class="piece__head">
+      <div class="piece__title"><span class="piece__n">04</span><h2>Physics type</h2></div>
+      <span class="piece__hint">grab &amp; fling the letters</span>
+    </div>
+    <p class="piece__desc">Every letter is a rigid body with gravity. Grab one and throw it; they tumble, collide, and pile up. Hit Reset to drop them again.</p>
+    <div class="stage stage--grab"><canvas id="c-phys"></canvas><button class="stage__btn" id="b-phys">Reset</button></div>
+    <p class="piece__file">lab/physics-type.js · <code>Lab.physicsType(el,&#123;text,size,color&#125;)</code></p>
+  </section>
+
+  <script src="fluid-ink.js"></script>
+  <script src="flow-field.js"></script>
+  <script src="magnetic-grid.js"></script>
+  <script src="physics-type.js"></script>
+  <script>
+    var fluid = Lab.fluidInk(document.getElementById("c-fluid"));
+    Lab.flowField(document.getElementById("c-flow"));
+    Lab.magneticGrid(document.getElementById("c-mag"));
+    var phys = Lab.physicsType(document.getElementById("c-phys"), { text: "POB VUTISAT" });
+    document.getElementById("b-fluid").addEventListener("click", function () { fluid.splash(); });
+    document.getElementById("b-phys").addEventListener("click", function () { phys.reset(); });
+  </script>
+</body>
+</html>

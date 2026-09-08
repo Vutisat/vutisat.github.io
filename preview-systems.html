@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Living Systems — hero component</title>
+<link rel="preload" href="fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/splinemono-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="Styles/home.css">
+<style>
+  body{padding:0 0 6rem}
+  .ph{max-width:var(--wrap);margin:2.5rem auto 0;padding-inline:clamp(1.25rem,5vw,3rem)}
+  .ph h1{font-size:clamp(1.6rem,1.2rem+2vw,2.6rem);letter-spacing:-.03em;color:var(--ink);font-weight:800;line-height:1}
+  .ph p{margin-top:.6rem;color:var(--ink-3);max-width:64ch}
+  .variant{border-top:1px solid var(--line);margin-top:3.5rem;padding-top:1.5rem}
+  .variant__tag{max-width:var(--wrap);margin:0 auto 1rem;padding-inline:clamp(1.25rem,5vw,3rem);display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap}
+  .variant__n{font-family:"Spline",monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-wash);padding:.35em .7em;border-radius:100px}
+  .variant__name{font-weight:700;color:var(--ink);font-size:1.05rem}
+  .variant__note{color:var(--ink-3);font-size:.92rem}
+  .demo .hero{min-height:0;padding-block:1.5rem}
+  .demo .hero__grid{min-height:0;align-items:center}
+
+  /* ---- the live systems block ---- */
+  .machine{position:relative;height:clamp(440px,60vh,560px);border-radius:200px 200px 24px 24px;
+    background:linear-gradient(165deg,var(--accent),#152AC0);
+    box-shadow:0 40px 80px -40px rgba(33,54,224,.55);overflow:hidden;isolation:isolate}
+  .machine canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  /* live readout */
+  .machine__hud{position:absolute;bottom:1.5rem;right:1.6rem;z-index:3;pointer-events:none;color:#fff;text-align:right}
+  .machine__hud .k{font-family:"Spline",monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+  .machine__hud .v{font-weight:800;font-size:1.5rem;letter-spacing:-.02em;line-height:1.05;font-variant-numeric:tabular-nums}
+  .machine__hud .rate{font-family:"Spline",monospace;font-size:.72rem;color:rgba(255,255,255,.8);margin-top:.15rem;font-variant-numeric:tabular-nums}
+  /* portrait inset (take B) */
+  .machine__me{position:absolute;left:1.3rem;bottom:1.3rem;z-index:4;width:34%;max-width:150px;aspect-ratio:1/1.18;
+    border-radius:18px;overflow:hidden;border:3px solid var(--paper);box-shadow:0 20px 44px -18px rgba(0,0,0,.55);background:#eef}
+  .machine__me img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:118%;width:auto;max-width:none}
+
+  .hero__art{max-width:360px}
+  @media (max-width:920px){.hero__grid{grid-template-columns:1fr;gap:2.2rem}.hero__art{order:-1;margin-inline:auto}}
+</style>
+</head>
+<body>
+  <div class="ph">
+    <h1>Living Systems &mdash; hero component</h1>
+    <p>The blue block is now a live distributed system built the same way as the site's globe: hand-rolled Canvas 2D, no libraries. Request packets stream into your real systems (Billing, Pricing edge, Pipelines, Reach), a counter ticks live, and the whole field reacts to your cursor. Move your mouse over it. Two integrations below.</p>
+  </div>
+
+  <!-- TAKE A -->
+  <section class="variant">
+    <div class="variant__tag"><span class="variant__n">Take A</span><span class="variant__name">Machine as the hero visual</span><span class="variant__note">&mdash; portrait moves to the About section. Boldest; the systems ARE the first impression.</span></div>
+    <div class="demo"><section class="hero wrap bleed"><div class="hero__grid">
+      <div class="hero__lede">
+        <h1 class="display" style="font-size:clamp(2.7rem,1rem+7.4vw,7.4rem);letter-spacing:-.038em;line-height:.9;color:var(--ink);font-weight:800;margin-bottom:1.4rem">Pob<br>Vutisalchavakul</h1>
+        <p class="hero__thesis">Staff Software Engineer building <span class="serif-em">calm systems at scale</span>. I care as much about the people who build them as the systems themselves.</p>
+        <div class="hero__cta" style="display:flex;gap:.85rem;margin-top:2rem"><a href="#" class="btn btn--accent">Get in touch</a><a href="#" class="btn btn--ghost">Résumé</a></div>
+      </div>
+      <figure class="hero__art">
+        <div class="machine" data-machine data-portrait="0">
+          <canvas></canvas>
+          <div class="machine__hud"><div class="k">Requests served today</div><div class="v" data-count>0</div><div class="rate" data-rate>0 req/s</div></div>
+        </div>
+      </figure>
+    </div></section></div>
+  </section>
+
+  <!-- TAKE B -->
+  <section class="variant">
+    <div class="variant__tag"><span class="variant__n">Take B</span><span class="variant__name">Machine + portrait inset</span><span class="variant__note">&mdash; your picture stays as a human anchor in the corner. Recommended balance of cool + personal.</span></div>
+    <div class="demo"><section class="hero wrap bleed"><div class="hero__grid">
+      <div class="hero__lede">
+        <h1 class="display" style="font-size:clamp(2.7rem,1rem+7.4vw,7.4rem);letter-spacing:-.038em;line-height:.9;color:var(--ink);font-weight:800;margin-bottom:1.4rem">Pob<br>Vutisalchavakul</h1>
+        <p class="hero__thesis">Staff Software Engineer building <span class="serif-em">calm systems at scale</span>. I care as much about the people who build them as the systems themselves.</p>
+        <div class="hero__cta" style="display:flex;gap:.85rem;margin-top:2rem"><a href="#" class="btn btn--accent">Get in touch</a><a href="#" class="btn btn--ghost">Résumé</a></div>
+      </div>
+      <figure class="hero__art">
+        <div class="machine" data-machine data-portrait="1">
+          <canvas></canvas>
+          <div class="machine__hud"><div class="k">Requests served today</div><div class="v" data-count>0</div><div class="rate" data-rate>0 req/s</div></div>
+          <div class="machine__me"><img src="pobbody.png" alt="Pob Vutisalchavakul"></div>
+        </div>
+      </figure>
+    </div></section></div>
+  </section>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+  function initMachine(root){
+    var canvas = root.querySelector("canvas");
+    var ctx = canvas.getContext("2d");
+    var dpr = Math.max(1, Math.min(2, window.devicePixelRatio||1));
+    var W=0,H=0,cx=0,cy=0;
+    var portrait = root.getAttribute("data-portrait")==="1";
+    var rnd = mulberry32(20260904);
+
+    // --- hubs: your real systems (normalized 0..1) ---
+    var hubs = [
+      {x:.70, y:.24, label:"Billing", sub:"penny-exact"},
+      {x:.30, y:.42, label:"Pricing edge", sub:"10M+/day"},
+      {x:.62, y:.62, label:"Pipelines", sub:"petabyte"},
+      {x:.38, y:.80, label:"Reach", sub:"15M served"}
+    ];
+    var HUBN = hubs.length;
+
+    // --- nodes: hubs + composed filler (avoid the portrait corner in take B) ---
+    var nodes = hubs.map(function(h){return {x:h.x,y:h.y,hub:true,r:5.5,ph:rnd()*6.28,pa:rnd()*6.28,depth:.4+rnd()*.6,pulse:0};});
+    var tries=0;
+    while(nodes.length<30 && tries++<600){
+      var x=.08+rnd()*.86, y=.06+rnd()*.9;
+      if(portrait && x<.42 && y>.62) continue;           // keep clear of portrait inset
+      var ok=true;
+      for(var i=0;i<nodes.length;i++){var dx=nodes[i].x-x,dy=nodes[i].y-y;if(dx*dx+dy*dy<0.012){ok=false;break;}}
+      if(!ok) continue;
+      nodes.push({x:x,y:y,hub:false,r:1.6+rnd()*1.6,ph:rnd()*6.28,pa:rnd()*6.28,depth:.15+rnd()*.85,pulse:0});
+    }
+    var N=nodes.length;
+
+    function d2(a,b){var dx=nodes[a].x-nodes[b].x,dy=nodes[a].y-nodes[b].y;return dx*dx+dy*dy;}
+    function nearestHub(i){var best=0,bd=1e9;for(var h=0;h<HUBN;h++){var dd=d2(i,h);if(dd<bd){bd=dd;best=h;}}return best;}
+
+    // --- routes: each non-hub greedily hops toward its nearest hub ---
+    var NEIGH=0.10; // squared threshold for a legal hop
+    function buildRoute(start){
+      var target=nearestHub(start);
+      var route=[start],cur=start,seen={},guard=0;seen[start]=1;
+      while(cur!==target && guard++<14){
+        var best=-1,bd=d2(cur,target);
+        for(var j=0;j<N;j++){ if(seen[j])continue;
+          var dt=d2(j,target); if(dt<bd-1e-5 && d2(cur,j)<NEIGH){bd=dt;best=j;} }
+        if(best<0)break; route.push(best);seen[best]=1;cur=best;
+      }
+      if(cur!==target)route.push(target);
+      return route;
+    }
+    var routes=[]; for(var i=0;i<N;i++){ if(!nodes[i].hub){var r=buildRoute(i); if(r.length>1)routes.push(r);} }
+
+    // --- edges (dedup of all route segments) for the static network ---
+    var edgeSet={},edges=[];
+    routes.forEach(function(r){for(var k=0;k<r.length-1;k++){var a=r[k],b=r[k+1],key=a<b?a+"_"+b:b+"_"+a;if(!edgeSet[key]){edgeSet[key]=1;edges.push([a,b]);}}});
+
+    // --- packets ---
+    var packets=[];
+    var PN = reduce?0:26;
+    for(i=0;i<PN;i++){packets.push(spawn());}
+    function spawn(){var ri=(Math.random()*routes.length)|0;return {ri:ri,seg:0,t:Math.random(),sp:.55+Math.random()*.7};}
+
+    // --- live counter (grounded in the real "10M+/day") ---
+    var elCount=root.querySelector("[data-count]"), elRate=root.querySelector("[data-rate]");
+    var total = 7_200_000 + Math.floor(rnd()*400000); // partway through the day
+    function fmt(n){return n.toLocaleString("en-US");}
+
+    // --- interaction ---
+    var mx=0,my=0,hasM=false,active=-1;
+    root.addEventListener("pointermove",function(e){var r=canvas.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;hasM=true;});
+    root.addEventListener("pointerleave",function(){hasM=false;active=-1;});
+
+    function resize(){var r=canvas.getBoundingClientRect();W=r.width;H=r.height;canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);cx=W/2;cy=H/2;}
+    window.addEventListener("resize",resize); resize();
+
+    // live screen position of a node (base + drift + cursor parallax)
+    var px=0,py=0; // smoothed parallax
+    function pos(i,t,out){
+      var n=nodes[i];
+      var driftx = Math.sin(t*0.6 + n.ph)*6;
+      var drifty = Math.cos(t*0.5 + n.pa)*6;
+      out.x = n.x*W + driftx + px*n.depth;
+      out.y = n.y*H + drifty + py*n.depth;
+    }
+    var _a={x:0,y:0},_b={x:0,y:0},_c={x:0,y:0};
+
+    var last=performance.now(), rateShown=0;
+    function frame(now){
+      var dt=Math.min(.05,(now-last)/1000); last=now;
+      var t=now/1000;
+      // parallax easing toward cursor offset
+      var tx = hasM?(mx-cx)*0.06:0, ty = hasM?(my-cy)*0.06:0;
+      px += (tx-px)*0.06; py += (ty-py)*0.06;
+
+      // hover pick (hubs only)
+      if(hasM){var bd=1e9,bi=-1;for(var h=0;h<HUBN;h++){pos(h,t,_c);var dx=_c.x-mx,dy=_c.y-my,dd=dx*dx+dy*dy;if(dd<bd){bd=dd;bi=h;}}active=bd<44*44?bi:-1;}
+
+      ctx.clearRect(0,0,W,H);
+
+      // faint depth wash
+      var wash=ctx.createRadialGradient(cx-W*.15,cy-H*.2,W*.05,cx,cy,W*.9);
+      wash.addColorStop(0,"rgba(255,255,255,.10)");wash.addColorStop(1,"rgba(255,255,255,0)");
+      ctx.fillStyle=wash;ctx.fillRect(0,0,W,H);
+
+      // edges
+      ctx.lineWidth=1;ctx.strokeStyle="rgba(255,255,255,.14)";
+      for(var e=0;e<edges.length;e++){pos(edges[e][0],t,_a);pos(edges[e][1],t,_b);ctx.beginPath();ctx.moveTo(_a.x,_a.y);ctx.lineTo(_b.x,_b.y);ctx.stroke();}
+
+      // packets (request traffic)
+      var arrivals=0;
+      for(var p=0;p<packets.length;p++){var k=packets[p],route=routes[k.ri];
+        if(!route){packets[p]=spawn();continue;}
+        k.t += k.sp*dt* (1.1);
+        while(k.t>=1){k.t-=1;k.seg++;
+          if(k.seg>=route.length-1){var hubNode=route[route.length-1];nodes[hubNode].pulse=1;arrivals++;packets[p]=spawn();k=packets[p];route=routes[k.ri];}
+        }
+        pos(route[k.seg],t,_a);pos(route[k.seg+1],t,_b);
+        var xx=_a.x+(_b.x-_a.x)*k.t, yy=_a.y+(_b.y-_a.y)*k.t;
+        // comet trail
+        var tb=Math.max(0,k.t-.16), bx=_a.x+(_b.x-_a.x)*tb, by=_a.y+(_b.y-_a.y)*tb;
+        var g=ctx.createLinearGradient(bx,by,xx,yy);g.addColorStop(0,"rgba(180,225,255,0)");g.addColorStop(1,"rgba(210,240,255,.9)");
+        ctx.strokeStyle=g;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(xx,yy);ctx.stroke();
+        ctx.fillStyle="#eaf6ff";ctx.shadowColor="#bfe4ff";ctx.shadowBlur=8;ctx.beginPath();ctx.arc(xx,yy,2.1,0,7);ctx.fill();ctx.shadowBlur=0;
+      }
+      // counter driven by a realistic rate (10M+/day ~= 120/s average, with calm waves + rare bursts)
+      var rate = reduce?0:(120 + Math.sin(t*0.7)*38 + Math.max(0,Math.sin(t*0.31))*120 + (Math.random()<0.015?Math.random()*180:0));
+      if(!reduce) total += rate*dt;
+
+      // nodes
+      for(i=0;i<N;i++){var n=nodes[i];pos(i,t,_a);
+        if(n.hub){
+          var isA=(i===active);
+          if(n.pulse>0){ctx.strokeStyle="rgba(255,255,255,"+(n.pulse*.5).toFixed(2)+")";ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(_a.x,_a.y,n.r+ (1-n.pulse)*18,0,7);ctx.stroke();n.pulse-=dt*1.6;if(n.pulse<0)n.pulse=0;}
+          ctx.fillStyle="#fff";ctx.shadowColor="rgba(255,255,255,.9)";ctx.shadowBlur=isA?20:12;
+          ctx.beginPath();ctx.arc(_a.x,_a.y,isA?n.r+1.5:n.r,0,7);ctx.fill();ctx.shadowBlur=0;
+          // hub ring
+          ctx.strokeStyle="rgba(255,255,255,.55)";ctx.lineWidth=1;ctx.beginPath();ctx.arc(_a.x,_a.y,n.r+4,0,7);ctx.stroke();
+        }else{
+          ctx.fillStyle="rgba(255,255,255,.55)";ctx.beginPath();ctx.arc(_a.x,_a.y,n.r,0,7);ctx.fill();
+        }
+      }
+
+      // hover label pill
+      if(active>=0){var hb=hubs[active];pos(active,t,_a);
+        var label=hb.label, sub=hb.sub;
+        ctx.font="600 12px 'Hanken',system-ui,sans-serif";
+        var w=Math.max(ctx.measureText(label).width, ctx.measureText(sub).width)+22;
+        var bxp=_a.x+12, byp=_a.y-40; if(bxp+w>W-6)bxp=_a.x-12-w;
+        ctx.fillStyle="rgba(255,255,255,.96)";roundRect(ctx,bxp,byp,w,38,10);ctx.fill();
+        ctx.fillStyle="#131316";ctx.textBaseline="top";ctx.font="700 12.5px 'Hanken',system-ui,sans-serif";ctx.fillText(label,bxp+11,byp+7);
+        ctx.fillStyle="#2136E0";ctx.font="600 11px 'Spline',monospace";ctx.fillText(sub,bxp+11,byp+21);
+      }
+
+      // counter
+      if(elCount)elCount.textContent=fmt(Math.floor(total));
+      rateShown += (rate-rateShown)*.1;
+      if(elRate)elRate.textContent = (reduce?"steady":Math.round(rateShown).toLocaleString("en-US"))+" req/s";
+
+      requestAnimationFrame(frame);
+    }
+    function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+
+    if(reduce){ // static: draw one frame with final count
+      total=10_412_883; requestAnimationFrame(frame); return;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  document.querySelectorAll("[data-machine]").forEach(initMachine);
+})();
+</script>
+</body>
+</html>

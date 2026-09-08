@@ -58,7 +58,8 @@
     <span id="top"></span>
 
     <!-- ============ HERO ============ -->
-    <section class="hero wrap bleed" aria-labelledby="heroName">
+    <section class="hero wrap bleed" aria-labelledby="heroName" style="overflow:visible">
+      <canvas class="hero__mesh" aria-hidden="true" style="position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:0;pointer-events:none"></canvas>
       <div class="hero__grid">
         <div class="hero__lede">
           <h1 class="display" id="heroName" aria-label="Pob Vutisalchavakul">
@@ -75,7 +76,6 @@
               Get in touch
               <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
             </a>
-            <a href="resume.pdf" target="_blank" rel="noopener" class="btn btn--ghost">Résumé</a>
           </div>
         </div>
 
@@ -316,5 +316,21 @@
   </footer>
 
   <script src="Styles/home.js"></script>
+  <!-- hero: subtle magnetic dot-mesh that reacts to the cursor (lab/magnetic-grid.js) -->
+  <script src="lab/magnetic-grid.js"></script>
+  <script>
+    (function () {
+      var hero = document.querySelector(".hero");
+      var mesh = document.querySelector(".hero__mesh");
+      if (hero && mesh && window.Lab && Lab.magneticGrid) {
+        Lab.magneticGrid(mesh, {
+          gap: 26, range: 170, pull: 0.20,
+          restColor: "rgba(19,19,22,0.09)", lineColor: "rgba(19,19,22,0.04)",
+          glow: 7, restSize: 1.1, hotSize: 2.4,
+          eventTarget: hero
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

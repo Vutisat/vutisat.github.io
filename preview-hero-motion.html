@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero motion — 3 directions</title>
+<link rel="preload" href="fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/splinemono-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="Styles/home.css">
+<style>
+  body{padding:0 0 6rem}
+  .preview-head{max-width:var(--wrap);margin:2.5rem auto 0;padding-inline:clamp(1.25rem,5vw,3rem)}
+  .preview-head h1{font-size:clamp(1.6rem,1.2rem+2vw,2.6rem);letter-spacing:-.03em;color:var(--ink);font-weight:800;line-height:1}
+  .preview-head p{margin-top:.6rem;color:var(--ink-3);max-width:60ch}
+  .variant{border-top:1px solid var(--line);margin-top:3.5rem;padding-top:1.5rem}
+  .variant__tag{max-width:var(--wrap);margin:0 auto 1rem;padding-inline:clamp(1.25rem,5vw,3rem);display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap}
+  .variant__n{font-family:"Spline",monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-wash);padding:.35em .7em;border-radius:100px}
+  .variant__name{font-weight:700;color:var(--ink);font-size:1.05rem}
+  .variant__note{color:var(--ink-3);font-size:.92rem}
+  /* compact hero clone so all three fit on one page */
+  .demo .hero{min-height:0;padding-block:2rem}
+  .demo .hero__grid{min-height:0;align-items:center}
+  .demo .hero h1{margin-bottom:1rem}
+  .demo .hero__block{height:clamp(300px,38vh,380px)}
+  .demo .hero__art{max-width:280px}
+
+  /* ---------- shared: the running ticker ---------- */
+  .ticker{position:relative;margin-top:1.6rem;padding-block:.85rem;overflow:hidden;
+    border-block:1px solid var(--line);background:var(--paper);
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);}
+  .ticker__track{display:inline-flex;white-space:nowrap;will-change:transform;animation:tick 26s linear infinite}
+  .ticker:hover .ticker__track{animation-play-state:paused}
+  .ticker__track span{font-family:"Spline",monospace;font-size:.82rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-2);padding-inline:1.4rem;display:inline-flex;align-items:center;gap:1.4rem}
+  .ticker__track b{color:var(--ink);font-weight:600}
+  .ticker__track .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none}
+  @keyframes tick{to{transform:translateX(-50%)}}
+
+  /* ---------- variant 1 extra: breathing portrait block ---------- */
+  .v1 .hero__block{overflow:hidden}
+  .v1 .hero__block::after{content:"";position:absolute;inset:-40%;border-radius:inherit;
+    background:conic-gradient(from 0deg,transparent 0deg,rgba(255,255,255,.28) 40deg,transparent 90deg,transparent 360deg);
+    mix-blend-mode:screen;animation:sheen 9s linear infinite;pointer-events:none}
+  @keyframes sheen{to{transform:rotate(360deg)}}
+
+  /* ---------- variant 3: kinetic headline ---------- */
+  .v3 .kthesis{margin-top:1.7rem;max-width:46ch;color:var(--ink-2);font-size:clamp(1.02rem,.98rem+.3vw,1.18rem)}
+  .rotor{display:inline-grid;vertical-align:bottom}
+  .rotor__w{grid-area:1/1;color:var(--ink);font-weight:700;font-family:"Garamond",Georgia,serif;font-style:italic;
+    opacity:0;transform:translateY(.35em);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+  .rotor__w.is-on{opacity:1;transform:none}
+  .rotor__w.is-off{opacity:0;transform:translateY(-.35em);transition-duration:.4s}
+  /* drawn underline */
+  .kname{position:relative;display:inline-block}
+  .kstroke{position:absolute;left:-1%;bottom:-.18em;width:102%;height:.4em;overflow:visible;pointer-events:none}
+  .kstroke path{fill:none;stroke:var(--accent);stroke-width:6;stroke-linecap:round;
+    stroke-dasharray:640;stroke-dashoffset:640;animation:draw 1.1s var(--ease) .35s forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  @media (prefers-reduced-motion:reduce){
+    .ticker__track{animation:none}
+    .v1 .hero__block::after{animation:none;opacity:.4}
+    .rotor__w{opacity:0;transform:none;transition:none}
+    .rotor__w:first-child{opacity:1}
+    .kstroke path{animation:none;stroke-dashoffset:0}
+  }
+</style>
+</head>
+<body>
+  <div class="preview-head">
+    <h1>Three ways to add flare</h1>
+    <p>All three use the real fonts, colors, and portrait. Motion fires on load. Reduced-motion is respected. Pick one (or mix) and I'll wire it into <b>index.html</b>.</p>
+  </div>
+
+  <!-- ============ VARIANT 1 ============ -->
+  <section class="variant v1">
+    <div class="variant__tag">
+      <span class="variant__n">01</span>
+      <span class="variant__name">Ticker + breathing block</span>
+      <span class="variant__note">— my recommendation. Photo untouched; the frame gets a slow light-sweep and a scale-proof strip runs below.</span>
+    </div>
+    <div class="demo">
+      <section class="hero wrap bleed">
+        <div class="hero__grid">
+          <div class="hero__lede">
+            <h1 class="display"><span class="l"><span>Pob</span></span><span class="l"><span>Vutisalchavakul</span></span></h1>
+            <p class="hero__thesis">Staff Software Engineer building <span class="serif-em">calm systems at scale</span>.</p>
+          </div>
+          <figure class="hero__art">
+            <div class="hero__block"><img class="hero__portrait" src="pobbody.png" alt="Portrait" width="640" height="880"></div>
+          </figure>
+        </div>
+      </section>
+      <div class="ticker" aria-hidden="true"><div class="ticker__track" data-dupe></div></div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 2 ============ -->
+  <section class="variant v2">
+    <div class="variant__tag">
+      <span class="variant__n">02</span>
+      <span class="variant__name">Ticker strip only</span>
+      <span class="variant__note">— simplest. Just the running masthead. Everything else stays exactly as it is now.</span>
+    </div>
+    <div class="demo">
+      <section class="hero wrap bleed">
+        <div class="hero__grid">
+          <div class="hero__lede">
+            <h1 class="display"><span class="l"><span>Pob</span></span><span class="l"><span>Vutisalchavakul</span></span></h1>
+            <p class="hero__thesis">Staff Software Engineer building <span class="serif-em">calm systems at scale</span>.</p>
+          </div>
+          <figure class="hero__art">
+            <div class="hero__block"><img class="hero__portrait" src="pobbody.png" alt="Portrait" width="640" height="880"></div>
+          </figure>
+        </div>
+      </section>
+      <div class="ticker" aria-hidden="true"><div class="ticker__track" data-dupe></div></div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANT 3 ============ -->
+  <section class="variant v3">
+    <div class="variant__tag">
+      <span class="variant__n">03</span>
+      <span class="variant__name">Kinetic headline</span>
+      <span class="variant__note">— motion on the type: an accent underline draws itself in, and one word in the thesis cycles.</span>
+    </div>
+    <div class="demo">
+      <section class="hero wrap bleed">
+        <div class="hero__grid">
+          <div class="hero__lede">
+            <h1 class="display">
+              <span class="l"><span>Pob</span></span>
+              <span class="l"><span class="kname">Vutisalchavakul<svg class="kstroke" viewBox="0 0 300 12" preserveAspectRatio="none"><path d="M2 8 C 60 2, 150 12, 298 5"/></svg></span></span>
+            </h1>
+            <p class="kthesis">Staff Software Engineer building
+              <span class="rotor" data-rotor='["calm","resilient","penny-exact","global"]'><span class="rotor__w is-on serif-em">calm</span></span>
+              systems at scale.</p>
+          </div>
+          <figure class="hero__art">
+            <div class="hero__block"><img class="hero__portrait" src="pobbody.png" alt="Portrait" width="640" height="880"></div>
+          </figure>
+        </div>
+      </section>
+    </div>
+  </section>
+
+<script>
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // fill each ticker with two identical halves for a seamless loop
+  var items = [["$B+","billed to the penny"],["10M+","requests / day"],["95%","sub-second"],
+               ["15M","reached in one release"],["~80","countries off the clock"],["10 yrs","of shipping"]];
+  function halfHTML(){
+    return items.map(function(it){
+      return '<span><span class="dot"></span><b>'+it[0]+'</b> '+it[1]+'</span>';
+    }).join('');
+  }
+  document.querySelectorAll('[data-dupe]').forEach(function(t){ t.innerHTML = halfHTML()+halfHTML(); });
+
+  // rotating word
+  if(!reduce){
+    document.querySelectorAll('[data-rotor]').forEach(function(r){
+      var words = JSON.parse(r.getAttribute('data-rotor'));
+      var i = 0, cur = r.querySelector('.rotor__w');
+      setInterval(function(){
+        i = (i+1)%words.length;
+        var next = document.createElement('span');
+        next.className = 'rotor__w serif-em';
+        next.textContent = words[i];
+        r.appendChild(next);
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ next.classList.add('is-on'); }); });
+        cur.classList.add('is-off');
+        var old = cur;
+        setTimeout(function(){ old.remove(); }, 600);
+        cur = next;
+      }, 2400);
+    });
+  }
+</script>
+</body>
+</html>

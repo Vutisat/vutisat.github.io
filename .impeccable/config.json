@@ -34,7 +34,7 @@
         "rule": "marketing-buzzword",
         "value": "cutting-edge",
         "createdAt": "2026-09-02T19:04:08.960Z",
-        "reason": "user-authored copy on their own personal site about a real S&R project; user was offered a more specific rewrite and chose not to change it"
+        "reason": "user confirmed: existing bio copy describing external search-and-rescue software; user chose to keep it"
       },
       {
         "rule": "side-tab",
@@ -53,6 +53,15 @@
         ],
         "createdAt": "2026-09-05T03:20:07.137Z",
         "reason": "design system: same subway-line accent motif on rounded stop cards (.tip top accent, etc.), intentional and consistent across the page"
+      },
+      {
+        "rule": "marquee",
+        "value": "*",
+        "files": [
+          "preview-hero-motion.html"
+        ],
+        "createdAt": "2026-09-05T03:40:33.698Z",
+        "reason": "intentional demo fixture: preview of user-requested landing motion; tradeoff disclosed in chat, ticker pauses on hover + honors reduced-motion"
       }
     ]
   }

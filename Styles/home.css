@@ -178,8 +178,11 @@ body{
 /* ==========================================================================
    HERO
    ========================================================================== */
-.hero{position:relative;padding-top:clamp(2.5rem,6vh,4rem);padding-bottom:clamp(3rem,7vh,5.5rem);overflow:hidden}
+.hero{position:relative;padding-top:clamp(2.5rem,6vh,4rem);padding-bottom:clamp(3rem,7vh,5.5rem);overflow:visible}
+/* full-bleed: escape the centered wrap so the mesh spans the whole viewport width (body has overflow-x:hidden) */
+.hero__mesh{position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:0;pointer-events:none}
 .hero__grid{
+  position:relative;z-index:1;
   display:grid;grid-template-columns:minmax(0,1fr) minmax(288px,352px);gap:clamp(1.5rem,4vw,3.5rem);
   align-items:center;min-height:min(76vh,680px);
 }
