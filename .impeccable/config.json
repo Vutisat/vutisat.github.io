@@ -81,6 +81,16 @@
         ],
         "createdAt": "2026-09-11T09:10:26.447935Z",
         "reason": "designer intent: wood grain running along the shelf boards, masked to the ledge bands only (.wall::before). A material texture depicting a real surface, not stripes used as decoration."
+      },
+      {
+        "rule": "clipped-overflow-container",
+        "value": "*",
+        "files": [
+          "library.html",
+          "Styles/library.css"
+        ],
+        "createdAt": "2026-09-11T20:48:04.857077Z",
+        "reason": "deliberate: body uses overflow-x:clip so the 341 hidden hover-peek cards, each centred on its book, cannot add ~71px of phantom horizontal scroll on viewports under ~1260px. `clip` does not create a scroll container, so position:sticky still works, and flipPeek() clamps a peek inside the viewport before it is ever shown -- nothing visible is ever cut."
       }
     ]
   }

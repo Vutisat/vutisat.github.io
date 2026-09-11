@@ -263,7 +263,7 @@
     author: null,           /* set while viewing one author's run */
     fives: false,           /* only the books Pob gave five stars */
     sort: "genre",
-    view: window.matchMedia("(min-width: 760px)").matches ? "shelf" : "cards"
+    view: "shelf"
   };
 
   var el = {};
@@ -413,7 +413,12 @@
     }
 
     var isShelf = state.view === "shelf";
-    var draw = isShelf ? spine : card;
+    /* A peek card is a hover affordance. On a touch device it can never be
+       shown -- a tap opens the drawer instead -- yet all 341 still occupy
+       layout while hidden, and each one centred on a narrow slot pushed the
+       document ~71px wider than the viewport. Don't build them at all. */
+    var bare = !canHover.matches;
+    var draw = isShelf ? function (b, i) { return spine(b, i, bare); } : card;
     var box = isShelf ? "wall" : "grid";
 
     if (state.sort === "all") {
@@ -544,9 +549,20 @@
        and shift+wheel already work natively; drag and the arrows cover the
        rest. */
 
-    /* drag to scroll, without swallowing genuine clicks */
+    /* Drag to scroll, for pointing devices only. Touch is deliberately left to
+       the browser: it already pans this rail natively, with momentum, and a JS
+       drag would fight it for the very same gesture. */
     var down = false, startX = 0, startL = 0, moved = 0;
+
+    function endDrag(cancelled) {
+      if (!down) return;
+      down = false;
+      swallowClick = !cancelled && moved > 6;   /* cleared by the click handler */
+      if (rail) rail.classList.remove("is-dragging");
+    }
+
     el.results.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "touch") return;
       if (!rail || !rail.contains(e.target) || e.button) return;
       down = true; moved = 0;
       startX = e.clientX; startL = rail.scrollLeft;
@@ -561,12 +577,13 @@
         normalise();
       }
     });
-    window.addEventListener("pointerup", function () {
-      if (!down) return;
-      down = false;
-      swallowClick = moved > 6;    /* cleared by the click handler itself */
-      rail.classList.remove("is-dragging");
-    });
+    window.addEventListener("pointerup", function () { endDrag(false); });
+    /* The browser fires pointercancel -- not pointerup -- when it claims a
+       gesture for scrolling. Without this the rail stayed flagged as dragging,
+       and .is-dragging sets pointer-events:none on every book, so after one
+       swipe nothing could be tapped again. */
+    window.addEventListener("pointercancel", function () { endDrag(true); });
+    window.addEventListener("blur", function () { endDrag(true); });
 
     el.results.addEventListener("click", function (e) {
       var nav = e.target.closest && e.target.closest(".rail__nav");
@@ -577,6 +594,7 @@
     });
   }
 
+  var canHover = window.matchMedia("(hover: hover)");
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   var PEEK_H = 132, PEEK_GUTTER = 12;
@@ -1102,6 +1120,7 @@
     }
 
     hideChromeOnScroll(search);
+    canHover.addEventListener("change", render);   /* peeks appear/disappear with the pointer */
 
     /* the edge fade hints "more this way"; drop it once there is no more */
     var markEnd = function () {

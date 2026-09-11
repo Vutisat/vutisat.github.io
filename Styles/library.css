@@ -42,6 +42,13 @@
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
+  /* A peek card is centred on its book, so the ones at the right edge of the
+     shelf reach past the page. They are hidden, but hidden elements still
+     occupy layout, and 341 of them added ~71px of phantom horizontal scroll on
+     any viewport under ~1260px. `clip` removes the overflow without creating a
+     scroll container, so position:sticky keeps working; flipPeek() nudges a
+     peek back inside the viewport before it is ever shown. */
+  overflow-x:clip;
   margin:0;
   background:var(--paper);
   color:var(--ink);
