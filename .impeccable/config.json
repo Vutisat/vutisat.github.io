@@ -62,6 +62,25 @@
         ],
         "createdAt": "2026-09-05T03:40:33.698Z",
         "reason": "intentional demo fixture: preview of user-requested landing motion; tradeoff disclosed in chat, ticker pauses on hover + honors reduced-motion"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "library.html",
+          "Styles/library.css"
+        ],
+        "createdAt": "2026-09-11T09:10:26.447935Z",
+        "reason": "designer intent: the page's committed world is paper, cloth, wood and warm ink — a home library in late afternoon. The cream ground IS the paper the books sit against; it is the material the brief named, not a default warm off-white."
+      },
+      {
+        "rule": "repeating-stripes-gradient",
+        "value": "*",
+        "files": [
+          "Styles/library.css"
+        ],
+        "createdAt": "2026-09-11T09:10:26.447935Z",
+        "reason": "designer intent: wood grain running along the shelf boards, masked to the ledge bands only (.wall::before). A material texture depicting a real surface, not stripes used as decoration."
       }
     ]
   }

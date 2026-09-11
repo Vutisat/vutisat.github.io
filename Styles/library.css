@@ -231,7 +231,7 @@ body.has-q .field__clear{display:block}
 
 /* ---- the peek card ------------------------------------------------------ */
 .peek{
-  position:absolute;bottom:calc(100% - 14px);left:50%;translate:-50% 0;
+  position:absolute;bottom:calc(100% - 14px);left:50%;translate:calc(-50% + var(--px,0px)) 0;
   width:236px;max-width:78vw;padding:.85rem .95rem;
   display:flex;flex-direction:column;gap:.15rem;
   background:var(--paper);border:1px solid var(--line-2);border-radius:7px;
@@ -239,10 +239,10 @@ body.has-q .field__clear{display:block}
   opacity:0;visibility:hidden;transform:translateY(5px);pointer-events:none;
   transition:opacity .2s,transform .2s var(--ease),visibility .2s;
 }
-.peek::after{content:"";position:absolute;top:100%;left:50%;translate:-50% -4px;rotate:45deg;width:9px;height:9px;background:var(--paper);border-right:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+.peek::after{content:"";position:absolute;top:100%;left:50%;translate:calc(-50% - var(--px,0px)) -4px;rotate:45deg;width:9px;height:9px;background:var(--paper);border-right:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
 .slot.flip .peek{bottom:auto;top:calc(100% - 16px);transform:translateY(-5px)}
 .slot.flip:hover .peek,.slot.flip .book:focus-visible ~ .peek{transform:none}
-.slot.flip .peek::after{top:auto;bottom:100%;translate:-50% 4px;border:0;border-left:1px solid var(--line-2);border-top:1px solid var(--line-2)}
+.slot.flip .peek::after{top:auto;bottom:100%;translate:calc(-50% - var(--px,0px)) 4px;border:0;border-left:1px solid var(--line-2);border-top:1px solid var(--line-2)}
 .slot:hover .peek,.book:focus-visible ~ .peek{opacity:1;visibility:visible;transform:none}
 .peek__title{font-family:"Garamond",Georgia,serif;font-size:1.12rem;line-height:1.3;color:var(--ink)}
 .peek__author{font-size:.83rem;color:var(--ink-2)}
@@ -277,9 +277,7 @@ body.has-q .field__clear{display:block}
 .empty__btn:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 
 .foot{border-top:1px solid var(--line);margin-top:2rem;background:var(--paper-2)}
-.foot__in{display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:flex-end;padding:3rem 0 3.4rem}
-.foot__sig{font-family:"Garamond",Georgia,serif;font-size:1.7rem;line-height:1.32;color:var(--ink)}
-.foot__sig span{display:block;font-family:"Hanken",sans-serif;font-size:.9rem;color:var(--ink-3);margin-top:.5rem}
+.foot__in{display:flex;flex-wrap:wrap;gap:2rem;justify-content:flex-end;align-items:flex-end;padding:2.4rem 0 2.8rem}
 .foot__meta{font-size:.82rem;color:var(--ink-3);text-align:right;line-height:1.9}
 .foot__meta a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-2)}
 .foot__meta a:hover{color:var(--amber);border-color:var(--amber)}
@@ -297,8 +295,6 @@ body.has-q .field__clear{display:block}
   .controls__row{gap:.5rem}
   .field{flex:1 1 100%}
   .sortwrap{flex:1 1 auto}
-  .foot__in{flex-direction:column;align-items:flex-start}
-  .foot__meta{text-align:left}
 }
 @media (max-width:420px){
   .views button span{display:none}

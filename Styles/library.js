@@ -204,7 +204,7 @@
   var state = {
     q: "",
     family: "all",
-    sort: "title",
+    sort: "genre",
     view: window.matchMedia("(min-width: 760px)").matches ? "shelf" : "cards"
   };
 
@@ -354,13 +354,26 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  var PEEK_H = 132;
+  var PEEK_H = 132, PEEK_GUTTER = 12;
   function flipPeek(e) {
     var slot = e.target.closest && e.target.closest(".slot");
     if (!slot) return;
+
+    /* Flip below when the card would slide under the sticky toolbar. */
     var ctl = document.querySelector(".controls");
     var floor = ctl ? ctl.getBoundingClientRect().bottom : 0;
     slot.classList.toggle("flip", slot.getBoundingClientRect().top - PEEK_H < floor);
+
+    /* And nudge it back on screen for books at either end of a shelf. */
+    var peek = slot.querySelector(".peek");
+    if (!peek) return;
+    slot.style.setProperty("--px", "0px");
+    var r = peek.getBoundingClientRect(), shift = 0;
+    if (r.left < PEEK_GUTTER) shift = PEEK_GUTTER - r.left;
+    else if (r.right > window.innerWidth - PEEK_GUTTER) {
+      shift = (window.innerWidth - PEEK_GUTTER) - r.right;
+    }
+    if (shift) slot.style.setProperty("--px", shift.toFixed(1) + "px");
   }
 
   /* ---- filter pills ------------------------------------------------------- */
@@ -445,6 +458,7 @@
     if (!el.results || !search || !sort || !el.pills || !el.views) return;
 
     buildPills();
+    sort.value = state.sort;   /* keep the control showing the real default */
 
     var t;
     search.addEventListener("input", function () {
