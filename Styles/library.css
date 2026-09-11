@@ -40,14 +40,17 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+/* A peek card is centred on its book, so the ones at the right edge of the
+   shelf reach past the page. They are hidden, but hidden elements still occupy
+   layout, and 341 of them added phantom horizontal scroll on any viewport the
+   shelf doesn't fill. `clip` removes the overflow without creating a scroll
+   container, so position:sticky keeps working; flipPeek() nudges a peek back
+   inside the viewport before it is ever shown.
+   It is set on both boxes on purpose: overflow on <body> is propagated up to
+   the viewport while <html> is `visible`, which leaves <body> itself clipping
+   nothing. Naming <html> stops the propagation, so each box clips its own. */
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
 body{
-  /* A peek card is centred on its book, so the ones at the right edge of the
-     shelf reach past the page. They are hidden, but hidden elements still
-     occupy layout, and 341 of them added ~71px of phantom horizontal scroll on
-     any viewport under ~1260px. `clip` removes the overflow without creating a
-     scroll container, so position:sticky keeps working; flipPeek() nudges a
-     peek back inside the viewport before it is ever shown. */
   overflow-x:clip;
   margin:0;
   background:var(--paper);
@@ -246,18 +249,16 @@ body.has-q .field__clear{display:block}
 .book[data-treat="2"] .book__band--low{box-shadow:0 -3px 0 rgba(246,239,226,.22)}
 .book[data-treat="3"] .book__band{opacity:0}
 
-/* a thick spine prints its title across, the way a real hardback does */
-.book[data-horiz] .book__title{
-  writing-mode:horizontal-tb;white-space:normal;overflow-wrap:break-word;
-  display:flex;align-items:center;justify-content:center;text-align:center;
-  font-size:.56rem;line-height:1.22;letter-spacing:0;padding:0 3px;margin:5px 2px;
-}
 .book__band--low{margin-top:auto}
+/* Every title prints across the spine, never down it, so nothing asks the
+   reader to tilt their head. library.js cuts each spine to fit its own longest
+   word and hands the size down in --fs, which is why no word has to break. */
 .book__title{
-  flex:1;min-height:0;margin:7px 0;
-  writing-mode:vertical-rl;text-orientation:mixed;
-  font-family:"Garamond",Georgia,serif;font-size:.78rem;line-height:1;letter-spacing:.01em;
-  color:var(--paper);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  flex:1;min-height:0;margin:5px 2px;padding:0 3px;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-family:"Garamond",Georgia,serif;
+  font-size:var(--fs,9px);line-height:1.26;letter-spacing:0;
+  color:var(--paper);text-wrap:balance;hyphens:manual;
   text-shadow:0 1px 0 rgba(0,0,0,.3);
 }
 /* hook a finger over the top and tip it out */

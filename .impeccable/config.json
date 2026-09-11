@@ -90,7 +90,7 @@
           "Styles/library.css"
         ],
         "createdAt": "2026-09-11T20:48:04.857077Z",
-        "reason": "deliberate: body uses overflow-x:clip so the 341 hidden hover-peek cards, each centred on its book, cannot add ~71px of phantom horizontal scroll on viewports under ~1260px. `clip` does not create a scroll container, so position:sticky still works, and flipPeek() clamps a peek inside the viewport before it is ever shown -- nothing visible is ever cut."
+        "reason": "deliberate: <html> and <body> both use overflow-x:clip so the hidden hover-peek cards, each centred on its book, cannot add phantom horizontal scroll on viewports the shelf does not fill. Both are named because overflow on <body> propagates to the viewport while <html> is `visible`, which would leave <body> itself clipping nothing. `clip` creates no scroll container, so position:sticky still works, and flipPeek() clamps a peek inside the viewport before it is ever shown: nothing visible is ever cut."
       }
     ]
   }

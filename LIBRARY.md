@@ -140,6 +140,33 @@ period the jump is invisible, so it scrolls forever in either direction.
   footer. Sideways trackpad gestures and shift+wheel work natively; drag and the
   arrow buttons cover the rest.
 
+## Typesetting the spines
+
+Nobody should have to tilt their head at a shelf, so every title is printed
+across its spine rather than down it. That only works if a spine is wide enough
+for its own longest word, so `typeset()` in `library.js` measures the title
+first and cuts the spine to fit it, the way a real book is bound around its
+pages.
+
+- `ADV` holds EB Garamond's advance widths, measured once from the shipped
+  woff2 and stored in hundredths of an em. Measuring in a canvas at run time
+  would be exact, but it cannot answer until the font has loaded, and these
+  numbers set the width of every book on the wall: the whole shelf would reflow
+  under the reader a moment after it painted.
+- A spine is the wider of its hash jitter (44 to 61px, so the shelf does not
+  march in lockstep) and what its longest word needs, capped at 78px.
+- Type opens at 11px and steps down only if the title still will not fit the
+  height. **332 of the 341 books sit at the full 11px**; the nine that step down
+  land between 8.4 and 10.9px, close enough that the shelf still reads as one
+  size.
+- Height is measured against the *shortest* shelf band, the 186px one phones
+  get, so a spine keeps its size when the layout crosses the 760px breakpoint.
+- Line breaks are allowed after a hyphen, matching the browser's own line
+  breaker, which is what lets *Slaughterhouse-Five* and *The E-Myth Revisited*
+  fit spines their unbroken words never would.
+- Verified across all 341: no title overflows its column, and none is clipped
+  by its spine, at both 1440px and the narrowest layout.
+
 ## Notable decisions
 
 - **No community rating is shown.** Open Library's rating counts are thin (500
@@ -156,8 +183,7 @@ period the jump is invisible, so it scrolls forever in either direction.
   authors, 146 books). A link returning a single result is a tease.
 - **Spine size comes from a hash of title+author, never `Math.random()`**, so a
   book is the same size on every load and never resizes while you type.
-- **Horizontal spine titles require the longest word to fit** the spine width,
-  not just a short title — otherwise text breaks mid-word ("Impossib / le").
+- **Every title prints across its spine, never down it.** See below.
 - **The drawer opens via a forced reflow, not `requestAnimationFrame`.** rAF
   does not fire in a hidden or throttled tab, which left the drawer stuck off
   screen.

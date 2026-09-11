@@ -147,6 +147,107 @@
     return n >= 0 && n <= 5 ? n : null;
   }
 
+  /* ---- fitting a title to its spine ---------------------------------------
+     Every title is printed across its spine rather than down it, so nobody has
+     to tilt their head at the shelf. That only works if each spine is wide
+     enough for its own longest word, so a book is typeset first and bound
+     second: measure the title, then cut the spine to fit it.
+
+     ADV holds EB Garamond's advance widths, measured from the shipped woff2 at
+     100px and kept in hundredths of an em. Measuring in a canvas at run time
+     would be exact, but it cannot answer until the font has loaded, and these
+     numbers decide the width of every book on the wall -- the whole shelf would
+     reflow under the reader a moment after it painted. The table is close
+     enough; the fitter leaves slack for its error.
+  ------------------------------------------------------------------------- */
+  var ADV = {};
+  (function () {
+    function set(chars, widths) {
+      for (var i = 0; i < chars.length; i++) ADV[chars[i]] = widths[i];
+    }
+    set("abcdefghijklmnopqrstuvwxyz",
+        [50, 56, 45, 57, 48, 33, 51, 58, 29, 29, 54, 29, 88,
+         59, 54, 57, 56, 41, 43, 35, 58, 50, 74, 51, 49, 44]);
+    set("ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        [69, 65, 64, 75, 65, 60, 73, 82, 39, 52, 69, 60, 93,
+         77, 74, 61, 74, 70, 56, 62, 76, 67, 98, 71, 62, 60]);
+    set("0123456789", [61, 43, 56, 55, 57, 53, 57, 50, 60, 57]);
+    set("'\u2019-.,:;!?()&\u2013\u2014/", [22, 23, 37, 27, 27, 31, 31, 33, 48, 38, 38, 71, 64, 100, 28]);
+  })();
+  var ADV_OTHER = 55;   /* accented letters and anything else unlisted */
+  var ADV_SPACE = 25;   /* a word space, same units */
+
+  var SPINE_MIN = 44;   /* the narrowest a spine may be cut, in px */
+  var SPINE_VAR = 18;   /* hash jitter above that, so the shelf isn't uniform */
+  var SPINE_MAX = 78;   /* ...and the widest a book plausibly binds to */
+  var FS_MAX = 11;    /* spine type, in px */
+  var FS_MIN = 7.4;
+  var LEADING = 1.26;
+  var SIDE = 12;        /* the title's own padding and margin, both sides */
+  var ENDS = 34;        /* the book's padding, its two rules, the title margin */
+  var ROOF = 171;       /* the shortest shelf band (phones) less its ledge */
+
+  function advance(word) {
+    var w = 0, i, a;
+    for (i = 0; i < word.length; i++) {
+      a = ADV[word[i]];
+      w += a === undefined ? ADV_OTHER : a;
+    }
+    return w;
+  }
+
+  /* The pieces a line may break between: words, and the tail of a hyphenated
+     word, since the line breaker is allowed to break after the hyphen too. */
+  function chunksOf(title) {
+    var out = [], buf = "", s = String(title), i, c;
+    for (i = 0; i < s.length; i++) {
+      c = s[i];
+      if (c === " " || c === "\t" || c === "\n") {
+        if (buf) { out.push(buf); buf = ""; }
+        continue;
+      }
+      buf += c;
+      if (c === "-" || c === "\u2013" || c === "\u2014") { out.push(buf); buf = ""; }
+    }
+    if (buf) out.push(buf);
+    return out.length ? out : [" "];
+  }
+
+  function lineCount(chunks, column, fs) {
+    var lines = 1, cur = 0, i, w, glue;
+    for (i = 0; i < chunks.length; i++) {
+      w = advance(chunks[i]) * fs / 100;
+      if (cur === 0) { cur = w; continue; }
+      /* nothing is set after a hyphen: that break falls inside a word */
+      glue = /[-\u2013\u2014]$/.test(chunks[i - 1]) ? 0 : ADV_SPACE * fs / 100;
+      if (cur + glue + w <= column) { cur += glue + w; } else { lines++; cur = w; }
+    }
+    return lines;
+  }
+
+  function typeset(b) {
+    var chunks = chunksOf(b.title), longest = 1, i, w;
+    for (i = 0; i < chunks.length; i++) {
+      w = advance(chunks[i]);
+      if (w > longest) longest = w;
+    }
+
+    b.bh = 152 + (b.h % 56);                 /* 152-207px */
+    b.bw = Math.max(SPINE_MIN + ((b.h >>> 8) % SPINE_VAR),
+                    Math.min(SPINE_MAX, Math.ceil(longest * FS_MAX / 100) + SIDE));
+
+    /* Height is measured against the shortest shelf band rather than the one
+       on screen, so a spine keeps its size when the layout crosses 760px. */
+    var column = b.bw - SIDE;
+    var room = Math.min(b.bh, ROOF) - ENDS;
+    /* Open at the largest size the longest word allows, then step down until
+       the whole title fits the height as well. */
+    var fs = Math.min(FS_MAX, column * 100 / longest);
+    while (fs > FS_MIN && lineCount(chunks, column, fs) * fs * LEADING > room) fs -= 0.2;
+    b.fs = Math.round(Math.max(FS_MIN, fs) * 10) / 10;
+    return b;
+  }
+
   function toBooks(rows) {
     return rows.map(function (r) {
       var title = r[0], author = r[1], genre = r[2];
@@ -165,12 +266,9 @@
         surname: surnameOf(author),
         sortTitle: sortTitle(title),
         h: h,
-        maxWord: title.split(/\s+/).reduce(function (m, w) {
-          return w.length > m ? w.length : m;
-        }, 0),
         search: fold(title + " " + author + " " + genre)
       };
-    });
+    }).map(typeset);
   }
 
   /* ---- RFC 4180 CSV ------------------------------------------------------
@@ -354,19 +452,13 @@
   function spine(b, i, bare) {
     /* >>> not >>: the hash fills 32 bits, and a signed shift turns values above
        2^31 negative, which JS's % then keeps negative (5px-wide books). */
-    var height = 152 + (b.h % 56);           /* 152-207px */
-    var width = 30 + ((b.h >>> 8) % 26);     /* 30-55px   */
     var shade = (b.h >>> 16) % 7;            /* subtle cloth variation */
     var treat = (b.h >>> 24) % 4;            /* rules / label panel / doubled / bare */
-    /* A thick spine with a short title prints it across, like a real hardback --
-       but only when the longest word actually fits the width. Otherwise the text
-       breaks mid-word ("Impossib / le"), which no printer has ever done. */
-    var horiz = width >= 46 && b.title.length <= 24 && b.maxWord <= (width - 10) / 4.6;
     return '<div class="slot">' +
       '<button type="button" class="book" data-i="' + i + '" data-fam="' + b.family + '" data-shade="' + shade + '"' +
-        ' data-treat="' + treat + '"' + (horiz ? ' data-horiz="1"' : '') +
+        ' data-treat="' + treat + '"' +
         (b.rating === 5 ? ' data-five="1"' : '') +
-        ' style="--bh:' + height + 'px;--bw:' + width + 'px"' +
+        ' style="--bh:' + b.bh + 'px;--bw:' + b.bw + 'px;--fs:' + b.fs + 'px"' +
         ' aria-label="' + esc(b.title + ", " + b.author + ", " + b.genre + ", " + b.yearText) + '">' +
         '<span class="book__band" aria-hidden="true"></span>' +
         '<span class="book__title" aria-hidden="true">' + esc(b.title) + '</span>' +
