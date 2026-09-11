@@ -203,7 +203,7 @@
 
   var state = {
     q: "",
-    family: "all",
+    families: [],           /* empty means every genre */
     sort: "genre",
     view: window.matchMedia("(min-width: 760px)").matches ? "shelf" : "cards"
   };
@@ -217,9 +217,10 @@
   }
 
   function visible() {
-    var tk = tokens(state.q), fam = state.family;
+    var tk = tokens(state.q), fams = state.families;
     var list = books.filter(function (b) {
-      if (fam !== "all" && b.family !== fam) return false;
+      /* no genres picked shows everything; otherwise any one of them qualifies */
+      if (fams.length && fams.indexOf(b.family) === -1) return false;
       for (var i = 0; i < tk.length; i++) {
         if (b.search.indexOf(tk[i]) === -1) return false;
       }
@@ -232,6 +233,7 @@
 
   function comparator(sort) {
     function byTitle(a, b) { return collator.compare(a.sortTitle, b.sortTitle); }
+    /* "all" has no grouping, but the books still need an order: title. */
     if (sort === "author") {
       return function (a, b) {
         return collator.compare(a.surname, b.surname) || byTitle(a, b);
@@ -314,20 +316,28 @@
     var html = "", group = null, open = false, i, b, label;
     var isShelf = state.view === "shelf";
     var draw = isShelf ? spine : card;
+    var box = isShelf ? "wall" : "grid";
 
-    for (i = 0; i < list.length; i++) {
-      b = list[i];
-      label = groupLabel(b);
-      if (label !== group) {
-        if (open) html += "</div>";
-        group = label;
-        html += '<h2 class="group">' + esc(label) + "</h2>";
-        html += '<div class="' + (isShelf ? "wall" : "grid") + '">';
-        open = true;
+    if (state.sort === "all") {
+      /* one continuous run, no dividers — the whole collection on one shelf */
+      html = '<div class="' + box + '">';
+      for (i = 0; i < list.length; i++) html += draw(list[i]);
+      html += "</div>";
+    } else {
+      for (i = 0; i < list.length; i++) {
+        b = list[i];
+        label = groupLabel(b);
+        if (label !== group) {
+          if (open) html += "</div>";
+          group = label;
+          html += '<h2 class="group">' + esc(label) + "</h2>";
+          html += '<div class="' + box + '">';
+          open = true;
+        }
+        html += draw(b);
       }
-      html += draw(b);
+      if (open) html += "</div>";
     }
-    if (open) html += "</div>";
 
     el.results.className = "results results--" + state.view;
     el.results.innerHTML = html;
@@ -380,7 +390,7 @@
   function buildPills() {
     var counts = {};
     books.forEach(function (b) { counts[b.family] = (counts[b.family] || 0) + 1; });
-    var html = '<button type="button" class="pill is-on" data-fam="all" aria-pressed="true">' +
+    var html = '<button type="button" class="pill" data-fam="all" aria-pressed="false">' +
                'Everything <span class="pill__n">' + books.length + '</span></button>';
     FAMILIES.filter(function (f) { return counts[f[0]]; })
       .sort(function (a, b) { return counts[b[0]] - counts[a[0]]; })
@@ -389,17 +399,31 @@
                 '<span class="pill__dot" data-fam="' + f[0] + '"></span>' + esc(f[1]) +
                 ' <span class="pill__n">' + counts[f[0]] + '</span></button>';
       });
+    html += '<button type="button" class="pill pill--clear" data-clear="1" hidden>' +
+              '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"' +
+              ' stroke-width="1.9" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg>' +
+              'Clear filters</button>';
     el.pills.innerHTML = html;
+    syncPills();
   }
 
-  function setPill(fam) {
-    state.family = fam;
-    var all = el.pills.querySelectorAll(".pill");
+  function toggleFamily(fam) {
+    if (fam === "all") { state.families = []; return; }
+    var i = state.families.indexOf(fam);
+    if (i === -1) state.families.push(fam); else state.families.splice(i, 1);
+  }
+
+  function syncPills() {
+    var none = state.families.length === 0;
+    var all = el.pills.querySelectorAll(".pill[data-fam]");
     for (var i = 0; i < all.length; i++) {
-      var on = all[i].getAttribute("data-fam") === fam;
+      var fam = all[i].getAttribute("data-fam");
+      var on = fam === "all" ? none : state.families.indexOf(fam) !== -1;
       all[i].classList.toggle("is-on", on);
       all[i].setAttribute("aria-pressed", on ? "true" : "false");
     }
+    var clear = el.pills.querySelector("[data-clear]");
+    if (clear) clear.hidden = none;
   }
 
   function setView(view) {
@@ -430,7 +454,6 @@
         raw = next;
         books = toBooks(next);
         buildPills();
-        setPill(state.family);
         render();
         var delta = books.length - before;
         if (delta !== 0) {
@@ -486,9 +509,16 @@
     });
 
     el.pills.addEventListener("click", function (e) {
-      var btn = e.target.closest(".pill");
+      if (e.target.closest("[data-clear]")) {
+        state.families = [];
+        syncPills();
+        render();
+        return;
+      }
+      var btn = e.target.closest(".pill[data-fam]");
       if (!btn) return;
-      setPill(btn.getAttribute("data-fam"));
+      toggleFamily(btn.getAttribute("data-fam"));
+      syncPills();
       render();
     });
 
@@ -498,7 +528,8 @@
         search.value = "";
         state.q = "";
         document.body.classList.remove("has-q");
-        setPill("all");
+        state.families = [];
+        syncPills();
         render();
         search.focus();
       });

@@ -142,7 +142,19 @@ body.has-q .field__clear{display:block}
 .pills{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
 .pill{display:inline-flex;align-items:center;gap:.4rem;padding:.32rem .72rem;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--ink-2);font-size:.8rem;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
 .pill:hover{border-color:var(--line-2);background:var(--paper-2)}
-.pill.is-on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+/* a selected genre wears its own cloth, so several at once read as a palette
+   instead of a row of identical dark pills. "Everything" has no cloth, so it
+   falls back to ink and stays visually distinct from a genre choice. */
+.pill.is-on{background:var(--cloth,var(--ink));border-color:transparent;color:var(--paper)}
+.pill.is-on:hover{filter:brightness(1.12)}
+.pill.is-on .pill__dot{background:var(--paper)}
+.pill.is-on .pill__n{opacity:.75}
+
+/* dashed, so it reads as an escape from the row rather than another choice in it */
+.pill--clear{border-style:dashed;color:var(--ink-2)}
+.pill--clear svg{width:13px;height:13px}
+.pill--clear:hover{background:var(--ink);border-color:var(--ink);border-style:solid;color:var(--paper)}
+.pill--clear[hidden]{display:none}
 .pill__dot{width:8px;height:8px;border-radius:2px;background:var(--cloth,var(--ink-3))}
 .pill__n{font-variant-numeric:tabular-nums;font-size:.73rem;opacity:.6}
 
