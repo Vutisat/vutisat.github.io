@@ -84,6 +84,12 @@ and hands focus back to the book.
 **Title, author, genre, year and Pob's rating all come from the sheet.** Open
 Library supplies only the cover, blurb and page count.
 
+The author in the drawer is the same run link the shelf uses, and it needs its
+own click delegation: the drawer sits outside `#results`, so the shelf's
+delegation never saw it. Following it closes the drawer, because the filter it
+applies is a fresh view of the shelf behind and the scrim would otherwise dim
+the very result you asked for. Focus lands on *show every author again*.
+
 ### Why Open Library, and not Goodreads
 
 - **Goodreads is not possible.** The API was retired — no new keys since

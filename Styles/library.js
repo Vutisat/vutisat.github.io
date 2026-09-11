@@ -1196,6 +1196,22 @@
       if (b) openPanel(b, hit);
     });
 
+    /* The drawer renders an author link too, and it sits outside #results, so
+       the delegation above never saw it: the link looked live and did nothing.
+       Close the drawer on the way out. The filter is a fresh view of the shelf
+       behind, and the scrim would otherwise leave the reader dimming the very
+       result they asked for. Focus lands on "show every author again", which is
+       the control that names the state they just entered. */
+    if (el.panel) {
+      el.panel.addEventListener("click", function (e) {
+        var link = e.target.closest("[data-author]");
+        if (!link) return;
+        closePanel();
+        setAuthor(link.getAttribute("data-author"));
+        if (el.authorClear) el.authorClear.focus();
+      });
+    }
+
     if (el.panelClose) el.panelClose.addEventListener("click", closePanel);
     if (el.scrim) el.scrim.addEventListener("click", closePanel);
     document.addEventListener("keydown", function (e) {

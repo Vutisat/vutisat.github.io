@@ -188,9 +188,12 @@ body{
 }
 /* With the portrait commented out of index.html the second track would still
    reserve its 288px minimum, leaving a dead gutter beside the name. Keyed off
-   the art itself so putting the <figure> back restores the two-column hero
-   without touching this file. */
-.hero__grid:not(:has(.hero__art)){grid-template-columns:minmax(0,1fr);min-height:min(62vh,540px)}
+   the art itself, so putting the <figure> back restores the two-column hero
+   without touching this file. Only above the breakpoint: below it the hero is
+   already one column and hugs its content. */
+@media (min-width:921px){
+  .hero__grid:not(:has(.hero__art)){grid-template-columns:minmax(0,1fr);min-height:min(62vh,540px)}
+}
 .hero__lede{position:relative;z-index:2}
 .hero__eyebrow{display:flex;align-items:center;gap:.7rem;margin-bottom:1.6rem}
 .hero__eyebrow .avail{display:inline-flex;align-items:center;gap:.5rem;color:var(--ink-2)}
