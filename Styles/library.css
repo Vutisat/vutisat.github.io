@@ -1,0 +1,313 @@
+/* ===========================================================================
+   Pob's Library — a self-contained world.
+   Borrows nothing from home.css or main.css: own fonts, own tokens, own reset.
+   =========================================================================== */
+
+@font-face{font-family:"Garamond";src:url("../fonts/ebgaramond-var.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
+@font-face{font-family:"Garamond";src:url("../fonts/ebgaramond-italic.woff2") format("woff2");font-weight:400 700;font-style:italic;font-display:swap}
+@font-face{font-family:"Hanken";src:url("../fonts/hanken-var.woff2") format("woff2");font-weight:300 800;font-style:normal;font-display:swap}
+
+/* ---- tokens ------------------------------------------------------------- */
+:root{
+  --paper:#F6EFE2;
+  --paper-2:#EFE6D6;
+  --paper-3:#E7DBC6;
+  --ink:#2C2015;
+  --ink-2:#574434;
+  --ink-3:#6F5B45;
+  --line:rgba(44,32,21,.14);
+  --line-2:rgba(44,32,21,.26);
+
+  --wood:#9A6C41;
+  --wood-dark:#7A5230;
+  --wood-edge:#B98B5C;
+  --amber:#9C561F;
+  --amber-wash:rgba(156,86,31,.10);
+  --cat:#DFD0B4;
+
+  --shelf-h:224px;     /* one band of the shelf wall */
+  --ledge:9px;         /* the wooden lip books stand on */
+  --wrap:1180px;
+  --ease:cubic-bezier(.2,.8,.25,1);
+
+  /* book cloth, by genre family — all >=6.4:1 against --paper */
+  --c-scifi:#2E4257;  --c-fantasy:#37472C; --c-litfic:#5A2A2A;
+  --c-fiction:#23514E; --c-classics:#6B4A21; --c-mystery:#3B2B3C;
+  --c-horror:#2A2028; --c-romance:#6B3648; --c-graphic:#6A5219;
+  --c-nonfiction:#4A4640; --c-science:#33345C; --c-business:#4B4A28;
+  --c-selfhelp:#74401F; --c-memoir:#5C412F; --c-poetry:#4A2F55;
+  --c-ya:#1F4A55; --c-language:#6B3A2A;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font:400 1rem/1.65 "Hanken",ui-sans-serif,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+/* a breath of paper tooth over the whole page */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .30 0 0 0 0 .22 0 0 0 0 .12 0 0 0 .055 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+main,header,footer{position:relative;z-index:1}
+h1,h2,h3{margin:0;font-weight:400;line-height:1.12;letter-spacing:-.012em}
+p{margin:0}
+img,svg{display:block;max-width:100%}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--amber);outline-offset:3px;border-radius:3px}
+::selection{background:rgba(156,86,31,.20)}
+input{caret-color:var(--amber)}
+html{scrollbar-color:var(--paper-3) var(--paper)}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:var(--paper)}
+::-webkit-scrollbar-thumb{background:var(--paper-3);border:3px solid var(--paper);border-radius:999px}
+::-webkit-scrollbar-thumb:hover{background:var(--wood-edge)}
+
+.wrap{width:min(100% - 2.5rem,var(--wrap));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:var(--paper);padding:.7rem 1.1rem;border-radius:0 0 6px 0}
+.skip:focus{left:0}
+
+/* ---- top bar ------------------------------------------------------------ */
+.bar{position:sticky;top:0;z-index:40;background:rgba(246,239,226,.88);backdrop-filter:blur(9px);border-bottom:1px solid var(--line)}
+.bar__in{display:flex;align-items:center;gap:1rem;height:58px}
+.mark{display:inline-flex;align-items:center;gap:.6rem;color:var(--ink);text-decoration:none;font-size:.83rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.mark__spines{display:inline-flex;align-items:flex-end;gap:2px;height:17px}
+.mark__spines i{display:block;width:4px;border-radius:1px;background:var(--c-litfic)}
+.mark__spines i:nth-child(1){height:13px}
+.mark__spines i:nth-child(2){height:17px;background:var(--c-classics)}
+.mark__spines i:nth-child(3){height:11px;background:var(--c-scifi)}
+.bar__spacer{flex:1}
+.bar__back{display:inline-flex;align-items:center;gap:.45rem;color:var(--ink-3);text-decoration:none;font-size:.82rem;transition:color .2s}
+.bar__back svg{width:15px;height:15px}
+.bar__back:hover{color:var(--amber)}
+
+/* ---- hero --------------------------------------------------------------- */
+.hero{padding:clamp(3.5rem,9vh,6rem) 0 clamp(1.75rem,4vh,2.75rem);position:relative;z-index:1}
+.hero h1{font-family:"Garamond",Georgia,serif;font-size:clamp(3rem,9vw,6rem);letter-spacing:-.028em;text-wrap:balance}
+.hero h1 em{font-style:italic;color:var(--amber)}
+.hero__sub{max-width:46ch;margin-top:1.4rem;font-size:1.08rem;color:var(--ink-2);text-wrap:pretty}
+.hero__meta{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-top:1.6rem;font-size:.83rem;color:var(--ink-3)}
+.hero__count{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.sep{color:var(--line-2)}
+
+/* ---- controls ----------------------------------------------------------- */
+.stacks{padding-bottom:clamp(3rem,8vh,5rem)}
+.controls{position:sticky;top:58px;z-index:30;padding:.9rem 0 .85rem;background:var(--paper);margin-bottom:.4rem}
+/* fade the scrolling shelf out *below* the bar rather than letting it ghost through it */
+.controls::after{content:"";position:absolute;left:0;right:0;top:100%;height:11px;pointer-events:none;background:linear-gradient(var(--paper),rgba(246,239,226,0))}
+.controls__row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+
+.field{position:relative;flex:1 1 260px;min-width:0}
+.field__icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--ink-3);pointer-events:none}
+.field input{
+  width:100%;padding:.72rem 2.3rem .72rem 2.6rem;border:1px solid var(--line-2);border-radius:999px;
+  background:var(--paper-2);color:var(--ink);font-size:.95rem;
+  transition:border-color .2s,background .2s;
+}
+.field input::placeholder{color:var(--ink-3)}
+.field input::-webkit-search-cancel-button{display:none}
+.field input:focus{outline:none;border-color:var(--amber);background:var(--paper)}
+.field input:focus-visible{outline:2.5px solid var(--amber);outline-offset:2px}
+.field__clear{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);display:none;
+  width:26px;height:26px;border:0;border-radius:50%;background:var(--paper-3);color:var(--ink-2);
+  font-size:1.05rem;line-height:1;cursor:pointer
+}
+body.has-q .field__clear{display:block}
+.field__clear:hover{background:var(--amber);color:var(--paper)}
+
+.sortwrap{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .5rem .4rem .9rem;border:1px solid var(--line);border-radius:999px;background:var(--paper-2)}
+.sortwrap__lbl{font-size:.76rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.sortwrap select{border:0;background:none;font-size:.88rem;padding:.3rem 1.4rem .3rem .2rem;cursor:pointer;
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%236F5B45' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .35rem center;background-size:12px}
+.sortwrap select:focus{outline:none}
+.sortwrap:focus-within{border-color:var(--amber)}
+
+.views{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--paper-2)}
+.views button{display:inline-flex;align-items:center;gap:.4rem;padding:.42rem .85rem;border:0;border-radius:999px;background:none;color:var(--ink-3);font-size:.84rem;cursor:pointer;transition:background .2s,color .2s}
+.views button svg{width:15px;height:15px}
+.views button:hover{color:var(--ink)}
+.views button.is-on{background:var(--ink);color:var(--paper)}
+
+/* ---- genre pills -------------------------------------------------------- */
+.pills{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
+.pill{display:inline-flex;align-items:center;gap:.4rem;padding:.32rem .72rem;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--ink-2);font-size:.8rem;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+.pill:hover{border-color:var(--line-2);background:var(--paper-2)}
+.pill.is-on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.pill__dot{width:8px;height:8px;border-radius:2px;background:var(--cloth,var(--ink-3))}
+.pill__n{font-variant-numeric:tabular-nums;font-size:.73rem;opacity:.6}
+
+/* ---- cloth assignment --------------------------------------------------- */
+[data-fam=scifi]{--cloth:var(--c-scifi)}      [data-fam=fantasy]{--cloth:var(--c-fantasy)}
+[data-fam=litfic]{--cloth:var(--c-litfic)}    [data-fam=fiction]{--cloth:var(--c-fiction)}
+[data-fam=classics]{--cloth:var(--c-classics)}[data-fam=mystery]{--cloth:var(--c-mystery)}
+[data-fam=horror]{--cloth:var(--c-horror)}    [data-fam=romance]{--cloth:var(--c-romance)}
+[data-fam=graphic]{--cloth:var(--c-graphic)}  [data-fam=nonfiction]{--cloth:var(--c-nonfiction)}
+[data-fam=science]{--cloth:var(--c-science)}  [data-fam=business]{--cloth:var(--c-business)}
+[data-fam=selfhelp]{--cloth:var(--c-selfhelp)}[data-fam=memoir]{--cloth:var(--c-memoir)}
+[data-fam=poetry]{--cloth:var(--c-poetry)}    [data-fam=ya]{--cloth:var(--c-ya)}
+[data-fam=language]{--cloth:var(--c-language)}
+
+/* ---- group headings ----------------------------------------------------- */
+.group{
+  display:flex;align-items:center;gap:.9rem;margin:2.1rem 0 .7rem;
+  font-family:"Hanken",sans-serif;font-size:.74rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);
+}
+.group::after{content:"";flex:1;height:1px;background:var(--line)}
+.results > .group:first-child{margin-top:.6rem}
+
+/* ---- the shelf wall ----------------------------------------------------- */
+.wall{
+  display:flex;flex-wrap:wrap;align-content:flex-start;row-gap:0;column-gap:0;
+  padding:0 10px;
+  /* a board, not a bar: lit top arris, body, shadowed front edge */
+  position:relative;
+  background:
+    repeating-linear-gradient(to bottom,
+      transparent 0 calc(var(--shelf-h) - var(--ledge) - 1px),
+      var(--wood-edge) calc(var(--shelf-h) - var(--ledge) - 1px) calc(var(--shelf-h) - var(--ledge)),
+      var(--wood) calc(var(--shelf-h) - var(--ledge)) calc(var(--shelf-h) - 3px),
+      var(--wood-dark) calc(var(--shelf-h) - 3px) var(--shelf-h));
+  border-radius:2px;
+}
+/* grain runs along the boards only — the mask keeps it off the wall behind */
+.wall::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:2px;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0 2px,transparent 2px 7px,rgba(255,255,255,.06) 7px 8px,transparent 8px 19px);
+  -webkit-mask:repeating-linear-gradient(to bottom,transparent 0 calc(var(--shelf-h) - var(--ledge)),#000 calc(var(--shelf-h) - var(--ledge)) var(--shelf-h));
+  mask:repeating-linear-gradient(to bottom,transparent 0 calc(var(--shelf-h) - var(--ledge)),#000 calc(var(--shelf-h) - var(--ledge)) var(--shelf-h))}
+.slot{
+  position:relative;z-index:1;height:var(--shelf-h);
+  display:flex;align-items:flex-end;justify-content:center;
+  padding:0 2px var(--ledge);
+}
+.slot.in{animation:rise .5s var(--ease) both;animation-delay:var(--d,0ms)}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.slot:hover,.slot:focus-within{z-index:20}
+
+.book{
+  position:relative;width:var(--bw);height:var(--bh);
+  max-height:calc(var(--shelf-h) - var(--ledge) - 6px);
+  display:flex;flex-direction:column;align-items:center;
+  padding:9px 0;border:0;border-radius:1px 2px 2px 1px;cursor:pointer;overflow:hidden;
+  background-color:var(--cloth);
+  background-image:
+    linear-gradient(rgba(0,0,0,.06),rgba(0,0,0,.06)),
+    linear-gradient(90deg,rgba(0,0,0,.26) 0 2px,rgba(255,255,255,.10) 2px 4px,
+                    rgba(255,255,255,0) 5px,rgba(0,0,0,.16) 100%);
+  box-shadow:0 1px 0 rgba(0,0,0,.3),0 5px 9px -6px rgba(44,32,21,.75),0 14px 16px -14px rgba(44,32,21,.5);
+  transform-origin:bottom center;
+  transition:transform .28s var(--ease),box-shadow .28s var(--ease),filter .28s var(--ease);
+}
+/* deterministic cloth variation — only ever darkens, so contrast can't drop */
+.book[data-shade="1"]{background-image:linear-gradient(rgba(0,0,0,.02),rgba(0,0,0,.02)),linear-gradient(90deg,rgba(0,0,0,.26) 0 2px,rgba(255,255,255,.10) 2px 4px,rgba(255,255,255,0) 5px,rgba(0,0,0,.16) 100%)}
+.book[data-shade="2"]{background-image:linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.10)),linear-gradient(90deg,rgba(0,0,0,.26) 0 2px,rgba(255,255,255,.10) 2px 4px,rgba(255,255,255,0) 5px,rgba(0,0,0,.16) 100%)}
+.book[data-shade="3"]{background-image:linear-gradient(rgba(0,0,0,.14),rgba(0,0,0,.14)),linear-gradient(90deg,rgba(0,0,0,.26) 0 2px,rgba(255,255,255,.10) 2px 4px,rgba(255,255,255,0) 5px,rgba(0,0,0,.16) 100%)}
+.book[data-shade="4"]{background-image:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0)),linear-gradient(90deg,rgba(0,0,0,.26) 0 2px,rgba(255,255,255,.10) 2px 4px,rgba(255,255,255,0) 5px,rgba(0,0,0,.16) 100%)}
+.book[data-shade="5"]{background-image:linear-gradient(rgba(0,0,0,.08),rgba(0,0,0,.08)),linear-gradient(90deg,rgba(0,0,0,.26) 0 2px,rgba(255,255,255,.10) 2px 4px,rgba(255,255,255,0) 5px,rgba(0,0,0,.16) 100%)}
+.book[data-shade="6"]{background-image:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.12)),linear-gradient(90deg,rgba(0,0,0,.26) 0 2px,rgba(255,255,255,.10) 2px 4px,rgba(255,255,255,0) 5px,rgba(0,0,0,.16) 100%)}
+
+.book__band{width:62%;height:1px;background:rgba(246,239,226,.34);flex:none}
+.book__band--low{margin-top:auto}
+.book__title{
+  flex:1;min-height:0;margin:7px 0;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  font-family:"Garamond",Georgia,serif;font-size:.78rem;line-height:1;letter-spacing:.01em;
+  color:var(--paper);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 1px 0 rgba(0,0,0,.3);
+}
+/* hook a finger over the top and tip it out */
+.book:hover,.book:focus-visible{
+  transform:perspective(680px) rotateX(-9deg) translateY(-7px);
+  box-shadow:0 2px 0 rgba(0,0,0,.2),0 16px 22px -12px rgba(44,32,21,.7);
+  filter:brightness(1.07);
+}
+
+/* ---- the peek card ------------------------------------------------------ */
+.peek{
+  position:absolute;bottom:calc(100% - 14px);left:50%;translate:-50% 0;
+  width:236px;max-width:78vw;padding:.85rem .95rem;
+  display:flex;flex-direction:column;gap:.15rem;
+  background:var(--paper);border:1px solid var(--line-2);border-radius:7px;
+  box-shadow:0 18px 32px -16px rgba(44,32,21,.55);
+  opacity:0;visibility:hidden;transform:translateY(5px);pointer-events:none;
+  transition:opacity .2s,transform .2s var(--ease),visibility .2s;
+}
+.peek::after{content:"";position:absolute;top:100%;left:50%;translate:-50% -4px;rotate:45deg;width:9px;height:9px;background:var(--paper);border-right:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+.slot.flip .peek{bottom:auto;top:calc(100% - 16px);transform:translateY(-5px)}
+.slot.flip:hover .peek,.slot.flip .book:focus-visible ~ .peek{transform:none}
+.slot.flip .peek::after{top:auto;bottom:100%;translate:-50% 4px;border:0;border-left:1px solid var(--line-2);border-top:1px solid var(--line-2)}
+.slot:hover .peek,.book:focus-visible ~ .peek{opacity:1;visibility:visible;transform:none}
+.peek__title{font-family:"Garamond",Georgia,serif;font-size:1.12rem;line-height:1.3;color:var(--ink)}
+.peek__author{font-size:.83rem;color:var(--ink-2)}
+.peek__meta{font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin-top:.25rem}
+
+/* ---- card view ---------------------------------------------------------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:.7rem}
+.card{
+  position:relative;padding:1rem 1.05rem 1.05rem;
+  background:var(--paper-2);border:1px solid var(--line);border-radius:5px;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s;
+}
+.card.in{animation:rise .5s var(--ease) both;animation-delay:var(--d,0ms)}
+.card:hover{transform:translateY(-2px);border-color:var(--line-2);box-shadow:0 12px 20px -14px rgba(44,32,21,.5)}
+.card__title{font-family:"Garamond",Georgia,serif;font-size:1.22rem;line-height:1.32;text-wrap:pretty}
+.card__author{margin-top:.25rem;font-size:.86rem;color:var(--ink-2)}
+.card__meta{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.7rem}
+/* the chip names the genre, so it is the thing that carries the cloth colour */
+.chip{font-size:.71rem;letter-spacing:.06em;text-transform:uppercase;color:var(--paper);background:var(--cloth);border-radius:999px;padding:.2rem .6rem}
+.card__year{font-size:.8rem;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* ---- notes, empty state, footer ----------------------------------------- */
+.live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.fresh[hidden],.empty[hidden]{display:none}
+.fresh{margin:.2rem 0 .6rem;padding:.5rem .9rem;border-radius:999px;background:var(--amber-wash);color:var(--amber);font-size:.82rem;display:inline-block}
+
+.empty{text-align:center;padding:3.5rem 1rem 5rem}
+.cat{width:158px;height:auto;margin:0 auto 1.7rem;color:var(--cat)}
+.empty__big{font-family:"Garamond",Georgia,serif;font-size:1.9rem;color:var(--ink)}
+.empty__sub{margin-top:.5rem;color:var(--ink-3)}
+.empty__btn{margin-top:1.4rem;padding:.6rem 1.3rem;border:1px solid var(--line-2);border-radius:999px;background:transparent;color:var(--ink);font-size:.88rem;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.empty__btn:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+.foot{border-top:1px solid var(--line);margin-top:2rem;background:var(--paper-2)}
+.foot__in{display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:flex-end;padding:3rem 0 3.4rem}
+.foot__sig{font-family:"Garamond",Georgia,serif;font-size:1.7rem;line-height:1.32;color:var(--ink)}
+.foot__sig span{display:block;font-family:"Hanken",sans-serif;font-size:.9rem;color:var(--ink-3);margin-top:.5rem}
+.foot__meta{font-size:.82rem;color:var(--ink-3);text-align:right;line-height:1.9}
+.foot__meta a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-2)}
+.foot__meta a:hover{color:var(--amber);border-color:var(--amber)}
+
+/* ---- responsive --------------------------------------------------------- */
+@media (max-width:760px){
+  :root{--shelf-h:186px}
+  /* comfortable thumb targets once this is a touch surface */
+  .pill{padding:.55rem .85rem}
+  .views button{padding:.6rem .95rem}
+  .sortwrap{padding:.5rem .5rem .5rem .9rem}
+  .field input{padding-block:.85rem}
+  .hero{padding-top:2.5rem}
+  .controls{top:57px}
+  .controls__row{gap:.5rem}
+  .field{flex:1 1 100%}
+  .sortwrap{flex:1 1 auto}
+  .foot__in{flex-direction:column;align-items:flex-start}
+  .foot__meta{text-align:left}
+}
+@media (max-width:420px){
+  .views button span{display:none}
+  .views button{padding:.42rem .7rem}
+}
+
+/* ---- reduced motion ----------------------------------------------------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+  .book:hover,.book:focus-visible{transform:none;filter:brightness(1.1)}
+  .slot.in,.card.in{animation:none}
+}
