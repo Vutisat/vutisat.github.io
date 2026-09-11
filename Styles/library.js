@@ -151,6 +151,9 @@
         surname: surnameOf(author),
         sortTitle: sortTitle(title),
         h: h,
+        maxWord: title.split(/\s+/).reduce(function (m, w) {
+          return w.length > m ? w.length : m;
+        }, 0),
         search: fold(title + " " + author + " " + genre)
       };
     });
@@ -201,9 +204,19 @@
   var raw = (window.LIBRARY_SEED || []).slice();
   var books = toBooks(raw);
 
+  /* 53 authors here have more than one book, covering 146 of them. Only those
+     names become clickable — a link that returns one result is just a tease. */
+  var authorCount = {};
+  function indexAuthors() {
+    authorCount = {};
+    books.forEach(function (b) { authorCount[b.author] = (authorCount[b.author] || 0) + 1; });
+  }
+  indexAuthors();
+
   var state = {
     q: "",
     families: [],           /* empty means every genre */
+    author: null,           /* set while viewing one author's run */
     sort: "genre",
     view: window.matchMedia("(min-width: 760px)").matches ? "shelf" : "cards"
   };
@@ -219,6 +232,7 @@
   function visible() {
     var tk = tokens(state.q), fams = state.families;
     var list = books.filter(function (b) {
+      if (state.author && b.author !== state.author) return false;
       /* no genres picked shows everything; otherwise any one of them qualifies */
       if (fams.length && fams.indexOf(b.family) === -1) return false;
       for (var i = 0; i < tk.length; i++) {
@@ -286,26 +300,41 @@
     var height = 152 + (b.h % 56);           /* 152-207px */
     var width = 30 + ((b.h >>> 8) % 26);     /* 30-55px   */
     var shade = (b.h >>> 16) % 7;            /* subtle cloth variation */
+    var treat = (b.h >>> 24) % 4;            /* rules / label panel / doubled / bare */
+    /* A thick spine with a short title prints it across, like a real hardback --
+       but only when the longest word actually fits the width. Otherwise the text
+       breaks mid-word ("Impossib / le"), which no printer has ever done. */
+    var horiz = width >= 46 && b.title.length <= 24 && b.maxWord <= (width - 10) / 4.6;
     return '<div class="slot">' +
       '<button type="button" class="book" data-fam="' + b.family + '" data-shade="' + shade + '"' +
+        ' data-treat="' + treat + '"' + (horiz ? ' data-horiz="1"' : '') +
         ' style="--bh:' + height + 'px;--bw:' + width + 'px"' +
         ' aria-label="' + esc(b.title + ", " + b.author + ", " + b.genre + ", " + b.yearText) + '">' +
         '<span class="book__band" aria-hidden="true"></span>' +
         '<span class="book__title" aria-hidden="true">' + esc(b.title) + '</span>' +
         '<span class="book__band book__band--low" aria-hidden="true"></span>' +
       '</button>' +
-      '<span class="peek" aria-hidden="true">' +
+      '<span class="peek">' +
         '<span class="peek__title">' + esc(b.title) + '</span>' +
-        '<span class="peek__author">' + esc(b.author) + '</span>' +
+        '<span class="peek__author">' + authorMark(b) + '</span>' +
         '<span class="peek__meta">' + esc(b.genre) + ' &middot; ' + esc(b.yearText) + '</span>' +
       '</span>' +
     '</div>';
   }
 
+  /* Only a repeat author is offered as a link, with the size of the run. */
+  function authorMark(b) {
+    var n = authorCount[b.author] || 1;
+    if (n < 2) return esc(b.author);
+    return '<button type="button" class="runlink" data-author="' + esc(b.author) + '">' +
+             esc(b.author) + ' <span class="runlink__n">' + n + '</span>' +
+           '</button>';
+  }
+
   function card(b) {
     return '<article class="card" data-fam="' + b.family + '">' +
       '<h3 class="card__title">' + esc(b.title) + '</h3>' +
-      '<p class="card__author">' + esc(b.author) + '</p>' +
+      '<p class="card__author">' + authorMark(b) + '</p>' +
       '<p class="card__meta"><span class="chip">' + esc(b.genre) + '</span>' +
         '<span class="card__year">' + esc(b.yearText) + '</span></p>' +
     '</article>';
@@ -407,7 +436,29 @@
     syncPills();
   }
 
+  function setAuthor(name) {
+    /* Jumping to an author is a fresh view of the shelf, not another facet
+       stacked on the last one — so the genre pills and the search box reset. */
+    state.author = name;
+    state.families = [];
+    state.q = "";
+    var box = $("search");
+    if (box) box.value = "";
+    document.body.classList.remove("has-q");
+    syncAuthor();
+    syncPills();
+    render();
+  }
+
+  function syncAuthor() {
+    if (!el.authorBar) return;
+    el.authorBar.hidden = !state.author;
+    if (state.author && el.authorName) el.authorName.textContent = state.author;
+  }
+
   function toggleFamily(fam) {
+    state.author = null;
+    syncAuthor();
     if (fam === "all") { state.families = []; return; }
     var i = state.families.indexOf(fam);
     if (i === -1) state.families.push(fam); else state.families.splice(i, 1);
@@ -423,7 +474,7 @@
       all[i].setAttribute("aria-pressed", on ? "true" : "false");
     }
     var clear = el.pills.querySelector("[data-clear]");
-    if (clear) clear.hidden = none;
+    if (clear) clear.hidden = none && !state.author;
   }
 
   function setView(view) {
@@ -453,6 +504,7 @@
         var before = books.length;
         raw = next;
         books = toBooks(next);
+        indexAuthors();
         buildPills();
         render();
         var delta = books.length - before;
@@ -475,6 +527,9 @@
     el.pills   = $("pills");
     el.views   = $("views");
     el.fresh   = $("fresh");
+    el.authorBar  = $("authorBar");
+    el.authorName = $("authorName");
+    el.authorClear= $("authorClear");
     var search = $("search");
     var clear  = $("clearSearch");
     var sort   = $("sort");
@@ -511,6 +566,8 @@
     el.pills.addEventListener("click", function (e) {
       if (e.target.closest("[data-clear]")) {
         state.families = [];
+        state.author = null;
+        syncAuthor();
         syncPills();
         render();
         return;
@@ -529,6 +586,8 @@
         state.q = "";
         document.body.classList.remove("has-q");
         state.families = [];
+        state.author = null;
+        syncAuthor();
         syncPills();
         render();
         search.focus();
@@ -538,6 +597,20 @@
     /* A peek card anchored above its book would slide under the sticky toolbar
        for books near the top of the viewport. Flip it below when there isn't
        room, measured against the toolbar's real position. */
+    el.results.addEventListener("click", function (e) {
+      var link = e.target.closest("[data-author]");
+      if (link) setAuthor(link.getAttribute("data-author"));
+    });
+
+    if (el.authorClear) {
+      el.authorClear.addEventListener("click", function () {
+        state.author = null;
+        syncAuthor();
+        syncPills();
+        render();
+      });
+    }
+
     el.results.addEventListener("pointerover", flipPeek, true);
     el.results.addEventListener("focusin", flipPeek, true);
 
