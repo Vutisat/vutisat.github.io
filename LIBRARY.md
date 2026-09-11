@@ -117,6 +117,29 @@ plain prose before display.
 
 ---
 
+## The carousel
+
+A third view alongside Shelf and Cards: one endless horizontal shelf.
+
+The list is painted as **three identical segments** and the scroll position is
+kept inside the middle one — whenever it drifts into an outer segment the rail
+shifts back by exactly one segment width. Because the content repeats with that
+period the jump is invisible, so it scrolls forever in either direction.
+
+- A narrow filter would not fill the rail, so the list repeats within each
+  segment until one segment overflows the viewport (3 poetry books become 48 per
+  segment). Verified down to a single matching book.
+- Only the middle segment is in the tab order and the accessibility tree; the
+  flanking copies are `aria-hidden` decoration that happens to be made of books.
+- Spines in the carousel omit the hover peek card. A thousand absolutely
+  positioned cards is the expensive part, and the drawer already covers detail.
+  It costs 89ms and 5118 nodes, against 16ms and 3395 for the shelf.
+- Drag-to-scroll suppresses the click that would otherwise open a book.
+- **No vertical-wheel hijack.** The rail scrolls forever, so capturing the wheel
+  would trap the reader: hovering the books, they could never scroll past to the
+  footer. Sideways trackpad gestures and shift+wheel work natively; drag and the
+  arrow buttons cover the rest.
+
 ## Notable decisions
 
 - **No community rating is shown.** Open Library's rating counts are thin (500

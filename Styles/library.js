@@ -351,7 +351,7 @@
     });
   }
 
-  function spine(b, i) {
+  function spine(b, i, bare) {
     /* >>> not >>: the hash fills 32 bits, and a signed shift turns values above
        2^31 negative, which JS's % then keeps negative (5px-wide books). */
     var height = 152 + (b.h % 56);           /* 152-207px */
@@ -372,11 +372,12 @@
         '<span class="book__title" aria-hidden="true">' + esc(b.title) + '</span>' +
         '<span class="book__band book__band--low" aria-hidden="true"></span>' +
       '</button>' +
-      '<span class="peek">' +
-        '<span class="peek__title">' + esc(b.title) + '</span>' +
-        '<span class="peek__author">' + authorMark(b) + '</span>' +
-        '<span class="peek__meta">' + esc(b.genre) + ' &middot; ' + esc(b.yearText) + '</span>' +
-      '</span>' +
+      (bare ? "" :
+        '<span class="peek">' +
+          '<span class="peek__title">' + esc(b.title) + '</span>' +
+          '<span class="peek__author">' + authorMark(b) + '</span>' +
+          '<span class="peek__meta">' + esc(b.genre) + ' &middot; ' + esc(b.yearText) + '</span>' +
+        '</span>') +
     '</div>';
   }
 
@@ -404,6 +405,13 @@
     var list = visible();
     shown = list;
     var html = "", group = null, open = false, i, b, label;
+
+    if (state.view === "carousel") {
+      renderCarousel(list);
+      afterRender(list);
+      return;
+    }
+
     var isShelf = state.view === "shelf";
     var draw = isShelf ? spine : card;
     var box = isShelf ? "wall" : "grid";
@@ -431,12 +439,19 @@
 
     el.results.className = "results results--" + state.view;
     el.results.innerHTML = html;
+    afterRender(list);
+  }
+
+  function afterRender(list) {
     el.empty.hidden = list.length > 0;
 
-    /* Stagger the entrance, capped so reordering 341 books stays smooth. */
-    if (!reduceMotion.matches) {
-      var nodes = el.results.querySelectorAll(isShelf ? ".slot" : ".card");
-      for (i = 0; i < nodes.length && i < 24; i++) {
+    /* Stagger the entrance, capped so reordering 341 books stays smooth.
+       The carousel is excluded: it paints three copies of the list and a
+       staggered fade across a thousand spines is neither cheap nor useful. */
+    if (!reduceMotion.matches && state.view !== "carousel") {
+      var nodes = el.results.querySelectorAll(state.view === "shelf" ? ".slot" : ".card");
+      var i = 0;
+      for (; i < nodes.length && i < 24; i++) {
         nodes[i].style.setProperty("--d", (i * 18) + "ms");
         nodes[i].classList.add("in");
       }
@@ -450,6 +465,116 @@
     el.live.textContent = n === 0
       ? "No books match."
       : n + (n === 1 ? " book" : " books") + " shown.";
+  }
+
+  /* ---- carousel ----------------------------------------------------------
+     One endless horizontal shelf. The list is painted as three identical
+     segments and the scroll position is kept inside the middle one: whenever
+     it drifts into an outer segment we shift it back by exactly one segment
+     width. Since the content repeats with that period the jump is invisible,
+     so the rail can be scrolled forever in either direction.
+
+     Only the middle segment is exposed to assistive tech and the tab order;
+     the flanking copies are decoration that happens to be made of books.
+  ------------------------------------------------------------------------- */
+  var rail = null, segW = 0, railBound = false, swallowClick = false;
+
+  function renderCarousel(list) {
+    el.results.className = "results results--carousel";
+    if (!list.length) { el.results.innerHTML = ""; rail = null; return; }
+
+    /* A short list (a narrow filter) would not fill the rail, so repeat it
+       enough times that one segment always overflows the viewport. */
+    var unit = 0, i, j;
+    for (i = 0; i < list.length; i++) unit += 34 + ((list[i].h >>> 8) % 26);
+    var reps = Math.max(1, Math.ceil((el.results.clientWidth * 1.4) / Math.max(unit, 1)));
+
+    var seg = "";
+    for (j = 0; j < reps; j++) {
+      for (i = 0; i < list.length; i++) seg += spine(list[i], i, true);
+    }
+
+    el.results.innerHTML =
+      '<div class="carousel">' +
+        '<button type="button" class="rail__nav rail__nav--prev" aria-label="Scroll left">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg>' +
+        "</button>" +
+        '<div class="rail" id="rail">' +
+          '<div class="rail__seg" aria-hidden="true">' + seg + "</div>" +
+          '<div class="rail__seg">' + seg + "</div>" +
+          '<div class="rail__seg" aria-hidden="true">' + seg + "</div>" +
+        "</div>" +
+        '<button type="button" class="rail__nav rail__nav--next" aria-label="Scroll right">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg>' +
+        "</button>" +
+      "</div>";
+
+    rail = $("rail");
+    var segs = rail.children;
+    /* keep the clones out of the tab order */
+    for (j = 0; j < segs.length; j++) {
+      if (j === 1) continue;
+      var btns = segs[j].querySelectorAll("button");
+      for (i = 0; i < btns.length; i++) btns[i].tabIndex = -1;
+    }
+
+    segW = segs[1].offsetWidth;
+    rail.scrollLeft = segW;
+    bindRail();
+  }
+
+  function normalise() {
+    if (!rail || segW <= 0) return;
+    var sl = rail.scrollLeft;
+    if (sl < segW * 0.5) rail.scrollLeft = sl + segW;
+    else if (sl > segW * 1.5) rail.scrollLeft = sl - segW;
+  }
+
+  function bindRail() {
+    if (railBound) return;
+    railBound = true;
+
+    el.results.addEventListener("scroll", function (e) {
+      if (e.target === rail) normalise();
+    }, true);
+
+    /* Deliberately no vertical-wheel hijack. The rail scrolls forever, so
+       capturing the wheel would trap the page: a reader hovering the books
+       could never scroll past them to the footer. Sideways trackpad gestures
+       and shift+wheel already work natively; drag and the arrows cover the
+       rest. */
+
+    /* drag to scroll, without swallowing genuine clicks */
+    var down = false, startX = 0, startL = 0, moved = 0;
+    el.results.addEventListener("pointerdown", function (e) {
+      if (!rail || !rail.contains(e.target) || e.button) return;
+      down = true; moved = 0;
+      startX = e.clientX; startL = rail.scrollLeft;
+    });
+    window.addEventListener("pointermove", function (e) {
+      if (!down) return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 3) {
+        moved = Math.abs(dx);
+        rail.classList.add("is-dragging");
+        rail.scrollLeft = startL - dx;
+        normalise();
+      }
+    });
+    window.addEventListener("pointerup", function () {
+      if (!down) return;
+      down = false;
+      swallowClick = moved > 6;    /* cleared by the click handler itself */
+      rail.classList.remove("is-dragging");
+    });
+
+    el.results.addEventListener("click", function (e) {
+      var nav = e.target.closest && e.target.closest(".rail__nav");
+      if (!nav || !rail) return;
+      var step = Math.max(240, rail.clientWidth * 0.8);
+      rail.scrollBy({ left: nav.classList.contains("rail__nav--prev") ? -step : step,
+                      behavior: reduceMotion.matches ? "auto" : "smooth" });
+    });
   }
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -951,6 +1076,7 @@
        for books near the top of the viewport. Flip it below when there isn't
        room, measured against the toolbar's real position. */
     el.results.addEventListener("click", function (e) {
+      if (swallowClick) { swallowClick = false; return; }   /* that was a drag */
       var link = e.target.closest("[data-author]");
       if (link) { setAuthor(link.getAttribute("data-author")); return; }
       var hit = e.target.closest(".book, .card__open");
@@ -985,6 +1111,13 @@
     el.pills.addEventListener("scroll", markEnd, { passive: true });
     window.addEventListener("resize", markEnd);
     markEnd();
+
+    var rt;
+    window.addEventListener("resize", function () {
+      if (state.view !== "carousel") return;
+      clearTimeout(rt);
+      rt = setTimeout(function () { render(); }, 180);   /* re-fit the segments */
+    });
 
     el.results.addEventListener("pointerover", flipPeek, true);
     el.results.addEventListener("focusin", flipPeek, true);

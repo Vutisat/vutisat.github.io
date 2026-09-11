@@ -370,9 +370,10 @@ body.has-q .field__clear{display:block}
   .field{flex:1 1 100%}
   .sortwrap{flex:1 1 auto}
 }
-@media (max-width:420px){
+/* three view buttons now, so the labels give way to icons sooner */
+@media (max-width:560px){
   .views button span{display:none}
-  .views button{padding:.42rem .7rem}
+  .views button{padding:.6rem .72rem}
 }
 
 /* ---- reduced motion ----------------------------------------------------- */
@@ -500,4 +501,51 @@ body.panel-open .panel{--slide:none}
 @media (prefers-reduced-motion:reduce){
   .panel,.scrim,.slot.is-out .book{transition:none}
   .panel__art.is-loading,.skel{animation:none}
+}
+
+/* ===========================================================================
+   Carousel — one endless shelf
+   =========================================================================== */
+.results--carousel{margin-inline:calc(50% - 50vw)}   /* full bleed */
+.carousel{position:relative}
+
+.rail{
+  display:flex;overflow-x:auto;overscroll-behavior-x:contain;
+  scrollbar-width:none;cursor:grab;
+  /* one board running the whole length, same profile as a shelf ledge */
+  background:
+    linear-gradient(to bottom,
+      transparent 0 calc(var(--shelf-h) - var(--ledge) - 1px),
+      var(--wood-edge) calc(var(--shelf-h) - var(--ledge) - 1px) calc(var(--shelf-h) - var(--ledge)),
+      var(--wood) calc(var(--shelf-h) - var(--ledge)) calc(var(--shelf-h) - 3px),
+      var(--wood-dark) calc(var(--shelf-h) - 3px) var(--shelf-h));
+}
+.rail::-webkit-scrollbar{display:none}
+.rail.is-dragging{cursor:grabbing;scroll-behavior:auto}
+.rail.is-dragging .book{pointer-events:none}   /* never open a book mid-drag */
+.rail__seg{display:flex;flex:none}
+.rail .slot{height:var(--shelf-h)}
+
+/* the ends dissolve rather than stopping, so the loop reads as endless */
+.carousel::before,.carousel::after{content:"";position:absolute;top:0;bottom:0;width:9vw;
+  max-width:130px;pointer-events:none;z-index:2}
+.carousel::before{left:0;background:linear-gradient(90deg,var(--paper),rgba(246,239,226,0))}
+.carousel::after{right:0;background:linear-gradient(270deg,var(--paper),rgba(246,239,226,0))}
+
+.rail__nav{
+  position:absolute;top:calc(50% - 22px);z-index:3;display:grid;place-items:center;
+  width:44px;height:44px;border:1px solid var(--line);border-radius:50%;
+  background:var(--paper);color:var(--ink-2);cursor:pointer;
+  box-shadow:0 8px 18px -10px rgba(44,32,21,.6);
+  transition:background .2s,color .2s,border-color .2s;
+}
+.rail__nav svg{width:19px;height:19px}
+.rail__nav:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.rail__nav--prev{left:clamp(.5rem,2.5vw,2rem)}
+.rail__nav--next{right:clamp(.5rem,2.5vw,2rem)}
+
+@media (max-width:620px){
+  .carousel::before,.carousel::after{width:6vw}
+  .rail__nav{width:38px;height:38px;top:calc(50% - 19px)}
+  .rail__nav svg{width:16px;height:16px}
 }
