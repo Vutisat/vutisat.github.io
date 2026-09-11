@@ -135,10 +135,23 @@
     return h >>> 0;
   }
 
+  /* Accepts 0-5 as a number ("4", "4.5") or as literal stars, and treats
+     anything else -- including blank -- as unrated. */
+  function parseRating(raw) {
+    var v = String(raw == null ? "" : raw).trim();
+    if (!v) return null;
+    var stars = (v.match(/★/g) || []).length;
+    if (stars) return stars + (/[½⯨]/.test(v) ? 0.5 : 0);
+    if (!/^[0-5]([.,]\d+)?$/.test(v)) return null;
+    var n = parseFloat(v.replace(",", "."));
+    return n >= 0 && n <= 5 ? n : null;
+  }
+
   function toBooks(rows) {
     return rows.map(function (r) {
       var title = r[0], author = r[1], genre = r[2];
       var yearRaw = String(r[3] || "").trim();
+      var rating = parseRating(r[4]);
       var year = /^\d{3,4}$/.test(yearRaw) ? parseInt(yearRaw, 10) : null;
       var h = hash(title + "|" + author);
       return {
@@ -148,6 +161,7 @@
         family: familyOf(genre),
         year: year,
         yearText: year === null ? "—" : String(year),
+        rating: rating,
         surname: surnameOf(author),
         sortTitle: sortTitle(title),
         h: h,
@@ -182,20 +196,50 @@
     return rows;
   }
 
-  /* Columns A-D only. E ("Copies Seen") and F ("Image #") are dropped here and
-     never reach the page. Rows missing a title or author -- including the
-     sheet's trailing summary block -- are dropped too. */
+  /* Columns are located by their header text, not their position, so the sheet
+     can gain, lose or reorder columns without breaking the page. "Copies Seen"
+     and "Image #" are simply never looked up. Rows missing a title or author --
+     including the sheet's trailing summary block -- are dropped. */
+  var HEAD = {
+    title:  ["title"],
+    author: ["author", "authors"],
+    genre:  ["genre", "genres"],
+    year:   ["release year", "year", "published", "first published"],
+    rating: ["rating", "pob's rating", "pobs rating", "my rating", "stars"]
+  };
+
   function rowsFromCSV(text) {
     var all = parseCSV(text);
     if (!all.length) return [];
-    var start = /title/i.test(all[0][0] || "") ? 1 : 0;
-    var out = [];
+
+    var head = (all[0] || []).map(function (h) {
+      return String(h == null ? "" : h).trim().toLowerCase();
+    });
+    function col(key, fallback) {
+      var names = HEAD[key];
+      for (var i = 0; i < names.length; i++) {
+        var k = head.indexOf(names[i]);
+        if (k !== -1) return k;
+      }
+      return fallback;
+    }
+    var iT = col("title", 0), iA = col("author", 1), iG = col("genre", 2),
+        iY = col("year", 3),  iR = col("rating", -1);
+
+    /* If any column was located by name, row 0 is definitely the header. Only
+       fall back to sniffing the first cell when no header was recognised at
+       all -- otherwise a reordered sheet emits its own header as a book. */
+    var named = ["title", "author", "genre", "year", "rating"].some(function (k) {
+      return HEAD[k].some(function (n) { return head.indexOf(n) !== -1; });
+    });
+    var start = (named || /title/i.test(all[0][0] || "")) ? 1 : 0, out = [];
     for (var i = start; i < all.length; i++) {
       var r = all[i];
-      if (!r || r.length < 4) continue;
-      var t = (r[0] || "").trim(), a = (r[1] || "").trim();
+      if (!r) continue;
+      var cell = function (k) { return k > -1 && r[k] != null ? String(r[k]).trim() : ""; };
+      var t = cell(iT), a = cell(iA);
       if (!t || !a) continue;
-      out.push([t, a, (r[2] || "").trim(), (r[3] || "").trim()]);
+      out.push([t, a, cell(iG), cell(iY), cell(iR)]);
     }
     return out;
   }
@@ -217,6 +261,7 @@
     q: "",
     families: [],           /* empty means every genre */
     author: null,           /* set while viewing one author's run */
+    fives: false,           /* only the books Pob gave five stars */
     sort: "genre",
     view: window.matchMedia("(min-width: 760px)").matches ? "shelf" : "cards"
   };
@@ -233,6 +278,7 @@
     var tk = tokens(state.q), fams = state.families;
     var list = books.filter(function (b) {
       if (state.author && b.author !== state.author) return false;
+      if (state.fives && b.rating !== 5) return false;
       /* no genres picked shows everything; otherwise any one of them qualifies */
       if (fams.length && fams.indexOf(b.family) === -1) return false;
       for (var i = 0; i < tk.length; i++) {
@@ -251,6 +297,14 @@
     if (sort === "author") {
       return function (a, b) {
         return collator.compare(a.surname, b.surname) || byTitle(a, b);
+      };
+    }
+    if (sort === "rating") {
+      return function (a, b) {
+        if (a.rating === null && b.rating === null) return byTitle(a, b);
+        if (a.rating === null) return 1;            /* unrated always sinks */
+        if (b.rating === null) return -1;
+        return (b.rating - a.rating) || byTitle(a, b);
       };
     }
     if (sort === "genre") {
@@ -279,6 +333,9 @@
   }
 
   function groupLabel(b) {
+    if (state.sort === "rating") {
+      return b.rating === null ? "Unrated" : b.rating + (b.rating === 1 ? " star" : " stars");
+    }
     if (state.sort === "author") return initial(b.surname);
     if (state.sort === "genre") return FAMILY_NAME[b.family];
     if (state.sort === "year-old" || state.sort === "year-new") {
@@ -294,7 +351,7 @@
     });
   }
 
-  function spine(b) {
+  function spine(b, i) {
     /* >>> not >>: the hash fills 32 bits, and a signed shift turns values above
        2^31 negative, which JS's % then keeps negative (5px-wide books). */
     var height = 152 + (b.h % 56);           /* 152-207px */
@@ -306,8 +363,9 @@
        breaks mid-word ("Impossib / le"), which no printer has ever done. */
     var horiz = width >= 46 && b.title.length <= 24 && b.maxWord <= (width - 10) / 4.6;
     return '<div class="slot">' +
-      '<button type="button" class="book" data-fam="' + b.family + '" data-shade="' + shade + '"' +
+      '<button type="button" class="book" data-i="' + i + '" data-fam="' + b.family + '" data-shade="' + shade + '"' +
         ' data-treat="' + treat + '"' + (horiz ? ' data-horiz="1"' : '') +
+        (b.rating === 5 ? ' data-five="1"' : '') +
         ' style="--bh:' + height + 'px;--bw:' + width + 'px"' +
         ' aria-label="' + esc(b.title + ", " + b.author + ", " + b.genre + ", " + b.yearText) + '">' +
         '<span class="book__band" aria-hidden="true"></span>' +
@@ -331,17 +389,20 @@
            '</button>';
   }
 
-  function card(b) {
-    return '<article class="card" data-fam="' + b.family + '">' +
-      '<h3 class="card__title">' + esc(b.title) + '</h3>' +
+  function card(b, i) {
+    return '<article class="card" data-fam="' + b.family + '" data-i="' + i + '">' +
+      '<h3 class="card__title"><button type="button" class="card__open">' + esc(b.title) + '</button></h3>' +
       '<p class="card__author">' + authorMark(b) + '</p>' +
       '<p class="card__meta"><span class="chip">' + esc(b.genre) + '</span>' +
         '<span class="card__year">' + esc(b.yearText) + '</span></p>' +
     '</article>';
   }
 
+  var shown = [];          /* what is on screen, indexed to match the DOM */
+
   function render() {
     var list = visible();
+    shown = list;
     var html = "", group = null, open = false, i, b, label;
     var isShelf = state.view === "shelf";
     var draw = isShelf ? spine : card;
@@ -350,7 +411,7 @@
     if (state.sort === "all") {
       /* one continuous run, no dividers — the whole collection on one shelf */
       html = '<div class="' + box + '">';
-      for (i = 0; i < list.length; i++) html += draw(list[i]);
+      for (i = 0; i < list.length; i++) html += draw(list[i], i);
       html += "</div>";
     } else {
       for (i = 0; i < list.length; i++) {
@@ -363,7 +424,7 @@
           html += '<div class="' + box + '">';
           open = true;
         }
-        html += draw(b);
+        html += draw(b, i);
       }
       if (open) html += "</div>";
     }
@@ -428,6 +489,12 @@
                 '<span class="pill__dot" data-fam="' + f[0] + '"></span>' + esc(f[1]) +
                 ' <span class="pill__n">' + counts[f[0]] + '</span></button>';
       });
+    var rated = books.filter(function (b) { return b.rating === 5; }).length;
+    if (rated) {
+      html += '<button type="button" class="pill pill--five" data-five="1" aria-pressed="false">' +
+              '<svg class="pill__star" viewBox="0 0 24 24" aria-hidden="true"><path d="' + STAR_PATH + '"/></svg>' +
+              'Pob\u2019s 5s <span class="pill__n">' + rated + '</span></button>';
+    }
     html += '<button type="button" class="pill pill--clear" data-clear="1" hidden>' +
               '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"' +
               ' stroke-width="1.9" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg>' +
@@ -456,8 +523,29 @@
     if (state.author && el.authorName) el.authorName.textContent = state.author;
   }
 
+  /* The rating control only exists once at least one book is rated. Ratings
+     usually arrive from the live sheet rather than the baked seed, so this has
+     to run again after a sync -- not just at boot. */
+  function syncRatingSort() {
+    var sort = $("sort");
+    if (!sort) return;
+    var any = books.some(function (b) { return b.rating !== null; });
+    var opt = sort.querySelector('option[value="rating"]');
+    if (any && !opt) {
+      opt = document.createElement("option");
+      opt.value = "rating";
+      opt.textContent = "My rating, highest first";
+      sort.insertBefore(opt, sort.options[1]);
+    } else if (!any && opt) {
+      if (state.sort === "rating") state.sort = "genre";
+      opt.remove();
+      sort.value = state.sort;
+    }
+  }
+
   function toggleFamily(fam) {
     state.author = null;
+    state.fives = false;
     syncAuthor();
     if (fam === "all") { state.families = []; return; }
     var i = state.families.indexOf(fam);
@@ -473,8 +561,13 @@
       all[i].classList.toggle("is-on", on);
       all[i].setAttribute("aria-pressed", on ? "true" : "false");
     }
+    var five = el.pills.querySelector("[data-five]");
+    if (five) {
+      five.classList.toggle("is-on", state.fives);
+      five.setAttribute("aria-pressed", state.fives ? "true" : "false");
+    }
     var clear = el.pills.querySelector("[data-clear]");
-    if (clear) clear.hidden = none && !state.author;
+    if (clear) clear.hidden = none && !state.author && !state.fives;
   }
 
   function setView(view) {
@@ -506,6 +599,7 @@
         books = toBooks(next);
         indexAuthors();
         buildPills();
+        syncRatingSort();
         render();
         var delta = books.length - before;
         if (delta !== 0) {
@@ -518,6 +612,206 @@
       .catch(function () { /* keep the baked shelf; the reader never sees this */ });
   }
 
+  /* ---- the detail drawer -------------------------------------------------
+     Nothing fetched here is stored: the cache is an in-memory Map that dies
+     with the page. Open Library is the source (no key, CORS open, no quota)
+     and supplies the cover, blurb and page count only -- title, author, genre,
+     year and Pob's rating all come from the sheet, because the loose fallback
+     sometimes returns the original-language edition of the right work.
+  ------------------------------------------------------------------------- */
+  var OL = "https://openlibrary.org";
+  var lookupCache = {};      /* title|author -> record, for this page view only */
+  var inFlight = null;       /* AbortController for the open request */
+  var openBook = null;       /* the book currently in the drawer */
+  var lastFocus = null;      /* what to hand focus back to on close */
+  var hideTimer = null;      /* pending hide after the slide-out */
+
+  function olSearch(url, signal) {
+    return fetch(url, { signal: signal }).then(function (r) {
+      return r.ok ? r.json() : Promise.reject(new Error(r.status));
+    });
+  }
+
+  function lookup(b, signal) {
+    var key = b.title + "|" + b.author;
+    if (lookupCache[key]) return Promise.resolve(lookupCache[key]);
+
+    var fields = "title,cover_i,key,number_of_pages_median,first_publish_year";
+    var strict = OL + "/search.json?title=" + encodeURIComponent(b.title) +
+                 "&author=" + encodeURIComponent(b.author) +
+                 "&limit=1&fields=" + fields;
+    var loose  = OL + "/search.json?q=" + encodeURIComponent(b.title + " " + b.author) +
+                 "&limit=1&fields=" + fields;
+
+    return olSearch(strict, signal)
+      .then(function (d) {
+        if (d.docs && d.docs.length) return d;
+        return olSearch(loose, signal);          /* finds the work, sometimes in its original language */
+      })
+      .then(function (d) {
+        var doc = (d.docs || [])[0];
+        if (!doc) return (lookupCache[key] = { found: false });
+        var rec = {
+          found: true,
+          cover: doc.cover_i ? "https://covers.openlibrary.org/b/id/" + doc.cover_i + "-L.jpg" : null,
+          pages: doc.number_of_pages_median || null,
+          firstYear: doc.first_publish_year || null,
+          work: doc.key || null,
+          blurb: null
+        };
+        if (!rec.work) return (lookupCache[key] = rec);
+        return olSearch(OL + rec.work + ".json", signal).then(function (w) {
+          var d2 = w && w.description;
+          if (d2 && typeof d2 === "object") d2 = d2.value;
+          if (typeof d2 === "string" && d2.trim().length > 40) rec.blurb = cleanBlurb(d2);
+          return (lookupCache[key] = rec);
+        }, function () { return (lookupCache[key] = rec); });
+      })
+      .catch(function (e) {
+        if (e && e.name === "AbortError") throw e;
+        return { found: false, errored: true };
+      });
+  }
+
+  /* Open Library blurbs arrive as Markdown with a trailing source credit:
+     "**From the *New York Times* bestselling author...**  ([source][1])".
+     Strip it to plain prose -- the panel sets its own type. */
+  function cleanBlurb(t) {
+    return t
+      .replace(/\r/g, "")
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, "")            /* images   */
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")          /* links    */
+      .replace(/\[([^\]]*)\]\[[^\]]*\]/g, "$1")         /* ref links */
+      .split(/\n\s*-{3,}/)[0]                           /* rule before the credit */
+      .replace(/\(\s*\[?source[^)]*\)?\s*\)/gi, "")
+      .replace(/^\s*(source|description)\s*:.*$/gim, "")
+      .replace(/\*{1,3}([^*]+)\*{1,3}/g, "$1")           /* bold / italic */
+      .replace(/_{1,3}([^_]+)_{1,3}/g, "$1")
+      .replace(/^\s*#{1,6}\s*/gm, "")                    /* headings */
+      .replace(/^\s*[-*+]\s+/gm, "")                     /* bullets  */
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+  }
+
+  var STAR_PATH = "M12 2.4l2.94 5.96 6.58.96-4.76 4.64 1.12 6.55L12 17.4l-5.88 3.1 1.12-6.55L2.48 9.32l6.58-.96z";
+  function starSVG(cls) {
+    return '<span class="star ' + cls + '">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true" class="star__bg"><path d="' + STAR_PATH + '"/></svg>' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true" class="star__fg"><path d="' + STAR_PATH + '"/></svg>' +
+    "</span>";
+  }
+  function stars(n) {
+    var out = "", i;
+    for (i = 1; i <= 5; i++) {
+      out += starSVG(n >= i ? "is-full" : (n >= i - 0.5 ? "is-half" : ""));
+    }
+    return out + '<span class="mine__n">' + n + " out of 5</span>";
+  }
+
+  function openPanel(b, trigger) {
+    if (!el.panel) return;
+    openBook = b;
+    lastFocus = trigger || null;
+    clearTimeout(hideTimer);
+
+    document.querySelectorAll(".slot.is-out").forEach(function (s) { s.classList.remove("is-out"); });
+    if (trigger) {
+      var slot = trigger.closest(".slot");
+      if (slot) slot.classList.add("is-out");       /* the book stays off the shelf while its drawer is open */
+    }
+
+    $("pTitle").textContent = b.title;
+    $("pAuthor").innerHTML = authorMark(b);
+    $("pGenre").textContent = b.genre;
+    $("pYear").textContent = b.yearText;
+
+    var mine = $("pMine");
+    if (b.rating === null) mine.hidden = true;
+    else { mine.hidden = false; $("pStars").innerHTML = stars(b.rating); }
+
+    $("pArt").className = "panel__art is-loading";
+    $("pArt").innerHTML = "";
+    $("pBlurb").innerHTML = '<p class="skel"></p><p class="skel"></p><p class="skel skel--short"></p>';
+    $("pMeta").innerHTML = "";
+    $("pSrc").textContent = "";
+
+    el.panel.hidden = false;
+    el.scrim.hidden = false;
+    /* Commit the closed position with a forced layout read, then flip the class
+       in the same task. requestAnimationFrame was unreliable here -- the class
+       could land before the browser had painted the start state, or not at all. */
+    void el.panel.offsetWidth;
+    document.body.classList.add("panel-open");
+    el.panel.focus({ preventScroll: true });
+
+    if (inFlight) inFlight.abort();
+    inFlight = new AbortController();
+    var mine2 = b;
+    lookup(b, inFlight.signal).then(function (rec) {
+      if (openBook !== mine2) return;               /* a different book was opened meanwhile */
+      paintLookup(b, rec);
+    }, function () {});
+  }
+
+  function paintLookup(b, rec) {
+    var art = $("pArt");
+    art.className = "panel__art";
+    if (rec.found && rec.cover) {
+      var img = new Image();
+      img.alt = "Cover of " + b.title;
+      img.decoding = "async";
+      img.onerror = function () { art.innerHTML = fallbackArt(b); };
+      img.src = rec.cover;
+      art.innerHTML = "";
+      art.appendChild(img);
+    } else {
+      art.innerHTML = fallbackArt(b);
+    }
+
+    $("pBlurb").innerHTML = rec.blurb
+      ? '<p>' + esc(rec.blurb).replace(/\n{2,}/g, "</p><p>") + "</p>"
+      : '<p class="panel__none">No blurb for this one — Open Library doesn\u2019t have a description on file.</p>';
+
+    var meta = "";
+    if (rec.pages) meta += "<dt>Length</dt><dd>" + rec.pages + " pages</dd>";
+    if (rec.firstYear && rec.firstYear !== b.year) {
+      meta += "<dt>First published</dt><dd>" + rec.firstYear + "</dd>";
+    }
+    $("pMeta").innerHTML = meta;
+
+    $("pSrc").innerHTML = rec.found && rec.work
+      ? 'Cover and blurb from <a href="' + OL + rec.work + '" target="_blank" rel="noopener">Open Library</a>'
+      : (rec.errored ? "Couldn\u2019t reach Open Library just now." : "Open Library has no record of this edition.");
+  }
+
+  /* When there is no cover, draw the spine instead of showing a broken frame. */
+  function fallbackArt(b) {
+    return '<div class="noart" data-fam="' + b.family + '">' +
+             '<span class="noart__t">' + esc(b.title) + "</span>" +
+             '<span class="noart__a">' + esc(b.author) + "</span>" +
+           "</div>";
+  }
+
+  function closePanel() {
+    if (!el.panel || el.panel.hidden) return;
+    if (inFlight) { inFlight.abort(); inFlight = null; }
+    openBook = null;
+    document.body.classList.remove("panel-open");
+    document.querySelectorAll(".slot.is-out").forEach(function (s) { s.classList.remove("is-out"); });
+    /* Hiding waits for the slide-out. Guard it: reopening inside that window
+       would otherwise let the stale timer hide the newly opened drawer. */
+    clearTimeout(hideTimer);
+    var done = function () {
+      if (openBook) return;
+      el.panel.hidden = true;
+      el.scrim.hidden = true;
+    };
+    if (reduceMotion.matches) done();
+    else hideTimer = setTimeout(done, 260);
+    if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+    lastFocus = null;
+  }
+
   /* ---- boot --------------------------------------------------------------- */
   function init() {
     el.results = $("results");
@@ -527,6 +821,9 @@
     el.pills   = $("pills");
     el.views   = $("views");
     el.fresh   = $("fresh");
+    el.panel      = $("panel");
+    el.scrim      = $("scrim");
+    el.panelClose = $("panelClose");
     el.authorBar  = $("authorBar");
     el.authorName = $("authorName");
     el.authorClear= $("authorClear");
@@ -536,6 +833,7 @@
     if (!el.results || !search || !sort || !el.pills || !el.views) return;
 
     buildPills();
+    syncRatingSort();
     sort.value = state.sort;   /* keep the control showing the real default */
 
     var t;
@@ -564,8 +862,18 @@
     });
 
     el.pills.addEventListener("click", function (e) {
+      var five = e.target.closest("[data-five]");
+      if (five) {
+        state.fives = !state.fives;
+        state.author = null;
+        syncAuthor();
+        syncPills();
+        render();
+        return;
+      }
       if (e.target.closest("[data-clear]")) {
         state.families = [];
+        state.fives = false;
         state.author = null;
         syncAuthor();
         syncPills();
@@ -586,6 +894,7 @@
         state.q = "";
         document.body.classList.remove("has-q");
         state.families = [];
+        state.fives = false;
         state.author = null;
         syncAuthor();
         syncPills();
@@ -599,7 +908,18 @@
        room, measured against the toolbar's real position. */
     el.results.addEventListener("click", function (e) {
       var link = e.target.closest("[data-author]");
-      if (link) setAuthor(link.getAttribute("data-author"));
+      if (link) { setAuthor(link.getAttribute("data-author")); return; }
+      var hit = e.target.closest(".book, .card__open");
+      if (!hit) return;
+      var host = hit.closest("[data-i]");
+      var b = host && shown[+host.getAttribute("data-i")];
+      if (b) openPanel(b, hit);
+    });
+
+    if (el.panelClose) el.panelClose.addEventListener("click", closePanel);
+    if (el.scrim) el.scrim.addEventListener("click", closePanel);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closePanel();
     });
 
     if (el.authorClear) {

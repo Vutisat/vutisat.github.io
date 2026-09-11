@@ -7,8 +7,13 @@
    changes, so re-baking this file is optional housekeeping — not a requirement
    for a new book to show up on the site.
 
-   Columns: [ Title, Author, Genre, Release Year ]
+   Columns: [ Title, Author, Genre, Release Year, Rating ]
    ("Copies Seen" and "Image #" are intentionally not included.)
+
+   Rating is Pob's own 0-5 score. The sheet has no Rating column yet, so the
+   rows below carry four values and every book reads as unrated. Add a column
+   headed "Rating" to the sheet and the live sync picks it up on the next page
+   load -- columns are located by header name, so its position does not matter.
 
    To re-bake (341 books as of 2026-09-11):
      curl -sSL "https://docs.google.com/spreadsheets/d/1LSyUoNO50mpBUlmAEt9lHR9n7XVE7jGSeH29lT9m1Ik/gviz/tq?tqx=out:csv" -o books.csv

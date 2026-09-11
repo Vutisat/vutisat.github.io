@@ -360,3 +360,122 @@ body.has-q .field__clear{display:block}
   .book:hover,.book:focus-visible{transform:none;filter:brightness(1.1)}
   .slot.in,.card.in{animation:none}
 }
+
+/* ===========================================================================
+   Book detail drawer
+   =========================================================================== */
+:root{--panel-w:396px;--gold:#B8892F}
+
+/* the book stays off the shelf while its drawer is open */
+.slot.is-out .book{
+  transform:perspective(680px) rotateX(-11deg) translateY(-26px) scale(1.03);
+  box-shadow:0 3px 0 rgba(0,0,0,.18),0 26px 30px -14px rgba(44,32,21,.75);
+  filter:brightness(1.1);
+  transition:transform .34s var(--ease),box-shadow .34s var(--ease),filter .34s var(--ease);
+}
+.slot.is-out .peek{opacity:0!important;visibility:hidden!important}
+
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(44,32,21,.15);
+  opacity:0;transition:opacity .26s var(--ease)}
+.scrim[hidden]{display:none}
+body.panel-open .scrim{opacity:1}
+
+.panel{
+  position:fixed;top:0;right:0;bottom:0;z-index:61;width:min(var(--panel-w),92vw);
+  background:var(--paper);border-left:1px solid var(--line-2);
+  box-shadow:-24px 0 48px -28px rgba(44,32,21,.55);
+  --slide:translateX(102%);
+  transform:var(--slide);transition:transform .34s cubic-bezier(.22,1,.3,1);
+  display:flex;flex-direction:column;
+}
+.panel[hidden]{display:none}
+body.panel-open .panel{--slide:none}
+.panel:focus{outline:none}
+.panel__scroll{overflow-y:auto;overscroll-behavior:contain;padding:2.6rem 1.9rem 2.4rem}
+
+.panel__x{position:absolute;top:.85rem;right:.85rem;z-index:2;display:grid;place-items:center;
+  width:32px;height:32px;border:0;border-radius:50%;background:var(--paper-2);color:var(--ink-2);
+  cursor:pointer;transition:background .2s,color .2s}
+.panel__x svg{width:15px;height:15px}
+.panel__x:hover{background:var(--ink);color:var(--paper)}
+
+/* cover */
+.panel__art{margin-bottom:1.5rem;min-height:150px;display:flex;justify-content:center}
+.panel__art img{width:auto;max-width:62%;max-height:272px;border-radius:2px;
+  box-shadow:0 18px 30px -18px rgba(44,32,21,.7),0 1px 0 rgba(44,32,21,.2)}
+.panel__art.is-loading{border-radius:3px;background:
+  linear-gradient(100deg,var(--paper-2) 30%,var(--paper-3) 50%,var(--paper-2) 70%) 0/300% 100%;
+  animation:shimmer 1.25s linear infinite;max-width:180px;height:262px;margin-inline:auto}
+@keyframes shimmer{to{background-position:-300% 0}}
+
+/* no cover on file: draw the spine rather than show a broken frame */
+.noart{width:168px;min-height:252px;border-radius:2px 4px 4px 2px;padding:1.3rem .9rem;
+  display:flex;flex-direction:column;justify-content:center;gap:.6rem;text-align:center;
+  background-color:var(--cloth);
+  background-image:linear-gradient(90deg,rgba(0,0,0,.26) 0 3px,rgba(255,255,255,.10) 3px 6px,rgba(255,255,255,0) 8px,rgba(0,0,0,.16) 100%);
+  box-shadow:0 18px 30px -18px rgba(44,32,21,.7)}
+.noart__t{font-family:"Garamond",Georgia,serif;font-size:1.08rem;line-height:1.24;color:var(--paper)}
+.noart__a{font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(246,239,226,.72)}
+
+.panel__title{font-family:"Garamond",Georgia,serif;font-size:1.66rem;line-height:1.22;text-wrap:pretty}
+.panel__author{margin-top:.4rem;font-size:.95rem;color:var(--ink-2)}
+.panel__facts{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:.9rem}
+.panel__chip{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--paper);
+  background:var(--cloth,var(--ink-3));border-radius:999px;padding:.2rem .6rem}
+.panel__year{font-size:.84rem;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* Pob's stars */
+.mine{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem;
+  padding:.7rem .95rem;border-radius:10px;background:var(--paper-2);border:1px solid var(--line)}
+.mine[hidden]{display:none}
+.mine__lbl{font-size:.74rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3)}
+.mine__stars{display:inline-flex;align-items:center;gap:3px}
+.star{position:relative;display:inline-block;width:15px;height:15px}
+.star svg{position:absolute;inset:0;width:100%;height:100%}
+.star__bg{fill:var(--line-2)}
+.star__fg{fill:var(--gold);clip-path:inset(0 100% 0 0)}
+.star.is-half .star__fg{clip-path:inset(0 50% 0 0)}
+.star.is-full .star__fg{clip-path:inset(0 0 0 0)}
+.mine__n{font-size:.76rem;color:var(--ink-3);margin-left:.35rem;font-variant-numeric:tabular-nums}
+
+.panel__blurb{margin-top:1.3rem;font-size:.93rem;line-height:1.62;color:var(--ink-2)}
+.panel__blurb p+p{margin-top:.8rem}
+.panel__none{color:var(--ink-3);font-style:italic}
+.skel{height:.72rem;border-radius:3px;margin-bottom:.6rem;background:
+  linear-gradient(100deg,var(--paper-2) 30%,var(--paper-3) 50%,var(--paper-2) 70%) 0/300% 100%;
+  animation:shimmer 1.25s linear infinite}
+.skel--short{width:58%}
+
+.panel__meta{display:grid;grid-template-columns:auto 1fr;gap:.3rem .9rem;margin-top:1.4rem;
+  font-size:.84rem}
+.panel__meta dt{color:var(--ink-3)}
+.panel__meta dd{margin:0;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.panel__src{margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--line);
+  font-size:.76rem;color:var(--ink-3)}
+.panel__src a{color:var(--ink-2)}
+
+/* five-star filter pill + the gold mark on a five-star spine */
+.pill--five.is-on{background:var(--gold);border-color:transparent;color:var(--paper)}
+.pill__star{width:12px;height:12px;fill:var(--gold);flex:none}
+.pill--five.is-on .pill__star{fill:var(--paper)}
+/* a small gold star stamped near the foot of a five-star spine */
+.book[data-five]::after{content:"";position:absolute;left:50%;bottom:5px;translate:-50% 0;
+  width:10px;height:10px;background:no-repeat center/contain
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B8892F' d='M12 2.4l2.94 5.96 6.58.96-4.76 4.64 1.12 6.55L12 17.4l-5.88 3.1 1.12-6.55L2.48 9.32l6.58-.96z'/%3E%3C/svg%3E")}
+
+/* card titles are buttons now */
+.card__open{display:block;width:100%;padding:0;border:0;background:none;font:inherit;color:inherit;
+  text-align:left;cursor:pointer}
+.card__open:hover{color:var(--amber)}
+
+@media (max-width:620px){
+  /* becomes a bottom sheet; the open state is restated here so it cannot lose
+     to the closed transform declared in this same block */
+  .panel{top:auto;left:0;width:auto;max-height:86vh;border-left:0;border-top:1px solid var(--line-2);
+    border-radius:16px 16px 0 0;--slide:translateY(102%)}
+  .panel__scroll{padding:2.4rem 1.3rem 2rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .panel,.scrim,.slot.is-out .book{transition:none}
+  .panel__art.is-loading,.skel{animation:none}
+}

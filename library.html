@@ -111,6 +111,36 @@
     </section>
   </main>
 
+  <!-- book detail drawer -->
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="panel" id="panel" role="dialog" aria-modal="false" aria-labelledby="pTitle" hidden tabindex="-1">
+    <button type="button" class="panel__x" id="panelClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg>
+    </button>
+
+    <div class="panel__scroll">
+      <div class="panel__art" id="pArt"></div>
+
+      <h2 class="panel__title" id="pTitle"></h2>
+      <p class="panel__author" id="pAuthor"></p>
+
+      <p class="panel__facts">
+        <span class="panel__chip" id="pGenre"></span>
+        <span class="panel__year" id="pYear"></span>
+      </p>
+
+      <div class="mine" id="pMine" hidden>
+        <span class="mine__lbl">Pob gave it</span>
+        <span class="mine__stars" id="pStars"></span>
+      </div>
+
+      <div class="panel__blurb" id="pBlurb"></div>
+
+      <dl class="panel__meta" id="pMeta"></dl>
+      <p class="panel__src" id="pSrc"></p>
+    </div>
+  </aside>
+
   <footer class="foot">
     <div class="wrap foot__in">
       <p class="foot__meta">Pob's Library<br><a href="index.html">back to pobv.dev</a></p>
