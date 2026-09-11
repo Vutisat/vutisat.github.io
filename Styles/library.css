@@ -338,6 +338,27 @@ body.has-q .field__clear{display:block}
 /* ---- responsive --------------------------------------------------------- */
 @media (max-width:760px){
   :root{--shelf-h:186px}
+
+  /* The genre pills wrap to five rows on a phone, which pinned 229px of chrome
+     above the shelf. One scrollable line instead, bled to the screen edges so
+     the clipped pill reads as "there is more this way". */
+  .pills{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+    margin-inline:calc(50% - 50vw);padding-inline:calc(50vw - 50%);
+    padding-block:.15rem;scroll-padding-inline:1.25rem;
+    -webkit-mask-image:linear-gradient(90deg,#000 94%,transparent);
+    mask-image:linear-gradient(90deg,#000 94%,transparent)}
+  /* once the strip is scrolled to its end there is nothing left to hint at,
+     so drop the fade rather than leave the last pill half-dissolved */
+  .pills.is-end{-webkit-mask-image:none;mask-image:none}
+  .pills::-webkit-scrollbar{display:none}
+  .pill{flex:none}
+
+  /* ...and the whole sticky stack steps aside as you read down the shelf,
+     coming back the moment you scroll up or reach for the top. */
+  .bar,.controls{transition:transform .28s var(--ease)}
+  body.chrome-away .bar{transform:translateY(-100%)}
+  body.chrome-away .controls{transform:translateY(calc(-100% - 59px))}
+
   /* comfortable thumb targets once this is a touch surface */
   .pill{padding:.55rem .85rem}
   .views button{padding:.6rem .95rem}
@@ -356,6 +377,7 @@ body.has-q .field__clear{display:block}
 
 /* ---- reduced motion ----------------------------------------------------- */
 @media (prefers-reduced-motion:reduce){
+  .bar,.controls{transition:none}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
   .book:hover,.book:focus-visible{transform:none;filter:brightness(1.1)}
   .slot.in,.card.in{animation:none}

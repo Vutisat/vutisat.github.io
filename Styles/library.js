@@ -812,6 +812,50 @@
     lastFocus = null;
   }
 
+  /* On a phone the search field, sort, view toggle and genre pills add up to
+     more than half the viewport, and being sticky they never gave it back. The
+     stack now steps out of the way while you read down the shelf and returns as
+     soon as you scroll up, reach the top, or focus the search field. */
+  function hideChromeOnScroll(search) {
+    var narrow = window.matchMedia("(max-width: 760px)");
+    var lastY = window.scrollY, away = false, ticking = false;
+    var REVEAL_ABOVE = 150;   /* always visible near the top of the page */
+    var JITTER = 6;           /* ignore sub-pixel scroll noise */
+
+    function set(next) {
+      if (next === away) return;
+      away = next;
+      document.body.classList.toggle("chrome-away", away);
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        ticking = false;
+        var y = window.scrollY;
+        var delta = y - lastY;
+        if (Math.abs(delta) < JITTER) return;
+        lastY = y;
+
+        /* never hide on desktop, near the top, while typing, or with the
+           drawer open -- in each case the controls are what you are using */
+        if (!narrow.matches || y < REVEAL_ABOVE ||
+            document.activeElement === search || openBook) {
+          set(false);
+          return;
+        }
+        set(delta > 0);
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    if (search) {
+      search.addEventListener("focus", function () { set(false); });
+    }
+    narrow.addEventListener("change", function () { set(false); });
+  }
+
   /* ---- boot --------------------------------------------------------------- */
   function init() {
     el.results = $("results");
@@ -930,6 +974,17 @@
         render();
       });
     }
+
+    hideChromeOnScroll(search);
+
+    /* the edge fade hints "more this way"; drop it once there is no more */
+    var markEnd = function () {
+      var slack = el.pills.scrollWidth - el.pills.clientWidth;
+      el.pills.classList.toggle("is-end", slack <= 1 || el.pills.scrollLeft >= slack - 1);
+    };
+    el.pills.addEventListener("scroll", markEnd, { passive: true });
+    window.addEventListener("resize", markEnd);
+    markEnd();
 
     el.results.addEventListener("pointerover", flipPeek, true);
     el.results.addEventListener("focusin", flipPeek, true);
