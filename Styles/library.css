@@ -90,6 +90,9 @@ html{scrollbar-color:var(--paper-3) var(--paper)}
 .hero h1{font-family:"Garamond",Georgia,serif;font-size:clamp(3rem,9vw,6rem);letter-spacing:-.028em;text-wrap:balance}
 .hero h1 em{font-style:italic;color:var(--amber)}
 .hero__sub{max-width:46ch;margin-top:1.4rem;font-size:1.08rem;color:var(--ink-2);text-wrap:pretty}
+/* the one outbound link on this page — themed, including its underline offset */
+.hero__sub a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line-2);text-decoration-thickness:1px;text-underline-offset:3px;transition:color .2s,text-decoration-color .2s}
+.hero__sub a:hover{color:var(--amber);text-decoration-color:var(--amber)}
 .hero__meta{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-top:1.6rem;font-size:.83rem;color:var(--ink-3)}
 .hero__count{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
 .sep{color:var(--line-2)}
