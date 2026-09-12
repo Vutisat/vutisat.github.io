@@ -287,7 +287,7 @@ body.has-q .field__clear{display:block}
    normal slot, so flex-wrap puts her between two spines wherever the row
    happens to break, and she sits on the ledge exactly as the books do. */
 .cat-nap{
-  position:relative;width:64px;height:29px;padding:0;border:0;background:none;
+  position:relative;width:74px;height:30px;padding:0;border:0;background:none;
   color:var(--cat-nap);cursor:pointer;
   transform-origin:bottom center;transition:transform .4s var(--ease);
 }

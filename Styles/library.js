@@ -415,20 +415,27 @@
      teleporting her to a different wall.
   --------------------------------------------------------------------- */
   var CAT_AT = 0.3 + Math.random() * 0.45;
+  /* Drawn so the whole animal reads at 74px wide, which is about the width of
+     three paperbacks. Three things carry it at that size and everything else
+     was cut: the back crests well above the head so a neck dip shows; the ears
+     are set far enough apart that the crown of the head appears between them;
+     and the tail comes out from behind the haunch and lifts clear of the body
+     rather than curling back and closing into a handle. The baseline is the
+     foot of the viewBox, so nothing is clipped and she sits on the ledge
+     exactly as the books do. */
   var CAT_SVG =
-    '<svg viewBox="0 0 64 30" aria-hidden="true">' +
-      /* the loaf */
-      '<path fill="currentColor" d="M14 29c-2.4-10.8 5.2-16.8 19.2-16.8 13.6 0 22.4 5.6 25 16.8z"/>' +
-      /* ears */
-      '<path fill="currentColor" d="M42.4 12.6l-.6-7.6 7.2 4.8zM54.2 11.8l5-5.8 2.2 7.8z"/>' +
-      /* head, tucked down to the right */
-      '<circle cx="50.6" cy="19" r="9.4" fill="currentColor"/>' +
-      /* tail, hooked round the back end */
-      '<path d="M22 28.6C13 29 4.4 27.6 3.9 22.2 3.5 17.6 9 15.4 11.6 18.6" ' +
-        'fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>' +
-      /* closed eye, and the seam where she folds in half */
-      '<path d="M46.2 18.6q2.4 2.1 4.8 0" fill="none" stroke="rgba(0,0,0,.4)" stroke-width="1.5" stroke-linecap="round"/>' +
-      '<path d="M24 29q4-3.2 7.6 0" fill="none" stroke="rgba(0,0,0,.16)" stroke-width="1.4" stroke-linecap="round"/>' +
+    '<svg viewBox="0 0 132 54" aria-hidden="true">' +
+      /* tail: out from behind the haunch, round, and lifted */
+      '<path fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"' +
+        ' d="M34 49.5C20 51.5 6 47.5 5.5 38.5 5 31.5 8 26.5 11.5 24.5"/>' +
+      /* the loaf, carried on under the head so no chest pokes out below the jaw */
+      '<path fill="currentColor" d="M26 54C21 30 32 12 56 12 80 12 96 28 104 54Z"/>' +
+      /* ears, with the crown of the head showing between them */
+      '<path fill="currentColor" d="M92 30.5 90 14 99 23.5ZM109 24 117 15 115 31Z"/>' +
+      '<circle cx="104" cy="38" r="15.5" fill="currentColor"/>' +
+      /* one closed eye */
+      '<path fill="none" stroke="rgba(0,0,0,.35)" stroke-width="2" stroke-linecap="round"' +
+        ' d="M95 37q5 4.4 10 0"/>' +
     '</svg>';
 
   function catSlot() {
@@ -456,7 +463,7 @@
     families: [],           /* empty means every genre */
     author: null,           /* set while viewing one author's run */
     fives: false,           /* only the books Pob gave five stars */
-    sort: "genre",
+    sort: "all",
     view: "shelf"
   };
 
@@ -467,7 +474,11 @@
   function indexSlugs() {
     bySlug = Object.create(null);
     books.forEach(function (b) { bySlug[b.slug] = b; });
-    bySlug[EGG.slug] = EGG;
+    /* EGG is off the shelf for now. Uncomment this line and the two marked
+       "the 342nd book" in render() to put it back; everything else it needs
+       -- the record, paintEgg(), the click branch, the leather cloth in the
+       CSS -- is deliberately left in place. */
+    /* bySlug[EGG.slug] = EGG; */
   }
 
   /* ---- the address bar ---------------------------------------------------
@@ -480,7 +491,7 @@
      author. Typing in the search box or toggling a genre replaces instead, so
      Back means "close this / go back to everything", never "undo one keystroke".
   ----------------------------------------------------------------------- */
-  var DEF_SORT = "genre", DEF_VIEW = "shelf";
+  var DEF_SORT = "all", DEF_VIEW = "shelf";
   var VIEWS = ["shelf", "cards", "carousel"];
   var urlLock = false;      /* raised while a URL is being applied, so the
                                renders it triggers don't write it back */
@@ -708,7 +719,7 @@
         if (i === catAt) html += catSlot();
         html += draw(list[i], i);
       }
-      if (extras) html += spine(EGG, "egg", bare);
+      /* the 342nd book: if (extras) html += spine(EGG, "egg", bare); */
       html += "</div>";
     } else {
       for (i = 0; i < list.length; i++) {
@@ -725,7 +736,7 @@
         html += draw(b, i);
       }
       if (open) {
-        if (extras) html += spine(EGG, "egg", bare);
+        /* the 342nd book: if (extras) html += spine(EGG, "egg", bare); */
         html += "</div>";
       }
     }
@@ -1068,7 +1079,7 @@
       opt.textContent = "My rating, highest first";
       sort.insertBefore(opt, sort.options[1]);
     } else if (!any && opt) {
-      if (state.sort === "rating") state.sort = "genre";
+      if (state.sort === "rating") state.sort = DEF_SORT;
       opt.remove();
       sort.value = state.sort;
     }
@@ -1117,8 +1128,10 @@
   }
 
   /* ---- the reading lamp --------------------------------------------------
-     Stamped on <html> by the script in the head before first paint; this only
-     has to keep the control, the browser chrome and the stored choice in step.
+     A lamp that is off leaves the room dark, which is the default: `on` here
+     means the light is lit and the room is in daylight. Stamped on <html> by
+     the script in the head before first paint; this only has to keep the
+     control, the browser chrome and the stored choice in step.
   ----------------------------------------------------------------------- */
   function initLamp() {
     var lamp = $("lamp");
@@ -1126,17 +1139,19 @@
     var meta = document.querySelector('meta[name="theme-color"]');
 
     function paint(on) {
-      document.documentElement.setAttribute("data-theme", on ? "night" : "day");
+      document.documentElement.setAttribute("data-theme", on ? "day" : "night");
       lamp.setAttribute("aria-pressed", on ? "true" : "false");
       lamp.setAttribute("aria-label", on ? "Turn off the reading lamp" : "Turn on the reading lamp");
-      if (meta) meta.setAttribute("content", on ? "#17120C" : "#F6EFE2");
+      if (meta) meta.setAttribute("content", on ? "#F6EFE2" : "#17120C");
     }
 
-    paint(document.documentElement.getAttribute("data-theme") === "night");
+    paint(document.documentElement.getAttribute("data-theme") === "day");
     lamp.addEventListener("click", function () {
-      var on = document.documentElement.getAttribute("data-theme") !== "night";
-      paint(on);
-      try { localStorage.setItem("lib-lamp", on ? "on" : "off"); } catch (e) {}
+      paint(document.documentElement.getAttribute("data-theme") !== "day");
+      try {
+        localStorage.setItem("lib-lamp",
+          document.documentElement.getAttribute("data-theme") === "day" ? "on" : "off");
+      } catch (e) {}
     });
   }
 

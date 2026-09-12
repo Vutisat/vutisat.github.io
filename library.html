@@ -8,22 +8,24 @@
   <meta property="og:title" content="Pob's Library">
   <meta property="og:description" content="Every book on my shelves. Search the stacks and browse the whole wall.">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#F6EFE2">
+  <meta name="theme-color" content="#17120C">
 
   <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
   <link rel="preload" href="fonts/ebgaramond-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="Styles/library.css">
 
-  <!-- The lamp is remembered, so it has to be stamped on <html> before the
-       first paint or a returning reader watches the day palette flash past.
-       Opt-in only: the rest of the site is light, and a reader who has never
-       touched the lamp gets the same room on every page. -->
+  <!-- The library is read after dark by default: the lamp is off, the room is
+       unlit walnut. Stamped on <html> before the first paint so a reader who
+       has turned the lamp on never watches the dark room flash past. The
+       attribute is set first and storage consulted second, so a browser that
+       refuses localStorage still gets the default rather than nothing. -->
   <script>
-    (function(){try{
-      var v=localStorage.getItem("lib-lamp");
-      if(v==="on")document.documentElement.setAttribute("data-theme","night");
-    }catch(e){}})();
+    (function(){
+      var d=document.documentElement;
+      d.setAttribute("data-theme","night");
+      try{ if(localStorage.getItem("lib-lamp")==="on") d.setAttribute("data-theme","day"); }catch(e){}
+    })();
   </script>
 </head>
 <body>
