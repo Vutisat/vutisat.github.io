@@ -9,14 +9,15 @@
 
 /* ---- tokens ------------------------------------------------------------- */
 :root{
+  color-scheme:light;
   --paper:#F6EFE2;
   --paper-2:#EFE6D6;
   --paper-3:#E7DBC6;
   --ink:#2C2015;
   --ink-2:#574434;
   --ink-3:#6F5B45;
-  --line:rgba(44,32,21,.14);
-  --line-2:rgba(44,32,21,.26);
+  --line:rgba(var(--sh),.14);
+  --line-2:rgba(var(--sh),.26);
 
   --wood:#9A6C41;
   --wood-dark:#7A5230;
@@ -37,7 +38,102 @@
   --c-nonfiction:#4A4640; --c-science:#33345C; --c-business:#4B4A28;
   --c-selfhelp:#74401F; --c-memoir:#5C412F; --c-poetry:#4A2F55;
   --c-ya:#1F4A55; --c-language:#6B3A2A;
+
+  /* The cream that prints ON book cloth. It is deliberately NOT --paper: the
+     wall changes when the lamp goes on, the stamping on a spine does not. */
+  --on-cloth:#F6EFE2;
+  --paper-0:rgba(246,239,226,0);      /* --paper, faded out, for gradient ends */
+  --paper-blur:rgba(246,239,226,.88); /* the frosted top bar */
+  --sel:rgba(156,86,31,.20);
+  --sh:44,32,21;                      /* shadows are warm, not black */
+  --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%236F5B45' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --c-egg:#2A211C;                    /* the one book that isn't from the sheet */
+  --cat-nap:#E6DAC1;                  /* ...and the one thing that isn't a book */
 }
+
+/* ---- the lamp ------------------------------------------------------------
+   Night is not an inversion of day, it is the same room after dark. The wall
+   goes to unlit walnut, the boards keep their grain, and every spine is its
+   own daylight cloth lifted about 11% in lightness -- far enough to read by
+   lamplight, never far enough to lose the cream stamped on it (each one still
+   clears 4.6:1 against --on-cloth, and 2.2:1 against the wall behind it).
+
+   Opt-in only. The rest of pobv.dev is a light site, so a reader who never
+   touches the lamp gets the same room on every page; the choice is remembered
+   once it is made. Stamped on <html> by a short script in the head, before
+   first paint, so a returning reader never sees the day palette flash past.
+------------------------------------------------------------------------- */
+html[data-theme=night]{
+  color-scheme:dark;
+  --paper:#17120C;
+  --paper-2:#211A11;
+  --paper-3:#2D2419;
+  --ink:#EFE4D0;
+  --ink-2:#CBB99C;
+  --ink-3:#A08D72;
+  --line:rgba(239,228,208,.15);
+  --line-2:rgba(239,228,208,.28);
+
+  --wood:#6B4A29;
+  --wood-dark:#452F1C;
+  --wood-edge:#8D6741;
+  --amber:#E39A46;
+  --amber-wash:rgba(227,154,70,.14);
+  --cat:#42382A;
+  --gold:#D9A94A;
+
+  --paper-0:rgba(23,18,12,0);
+  --paper-blur:rgba(23,18,12,.9);
+  --sel:rgba(227,154,70,.24);
+  --sh:0,0,0;
+  --chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%23A08D72' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --c-egg:#3B2E24;
+  --cat-nap:#A3937A;
+
+  --c-scifi:#445E79;  --c-fantasy:#526843; --c-litfic:#7E3F3F;
+  --c-fiction:#377571; --c-classics:#8A6230; --c-mystery:#5D465F;
+  --c-horror:#5D4959; --c-romance:#8D4C62; --c-graphic:#836724;
+  --c-nonfiction:#696359; --c-science:#494B7E; --c-business:#6E6C3E;
+  --c-selfhelp:#9C5930; --c-memoir:#7F5C44; --c-poetry:#694577;
+  --c-ya:#316C7B; --c-language:#90523D;
+}
+/* the lamp itself: one warm pool falling from the top right of the room */
+html[data-theme=night] body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(118% 60% at 80% -14%,rgba(227,154,70,.13),transparent 60%);
+}
+/* the paper tooth is a dark noise, which does nothing on a dark ground --
+   lighten it so the boards and panels keep their texture after dark */
+html[data-theme=night] body::before{
+  opacity:.32;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .95 0 0 0 0 .88 0 0 0 0 .74 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+/* black shadows are invisible after dark, so a spine earns its edge from a
+   thin rim of lamplight along its top instead */
+html[data-theme=night] .book{box-shadow:0 -1px 0 rgba(255,240,214,.10),0 1px 0 rgba(0,0,0,.55),0 6px 10px -7px #000}
+html[data-theme=night] .peek,
+html[data-theme=night] .panel,
+html[data-theme=night] .rail__nav{box-shadow:0 20px 44px -18px #000}
+/* ...and for the same reason a cover in the card view takes a rim of light
+   rather than a shadow, and its shimmer is lit rather than shaded */
+html[data-theme=night] .card__art img{box-shadow:0 0 0 1px rgba(255,240,214,.14),0 -4px 14px -6px #000}
+html[data-theme=night] .card__art.is-loading::after{
+  background:linear-gradient(100deg,transparent 30%,rgba(255,240,214,.07) 50%,transparent 70%) 0/300% 100%}
+
+/* ---- the reading lamp ---------------------------------------------------- */
+.lamp{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.34rem .72rem .34rem .55rem;
+  border:1px solid var(--line);border-radius:999px;background:transparent;
+  color:var(--ink-3);font-size:.78rem;cursor:pointer;
+  transition:color .2s,border-color .2s,background .2s;
+}
+.lamp svg{width:16px;height:16px;flex:none}
+.lamp:hover{color:var(--ink);border-color:var(--line-2)}
+/* the shade fills with light once the lamp is on */
+.lamp__glow{fill:transparent;transition:fill .25s}
+.lamp[aria-pressed=true]{color:var(--amber);border-color:var(--amber)}
+.lamp[aria-pressed=true] .lamp__glow{fill:var(--amber)}
+@media (max-width:560px){.lamp span{display:none}.lamp{padding:.34rem .5rem}}
 
 *,*::before,*::after{box-sizing:border-box}
 /* A peek card is centred on its book, so the ones at the right edge of the
@@ -69,7 +165,7 @@ p{margin:0}
 img,svg{display:block;max-width:100%}
 button,input,select{font:inherit;color:inherit}
 :focus-visible{outline:2.5px solid var(--amber);outline-offset:3px;border-radius:3px}
-::selection{background:rgba(156,86,31,.20)}
+::selection{background:var(--sel)}
 input{caret-color:var(--amber)}
 html{scrollbar-color:var(--paper-3) var(--paper)}
 ::-webkit-scrollbar{width:12px;height:12px}
@@ -82,7 +178,7 @@ html{scrollbar-color:var(--paper-3) var(--paper)}
 .skip:focus{left:0}
 
 /* ---- top bar ------------------------------------------------------------ */
-.bar{position:sticky;top:0;z-index:40;background:rgba(246,239,226,.88);backdrop-filter:blur(9px);border-bottom:1px solid var(--line)}
+.bar{position:sticky;top:0;z-index:40;background:var(--paper-blur);backdrop-filter:blur(9px);border-bottom:1px solid var(--line)}
 .bar__in{display:flex;align-items:center;gap:1rem;height:58px}
 .mark{display:inline-flex;align-items:center;gap:.6rem;color:var(--ink);text-decoration:none;font-size:.83rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
 .mark__spines{display:inline-flex;align-items:flex-end;gap:2px;height:17px}
@@ -111,7 +207,7 @@ html{scrollbar-color:var(--paper-3) var(--paper)}
 .stacks{padding-bottom:clamp(3rem,8vh,5rem)}
 .controls{position:sticky;top:58px;z-index:30;padding:.9rem 0 .85rem;background:var(--paper);margin-bottom:.4rem}
 /* fade the scrolling shelf out *below* the bar rather than letting it ghost through it */
-.controls::after{content:"";position:absolute;left:0;right:0;top:100%;height:11px;pointer-events:none;background:linear-gradient(var(--paper),rgba(246,239,226,0))}
+.controls::after{content:"";position:absolute;left:0;right:0;top:100%;height:11px;pointer-events:none;background:linear-gradient(var(--paper),var(--paper-0))}
 .controls__row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
 
 .field{position:relative;flex:1 1 260px;min-width:0}
@@ -137,7 +233,7 @@ body.has-q .field__clear{display:block}
 .sortwrap__lbl{font-size:.76rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
 .sortwrap select{border:0;background:none;font-size:.88rem;padding:.3rem 1.4rem .3rem .2rem;cursor:pointer;
   appearance:none;-webkit-appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%236F5B45' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image:var(--chev);
   background-repeat:no-repeat;background-position:right .35rem center;background-size:12px}
 .sortwrap select:focus{outline:none}
 .sortwrap:focus-within{border-color:var(--amber)}
@@ -155,9 +251,11 @@ body.has-q .field__clear{display:block}
 /* a selected genre wears its own cloth, so several at once read as a palette
    instead of a row of identical dark pills. "Everything" has no cloth, so it
    falls back to ink and stays visually distinct from a genre choice. */
-.pill.is-on{background:var(--cloth,var(--ink));border-color:transparent;color:var(--paper)}
+.pill.is-on{background:var(--cloth,var(--ink));border-color:transparent;color:var(--on-cloth)}
+/* "Everything" has no cloth, so it wears ink and has to flip with the room */
+.pill[data-fam=all].is-on{background:var(--ink);color:var(--paper)}
 .pill.is-on:hover{filter:brightness(1.12)}
-.pill.is-on .pill__dot{background:var(--paper)}
+.pill.is-on .pill__dot{background:var(--on-cloth)}
 .pill.is-on .pill__n{opacity:.75}
 
 /* dashed, so it reads as an escape from the row rather than another choice in it */
@@ -178,6 +276,24 @@ body.has-q .field__clear{display:block}
 [data-fam=selfhelp]{--cloth:var(--c-selfhelp)}[data-fam=memoir]{--cloth:var(--c-memoir)}
 [data-fam=poetry]{--cloth:var(--c-poetry)}    [data-fam=ya]{--cloth:var(--c-ya)}
 [data-fam=language]{--cloth:var(--c-language)}
+/* the 342nd book: dark leather, stamped in gold rather than cream */
+[data-fam=egg]{--cloth:var(--c-egg)}
+.book[data-fam=egg] .book__title,
+.noart[data-fam=egg] .noart__t{color:var(--gold)}
+.book[data-fam=egg] .book__band{background:rgba(216,169,74,.5)}
+
+/* ---- the library cat -----------------------------------------------------
+   One slot on one shelf holds a sleeping cat instead of a book. She takes a
+   normal slot, so flex-wrap puts her between two spines wherever the row
+   happens to break, and she sits on the ledge exactly as the books do. */
+.cat-nap{
+  position:relative;width:64px;height:29px;padding:0;border:0;background:none;
+  color:var(--cat-nap);cursor:pointer;
+  transform-origin:bottom center;transition:transform .4s var(--ease);
+}
+.cat-nap svg{width:100%;height:100%;display:block;filter:drop-shadow(0 1px 0 rgba(var(--sh),.35))}
+/* woken: one long stretch, then she settles back */
+.cat-nap.is-awake{transform:scaleX(1.16) scaleY(.84)}
 
 /* ---- group headings ----------------------------------------------------- */
 .group{
@@ -226,7 +342,7 @@ body.has-q .field__clear{display:block}
     linear-gradient(rgba(0,0,0,.06),rgba(0,0,0,.06)),
     linear-gradient(90deg,rgba(0,0,0,.26) 0 2px,rgba(255,255,255,.10) 2px 4px,
                     rgba(255,255,255,0) 5px,rgba(0,0,0,.16) 100%);
-  box-shadow:0 1px 0 rgba(0,0,0,.3),0 5px 9px -6px rgba(44,32,21,.75),0 14px 16px -14px rgba(44,32,21,.5);
+  box-shadow:0 1px 0 rgba(0,0,0,.3),0 5px 9px -6px rgba(var(--sh),.75),0 14px 16px -14px rgba(var(--sh),.5);
   transform-origin:bottom center;
   transition:transform .28s var(--ease),box-shadow .28s var(--ease),filter .28s var(--ease);
 }
@@ -258,13 +374,13 @@ body.has-q .field__clear{display:block}
   display:flex;align-items:center;justify-content:center;text-align:center;
   font-family:"Garamond",Georgia,serif;
   font-size:var(--fs,9px);line-height:1.26;letter-spacing:0;
-  color:var(--paper);text-wrap:balance;hyphens:manual;
+  color:var(--on-cloth);text-wrap:balance;hyphens:manual;
   text-shadow:0 1px 0 rgba(0,0,0,.3);
 }
 /* hook a finger over the top and tip it out */
 .book:hover,.book:focus-visible{
   transform:perspective(680px) rotateX(-9deg) translateY(-7px);
-  box-shadow:0 2px 0 rgba(0,0,0,.2),0 16px 22px -12px rgba(44,32,21,.7);
+  box-shadow:0 2px 0 rgba(0,0,0,.2),0 16px 22px -12px rgba(var(--sh),.7);
   filter:brightness(1.07);
 }
 
@@ -274,7 +390,7 @@ body.has-q .field__clear{display:block}
   width:236px;max-width:78vw;padding:.85rem .95rem;
   display:flex;flex-direction:column;gap:.15rem;
   background:var(--paper);border:1px solid var(--line-2);border-radius:7px;
-  box-shadow:0 18px 32px -16px rgba(44,32,21,.55);
+  box-shadow:0 18px 32px -16px rgba(var(--sh),.55);
   opacity:0;visibility:hidden;transform:translateY(5px);pointer-events:none;
   transition:opacity .2s,transform .2s var(--ease),visibility 0s .2s;
 }
@@ -309,20 +425,46 @@ body.has-q .field__clear{display:block}
 .authorbar__x:hover{background:var(--amber);color:var(--paper)}
 .peek__meta{font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin-top:.25rem}
 
-/* ---- card view ---------------------------------------------------------- */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:.7rem}
+/* ---- card view ----------------------------------------------------------
+   Cards carry cover art now, so the column is cut to a book rather than to a
+   paragraph and a row reads as a wall. Covers arrive one at a time from Open
+   Library as each card nears the viewport (see library.js); until one does,
+   and whenever none exists, the card draws the book's own spine instead, so a
+   row is never a grid of empty frames.
+------------------------------------------------------------------------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(192px,1fr));gap:.95rem}
 .card{
-  position:relative;padding:1rem 1.05rem 1.05rem;
+  position:relative;display:flex;flex-direction:column;padding:1rem 1.05rem 1.05rem;
   background:var(--paper-2);border:1px solid var(--line);border-radius:5px;
   transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s;
 }
 .card.in{animation:rise .5s var(--ease) both;animation-delay:var(--d,0ms)}
-.card:hover{transform:translateY(-2px);border-color:var(--line-2);box-shadow:0 12px 20px -14px rgba(44,32,21,.5)}
+.card:hover{transform:translateY(-2px);border-color:var(--line-2);box-shadow:0 12px 20px -14px rgba(var(--sh),.5)}
+/* a recess the cover stands in, so a short cover sits on a floor rather than
+   floating in the middle of a box */
+.card__art{
+  position:relative;height:198px;margin-bottom:.9rem;border-radius:3px;overflow:hidden;
+  display:flex;align-items:flex-end;justify-content:center;
+  background:var(--paper-3);box-shadow:inset 0 1px 3px rgba(var(--sh),.16);
+  cursor:pointer;
+}
+.card__art img{width:auto;height:auto;max-width:100%;max-height:100%;
+  opacity:0;transition:opacity .4s var(--ease);
+  box-shadow:0 -3px 12px -5px rgba(var(--sh),.55),0 0 0 1px rgba(var(--sh),.14)}
+.card__art img.is-in{opacity:1}
+/* the spine, standing in for a cover that does not exist */
+.card__art > .noart{width:62%;min-height:0;height:100%;padding:1.1rem .65rem;border-radius:2px 3px 0 0}
+.card__art > .noart .noart__t{font-size:.95rem}
+.card__art.is-loading::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(100deg,transparent 30%,rgba(var(--sh),.08) 50%,transparent 70%) 0/300% 100%;
+  animation:shimmer 1.25s linear infinite}
 .card__title{font-family:"Garamond",Georgia,serif;font-size:1.22rem;line-height:1.32;text-wrap:pretty}
 .card__author{margin-top:.25rem;font-size:.86rem;color:var(--ink-2);min-height:1.3em}
-.card__meta{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.7rem}
+/* pushed to the foot of the card so the chips line up across a row whatever
+   the title does */
+.card__meta{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:auto;padding-top:.7rem}
 /* the chip names the genre, so it is the thing that carries the cloth colour */
-.chip{font-size:.71rem;letter-spacing:.06em;text-transform:uppercase;color:var(--paper);background:var(--cloth);border-radius:999px;padding:.2rem .6rem}
+.chip{font-size:.71rem;letter-spacing:.06em;text-transform:uppercase;color:var(--on-cloth);background:var(--cloth);border-radius:999px;padding:.2rem .6rem}
 .card__year{font-size:.8rem;color:var(--ink-3);font-variant-numeric:tabular-nums}
 
 /* ---- notes, empty state, footer ----------------------------------------- */
@@ -338,8 +480,8 @@ body.has-q .field__clear{display:block}
 .empty__btn:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 
 .foot{border-top:1px solid var(--line);margin-top:2rem;background:var(--paper-2)}
-.foot__in{display:flex;flex-wrap:wrap;gap:2rem;justify-content:flex-end;align-items:flex-end;padding:2.4rem 0 2.8rem}
-.foot__meta{font-size:.82rem;color:var(--ink-3);text-align:right;line-height:1.9}
+.foot__in{display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-end;padding:2.4rem 0 2.8rem}
+.foot__meta{font-size:.82rem;color:var(--ink-3);line-height:1.9}
 .foot__meta a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-2)}
 .foot__meta a:hover{color:var(--amber);border-color:var(--amber)}
 
@@ -400,13 +542,13 @@ body.has-q .field__clear{display:block}
 /* the book stays off the shelf while its drawer is open */
 .slot.is-out .book{
   transform:perspective(680px) rotateX(-11deg) translateY(-26px) scale(1.03);
-  box-shadow:0 3px 0 rgba(0,0,0,.18),0 26px 30px -14px rgba(44,32,21,.75);
+  box-shadow:0 3px 0 rgba(0,0,0,.18),0 26px 30px -14px rgba(var(--sh),.75);
   filter:brightness(1.1);
   transition:transform .34s var(--ease),box-shadow .34s var(--ease),filter .34s var(--ease);
 }
 .slot.is-out .peek{opacity:0!important;visibility:hidden!important}
 
-.scrim{position:fixed;inset:0;z-index:60;background:rgba(44,32,21,.15);
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(var(--sh),.15);
   opacity:0;transition:opacity .26s var(--ease)}
 .scrim[hidden]{display:none}
 body.panel-open .scrim{opacity:1}
@@ -414,7 +556,7 @@ body.panel-open .scrim{opacity:1}
 .panel{
   position:fixed;top:0;right:0;bottom:0;z-index:61;width:min(var(--panel-w),92vw);
   background:var(--paper);border-left:1px solid var(--line-2);
-  box-shadow:-24px 0 48px -28px rgba(44,32,21,.55);
+  box-shadow:-24px 0 48px -28px rgba(var(--sh),.55);
   --slide:translateX(102%);
   transform:var(--slide);transition:transform .34s cubic-bezier(.22,1,.3,1);
   display:flex;flex-direction:column;
@@ -433,7 +575,7 @@ body.panel-open .panel{--slide:none}
 /* cover */
 .panel__art{margin-bottom:1.5rem;min-height:150px;display:flex;justify-content:center}
 .panel__art img{width:auto;max-width:62%;max-height:272px;border-radius:2px;
-  box-shadow:0 18px 30px -18px rgba(44,32,21,.7),0 1px 0 rgba(44,32,21,.2)}
+  box-shadow:0 18px 30px -18px rgba(var(--sh),.7),0 1px 0 rgba(var(--sh),.2)}
 .panel__art.is-loading{border-radius:3px;background:
   linear-gradient(100deg,var(--paper-2) 30%,var(--paper-3) 50%,var(--paper-2) 70%) 0/300% 100%;
   animation:shimmer 1.25s linear infinite;max-width:180px;height:262px;margin-inline:auto}
@@ -444,14 +586,14 @@ body.panel-open .panel{--slide:none}
   display:flex;flex-direction:column;justify-content:center;gap:.6rem;text-align:center;
   background-color:var(--cloth);
   background-image:linear-gradient(90deg,rgba(0,0,0,.26) 0 3px,rgba(255,255,255,.10) 3px 6px,rgba(255,255,255,0) 8px,rgba(0,0,0,.16) 100%);
-  box-shadow:0 18px 30px -18px rgba(44,32,21,.7)}
-.noart__t{font-family:"Garamond",Georgia,serif;font-size:1.08rem;line-height:1.24;color:var(--paper)}
+  box-shadow:0 18px 30px -18px rgba(var(--sh),.7)}
+.noart__t{font-family:"Garamond",Georgia,serif;font-size:1.08rem;line-height:1.24;color:var(--on-cloth)}
 .noart__a{font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(246,239,226,.72)}
 
 .panel__title{font-family:"Garamond",Georgia,serif;font-size:1.66rem;line-height:1.22;text-wrap:pretty}
 .panel__author{margin-top:.4rem;font-size:.95rem;color:var(--ink-2)}
 .panel__facts{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:.9rem}
-.panel__chip{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--paper);
+.panel__chip{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--on-cloth);
   background:var(--cloth,var(--ink-3));border-radius:999px;padding:.2rem .6rem}
 .panel__year{font-size:.84rem;color:var(--ink-3);font-variant-numeric:tabular-nums}
 
@@ -537,14 +679,14 @@ body.panel-open .panel{--slide:none}
 /* the ends dissolve rather than stopping, so the loop reads as endless */
 .carousel::before,.carousel::after{content:"";position:absolute;top:0;bottom:0;width:9vw;
   max-width:130px;pointer-events:none;z-index:2}
-.carousel::before{left:0;background:linear-gradient(90deg,var(--paper),rgba(246,239,226,0))}
-.carousel::after{right:0;background:linear-gradient(270deg,var(--paper),rgba(246,239,226,0))}
+.carousel::before{left:0;background:linear-gradient(90deg,var(--paper),var(--paper-0))}
+.carousel::after{right:0;background:linear-gradient(270deg,var(--paper),var(--paper-0))}
 
 .rail__nav{
   position:absolute;top:calc(50% - 22px);z-index:3;display:grid;place-items:center;
   width:44px;height:44px;border:1px solid var(--line);border-radius:50%;
   background:var(--paper);color:var(--ink-2);cursor:pointer;
-  box-shadow:0 8px 18px -10px rgba(44,32,21,.6);
+  box-shadow:0 8px 18px -10px rgba(var(--sh),.6);
   transition:background .2s,color .2s,border-color .2s;
 }
 .rail__nav svg{width:19px;height:19px}

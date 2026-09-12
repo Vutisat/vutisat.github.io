@@ -34,7 +34,10 @@
     ["ya",         "Young Adult"],
     ["language",   "Language"]
   ];
-  var FAMILY_NAME = {};
+  /* Null-prototype: the query string reaches this map, and on a plain object
+     "?genre=constructor" would look up an inherited property and read as a
+     real family. Same reasoning for authorCount and bySlug below. */
+  var FAMILY_NAME = Object.create(null);
   FAMILIES.forEach(function (f) { FAMILY_NAME[f[0]] = f[1]; });
 
   var GENRE_FAMILY = {
@@ -116,6 +119,32 @@
     var first = a.split(/\s+(?:and|with)\s+/i)[0].replace(/\s*\([^)]*\)\s*$/, "").trim();
     var parts = first.split(/\s+/);
     return parts[parts.length - 1] || first;
+  }
+
+  /* The stable half of a shareable link. Titles alone are unique across the
+     341 currently on the shelf; assignSlugs() settles any future collision by
+     adding the surname, so an existing link can only ever break if the book
+     that owns it leaves the shelf. */
+  function slugify(str) {
+    return fold(str).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "book";
+  }
+
+  function assignSlugs(list) {
+    var seen = {}, i, b;
+    for (i = 0; i < list.length; i++) {
+      b = list[i];
+      b.slug = slugify(b.title);
+      if (seen[b.slug]) b.slug = b.slug + "-" + slugify(b.surname);
+      seen[b.slug] = true;
+    }
+    /* a surname could still tie; the later duplicate gives up and takes a number */
+    seen = {};
+    for (i = 0; i < list.length; i++) {
+      b = list[i];
+      if (seen[b.slug]) b.slug = b.slug + "-" + (seen[b.slug] + 1);
+      seen[b.slug] = (seen[b.slug] || 0) + 1;
+    }
+    return list;
   }
 
   var ARTICLE = /^(the|a|an)\s+/i;
@@ -249,7 +278,7 @@
   }
 
   function toBooks(rows) {
-    return rows.map(function (r) {
+    return assignSlugs(rows.map(function (r) {
       var title = r[0], author = r[1], genre = r[2];
       var yearRaw = String(r[3] || "").trim();
       var rating = parseRating(r[4]);
@@ -261,14 +290,14 @@
         genre: genre,
         family: familyOf(genre),
         year: year,
-        yearText: year === null ? "—" : String(year),
+        yearText: year === null ? "Year unknown" : String(year),
         rating: rating,
         surname: surnameOf(author),
         sortTitle: sortTitle(title),
         h: h,
         search: fold(title + " " + author + " " + genre)
       };
-    }).map(typeset);
+    }).map(typeset));
   }
 
   /* ---- RFC 4180 CSV ------------------------------------------------------
@@ -348,12 +377,79 @@
 
   /* 53 authors here have more than one book, covering 146 of them. Only those
      names become clickable — a link that returns one result is just a tease. */
-  var authorCount = {};
+  var authorCount = Object.create(null);
   function indexAuthors() {
-    authorCount = {};
+    authorCount = Object.create(null);
     books.forEach(function (b) { authorCount[b.author] = (authorCount[b.author] || 0) + 1; });
   }
   indexAuthors();
+
+  /* ---- the book that isn't in the spreadsheet --------------------------
+     341 books came off the sheet. This one is the site itself, bound in dark
+     leather and stamped in gold, standing at the end of the last shelf. It is
+     deliberately kept out of `books`: it must never move the count, reach the
+     search index, survive a filter, or be looked up on Open Library.
+  --------------------------------------------------------------------- */
+  var EGG = typeset({
+    title: "pobv.dev",
+    author: "Pob Vutisalchavakul",
+    genre: "Bound at home",
+    family: "egg",
+    year: 2026,
+    yearText: "2026",
+    rating: null,
+    surname: "Vutisalchavakul",
+    sortTitle: "pobv.dev",
+    slug: "pobv-dev",
+    isEgg: true,
+    h: hash("pobv.dev|Pob Vutisalchavakul"),
+    search: ""
+  });
+  EGG.bh = 208;   /* the tallest volume on the wall, by one pixel */
+
+  /* ---- the library cat -------------------------------------------------
+     She takes an ordinary slot, so flex-wrap settles her between two spines
+     wherever the row happens to break and she sits on the ledge exactly as the
+     books do. Where she settled is picked once per visit and held as a
+     fraction of the shelf, so re-sorting moves her with the books rather than
+     teleporting her to a different wall.
+  --------------------------------------------------------------------- */
+  var CAT_AT = 0.3 + Math.random() * 0.45;
+  var CAT_SVG =
+    '<svg viewBox="0 0 64 30" aria-hidden="true">' +
+      /* the loaf */
+      '<path fill="currentColor" d="M14 29c-2.4-10.8 5.2-16.8 19.2-16.8 13.6 0 22.4 5.6 25 16.8z"/>' +
+      /* ears */
+      '<path fill="currentColor" d="M42.4 12.6l-.6-7.6 7.2 4.8zM54.2 11.8l5-5.8 2.2 7.8z"/>' +
+      /* head, tucked down to the right */
+      '<circle cx="50.6" cy="19" r="9.4" fill="currentColor"/>' +
+      /* tail, hooked round the back end */
+      '<path d="M22 28.6C13 29 4.4 27.6 3.9 22.2 3.5 17.6 9 15.4 11.6 18.6" ' +
+        'fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>' +
+      /* closed eye, and the seam where she folds in half */
+      '<path d="M46.2 18.6q2.4 2.1 4.8 0" fill="none" stroke="rgba(0,0,0,.4)" stroke-width="1.5" stroke-linecap="round"/>' +
+      '<path d="M24 29q4-3.2 7.6 0" fill="none" stroke="rgba(0,0,0,.16)" stroke-width="1.4" stroke-linecap="round"/>' +
+    '</svg>';
+
+  function catSlot() {
+    return '<div class="slot slot--cat">' +
+      '<button type="button" class="cat-nap" aria-label="A cat, asleep on the shelf">' + CAT_SVG + '</button>' +
+      '<span class="peek">' +
+        '<span class="peek__title">The library cat</span>' +
+        '<span class="peek__author">She came with the shelves.</span>' +
+      '</span>' +
+    '</div>';
+  }
+
+  function wakeCat(node) {
+    if (node.classList.contains("is-awake")) return;
+    node.classList.add("is-awake");
+    /* one long stretch, then she settles. Under reduced motion she simply
+       stays stretched: one state, no movement to watch. */
+    if (!reduceMotion.matches) {
+      setTimeout(function () { node.classList.remove("is-awake"); }, 640);
+    }
+  }
 
   var state = {
     q: "",
@@ -366,6 +462,87 @@
 
   var el = {};
   function $(id) { return document.getElementById(id); }
+
+  var bySlug = Object.create(null);
+  function indexSlugs() {
+    bySlug = Object.create(null);
+    books.forEach(function (b) { bySlug[b.slug] = b; });
+    bySlug[EGG.slug] = EGG;
+  }
+
+  /* ---- the address bar ---------------------------------------------------
+     Every view of this page is a place: a search, a genre, an author's run, a
+     sort, one of the three views, and the book in the drawer. All of it lives
+     in the query string, so a shelf can be linked to, bookmarked, reloaded, and
+     -- the one that matters on a phone -- backed out of.
+
+     Only two moves push a history entry: opening a book, and jumping to an
+     author. Typing in the search box or toggling a genre replaces instead, so
+     Back means "close this / go back to everything", never "undo one keystroke".
+  ----------------------------------------------------------------------- */
+  var DEF_SORT = "genre", DEF_VIEW = "shelf";
+  var VIEWS = ["shelf", "cards", "carousel"];
+  var urlLock = false;      /* raised while a URL is being applied, so the
+                               renders it triggers don't write it back */
+
+  function urlFromState() {
+    var q = new URLSearchParams();
+    if (state.q) q.set("q", state.q);
+    if (state.families.length) q.set("genre", state.families.join(","));
+    if (state.author) q.set("author", state.author);
+    if (state.fives) q.set("five", "1");
+    if (state.sort !== DEF_SORT) q.set("sort", state.sort);
+    if (state.view !== DEF_VIEW) q.set("view", state.view);
+    if (openBook) q.set("book", openBook.slug);
+    var qs = q.toString();
+    return location.pathname + (qs ? "?" + qs : "") + location.hash;
+  }
+
+  function writeURL(push) {
+    if (urlLock || !window.history || !history.replaceState) return;
+    var next = urlFromState();
+    if (next === location.pathname + location.search + location.hash) return;
+    try { history[push ? "pushState" : "replaceState"](null, "", next); } catch (e) {}
+  }
+
+  function applyURL() {
+    var q = new URLSearchParams(location.search);
+    urlLock = true;
+    try {
+      state.q = q.get("q") || "";
+      var g = q.get("genre");
+      state.families = g ? g.split(",").filter(function (f) { return FAMILY_NAME[f]; }) : [];
+      state.author = q.get("author");
+      if (state.author && !authorCount[state.author]) state.author = null;   /* left the shelf */
+      state.fives = q.get("five") === "1";
+      state.view = VIEWS.indexOf(q.get("view")) !== -1 ? q.get("view") : DEF_VIEW;
+
+      var search = $("search"), sort = $("sort");
+      if (search) search.value = state.q;
+      document.body.classList.toggle("has-q", !!state.q);
+      if (sort) {
+        /* "My rating" only exists once something is rated, so validate against
+           the control rather than against a list that can go stale. Compared,
+           not interpolated into a selector: the value comes from the URL. */
+        var want = q.get("sort"), ok = false, oi;
+        for (oi = 0; want && oi < sort.options.length; oi++) {
+          if (sort.options[oi].value === want) { ok = true; break; }
+        }
+        state.sort = ok ? want : DEF_SORT;
+        sort.value = state.sort;
+      }
+      syncAuthor();
+      syncPills();
+      syncViews();
+      render();
+
+      var b = bySlug[q.get("book")];
+      if (b) { if (openBook !== b) openPanel(b, null, true); }
+      else if (openBook) closePanel(true);
+    } finally {
+      urlLock = false;
+    }
+  }
 
   /* ---- filtering + sorting ------------------------------------------------ */
   function tokens(q) {
@@ -484,6 +661,7 @@
 
   function card(b, i) {
     return '<article class="card" data-fam="' + b.family + '" data-i="' + i + '">' +
+      '<div class="card__art"></div>' +
       '<h3 class="card__title"><button type="button" class="card__open">' + esc(b.title) + '</button></h3>' +
       '<p class="card__author">' + authorMark(b) + '</p>' +
       '<p class="card__meta"><span class="chip">' + esc(b.genre) + '</span>' +
@@ -492,6 +670,12 @@
   }
 
   var shown = [];          /* what is on screen, indexed to match the DOM */
+
+  /* Both of these belong to the whole collection, not to a result set: a cat
+     asleep in the middle of four search hits is a bug, not a joke. */
+  function unfiltered() {
+    return !state.q && !state.families.length && !state.author && !state.fives;
+  }
 
   function render() {
     var list = visible();
@@ -505,6 +689,10 @@
     }
 
     var isShelf = state.view === "shelf";
+    var extras = isShelf && unfiltered();
+    var catAt = extras && list.length >= 60
+      ? Math.min(list.length - 2, Math.max(8, Math.round(CAT_AT * list.length)))
+      : -1;
     /* A peek card is a hover affordance. On a touch device it can never be
        shown -- a tap opens the drawer instead -- yet all 341 still occupy
        layout while hidden, and each one centred on a narrow slot pushed the
@@ -516,7 +704,11 @@
     if (state.sort === "all") {
       /* one continuous run, no dividers — the whole collection on one shelf */
       html = '<div class="' + box + '">';
-      for (i = 0; i < list.length; i++) html += draw(list[i], i);
+      for (i = 0; i < list.length; i++) {
+        if (i === catAt) html += catSlot();
+        html += draw(list[i], i);
+      }
+      if (extras) html += spine(EGG, "egg", bare);
       html += "</div>";
     } else {
       for (i = 0; i < list.length; i++) {
@@ -529,9 +721,13 @@
           html += '<div class="' + box + '">';
           open = true;
         }
+        if (i === catAt) html += catSlot();
         html += draw(b, i);
       }
-      if (open) html += "</div>";
+      if (open) {
+        if (extras) html += spine(EGG, "egg", bare);
+        html += "</div>";
+      }
     }
 
     el.results.className = "results results--" + state.view;
@@ -541,6 +737,7 @@
 
   function afterRender(list) {
     el.empty.hidden = list.length > 0;
+    mountCovers(list);
 
     /* Stagger the entrance, capped so reordering 341 books stays smooth.
        The carousel is excluded: it paints three copies of the list and a
@@ -562,6 +759,104 @@
     el.live.textContent = n === 0
       ? "No books match."
       : n + (n === 1 ? " book" : " books") + " shown.";
+
+    writeURL(false);
+  }
+
+  /* ---- cover art ----------------------------------------------------------
+     The card view used to be 341 identical cream rectangles. It carries covers
+     now, fetched one card at a time from Open Library as the card nears the
+     viewport -- never all at once, and never for cards nobody scrolls to.
+
+     Three rules keep this polite. Nothing is requested until a card is within
+     half a screen of being seen; no more than five requests are ever in the
+     air; and every answer lands in the same in-memory cache the drawer uses,
+     so opening a book you have already seen the cover of costs nothing. When
+     there is no cover on file -- or no network, or the reader is on a metered
+     connection -- the card draws the book's own spine instead, which is why a
+     row is never a grid of grey boxes.
+  ------------------------------------------------------------------------- */
+  var COVER_MAX = 5;                 /* requests in the air at once */
+  var coverObs = null, coverQueue = [], coverBusy = 0, coverGen = 0;
+
+  function coversWanted() {
+    if (!window.fetch || !("IntersectionObserver" in window)) return false;
+    var c = navigator.connection;
+    return !(c && c.saveData);
+  }
+
+  function mountCovers(list) {
+    /* Every render starts a new generation. Requests still in the air belong to
+       the old one: they are left to finish and fill the cache, but they no
+       longer touch this counter -- which is what stops a burst of view
+       switching from leaving `coverBusy` pinned at its limit forever, with
+       every later card waiting behind requests that already landed. */
+    coverGen++;
+    coverBusy = 0;
+    coverQueue.length = 0;
+    if (coverObs) coverObs.disconnect();
+    if (state.view !== "cards") return;
+
+    var arts = el.results.querySelectorAll(".card__art"), i, art;
+    var live = coversWanted();
+    for (i = 0; i < arts.length; i++) {
+      art = arts[i];
+      art.book = list[+art.parentNode.getAttribute("data-i")];
+      if (!art.book) continue;
+      if (!live) { art.innerHTML = fallbackArt(art.book); continue; }
+      if (!coverObs) {
+        coverObs = new IntersectionObserver(onNearView, { rootMargin: "50% 0px" });
+      }
+      coverObs.observe(art);
+    }
+  }
+
+  function onNearView(entries) {
+    for (var i = 0; i < entries.length; i++) {
+      if (!entries[i].isIntersecting) continue;
+      coverObs.unobserve(entries[i].target);
+      coverQueue.push(entries[i].target);
+    }
+    pumpCovers();
+  }
+
+  /* The queue is a stack, not a line. Scrolling a long way fast can leave a
+     hundred cards waiting, and a reader who has arrived at row 30 does not want
+     row 4 fetched first: whatever came into view most recently goes next. */
+  function pumpCovers() {
+    while (coverBusy < COVER_MAX && coverQueue.length) loadCover(coverQueue.pop());
+  }
+
+  function loadCover(art) {
+    var b = art.book, gen = coverGen;
+    if (!b || !art.isConnected) return;
+    coverBusy++;
+    art.classList.add("is-loading");
+
+    var done = function () {
+      if (gen !== coverGen) return;      /* a render has happened since */
+      coverBusy--;
+      pumpCovers();
+    };
+    lookup(b, null, false).then(function (rec) {
+      done();
+      if (!art.isConnected || art.book !== b) return;   /* the view moved on */
+      art.classList.remove("is-loading");
+      if (!rec || !rec.found || !rec.cover) { art.innerHTML = fallbackArt(b); return; }
+      var img = new Image();
+      img.alt = "";                        /* the title is set right beneath it */
+      img.decoding = "async";
+      img.onload = function () { img.classList.add("is-in"); };
+      img.onerror = function () { art.innerHTML = fallbackArt(b); };
+      img.src = rec.cover;
+      art.innerHTML = "";
+      art.appendChild(img);
+    }, function () {
+      done();
+      if (!art.isConnected) return;
+      art.classList.remove("is-loading");
+      art.innerHTML = fallbackArt(b);
+    });
   }
 
   /* ---- carousel ----------------------------------------------------------
@@ -749,6 +1044,7 @@
     document.body.classList.remove("has-q");
     syncAuthor();
     syncPills();
+    writeURL(true);       /* an author's run is a place you can come back from */
     render();
   }
 
@@ -805,15 +1101,43 @@
     if (clear) clear.hidden = none && !state.author && !state.fives;
   }
 
-  function setView(view) {
-    state.view = view;
+  function syncViews() {
     var all = el.views.querySelectorAll("button");
     for (var i = 0; i < all.length; i++) {
-      var on = all[i].getAttribute("data-view") === view;
+      var on = all[i].getAttribute("data-view") === state.view;
       all[i].classList.toggle("is-on", on);
       all[i].setAttribute("aria-pressed", on ? "true" : "false");
     }
+  }
+
+  function setView(view) {
+    state.view = view;
+    syncViews();
     render();
+  }
+
+  /* ---- the reading lamp --------------------------------------------------
+     Stamped on <html> by the script in the head before first paint; this only
+     has to keep the control, the browser chrome and the stored choice in step.
+  ----------------------------------------------------------------------- */
+  function initLamp() {
+    var lamp = $("lamp");
+    if (!lamp) return;
+    var meta = document.querySelector('meta[name="theme-color"]');
+
+    function paint(on) {
+      document.documentElement.setAttribute("data-theme", on ? "night" : "day");
+      lamp.setAttribute("aria-pressed", on ? "true" : "false");
+      lamp.setAttribute("aria-label", on ? "Turn off the reading lamp" : "Turn on the reading lamp");
+      if (meta) meta.setAttribute("content", on ? "#17120C" : "#F6EFE2");
+    }
+
+    paint(document.documentElement.getAttribute("data-theme") === "night");
+    lamp.addEventListener("click", function () {
+      var on = document.documentElement.getAttribute("data-theme") !== "night";
+      paint(on);
+      try { localStorage.setItem("lib-lamp", on ? "on" : "off"); } catch (e) {}
+    });
   }
 
   /* ---- live sheet sync ---------------------------------------------------
@@ -833,6 +1157,7 @@
         raw = next;
         books = toBooks(next);
         indexAuthors();
+        indexSlugs();
         buildPills();
         syncRatingSort();
         render();
@@ -867,9 +1192,32 @@
     });
   }
 
-  function lookup(b, signal) {
+  /* The description lives on the work, which is a second request. The card
+     view wants covers by the hundred and no prose at all, so it asks for the
+     search only; the drawer asks for both and, if the cover already came back
+     for a card, pays for nothing but the description. */
+  function fetchBlurb(rec, signal) {
+    if (rec.blurbDone || !rec.work) { rec.blurbDone = true; return Promise.resolve(rec); }
+    return olSearch(OL + rec.work + ".json", signal).then(function (w) {
+      var d = w && w.description;
+      if (d && typeof d === "object") d = d.value;
+      if (typeof d === "string" && d.trim().length > 40) rec.blurb = cleanBlurb(d);
+      rec.blurbDone = true;
+      return rec;
+    }, function (e) {
+      if (e && e.name === "AbortError") throw e;
+      rec.blurbDone = true;
+      return rec;
+    });
+  }
+
+  function lookup(b, signal, needBlurb) {
     var key = b.title + "|" + b.author;
-    if (lookupCache[key]) return Promise.resolve(lookupCache[key]);
+    var hit = lookupCache[key];
+    if (hit) {
+      if (!needBlurb || hit.blurbDone) return Promise.resolve(hit);
+      return fetchBlurb(hit, signal);
+    }
 
     var fields = "title,cover_i,key,number_of_pages_median,first_publish_year";
     var strict = OL + "/search.json?title=" + encodeURIComponent(b.title) +
@@ -885,26 +1233,21 @@
       })
       .then(function (d) {
         var doc = (d.docs || [])[0];
-        if (!doc) return (lookupCache[key] = { found: false });
-        var rec = {
+        if (!doc) return (lookupCache[key] = { found: false, blurbDone: true });
+        var rec = lookupCache[key] = {
           found: true,
           cover: doc.cover_i ? "https://covers.openlibrary.org/b/id/" + doc.cover_i + "-L.jpg" : null,
           pages: doc.number_of_pages_median || null,
           firstYear: doc.first_publish_year || null,
           work: doc.key || null,
-          blurb: null
+          blurb: null,
+          blurbDone: false
         };
-        if (!rec.work) return (lookupCache[key] = rec);
-        return olSearch(OL + rec.work + ".json", signal).then(function (w) {
-          var d2 = w && w.description;
-          if (d2 && typeof d2 === "object") d2 = d2.value;
-          if (typeof d2 === "string" && d2.trim().length > 40) rec.blurb = cleanBlurb(d2);
-          return (lookupCache[key] = rec);
-        }, function () { return (lookupCache[key] = rec); });
+        return needBlurb ? fetchBlurb(rec, signal) : rec;
       })
       .catch(function (e) {
         if (e && e.name === "AbortError") throw e;
-        return { found: false, errored: true };
+        return { found: false, errored: true, blurbDone: true };
       });
   }
 
@@ -925,6 +1268,18 @@
       .replace(/^\s*#{1,6}\s*/gm, "")                    /* headings */
       .replace(/^\s*[-*+]\s+/gm, "")                     /* bullets  */
       .replace(/\n{3,}/g, "\n\n")
+      /* Some records hang a cataloguing credit off the end of the prose:
+         "- Container." is a MARC field name that leaked into the description.
+         The list of credits is deliberately closed, because a short tail after
+         a dash is far more often a real clause than a credit. */
+      .replace(/\s*-+\s*(container|publisher['\u2019]?s description|from the publisher|provided by publisher|back cover|dust jacket|jacket|amazon\.com)\s*\.?\s*$/i, "")
+      /* Open Library prose is typed as plain ASCII: "--" standing in for a dash
+         and straight quotes throughout. The panel sets real type, so give it
+         real punctuation rather than typewriter substitutes. */
+      .replace(/\s*--\s*/g, " - ")
+      .replace(/"([^"]*)"/g, "\u201c$1\u201d")
+      .replace(/(^|[\s(\u201c])'/g, "$1\u2018")
+      .replace(/'/g, "\u2019")
       .trim();
   }
 
@@ -943,7 +1298,30 @@
     return out + '<span class="mine__n">' + n + " out of 5</span>";
   }
 
-  function openPanel(b, trigger) {
+  /* The one book that is not from Open Library, because it is not from anyone:
+     it is this site. Everything in here is stated plainly and is true. */
+  function paintEgg(b) {
+    $("pArt").className = "panel__art";
+    $("pArt").innerHTML = fallbackArt(b);
+    $("pBlurb").innerHTML =
+      "<p>You got to the end of the shelf, which means there is one more book " +
+      "here than the catalogue owns up to.</p>" +
+      "<p>This one is the room you are standing in. It is hand-written HTML, CSS " +
+      "and JavaScript with no framework and no build step, and the wall behind " +
+      "you is drawn entirely in CSS: every spine is an element, cut to the " +
+      "width of its own longest word so the title can be read across it rather " +
+      "than down it. The only things this page fetches are the spreadsheet the " +
+      "shelf is built from and, when you open a book, its cover.</p>" +
+      "<p>If something up there is worth reading, or I am plainly missing " +
+      "something, I\u2019d like to hear about it.</p>";
+    $("pMeta").innerHTML = "<dt>Binding</dt><dd>Hand-sewn, no build step</dd>" +
+                           "<dt>Print run</dt><dd>One</dd>";
+    $("pSrc").innerHTML = 'Written and bound at home. ' +
+      '<a href="mailto:PobVuti@gmail.com">Say hello</a>, or ' +
+      '<a href="index.html">see the rest of the site</a>.';
+  }
+
+  function openPanel(b, trigger, silent) {
     if (!el.panel) return;
     openBook = b;
     lastFocus = trigger || null;
@@ -978,11 +1356,14 @@
     void el.panel.offsetWidth;
     document.body.classList.add("panel-open");
     el.panel.focus({ preventScroll: true });
+    if (!silent) writeURL(true);
 
-    if (inFlight) inFlight.abort();
+    if (inFlight) { inFlight.abort(); inFlight = null; }
+    if (b.isEgg) { paintEgg(b); return; }
+
     inFlight = new AbortController();
     var mine2 = b;
-    lookup(b, inFlight.signal).then(function (rec) {
+    lookup(b, inFlight.signal, true).then(function (rec) {
       if (openBook !== mine2) return;               /* a different book was opened meanwhile */
       paintLookup(b, rec);
     }, function () {});
@@ -1005,13 +1386,15 @@
 
     $("pBlurb").innerHTML = rec.blurb
       ? '<p>' + esc(rec.blurb).replace(/\n{2,}/g, "</p><p>") + "</p>"
-      : '<p class="panel__none">No blurb for this one — Open Library doesn\u2019t have a description on file.</p>';
+      : '<p class="panel__none">No blurb for this one. Open Library doesn\u2019t have a description on file.</p>';
 
+    /* Only the page count is taken from Open Library. `first_publish_year` was
+       shown when it disagreed with the sheet, which meant it only ever appeared
+       when it was wrong: Open Library dates Macbeth to 1508, Slaughterhouse-Five
+       to 1956 and The Little Prince to 2003. The sheet's year is authoritative
+       and is already printed beside the genre chip. */
     var meta = "";
     if (rec.pages) meta += "<dt>Length</dt><dd>" + rec.pages + " pages</dd>";
-    if (rec.firstYear && rec.firstYear !== b.year) {
-      meta += "<dt>First published</dt><dd>" + rec.firstYear + "</dd>";
-    }
     $("pMeta").innerHTML = meta;
 
     $("pSrc").innerHTML = rec.found && rec.work
@@ -1027,8 +1410,8 @@
            "</div>";
   }
 
-  function closePanel() {
-    if (!el.panel || el.panel.hidden) return;
+  function closePanel(silent) {
+    if (!el.panel || !openBook) return;
     if (inFlight) { inFlight.abort(); inFlight = null; }
     openBook = null;
     document.body.classList.remove("panel-open");
@@ -1045,6 +1428,7 @@
     else hideTimer = setTimeout(done, 260);
     if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
     lastFocus = null;
+    if (!silent) writeURL(false);
   }
 
   /* On a phone the search field, sort, view toggle and genre pills add up to
@@ -1111,9 +1495,10 @@
     var sort   = $("sort");
     if (!el.results || !search || !sort || !el.pills || !el.views) return;
 
+    indexSlugs();
+    initLamp();
     buildPills();
     syncRatingSort();
-    sort.value = state.sort;   /* keep the control showing the real default */
 
     var t;
     search.addEventListener("input", function () {
@@ -1189,11 +1574,17 @@
       if (swallowClick) { swallowClick = false; return; }   /* that was a drag */
       var link = e.target.closest("[data-author]");
       if (link) { setAuthor(link.getAttribute("data-author")); return; }
-      var hit = e.target.closest(".book, .card__open");
+      var cat = e.target.closest(".cat-nap");
+      if (cat) { wakeCat(cat); return; }
+      /* the cover is a click target too, but the title button stays the one
+         real control: it is what focus goes back to when the drawer closes */
+      var hit = e.target.closest(".book, .card__open, .card__art");
       if (!hit) return;
       var host = hit.closest("[data-i]");
-      var b = host && shown[+host.getAttribute("data-i")];
-      if (b) openPanel(b, hit);
+      if (!host) return;
+      var key = host.getAttribute("data-i");
+      var b = key === "egg" ? EGG : shown[+key];
+      if (b) openPanel(b, hit.classList.contains("card__art") ? host.querySelector(".card__open") : hit);
     });
 
     /* The drawer renders an author link too, and it sits outside #results, so
@@ -1212,11 +1603,14 @@
       });
     }
 
-    if (el.panelClose) el.panelClose.addEventListener("click", closePanel);
-    if (el.scrim) el.scrim.addEventListener("click", closePanel);
+    /* wrapped, not passed: closePanel's first argument decides whether the
+       address bar is updated, and an Event object is truthy */
+    if (el.panelClose) el.panelClose.addEventListener("click", function () { closePanel(); });
+    if (el.scrim) el.scrim.addEventListener("click", function () { closePanel(); });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") closePanel();
     });
+    window.addEventListener("popstate", function () { applyURL(); });
 
     if (el.authorClear) {
       el.authorClear.addEventListener("click", function () {
@@ -1254,7 +1648,7 @@
       if (btn) setView(btn.getAttribute("data-view"));
     });
 
-    setView(state.view);
+    applyURL();   /* the query string decides the first render, not the defaults */
 
     if ("requestIdleCallback" in window) requestIdleCallback(sync, { timeout: 2500 });
     else setTimeout(sync, 600);

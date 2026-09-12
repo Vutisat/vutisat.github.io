@@ -14,6 +14,17 @@
   <link rel="preload" href="fonts/ebgaramond-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="Styles/library.css">
+
+  <!-- The lamp is remembered, so it has to be stamped on <html> before the
+       first paint or a returning reader watches the day palette flash past.
+       Opt-in only: the rest of the site is light, and a reader who has never
+       touched the lamp gets the same room on every page. -->
+  <script>
+    (function(){try{
+      var v=localStorage.getItem("lib-lamp");
+      if(v==="on")document.documentElement.setAttribute("data-theme","night");
+    }catch(e){}})();
+  </script>
 </head>
 <body>
 
@@ -23,6 +34,15 @@
     <div class="wrap bar__in">
       <a href="#top" class="mark"><span class="mark__spines" aria-hidden="true"><i></i><i></i><i></i></span> The&nbsp;Library</a>
       <span class="bar__spacer"></span>
+      <button type="button" class="lamp" id="lamp" aria-pressed="false" aria-label="Turn on the reading lamp">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path class="lamp__glow" d="M5.5 12 12 4l6.5 8z"/>
+          <path d="M5.5 12 12 4l6.5 8z"/>
+          <path d="M12 12v6"/>
+          <path d="M9 20h6"/>
+        </svg>
+        <span class="lbl">Lamp</span>
+      </button>
       <a href="index.html" class="bar__back">
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
         <span class="lbl">pobv.dev</span>
@@ -34,7 +54,7 @@
 
     <section class="hero wrap">
       <h1>Pob's <em>Library</em></h1>
-      <p class="hero__sub">Welcome to my library! </br> I'm happy to share my collection, every book here is on my shelves at home. I curious to see what you find in here, from something you already love or something you want to get lost in? I&rsquo;m always glad to <a href="mailto:PobVuti@gmail.com">talk about any of them</a>.</p>
+      <p class="hero__sub">Welcome to my library. Every book here is one I own, sitting on a shelf at home. I&rsquo;m curious what you&rsquo;ll find: something you already love, or something you&rsquo;d like to get lost in. I&rsquo;m always glad to <a href="mailto:PobVuti@gmail.com">talk about any of them</a>.</p>
       <p class="hero__meta">
         <span id="count" class="hero__count">341 books</span>
         <span class="sep" aria-hidden="true">/</span>
@@ -57,7 +77,7 @@
             <span class="sortwrap__lbl">Shelve by</span>
             <select id="sort" aria-label="Sort the library">
               <option value="all">All, one shelf</option>
-              <option value="title">Title, A&ndash;Z</option>
+              <option value="title">Title, A-Z</option>
               <option value="author">Author</option>
               <option value="year-old">Year, oldest first</option>
               <option value="year-new">Year, newest first</option>

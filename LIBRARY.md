@@ -84,6 +84,17 @@ and hands focus back to the book.
 **Title, author, genre, year and Pob's rating all come from the sheet.** Open
 Library supplies only the cover, blurb and page count.
 
+Its `first_publish_year` used to be shown when it *disagreed* with the sheet,
+which meant it only ever appeared when it was wrong: Open Library dates
+*Macbeth* to 1508, *Slaughterhouse-Five* to 1956 and *The Little Prince* to
+2003. The row is gone. The sheet's year is authoritative and already sits
+beside the genre chip.
+
+The description is a second request, against the work rather than the search
+index, so it is only made when something actually needs prose. The card view
+asks for covers by the hundred and skips it; the drawer asks for both, and if a
+card already fetched the cover it pays only for the description.
+
 The author in the drawer is the same run link the shelf uses, and it needs its
 own click delegation: the drawer sits outside `#results`, so the shelf's
 delegation never saw it. Following it closes the drawer, because the filter it
@@ -120,6 +131,93 @@ showing a broken frame; when there is no blurb, the drawer says so plainly.
 
 Blurbs arrive as Markdown with a trailing source credit and are stripped to
 plain prose before display.
+
+---
+
+## The address bar
+
+Every view of the page is a place, and all of it lives in the query string:
+`q`, `genre` (comma-separated families), `author`, `five`, `sort`, `view` and
+`book` (a slug of the title). Defaults are omitted, so the plain shelf is a
+bare URL. Anything unrecognised is dropped on the next render, and the three
+maps a reader's URL can reach — `FAMILY_NAME`, `authorCount`, `bySlug` — are
+`Object.create(null)`, so `?book=constructor` finds nothing rather than
+crashing the page.
+
+**Only two moves push a history entry: opening a book, and jumping to an
+author.** Typing in the search box or toggling a genre replaces instead, so
+Back means "close this drawer" or "go back to everything", never "undo one
+keystroke". Back out of an open drawer and it closes; the filter behind it
+survives. `popstate` re-reads the URL and re-applies the whole state, and a
+lock stops the renders that causes from writing the URL back.
+
+Slugs are the title, and only collide if two books ever share one; a second
+book with the same title takes the author's surname, a third takes a number.
+
+---
+
+## The card view
+
+Cards carry cover art. Each one is fetched from Open Library when the card gets
+within half a screen of the viewport, never up front and never for cards nobody
+scrolls to, with at most five requests in the air. The queue is a **stack, not
+a line** — scrolling a long way fast leaves a hundred cards waiting, and a
+reader who has reached row 30 does not want row 4 fetched first.
+
+Answers land in the same in-memory cache the drawer uses, so opening a book
+whose cover you have already seen costs nothing. When there is no cover on
+file, no network, or `saveData` is set, the card draws the book's own spine
+instead — the same `.noart` the drawer falls back to. A row is never a grid of
+empty frames.
+
+Each render starts a new cover "generation". Requests still in the air belong
+to the previous one: they finish and fill the cache, but no longer touch the
+in-flight counter, which is what stops a burst of view switching from pinning
+it at the limit forever.
+
+---
+
+## The lamp
+
+A night palette, opt-in, remembered in `localStorage` under `lib-lamp` and
+stamped on `<html data-theme>` by a short script in the `<head>` so a returning
+reader never sees the day palette flash past.
+
+It is not an inversion. The wall goes to unlit walnut, the boards keep their
+grain, a warm pool falls from the top right, and every spine is its own
+daylight cloth lifted about 11% in lightness — far enough to read by lamplight,
+never far enough to lose the cream stamped on it. Each night cloth still clears
+4.6:1 against the stamping and 2.2:1 against the wall behind it.
+
+Two things made this possible without rewriting the sheet:
+
+- **`--on-cloth`** was split out of `--paper`. Everywhere `--paper` meant "the
+  cream printed on a spine, a chip or a genre pill" it now says `--on-cloth`,
+  which does not change with the room. The wall changes; the stamping does not.
+- **`--sh`** holds the shadow colour as an RGB triplet (`44,32,21` by day,
+  `0,0,0` at night). Black shadows are invisible after dark, so a spine earns
+  its edge from a thin rim of lamplight instead.
+
+**System dark is deliberately not followed.** The rest of pobv.dev is a light
+site; a reader who never touches the lamp gets the same room on every page.
+
+---
+
+## Two things that are not books
+
+- **The 342nd book.** One extra spine stands at the end of the last shelf, in
+  dark leather stamped in gold: `pobv.dev`, by Pob, 2026. Its drawer is written
+  by hand rather than fetched. It is kept out of `books` entirely, so it never
+  moves the count, reaches the search index, survives a filter, or gets looked
+  up on Open Library — and it only appears on the shelf view with nothing
+  filtered.
+- **The library cat.** One slot on one shelf holds a sleeping cat instead of a
+  book. She takes an ordinary slot, so flex-wrap settles her between two spines
+  wherever the row happens to break and she sits on the ledge exactly as the
+  books do. Click her and she stretches. Where she settled is picked once per
+  visit and held as a *fraction* of the shelf, so re-sorting moves her with the
+  books rather than teleporting her. Both appear only on a full, unfiltered
+  shelf: a cat asleep in the middle of four search results is a bug, not a joke.
 
 ---
 
@@ -195,6 +293,9 @@ pages.
   screen.
 - **The panel slide is driven by one `--slide` variable** rather than competing
   `transform` declarations across breakpoints.
+- **The lamp does not follow `prefers-color-scheme`.** See *The lamp* above.
+- **Covers are loaded newest-request-first**, and only for cards a reader has
+  actually scrolled towards.
 
 ## Deliberate detector exceptions
 
@@ -209,6 +310,13 @@ Recorded with reasons in `.impeccable/config.json`:
 - Roughly 1 in 20 books has no Open Library record, and about a third have no
   blurb. Both degrade gracefully.
 - Open Library occasionally matches a different edition; only the cover, blurb
-  and page count are taken from it, so the damage is limited.
+  and page count are taken from it, so the damage is limited. Now that the card
+  view shows covers, a bad match is visible rather than hidden: *813* comes
+  back as a Japanese edition, and *The Little Prince* still reports 10 pages
+  from a picture-book adaptation.
+- A trailing cataloguing credit ("- Container.", "- Back cover") is stripped
+  from blurbs against a **closed list**. An unlisted credit will still show: a
+  short tail after a dash is far more often a real clause than a credit, and
+  eating real prose is the worse failure.
 - The baked snapshot drifts from the sheet until re-baked. Only affects the
   no-JS/offline copy — live visitors always see current data.
