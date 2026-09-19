@@ -269,6 +269,14 @@ a:hover { color: var(--ink); }
 }
 .head__lede em { font-family: var(--serif); font-style: italic; color: var(--ink); }
 
+.head__lede--sub {
+  margin-top: 1rem;
+  max-width: 44ch;
+  font-size: clamp(.98rem, .94rem + .2vw, 1.075rem);
+  color: var(--ink-3);
+}
+.head__lede--sub a { font-weight: 600; }
+
 .tally {
   margin-top: 1.85rem;
   display: flex; flex-wrap: wrap; gap: .4rem 1.4rem;
@@ -370,6 +378,186 @@ a:hover { color: var(--ink); }
 }
 .gloss b { font-family: var(--serif); font-weight: 600; color: var(--ink); font-size: 1.06em; }
 
+/* ---------- BEFORE YOU GO — THE YEAR --------------------------------------- */
+
+/* Dates decide more of a Thailand trip than the itinerary does, so the year gets
+   drawn rather than described: one twelve-month ruler, read four ways. Gold is
+   "go", orchid-pale is the pleasant-and-expensive window, and the one bad window
+   is hatched rather than coloured — it is the only thing on the page told in
+   negative. Every band repeats its months in words in the row label, so nothing
+   here is carried by colour alone. */
+
+.when, .kitbox {
+  margin-top: clamp(1.9rem, 5vh, 2.9rem);
+  margin-left: calc(var(--cord) + var(--reach));
+  max-width: 70ch;
+  scroll-margin-top: 1.25rem;
+}
+
+.when__head { padding-bottom: .9rem; border-bottom: 1px solid var(--line-2); }
+.when__head h3 { font-size: clamp(1.14rem, 1.06rem + .42vw, 1.42rem); }
+.when__head h3 .th { color: var(--orchid-deep); font-weight: 500; }
+.when__en {
+  font-family: var(--sans); font-size: .72rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
+  margin-left: .25rem;
+}
+.when__sub { margin-top: .4rem; font-size: .93rem; color: var(--ink-3); }
+
+.season { margin-top: 1.4rem; }
+
+.season__line {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .4rem;
+  padding-block: .7rem;
+  border-top: 1px solid var(--line);
+}
+.season__line--head { border-top: 0; padding-top: 0; padding-bottom: .3rem; }
+
+@media (min-width: 720px) {
+  .season__line { grid-template-columns: minmax(0, 23ch) 1fr; gap: 1.1rem; align-items: center; }
+}
+
+.season__label { display: flex; flex-direction: column; gap: .1rem; }
+.season__label b {
+  font-family: var(--serif); font-weight: 600; font-size: 1.02rem; color: var(--ink);
+  letter-spacing: -.01em;
+}
+.season__label b .th { color: var(--orchid-deep); font-weight: 500; }
+.season__range {
+  font-size: .73rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--gold-ink); font-variant-numeric: tabular-nums;
+}
+.season__range--bad { color: var(--ink); }
+.season__range--bad::before { content: "avoid · "; opacity: .55; }
+.season__gloss { font-size: .86rem; line-height: 1.45; color: var(--ink-3); }
+
+/* the twelve-month ruler */
+.season__months {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  font-size: .68rem; font-weight: 600; letter-spacing: .04em;
+  color: var(--ink-3); text-align: center;
+}
+.season__months li { padding-bottom: .15rem; }
+
+.season__track {
+  position: relative;
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  height: 24px;
+  background-color: var(--jasmine-2);
+  background-image: repeating-linear-gradient(
+    to right, var(--line) 0 1px, transparent 1px calc(100% / 12));
+}
+.season__span { grid-row: 1; grid-column: var(--a) / var(--b); }
+.season__span[data-fill="go"]   { background: var(--gold); }
+.season__span[data-fill="cool"] { background: var(--orchid-pale); }
+.season__span[data-fill="avoid"] {
+  background-image: repeating-linear-gradient(
+    45deg, var(--line-2) 0 2px, transparent 2px 7px);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+
+/* ---------- CALLOUTS ------------------------------------------------------- */
+
+/* Two tones and no more: a warn (ink, the drawn cross) for the two traps that
+   actually cost people a trip, and a note (gold) for the one rule of thumb. */
+.callout {
+  margin-top: 1.4rem;
+  max-width: 64ch;
+  display: grid; grid-template-columns: auto 1fr; gap: .2rem .7rem;
+  padding: .95rem 1.15rem;
+  background: var(--jasmine-2);
+  border-left: 3px solid var(--line-2);
+}
+.callout--tier { margin-left: calc(var(--cord) + var(--reach)); }
+.callout > svg { width: 17px; height: 17px; margin-top: .22em; }
+.callout h4 {
+  font-family: var(--serif); font-weight: 600; font-size: 1.02rem;
+  color: var(--ink); letter-spacing: -.01em; margin: 0; line-height: 1.25;
+}
+.callout h4 em { font-style: italic; }
+.callout p { margin-top: .4rem; font-size: .95rem; color: var(--ink-2); }
+.callout b { color: var(--ink); font-weight: 600; }
+
+.callout[data-tone="warn"] { border-left-color: var(--ink); }
+.callout[data-tone="warn"] > svg { color: var(--ink); }
+.callout[data-tone="note"] { border-left-color: var(--gold); }
+.callout[data-tone="note"] > svg { color: var(--gold-ink); }
+
+/* ---------- THE TWO FIXED DATES -------------------------------------------- */
+
+.dates { margin-top: 1.6rem; display: grid; gap: .1rem; }
+.dates > div { padding-block: .85rem; border-top: 1px solid var(--line); }
+.dates dt {
+  font-family: var(--serif); font-weight: 600; font-size: 1.04rem; color: var(--ink);
+}
+.dates dt .th { color: var(--orchid-deep); font-weight: 500; }
+.dates__alt { color: var(--ink-3); font-weight: 500; }
+.dates dd { margin-top: .3rem; font-size: .95rem; color: var(--ink-2); max-width: 62ch; }
+.dates dd b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ---------- THE KIT -------------------------------------------------------- */
+
+.kit { margin-top: 1.3rem; counter-reset: kit; display: grid; gap: .1rem; }
+.kit > li {
+  counter-increment: kit;
+  position: relative;
+  display: grid; gap: .15rem .9rem;
+  padding: .8rem 0 .8rem 2.1rem;
+  border-top: 1px solid var(--line);
+  max-width: 62ch;
+}
+.kit > li::before {
+  content: counter(kit);
+  position: absolute; left: 0; top: .85rem;
+  font-family: var(--serif); font-size: .84rem; font-weight: 600;
+  color: var(--orchid); font-variant-numeric: tabular-nums;
+}
+.kit b { font-family: var(--serif); font-weight: 600; font-size: 1.04rem; color: var(--ink); }
+.kit span { font-size: .95rem; color: var(--ink-2); }
+
+@media (min-width: 860px) {
+  .kit > li { grid-template-columns: minmax(0, 18ch) 1fr; align-items: baseline; }
+}
+
+/* ---------- SUB-BANDS — a smaller knot across the cord --------------------- */
+
+.subband {
+  position: relative;
+  margin-top: clamp(2.25rem, 6vh, 3.25rem);
+  margin-left: calc(var(--cord) + var(--reach));
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--line-2);
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: .15rem .9rem;
+}
+.subband h3 { font-size: clamp(1.1rem, 1.04rem + .34vw, 1.34rem); }
+.subband h3 .th { color: var(--orchid-deep); font-weight: 500; }
+.subband__en {
+  margin-left: auto;
+  font-size: .71rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+/* its tie, and the knot where that tie meets the cord */
+.subband::before {
+  content: "";
+  position: absolute; left: calc(var(--reach) * -1); top: .72em;
+  width: var(--reach); height: 1px; background: var(--line-2);
+}
+.subband::after {
+  content: "";
+  position: absolute; left: calc(var(--reach) * -1); top: .72em;
+  width: 11px; height: 11px; translate: -50% -50%;
+  background: var(--jasmine);
+  border: 1.5px solid var(--orchid);
+  border-radius: 50%;
+}
+.subband--day::after { border-color: var(--leaf); }
+.subband.is-empty { display: none; }
+
+.tier__note--sub { margin-top: 1.1rem; font-size: .96rem; color: var(--ink-3); }
+.tier__note--sub em { font-family: var(--serif); font-style: italic; color: var(--ink-2); }
+
 /* ---------- BUDS ----------------------------------------------------------- */
 
 .buds { margin-top: clamp(1.6rem, 4vh, 2.4rem); }
@@ -437,6 +625,9 @@ a:hover { color: var(--ink); }
 }
 .hangtag dt { font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
 .hangtag dd { color: var(--ink); }
+
+/* a run of buds that are themselves day trips wears the day-tour colour */
+.buds--day .bud .bud__mark { color: var(--leaf); }
 
 /* ---------- DAY TOURS — the leaf layer ------------------------------------- */
 
@@ -557,7 +748,8 @@ a:hover { color: var(--ink); }
 .strand[data-sift="must"] .unstrung,
 .strand[data-sift="must"] .aside-note,
 .strand[data-sift="must"] .leafs,
-.strand[data-sift="must"] .gloss { display: none; }
+.strand[data-sift="must"] .gloss,
+.strand[data-sift="must"] .tier__note--sub { display: none; }
 
 /* ---------- MOTION --------------------------------------------------------- */
 

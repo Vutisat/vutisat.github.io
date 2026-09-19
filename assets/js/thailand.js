@@ -4,7 +4,7 @@
      1. the cord strings itself to your eye line as you scroll
      2. each bud cinches onto the cord when it arrives
      3. the knot index marks the tier you are reading
-     4. the full / short garland switch
+     4. the full / short garland switch, which also re-seats the run heads
    No dependencies. Everything respects prefers-reduced-motion.
    ============================================================================= */
 
@@ -97,6 +97,24 @@
     }
   };
 
+  /* A sub-band heads a run of buds. Shorten the garland and a run can empty out
+     (the Gulf side holds no must-dos), so a heading would be left over nothing. */
+  var reband = function () {
+    var bands = doc.querySelectorAll(".subband");
+    for (var i = 0; i < bands.length; i++) {
+      var run = bands[i].nextElementSibling;
+      while (run && !run.classList.contains("buds")) run = run.nextElementSibling;
+      var live = 0;
+      if (run) {
+        var buds = run.querySelectorAll(".bud");
+        for (var b = 0; b < buds.length; b++) {
+          if (getComputedStyle(buds[b]).display !== "none") live++;
+        }
+      }
+      bands[i].classList.toggle("is-empty", live === 0);
+    }
+  };
+
   var recount = function () {
     var counts = doc.querySelectorAll(".band__count[data-counts]");
     for (var c = 0; c < counts.length; c++) {
@@ -109,6 +127,8 @@
       }
       var slot = counts[c].querySelector(".n");
       if (slot) slot.textContent = String(shown);
+      var unit = counts[c].querySelector(".u");
+      if (unit) unit.textContent = shown === 1 ? "place" : "places";
     }
   };
 
@@ -122,6 +142,7 @@
         sift[s].setAttribute("aria-pressed", sift[s].dataset.sift === value ? "true" : "false");
       }
       reseat();
+      reband();
       recount();
     };
 
@@ -131,5 +152,6 @@
   }
 
   reseat();
+  reband();
   recount();
 })();
