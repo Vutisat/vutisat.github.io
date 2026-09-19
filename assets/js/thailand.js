@@ -1,10 +1,11 @@
 /* =============================================================================
    พวงมาลัย — thailand.html
-   Four behaviours, each guarding its own elements so the page degrades cleanly:
+   Five behaviours, each guarding its own elements so the page degrades cleanly:
      1. the cord strings itself to your eye line as you scroll
      2. each bud cinches onto the cord when it arrives
      3. the knot index marks the tier you are reading
      4. the full / short garland switch, which also re-seats the run heads
+     5. the year marks itself where today actually falls
    No dependencies. Everything respects prefers-reduced-motion.
    ============================================================================= */
 
@@ -148,6 +149,54 @@
 
     for (var m = 0; m < sift.length; m++) {
       sift[m].addEventListener("click", function () { choose(this.dataset.sift); });
+    }
+  }
+
+  /* --- 5. where the year is right now ------------------------------------ */
+
+  /* The season chart is already complete and readable without this. All this
+     does is point at the row you are standing in, from the same four windows
+     the chart draws — so the page can never disagree with itself. */
+  var season = doc.querySelector(".season");
+  if (season) {
+    var MONTHS = ["January", "February", "March", "April", "May", "June",
+                  "July", "August", "September", "October", "November", "December"];
+
+    var ANDAMAN = [11, 12, 1, 2, 3, 4];
+    var GULF    = [6, 7, 8, 9];
+    var HAZE    = [2, 3, 4];
+
+    var now = new Date().getMonth() + 1;
+    var holds = function (list) { return list.indexOf(now) !== -1; };
+
+    season.style.setProperty("--now", String(now));
+    season.setAttribute("data-now", String(now));
+
+    var letters = season.querySelectorAll(".season__months li");
+    if (letters[now - 1]) letters[now - 1].classList.add("is-now");
+
+    var line = doc.querySelector("[data-nowline]");
+    if (line) {
+      var lede = doc.createElement("span");
+      lede.className = "lede";
+      lede.textContent = "As of today";
+
+      var month = doc.createElement("b");
+      month.textContent = MONTHS[now - 1];
+
+      line.appendChild(lede);
+      line.appendChild(doc.createTextNode("It is "));
+      line.appendChild(month);
+      line.appendChild(doc.createTextNode(
+        " \u2014 " +
+        (holds(ANDAMAN) ? "the Andaman coast is in its window"
+                        : "the Andaman coast is in its wet half") + ", " +
+        (holds(GULF) ? "the Gulf side is in its window"
+                     : "the Gulf side is off-season") + ", and " +
+        (holds(HAZE) ? "the north is in burning season, so check the AQI before you book it."
+                     : "the north is clear of haze.")
+      ));
+      line.hidden = false;
     }
   }
 

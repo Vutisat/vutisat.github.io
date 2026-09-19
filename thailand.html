@@ -134,8 +134,9 @@
 
     <!-- THE KNOT INDEX -->
     <nav class="knots off" aria-label="Sections">
+      <i class="cord-thru" aria-hidden="true"></i>
       <div class="knots__in">
-        <a class="knot" href="#before"  data-tier="before"><span class="th">ก่อนไป</span><span class="en">Before you go</span></a>
+        <a class="knot" href="#before"  data-tier="before"><span class="th">ก่อนไป</span><span class="en">Before</span></a>
         <a class="knot" href="#north"   data-tier="north"><span class="th">ภาคเหนือ</span><span class="en">North</span></a>
         <a class="knot" href="#south"   data-tier="south"><span class="th">ภาคใต้</span><span class="en">South</span></a>
         <a class="knot" href="#central" data-tier="central"><span class="th">ภาคกลาง</span><span class="en">Bangkok</span></a>
@@ -180,7 +181,7 @@
               </ol>
             </div>
 
-            <div class="season__line">
+            <div class="season__line" style="--row:1">
               <p class="season__label">
                 <b><span class="th">ฤดูหนาว</span> Cool season</b>
                 <span class="season__range">Nov – Feb</span>
@@ -192,7 +193,7 @@
               </div>
             </div>
 
-            <div class="season__line">
+            <div class="season__line" style="--row:2">
               <p class="season__label">
                 <b><span class="th">ฝั่งอันดามัน</span> Andaman coast</b>
                 <span class="season__range">Nov – Apr</span>
@@ -204,7 +205,7 @@
               </div>
             </div>
 
-            <div class="season__line">
+            <div class="season__line" style="--row:3">
               <p class="season__label">
                 <b><span class="th">ฝั่งอ่าวไทย</span> Gulf coast</b>
                 <span class="season__range">Jun – Sep</span>
@@ -215,7 +216,7 @@
               </div>
             </div>
 
-            <div class="season__line">
+            <div class="season__line" style="--row:4">
               <p class="season__label">
                 <b><span class="th">หมอกควันภาคเหนือ</span> Haze, the north</b>
                 <span class="season__range season__range--bad">Feb – Apr</span>
@@ -226,6 +227,8 @@
               </div>
             </div>
           </div>
+
+          <p class="nowline" data-nowline hidden></p>
 
           <div class="callout" data-tone="warn">
             <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
