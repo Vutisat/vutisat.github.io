@@ -3,150 +3,1037 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pob's Thailand Recs</title>
+  <title>เที่ยวไทย · Pob's Thailand Recs</title>
   <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="A Thailand trip strung north to south — when to go, what to book, and personal recommendations from someone who grew up there.">
 
   <link rel="icon" type="image/png" href="assets/icons/favicon-32x32.png" sizes="32x32">
-  <meta name="theme-color" content="#F4F1EA">
+  <meta name="theme-color" content="#FBF7EF">
 
-  <link rel="preload" href="assets/fonts/spectral-500.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css">
+  <script>
+    /* Stamp the page as scripted so the cinch animation can start hidden.
+       If thailand.js never reports in, unstamp it so nothing stays invisible. */
+    (function (d) {
+      var r = d.documentElement;
+      r.className += " js";
+      setTimeout(function () {
+        if (!r.hasAttribute("data-ready")) r.className = r.className.replace(/\bjs\b/, "");
+      }, 2500);
+    })(document);
+  </script>
+
+  <link rel="preload" href="assets/fonts/anuphan-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/anuphan-var-thai.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/trirong-600-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/trirong-600-thai.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/thailand.css">
 </head>
 <body>
 
-  <!-- NAVIGATION -->
-  <nav class="subnav">
-    <div class="wrap subnav__in">
-      <a href="index.html" class="brand">pobv<span class="dot">.</span>dev</a>
-      <a href="index.html" class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg> Home</a>
+<a class="skip" href="#start">Skip to the guide</a>
+
+<!-- THE MARKS -------------------------------------------------------------
+     One family, drawn at one stroke weight. A jasmine bud carries every place,
+     and how full the bud is drawn is the whole priority scale. -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+  <symbol id="bud-solid" viewBox="0 0 20 20">
+    <path d="M10 2.2c3.7 4.2 5.2 7.3 5.2 10.1a5.2 5.2 0 0 1-10.4 0c0-2.8 1.5-5.9 5.2-10.1Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="bud-half" viewBox="0 0 20 20">
+    <path d="M10 2.2c3.7 4.2 5.2 7.3 5.2 10.1a5.2 5.2 0 0 1-10.4 0c0-2.8 1.5-5.9 5.2-10.1Z"
+          fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <circle cx="10" cy="12.4" r="2.7" fill="currentColor"/>
+  </symbol>
+  <symbol id="bud-open" viewBox="0 0 20 20">
+    <path d="M10 2.2c3.7 4.2 5.2 7.3 5.2 10.1a5.2 5.2 0 0 1-10.4 0c0-2.8 1.5-5.9 5.2-10.1Z"
+          fill="none" stroke="currentColor" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="bud-cut" viewBox="0 0 20 20">
+    <path d="M10 2.2c3.7 4.2 5.2 7.3 5.2 10.1a5.2 5.2 0 0 1-10.4 0c0-2.8 1.5-5.9 5.2-10.1Z"
+          fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M4 16 16 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="orchid" viewBox="0 0 24 24">
+    <g fill="currentColor">
+      <ellipse cx="12" cy="6.5" rx="3.1" ry="5.5"/>
+      <ellipse cx="12" cy="6.5" rx="3.1" ry="5.5" transform="rotate(72 12 12)"/>
+      <ellipse cx="12" cy="6.5" rx="3.1" ry="5.5" transform="rotate(144 12 12)"/>
+      <ellipse cx="12" cy="6.5" rx="3.1" ry="5.5" transform="rotate(216 12 12)"/>
+      <ellipse cx="12" cy="6.5" rx="3.1" ry="5.5" transform="rotate(288 12 12)"/>
+    </g>
+    <circle cx="12" cy="12" r="2.3" fill="#FBF7EF"/>
+  </symbol>
+  <symbol id="leaf" viewBox="0 0 16 16">
+    <path d="M2.4 13.6C2.4 7.2 7.2 2.4 13.6 2.4c0 6.4-4.8 11.2-11.2 11.2Z"
+          fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M2.4 13.6 13.6 2.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="dont" viewBox="0 0 20 20">
+    <circle cx="10" cy="10" r="7.1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M5 15 15 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="do" viewBox="0 0 20 20">
+    <circle cx="10" cy="10" r="7.1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="m6.4 10.2 2.5 2.6 4.7-5.2" fill="none" stroke="currentColor" stroke-width="1.6"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="sun" viewBox="0 0 20 20">
+    <circle cx="10" cy="10" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <path d="M10 1.4v2.1M10 16.5v2.1M18.6 10h-2.1M3.5 10H1.4"/>
+      <path d="m16.1 3.9-1.5 1.5M5.4 14.6l-1.5 1.5M16.1 16.1l-1.5-1.5M5.4 5.4 3.9 3.9"/>
+    </g>
+  </symbol>
+  <symbol id="tassel" viewBox="0 0 30 46">
+    <circle cx="15" cy="6" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <path d="M11.5 9.8C10 19 12 27 9.8 41.5"/>
+      <path d="M15 10.3C15 21 14.2 31 15.2 43.6"/>
+      <path d="M18.5 9.8C20 18.5 18.2 29 20.4 41.5"/>
+    </g>
+  </symbol>
+  <symbol id="back" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="garland">
+  <i class="cord" aria-hidden="true"></i>
+
+  <header class="top">
+    <div class="wrap top__in">
+      <a href="index.html" class="brand">pobv<i>.</i>dev</a>
+      <a href="index.html" class="home"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#back"/></svg> Home</a>
     </div>
-  </nav>
+  </header>
 
-  <main class="guide-page">
+  <div class="wrap">
 
-    <div class="guide-header reveal">
-      <span class="guide-header__label">Pob's Travel Recs</span>
-      <h1 class="guide-header__title">Thailand</h1>
-      <p class="guide-header__sub">Personal recommendations from someone who grew up there. No tourist traps, just the good stuff.</p>
-    </div>
-
-    <!-- THE NORTH -->
-    <div class="guide-section reveal">
-      <div class="guide-section__meta">Region 01</div>
-      <h2 class="guide-section__title">The North</h2>
-      <p class="guide-section__intro">
-        Mountains and forests. Chiang Mai and Chiang Rai are the main bases. If you can find accommodation near Phu Chi Fa — do it.
+    <!-- THE TITLE TAG, hanging from the top of the cord -->
+    <div class="head off">
+      <h1><span class="th">เที่ยวไทย</span><span class="en">Thailand</span></h1>
+      <p class="head__by"><span class="th">แนะนำโดยพบ</span> · Recommended by Pob</p>
+      <p class="head__lede">
+        Personal recommendations from someone who grew up there. No tourist traps, just the
+        good stuff — and where something <em>isn't</em> worth your time, I say so.
       </p>
-      <ul class="place-list">
-        <li>
-          <strong>Phu Chi Fa</strong> <span class="star">★ must-do</span><br>
-          You climb high enough to be above the clouds. At sunrise, you're looking out over a sea of clouds — one of the most surreal sights in Thailand. You must arrive the night before to catch the morning show.
-        </li>
-        <li>
-          <strong>Wat Rong Khun</strong> <span class="star">★ must-do</span><br>
-          The White Temple. All-white architecture with mirror inlays — extraordinarily beautiful. Do not skip this.
-        </li>
-        <li>
-          <strong>Golden Triangle</strong><br>
-          Where Thailand, Laos, and Burma converge. You can stand at the border of three countries at once. Good accommodation nearby — don't let the crowds deter you.
-        </li>
-        <li>
-          <strong>Doi Tung</strong><br>
-          Beautiful gardens built to honor the King's mother. Worth visiting for the scenery.
-        </li>
-        <li>
-          <strong>Doi Inthanon</strong><br>
-          Highest peak in Thailand. The grand pagoda built in honor of the King and Queen is impressive. Worth it if you have time, but not top priority.
-        </li>
-      </ul>
-    </div>
-
-    <hr class="guide-divider">
-
-    <!-- THE SOUTH -->
-    <div class="guide-section reveal">
-      <div class="guide-section__meta">Region 02</div>
-      <h2 class="guide-section__title">The South</h2>
-      <p class="guide-section__intro">
-        The most beautiful beaches are along the Andaman Coast — Trang, Krabi, and surrounding islands. Know where to go and what to skip.
+      <p class="head__lede head__lede--sub">
+        Start with <a href="#when">when to go</a>. Thailand punishes that choice harder than
+        most countries: the two coasts have opposite rainy seasons, and the north's high season
+        is also its worst air of the year.
       </p>
+      <p class="tally">
+        <span><b>3</b> regions</span>
+        <span><b>24</b> places</span>
+        <span><b>5</b> must-dos</span>
+        <span><b>1</b> to skip</span>
+      </p>
+    </div>
 
-      <div class="guide-note guide-note--danger">
-        <strong>Skip Phuket.</strong> Tourist trap with a massive party scene. Nothing is authentically Thai, beaches are subpar, prices inflated. Unless you're specifically looking for clubs and raves, there are much better options.
+    <!-- THE KNOT INDEX -->
+    <nav class="knots off" aria-label="Sections">
+      <div class="knots__in">
+        <a class="knot" href="#before"  data-tier="before"><span class="th">ก่อนไป</span><span class="en">Before you go</span></a>
+        <a class="knot" href="#north"   data-tier="north"><span class="th">ภาคเหนือ</span><span class="en">North</span></a>
+        <a class="knot" href="#south"   data-tier="south"><span class="th">ภาคใต้</span><span class="en">South</span></a>
+        <a class="knot" href="#central" data-tier="central"><span class="th">ภาคกลาง</span><span class="en">Bangkok</span></a>
+        <a class="knot" href="#manners" data-tier="manners"><span class="th">มารยาท</span><span class="en">Manners</span></a>
+        <div class="sift" role="group" aria-label="How much of the garland to show">
+          <button type="button" data-sift="all"  aria-pressed="true">All 24</button>
+          <button type="button" data-sift="must" aria-pressed="false">Must-do 5</button>
+        </div>
       </div>
+    </nav>
 
-      <ul class="place-list">
-        <li>
-          <strong>Koh Lanta</strong> <span class="star">★ best base</span><br>
-          Popular but genuinely beautiful. Great range of accommodation. From here you can do day tours:
-          <ul class="sub-list">
-            <li><strong>Koh Rok</strong> — one of the most beautiful beaches, barely developed, you can even camp there</li>
-            <li>Snorkeling & diving — swimming with schools of thousands of fish</li>
-            <li>Sea cave tours</li>
-            <li><strong>Koh Mook</strong> — an emerald green beach inside a cave. Absolutely amazing.</li>
-            <li>Seasonal waterfall tours (best during rainy season)</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Koh Phi Phi</strong><br>
-          Another solid choice. More upscale and developed than Koh Lanta — genuinely beautiful, just pricier.
-        </li>
-        <li>
-          <strong>Ao Phang Nga National Park</strong><br>
-          Home to Koh Tapu (James Bond Island). The limestone karsts rising from emerald water are iconic.
-        </li>
-      </ul>
+    <main id="start" class="strand">
 
-      <div class="guide-note guide-note--success" style="margin-top: 20px;">
-        Many smaller islands are beautiful but remote — more adventurous than relaxing. Plenty have campgrounds if that's your style.
+      <!-- ก่อนออกเดินทาง ------------------------------------------------- -->
+      <section class="tier" id="before" aria-labelledby="before-h">
+        <div class="band" data-cinch>
+          <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
+          <h2 id="before-h"><span class="th">ก่อนออกเดินทาง</span></h2>
+          <span class="band__en">Before you go</span>
+          <span class="band__count">Timing &amp; logistics</span>
+        </div>
+
+        <p class="tier__note" data-cinch>
+          Everything below this line is about places. This part is about <em>dates</em>, and it
+          decides more of your trip than the itinerary does. Get the month right first, then
+          pick the region — not the other way round.
+        </p>
+
+        <!-- THE YEAR -->
+        <section class="when" id="when" aria-labelledby="when-h" data-cinch>
+          <div class="when__head">
+            <h3 id="when-h"><span class="th">ไปตอนไหนดี</span> <span class="when__en">When to go</span></h3>
+            <p class="when__sub">The same twelve months, read four different ways.</p>
+          </div>
+
+          <div class="season">
+            <div class="season__line season__line--head">
+              <p class="season__label" aria-hidden="true"></p>
+              <ol class="season__months" aria-hidden="true">
+                <li>J</li><li>F</li><li>M</li><li>A</li><li>M</li><li>J</li>
+                <li>J</li><li>A</li><li>S</li><li>O</li><li>N</li><li>D</li>
+              </ol>
+            </div>
+
+            <div class="season__line">
+              <p class="season__label">
+                <b><span class="th">ฤดูหนาว</span> Cool season</b>
+                <span class="season__range">Nov – Feb</span>
+                <span class="season__gloss">Pleasant nationwide. Also the most expensive.</span>
+              </p>
+              <div class="season__track" aria-hidden="true">
+                <span class="season__span" data-fill="cool" style="--a:1;--b:3"></span>
+                <span class="season__span" data-fill="cool" style="--a:11;--b:13"></span>
+              </div>
+            </div>
+
+            <div class="season__line">
+              <p class="season__label">
+                <b><span class="th">ฝั่งอันดามัน</span> Andaman coast</b>
+                <span class="season__range">Nov – Apr</span>
+                <span class="season__gloss">Krabi, Trang, Lanta, Phi Phi — the west side.</span>
+              </p>
+              <div class="season__track" aria-hidden="true">
+                <span class="season__span" data-fill="go" style="--a:1;--b:5"></span>
+                <span class="season__span" data-fill="go" style="--a:11;--b:13"></span>
+              </div>
+            </div>
+
+            <div class="season__line">
+              <p class="season__label">
+                <b><span class="th">ฝั่งอ่าวไทย</span> Gulf coast</b>
+                <span class="season__range">Jun – Sep</span>
+                <span class="season__gloss">Samui, Koh Tao, Ang Thong — the east side.</span>
+              </p>
+              <div class="season__track" aria-hidden="true">
+                <span class="season__span" data-fill="go" style="--a:6;--b:10"></span>
+              </div>
+            </div>
+
+            <div class="season__line">
+              <p class="season__label">
+                <b><span class="th">หมอกควันภาคเหนือ</span> Haze, the north</b>
+                <span class="season__range season__range--bad">Feb – Apr</span>
+                <span class="season__gloss">Agricultural burning. Avoid Chiang Mai / Chiang Rai.</span>
+              </p>
+              <div class="season__track" aria-hidden="true">
+                <span class="season__span" data-fill="avoid" style="--a:2;--b:5"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout" data-tone="warn">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
+            <div>
+              <h4>The trap: burning season <em>is</em> high season</h4>
+              <p>
+                Feb–Apr looks perfect on a weather chart and sits inside the expensive months,
+                but it is when the north's air is genuinely bad. It is the single biggest
+                planning mistake people make with Chiang Mai and Chiang Rai. Check the AQI for
+                those dates before you book anything.
+              </p>
+            </div>
+          </div>
+
+          <div class="callout" data-tone="note">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#sun"/></svg>
+            <div>
+              <h4>Don't book both coasts blindly</h4>
+              <p>
+                The Andaman and the Gulf have opposite rainy seasons. There is no month that is
+                good for both, so one coast per trip — and let the month you can travel pick
+                which one.
+              </p>
+            </div>
+          </div>
+
+          <dl class="dates">
+            <div>
+              <dt><span class="th">สงกรานต์</span> Songkran</dt>
+              <dd>
+                <b>13–15 April.</b> A nationwide water fight — the whole country, in the street,
+                for three days. Either plan around it or plan into it, but don't be surprised by it.
+              </dd>
+            </div>
+            <div>
+              <dt><span class="th">ลอยกระทง</span> Loy Krathong <span class="dates__alt">/ <span class="th">ยี่เป็ง</span> Yi Peng</span></dt>
+              <dd>
+                <b>November.</b> Lanterns and floated offerings, biggest in Chiang Mai. The date
+                moves every year with the lunar calendar, so look it up before you fix flights.
+              </dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- THE KIT -->
+        <section class="kitbox" aria-labelledby="kit-h" data-cinch>
+          <div class="when__head">
+            <h3 id="kit-h"><span class="th">เรื่องควรรู้</span> <span class="when__en">Logistics</span></h3>
+            <p class="when__sub">Five things worth sorting before you land.</p>
+          </div>
+
+          <ol class="kit">
+            <li>
+              <b>Grab</b>
+              <span>
+                The rideshare and food-delivery app, and the one piece of software you actually
+                need in Thailand. Install it before you go.
+              </span>
+            </li>
+            <li>
+              <b>A tourist SIM or eSIM</b>
+              <span>
+                Cheap at the airport and worth it immediately — Grab and maps are both useless
+                without data.
+              </span>
+            </li>
+            <li>
+              <b>Sleeper trains</b>
+              <span>
+                Overnight trains are a real option, not a novelty: Bangkok–Chiang Mai for the
+                north, Bangkok–Surat Thani for the south. They book out early.
+              </span>
+            </li>
+            <li>
+              <b>Cash for national parks</b>
+              <span>
+                Parks usually charge a separate foreigner price, and card readers there are
+                unreliable. Carry baht.
+              </span>
+            </li>
+            <li>
+              <b>Your visa-free stay</b>
+              <span>
+                Check the current length for your passport before the trip. It has changed more
+                than once recently, so don't go on what a blog post says.
+              </span>
+            </li>
+          </ol>
+        </section>
+      </section>
+
+      <!-- ภาคเหนือ ------------------------------------------------------- -->
+      <section class="tier" id="north" aria-labelledby="north-h">
+        <div class="band" data-cinch>
+          <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
+          <h2 id="north-h"><span class="th">ภาคเหนือ</span></h2>
+          <span class="band__en">The North</span>
+          <span class="band__count" data-counts><b class="n">7</b> places</span>
+        </div>
+
+        <p class="tier__note" data-cinch>
+          Mountains and forests. <span class="th">เชียงใหม่</span> Chiang Mai and
+          <span class="th">เชียงราย</span> Chiang Rai are the two major cities and the natural
+          bases to sleep in. But if you can find a legitimate place to stay near Phu Chi Fa —
+          do that instead.
+        </p>
+        <p class="gloss" data-cinch><b class="th">ดอย</b> <span>doi — a mountain peak. It prefixes half the names up here.</span></p>
+
+        <div class="callout callout--tier" data-tone="warn" data-cinch>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
+          <div>
+            <h4>Not February to April</h4>
+            <p>
+              This is the region burning season ruins. Everything below is worth the trip, and
+              none of it is worth doing through the haze — <a href="#when">see the year</a>.
+            </p>
+          </div>
+        </div>
+
+        <ol class="buds">
+          <li class="bud is-first" data-mark="must" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">ภูชี้ฟ้า</span><span class="en">Phu Chi Fa</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg><span class="th">ห้ามพลาด</span> Must-do</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                You climb high enough to be above the clouds. At sunrise you are looking out
+                over a sea of cloud — one of the most surreal sights in Thailand.
+              </p>
+              <dl class="hangtag">
+                <div><dt>When</dt><dd>Sunrise</dd></div>
+                <div><dt>Plan</dt><dd>Arrive the night before</dd></div>
+                <div><dt>Base</dt><dd>Chiang Rai</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="must" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">วัดร่องขุ่น</span><span class="en">Wat Rong Khun</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg><span class="th">ห้ามพลาด</span> Must-do</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                The White Temple. All-white architecture with mirror inlays — extraordinarily
+                beautiful, and famous with Thai and foreign visitors alike. Do not skip this.
+              </p>
+              <dl class="hangtag">
+                <div><dt>Base</dt><dd>Chiang Rai</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">บ้านดำ</span><span class="en">Baan Dam — the Black House</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                The dark counterpart to the White Temple, by a different Chiang Rai artist.
+                People usually do the two of them as a pair, and they are better that way —
+                the contrast is the point.
+              </p>
+              <dl class="hangtag">
+                <div><dt>Pair with</dt><dd>Wat Rong Khun</dd></div>
+                <div><dt>Base</dt><dd>Chiang Rai</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">สามเหลี่ยมทองคำ</span><span class="en">The Golden Triangle</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Where Thailand, Laos and Burma converge — you can stand at the border of three
+                countries at once, and it is a neat place to cross into either one.
+              </p>
+              <p class="bud__body">
+                Plenty of tourists, which means plenty of accommodation. Don't let the crowds
+                put you off; it is genuinely nice.
+              </p>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">ดอยตุง</span><span class="en">Doi Tung</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Beautiful gardens built to honour the King's mother. Worth the trip for the
+                scenery alone.
+              </p>
+              <dl class="hangtag">
+                <div><dt>Base</dt><dd>Chiang Rai</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="time" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">ดอยแม่สลอง</span><span class="en">Doi Mae Salong</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg><span class="th">ถ้ามีเวลา</span> If you have time</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                A Yunnanese Chinese hill town surrounded by tea plantations — a different
+                culture and a different kitchen from anywhere else on this list. Close enough to
+                fold into the Phu Chi Fa / Golden Triangle run rather than make a trip of it.
+              </p>
+              <dl class="hangtag">
+                <div><dt>Pair with</dt><dd>Phu Chi Fa, Golden Triangle</dd></div>
+                <div><dt>Base</dt><dd>Chiang Rai</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="time" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">ดอยอินทนนท์</span><span class="en">Doi Inthanon</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg><span class="th">ถ้ามีเวลา</span> If you have time</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                The highest point in Thailand. Near the top are two large
+                <span class="th">เจดีย์</span> chedi built for the King's and the Queen's 60th
+                birthdays. Worth it if the days allow, but it is not the priority.
+              </p>
+              <dl class="hangtag">
+                <div><dt>Base</dt><dd>Chiang Mai</dd></div>
+              </dl>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ภาคใต้ --------------------------------------------------------- -->
+      <section class="tier" id="south" aria-labelledby="south-h">
+        <div class="band" data-cinch>
+          <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
+          <h2 id="south-h"><span class="th">ภาคใต้</span></h2>
+          <span class="band__en">The South</span>
+          <span class="band__count" data-counts><b class="n">7</b> places</span>
+        </div>
+
+        <p class="tier__note" data-cinch>
+          The most beautiful beaches are along the Andaman Coast — <span class="th">ตรัง</span> Trang,
+          <span class="th">กระบี่</span> Krabi, and the islands scattered off them. That is the
+          side I would send you to, and Koh Lanta is the base to do it from.
+        </p>
+        <p class="gloss" data-cinch><b class="th">เกาะ</b> <span>koh (also spelled ko) — island. Everything below with a “Koh” is one.</span></p>
+
+        <div class="callout callout--tier" data-tone="warn" data-cinch>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
+          <div>
+            <h4>One coast per trip — the south is really two trips</h4>
+            <p>
+              The Andaman side and the Gulf side have <b>opposite rainy seasons</b>, so no month
+              is good for both. <b>Andaman: Nov–Apr. Gulf: Jun–Sep.</b> Pick the coast that
+              matches the month you can actually travel, then book inside that half of this
+              section — <a href="#when">the year is charted up top</a>.
+            </p>
+          </div>
+        </div>
+
+        <!-- ฝั่งอันดามัน -->
+        <div class="subband" data-cinch>
+          <h3><span class="th">ฝั่งอันดามัน</span> Andaman side</h3>
+          <span class="subband__en">West coast · Nov – Apr</span>
+        </div>
+
+        <ol class="buds">
+          <li class="bud is-first" data-mark="must" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">เกาะลันตา</span><span class="en">Koh Lanta</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg><span class="th">ห้ามพลาด</span> Must-do</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Popular with tourists but genuinely beautiful, with a real range of places to
+                stay — luxury hotels down to cheap small rooms. This is the base: everything
+                below is a day tour from here.
+              </p>
+              <dl class="hangtag">
+                <div><dt>Role</dt><dd>Your base in the south</dd></div>
+              </dl>
+              <ul class="leafs">
+                <li>
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><use href="#leaf"/></svg>
+                  <b class="th">เกาะรอก</b> <b>Koh Rok</b> — one of the most beautiful beaches
+                  available. Barely any buildings, well preserved, and you can camp there. If you
+                  book an island tour, make sure Koh Rok is on it.
+                </li>
+                <li>
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><use href="#leaf"/></svg>
+                  <b class="th">เกาะมุก</b> <b>Koh Mook</b> — an emerald green beach inside a cave.
+                  Absolutely amazing.
+                </li>
+                <li>
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><use href="#leaf"/></svg>
+                  <b>Snorkelling and diving</b> — it feels like a different world. I swam with a
+                  school of thousands of fish.
+                </li>
+                <li>
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><use href="#leaf"/></svg>
+                  <b>Sea cave tours</b> — worth a morning.
+                </li>
+                <li>
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><use href="#leaf"/></svg>
+                  <b>Waterfalls</b> — seasonal, and best during the rainy season.
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="must" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">เขาสก</span><span class="en">Khao Sok National Park</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg><span class="th">ห้ามพลาด</span> Must-do</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Not an island — <span class="th">เชี่ยวหลาน</span> Cheow Lan lake, with floating
+                raft houses sitting under limestone karsts. Often the best-rated thing in the
+                whole south that isn't a beach.
+              </p>
+              <p class="bud__body">
+                Go and look at images of it, then book ahead. The raft houses fill up, and this
+                is not somewhere you turn up and sort out on the day.
+              </p>
+              <dl class="hangtag">
+                <div><dt>Plan</dt><dd>Book well ahead</dd></div>
+                <div><dt>Stay</dt><dd>Floating raft house</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">เกาะพีพี</span><span class="en">Koh Phi Phi</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Another popular one, and still good. More upscale and more developed than Koh
+                Lanta — genuinely beautiful, just pricier.
+              </p>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">อ่าวพังงา</span><span class="en">Ao Phang Nga National Park</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Home to <span class="th">เกาะตะปู</span> Koh Tapu — James Bond Island, from
+                <em>The Man with the Golden Gun</em>. The limestone karsts rising straight out of
+                the water are the iconic ones.
+              </p>
+            </div>
+          </li>
+        </ol>
+
+        <!-- off the cord, with its tie cut -->
+        <div class="unstrung" data-cinch>
+          <div class="unstrung__head">
+            <h3><span class="th">ภูเก็ต</span> Phuket</h3>
+            <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-cut"/></svg><span class="th">ข้าม</span> Skip it</p>
+          </div>
+          <p>
+            A tourist trap with a huge party scene. Nothing there is authentically Thai, the
+            beaches are subpar and the prices are inflated. Unless you are specifically after
+            clubs and raves, everything above is a better use of the same days.
+          </p>
+        </div>
+
+        <!-- ฝั่งอ่าวไทย -->
+        <div class="subband" data-cinch>
+          <h3><span class="th">ฝั่งอ่าวไทย</span> Gulf side</h3>
+          <span class="subband__en">East coast · Jun – Sep</span>
+        </div>
+
+        <p class="tier__note tier__note--sub" data-cinch>
+          The other half of the south, and the answer if you are travelling in the months the
+          Andaman side is wet. Nothing here displaces Koh Lanta for me — it is the coast you go
+          to because of <em>when</em> you can go.
+        </p>
+
+        <ol class="buds">
+          <li class="bud is-first" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">เกาะเต่า</span><span class="en">Koh Tao</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                The cheap-diving island. Busy, but that is because it is where the certifications
+                happen — if you want to come home with an open-water licence, this is where you
+                get it.
+              </p>
+              <dl class="hangtag">
+                <div><dt>Go for</dt><dd>Dive certification</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">หมู่เกาะอ่างทอง</span><span class="en">Ang Thong Marine Park</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                The archipelago sitting off the Samui / Phangan cluster — the scenery payoff of
+                this coast, and the reason to be based there at all.
+              </p>
+              <dl class="hangtag">
+                <div><dt>From</dt><dd>Koh Samui</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="time" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">เกาะสมุย</span><span class="en">Koh Samui</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg><span class="th">ถ้ามีเวลา</span> If you have time</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Easy to get to — it has its own airport — but it gets very busy. Useful mostly as
+                the gateway to Ang Thong and the rest of the cluster.
+              </p>
+              <dl class="hangtag">
+                <div><dt>Role</dt><dd>Gateway to the Gulf islands</dd></div>
+              </dl>
+            </div>
+          </li>
+        </ol>
+
+        <p class="aside-note" data-cinch>
+          Either coast: plenty of the smaller islands are beautiful too, but remote and
+          inconvenient — more adventurous than relaxing. Many of them have campgrounds if that
+          is your style.
+        </p>
+      </section>
+
+      <!-- ภาคกลาง -------------------------------------------------------- -->
+      <section class="tier" id="central" aria-labelledby="central-h">
+        <div class="band" data-cinch>
+          <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
+          <h2 id="central-h"><span class="th">ภาคกลาง</span></h2>
+          <span class="band__en">Central — Bangkok</span>
+          <span class="band__count" data-counts><b class="n">10</b> places</span>
+        </div>
+
+        <p class="tier__note" data-cinch>
+          <span class="th">กรุงเทพฯ</span> Bangkok is where you will land and where you will
+          leave from, so give it real days rather than the leftovers. Three of those days can
+          leave the city entirely — the day trips are at the bottom of this section.
+        </p>
+        <p class="gloss" data-cinch><b class="th">วัด</b> <span>wat — a Buddhist temple. The big ones enforce covered shoulders and knees.</span></p>
+
+        <ol class="buds">
+          <li class="bud is-first" data-mark="must" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">วัดพระแก้ว</span><span class="en">Wat Phra Kaew &amp; the Grand Palace</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg><span class="th">ห้ามพลาด</span> Must-do</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Go to all the famous temples, but prioritise this one. The
+                <span class="th">พระบรมมหาราชวัง</span> palace complex is stunning — and it is
+                beautiful again, differently, lit up at night.
+              </p>
+              <dl class="hangtag">
+                <div><dt>When</dt><dd>Also worth seeing after dark</dd></div>
+                <div><dt>Dress</dt><dd>Shoulders and knees covered</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">วัดอรุณ · วัดโพธิ์</span><span class="en">Wat Arun &amp; Wat Pho</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                The other two on the river. Wat Arun is best at sunset, seen from the
+                <span class="th">ธนบุรี</span> Thonburi side; Wat Pho holds the reclining Buddha.
+                Both pair with Wat Phra Kaew, and the three of them make one clean river day.
+              </p>
+              <dl class="hangtag">
+                <div><dt>When</dt><dd>Wat Arun at sunset</dd></div>
+                <div><dt>Plan</dt><dd>One river day, all three</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">เยาวราช</span><span class="en">Yaowarat — Chinatown</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Go after dark. The street-food stretch is the reason — the whole road turns over
+                into stalls once the sun is down, and it is the single best eating in the city.
+              </p>
+              <dl class="hangtag">
+                <div><dt>When</dt><dd>After dark</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">ล่องเรือเจ้าพระยา</span><span class="en">The river at night, from ICON Siam</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Take a boat from <span class="th">ไอคอนสยาม</span> ICON Siam at night and go
+                around the city on the <span class="th">เจ้าพระยา</span> Chao Phraya. The views
+                are amazing, and it is the cheapest way to see Bangkok look expensive.
+              </p>
+              <dl class="hangtag">
+                <div><dt>When</dt><dd>Night</dd></div>
+                <div><dt>From</dt><dd>ICON Siam pier</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">สยาม</span><span class="en">Siam</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                The heart of modern Bangkok. Siam Paragon and Central World are each bigger than
+                the Mall of America, and they are one block apart. Siam Discovery and Siam Centre
+                sit alongside them and skew younger and trendier.
+              </p>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="time" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">บ้านจิม ทอมป์สัน</span><span class="en">Jim Thompson House</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg><span class="th">ถ้ามีเวลา</span> If you have time</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                Old Thai teak houses reassembled into one compound, the silk business that made
+                them, and the disappearance story that ends it. A short, contained visit and a
+                good one on a hot afternoon.
+              </p>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="time" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">พิพิธภัณฑ์ MOCA</span><span class="en">MOCA Bangkok</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg><span class="th">ถ้ามีเวลา</span> If you have time</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                A genuinely nice modern art museum, and the Thai work in it is far more
+                interesting than most visitors expect. Worth a half day if museums are your thing.
+              </p>
+            </div>
+          </li>
+        </ol>
+
+        <!-- ทริปวันเดียว -->
+        <div class="subband subband--day" data-cinch>
+          <h3><span class="th">ทริปวันเดียว</span> Day trips out of Bangkok</h3>
+          <span class="subband__en">All doable and back the same night</span>
+        </div>
+
+        <ol class="buds buds--day">
+          <li class="bud is-first" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">ตลาดน้ำอัมพวา · ตลาดร่มหุบ</span><span class="en">Amphawa &amp; the Maeklong Railway Market</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                About an hour south of Bangkok. Of all the floating markets, Amphawa is the one I
+                would send you to — the liveliest, with the most to see. It gets extremely
+                crowded, and that is the trade.
+              </p>
+              <p class="bud__body">
+                The Maeklong Railway Market is the one that folds itself up when the train comes
+                through and unfolds again behind it. The two are usually bundled together, they
+                fit in a single day, and I recommend doing them that way.
+              </p>
+              <dl class="hangtag">
+                <div><dt>From</dt><dd>1 hour south of Bangkok</dd></div>
+                <div><dt>Plan</dt><dd>Both in one day</dd></div>
+              </dl>
+              <ul class="leafs">
+                <li>
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><use href="#leaf"/></svg>
+                  <b class="th">ตลาดน้ำท่าคา</b> <b>Tha Kha</b> — if Amphawa sounds too crowded.
+                  Smaller and more local.
+                </li>
+                <li>
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><use href="#leaf"/></svg>
+                  <b class="th">คลองลัดมะยม</b> <b>Khlong Lat Mayom</b> — inside Bangkok itself,
+                  and food-focused. The option that costs you no travel day at all.
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="rec" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">อยุธยา</span><span class="en">Ayutthaya</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg><span class="th">แนะนำ</span> Recommended</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                The ruined old capital, an hour and a bit from Bangkok and an easy day trip by
+                train or on a tour. Still genuinely unique and worth the day.
+              </p>
+              <p class="bud__body">
+                Be ready for the heat — it is open ground and there is very little shade.
+              </p>
+              <dl class="hangtag">
+                <div><dt>From</dt><dd>1 hr+ by train or tour</dd></div>
+                <div><dt>Bring</dt><dd>Sun cover and water</dd></div>
+              </dl>
+            </div>
+          </li>
+
+          <li class="bud" data-mark="time" data-cinch>
+            <i class="tie"></i>
+            <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <div class="bud__head">
+              <h3 class="bud__name"><span class="th">เขาใหญ่</span><span class="en">Khao Yai National Park</span></h3>
+              <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg><span class="th">ถ้ามีเวลา</span> If you have time</p>
+            </div>
+            <div class="bud__rest">
+              <p class="bud__body">
+                The closest real national park to Bangkok — wildlife and waterfalls, and the
+                easiest way to get actual forest into a city-based trip.
+              </p>
+              <dl class="hangtag">
+                <div><dt>Bring</dt><dd>Cash for the park fee</dd></div>
+              </dl>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- มารยาท --------------------------------------------------------- -->
+      <section class="tier" id="manners" aria-labelledby="manners-h">
+        <div class="band" data-cinch>
+          <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
+          <h2 id="manners-h"><span class="th">มารยาท</span></h2>
+          <span class="band__en">Manners</span>
+          <span class="band__count"><b class="n">8</b> rules</span>
+        </div>
+
+        <p class="tier__note" data-cinch>
+          None of these are suggestions. The first four will genuinely offend people, and one of
+          them is a criminal offence.
+        </p>
+
+        <ol class="rules">
+          <li class="rule is-first" data-do="no" data-cinch>
+            <i class="tie"></i>
+            <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
+            <div class="rule__in">
+              <h3><span class="th">อย่าแตะหัวใคร</span> Don't touch anyone's head or hair</h3>
+              <p>The head is considered the most sacred part of the body.</p>
+            </div>
+          </li>
+          <li class="rule" data-do="no" data-cinch>
+            <i class="tie"></i>
+            <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
+            <div class="rule__in">
+              <h3><span class="th">อย่าเหยียบเงินหรือหนังสือ</span> Don't step on money or books</h3>
+              <p>Feet are the lowest part of the body, so putting one on anything is an insult to it.</p>
+            </div>
+          </li>
+          <li class="rule" data-do="no" data-cinch>
+            <i class="tie"></i>
+            <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
+            <div class="rule__in">
+              <h3><span class="th">อย่าวิจารณ์สถาบันพระมหากษัตริย์</span> Don't criticise the monarchy</h3>
+              <p>This is literally illegal under Thai law. It is not a joke and it is not a debate to have in public.</p>
+            </div>
+          </li>
+          <li class="rule" data-do="no" data-cinch>
+            <i class="tie"></i>
+            <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
+            <div class="rule__in">
+              <h3><span class="th">อย่าแตะพระพุทธรูป</span> Don't touch any Buddhist sculpture</h3>
+              <p>Even seemingly casual contact is deeply disrespectful.</p>
+            </div>
+          </li>
+          <li class="rule" data-do="no" data-cinch>
+            <i class="tie"></i>
+            <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
+            <div class="rule__in">
+              <h3><span class="th">อย่าประมาทเรื่องทรัพย์สิน</span> Don't be careless with your things</h3>
+              <p>Know where your bag, phone and wallet are at all times, particularly in crowds and markets.</p>
+            </div>
+          </li>
+          <li class="rule" data-do="yes" data-cinch>
+            <i class="tie"></i>
+            <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#do"/></svg>
+            <div class="rule__in">
+              <h3><span class="th">เก็บกระเป๋าสตางค์ไว้กระเป๋าหน้า</span> Keep your wallet in your front pocket</h3>
+              <p>Never the back pocket, even if you think you are careful. No one there does it.</p>
+            </div>
+          </li>
+          <li class="rule" data-do="yes" data-cinch>
+            <i class="tie"></i>
+            <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#do"/></svg>
+            <div class="rule__in">
+              <h3><span class="th">แต่งกายสุภาพเมื่อเข้าวัด</span> Cover your shoulders and knees at temples</h3>
+              <p>And take your shoes off. The big temples enforce it, and they will turn you away at the gate.</p>
+            </div>
+          </li>
+          <li class="rule" data-do="yes" data-cinch>
+            <i class="tie"></i>
+            <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#do"/></svg>
+            <div class="rule__in">
+              <h3><span class="th">ยืนตรงเคารพเพลงชาติ</span> Stand for the national anthem</h3>
+              <p>It plays at 8am and 6pm every day. Take your hat off. Everyone around you stops what they are doing.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+    </main>
+
+    <!-- THE TASSEL -->
+    <footer class="tassel">
+      <svg class="tassel__mark" viewBox="0 0 30 46" aria-hidden="true"><use href="#tassel"/></svg>
+      <div class="off">
+        <p>Pick the month, then the coast. Then string it north to south and finish in Bangkok — that is the order I would travel it in.</p>
+        <p class="tassel__sign"><span class="th">ขอให้เดินทางปลอดภัย</span></p>
+        <p class="tassel__back">— Pob · <a href="index.html">back to pobv.dev</a></p>
       </div>
-    </div>
+    </footer>
 
-    <hr class="guide-divider">
+  </div>
+</div>
 
-    <!-- CENTRAL -->
-    <div class="guide-section reveal">
-      <div class="guide-section__meta">Region 03</div>
-      <h2 class="guide-section__title">Central — Bangkok</h2>
-      <ul class="place-list">
-        <li>
-          <strong>Wat Phra Kaew & Grand Palace</strong> <span class="star">★ must-do</span><br>
-          Go to all the famous temples, but prioritize this one. The Grand Palace complex is stunning — especially lit up at night.
-        </li>
-        <li>
-          <strong>Siam District</strong><br>
-          Heart of modern Bangkok. Siam Paragon and Central World are both larger than Mall of America and a block from each other. Also: Siam Discovery and Siam Center for a younger/trendier scene.
-        </li>
-        <li>
-          <strong>Amphawa Floating Market</strong><br>
-          About an hour south of Bangkok. The most recommended floating market — liveliest with the most to see. Gets extremely crowded; go early.
-        </li>
-      </ul>
-    </div>
-
-    <hr class="guide-divider">
-
-    <!-- CULTURAL RULES -->
-    <div class="guide-section reveal">
-      <div class="guide-section__meta">Important</div>
-      <h2 class="guide-section__title">Cultural Rules</h2>
-      <ul class="place-list">
-        <li><strong>Don't touch anyone's head or hair</strong> — the head is considered the most sacred part of the body.</li>
-        <li><strong>Don't step on money or books</strong> — feet are considered the lowest, most disrespectful part of the body.</li>
-        <li><strong>Don't criticize the monarch</strong> — this is literally illegal under Thai law. Not a joke.</li>
-        <li><strong>Don't touch any Buddhist sculpture</strong> — even seemingly casual contact is deeply disrespectful.</li>
-        <li><strong>Keep your wallet in your front pocket</strong> — never the back pocket, even if you think you're careful.</li>
-        <li><strong>Pause during the national anthem</strong> — it plays every day at 6pm and 8am. Remove your hat. People stop what they're doing.</li>
-      </ul>
-    </div>
-
-  </main>
-
-  <footer class="guide-foot">
-    <div class="wrap"><p>Pob's personal recs · <a href="index.html">back to pobv.dev</a></p></div>
-  </footer>
-
-  <script src="assets/js/main.js"></script>
+<script src="assets/js/thailand.js" defer></script>
 </body>
 </html>
