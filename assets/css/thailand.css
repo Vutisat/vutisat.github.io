@@ -189,8 +189,16 @@ a:hover { color: var(--ink); }
   padding: .7rem 1.1rem; z-index: 60; font-size: .92rem;
 }
 .skip:focus { left: var(--gut); top: .6rem; }
+/* the skip link is an <a>, so the global a:hover would paint ink on ink */
+.skip:hover { color: var(--jasmine); }
 
 .th { font-feature-settings: "liga" 1; }
+
+.vh {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%); overflow: hidden; white-space: nowrap;
+}
 
 /* ---------- TOP BAR -------------------------------------------------------- */
 
@@ -320,11 +328,11 @@ a:hover { color: var(--ink); }
   width: 1px;
   background: var(--orchid-pale);
 }
-.knots__in { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: .45rem .4rem; }
+.knots__in { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: .45rem .3rem; }
 
 .knot {
-  display: inline-flex; align-items: baseline; gap: .4rem;
-  padding: .4rem .68rem;
+  display: inline-flex; align-items: baseline; gap: .3rem;
+  padding: .4rem .56rem;
   border: 1px solid var(--line);
   border-radius: 99px;
   font-size: .86rem; font-weight: 600;
@@ -340,7 +348,7 @@ a:hover { color: var(--ink); }
 
 /* Narrow: the index would stack three deep and eat the screen it is meant to
    help you move around, so it becomes one swipeable rail instead. */
-@media (max-width: 719px) {
+@media (max-width: 1239px) {
   .knots__in {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -367,7 +375,7 @@ a:hover { color: var(--ink); }
   appearance: none; border: 0; cursor: pointer;
   background: transparent; color: var(--ink-3);
   font-family: var(--sans); font-size: .79rem; font-weight: 600; letter-spacing: .03em;
-  padding: .44rem .8rem;
+  padding: .44rem .7rem;
   transition: background .25s var(--ease), color .25s var(--ease);
 }
 .sift button:hover { color: var(--ink); background: var(--gold-wash); }
@@ -478,13 +486,31 @@ a:hover { color: var(--ink); }
 .season__range--bad::before { content: "avoid · "; opacity: .55; }
 .season__gloss { font-size: .86rem; line-height: 1.45; color: var(--ink-3); }
 
-/* the twelve-month ruler */
+/* The twelve-month ruler is also the instrument: the axis the chart is already
+   read against is the thing you set. No second control invented for the job. */
 .season__months {
   display: grid; grid-template-columns: repeat(12, 1fr);
-  font-size: .68rem; font-weight: 600; letter-spacing: .04em;
-  color: var(--ink-3); text-align: center;
+  gap: 2px;
 }
-.season__months li { padding-bottom: .15rem; }
+.season__months button {
+  appearance: none; border: 0; cursor: pointer;
+  background: transparent;
+  font-family: var(--sans); font-size: .7rem; font-weight: 600; letter-spacing: .04em;
+  color: var(--ink-3);
+  padding: .34rem 0 .3rem;
+  border-bottom: 2px solid transparent;
+  transition: color .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease);
+}
+.season__months button:hover { color: var(--ink); background: var(--orchid-wash); }
+.season__months button[aria-checked="true"] {
+  color: var(--orchid-deep);
+  border-bottom-color: var(--orchid-deep);
+}
+.season__months button:focus-visible { outline-offset: -2px; border-radius: 2px; }
+
+.season__label--pick b { font-size: 1rem; }
+.season__picked { color: var(--orchid-deep); }
+.season__hint { font-size: .82rem; line-height: 1.4; color: var(--ink-3); }
 
 .season__track {
   position: relative;
@@ -505,33 +531,38 @@ a:hover { color: var(--ink); }
 
 /* --- where the year actually is right now --------------------------------- */
 
-/* thailand.js stamps data-now on .season with the current month (1-12). Until
-   it does, nothing here renders — the chart is complete without it. */
-.season__months .is-now {
-  color: var(--orchid-deep);
-  background: var(--orchid-wash);
-  border-radius: 2px;
-}
+/* thailand.js stamps data-pick on .season with the chosen month (1-12), today's
+   by default. Until it does, nothing here renders — the chart is complete
+   without it, and the ruler is inert rather than broken. */
 .season__track::after {
   content: "";
   position: absolute;
   top: -2px; bottom: -2px;
-  left: calc((var(--now, 1) - 1) * 100% / 12);
+  left: calc((var(--pick, 1) - 1) * 100% / 12);
   width: calc(100% / 12);
   box-shadow: inset 0 0 0 1.5px var(--orchid-deep);
   pointer-events: none;
 }
-.season:not([data-now]) .season__track::after { display: none; }
+.season:not([data-pick]) .season__track::after { display: none; }
 
 .nowline {
   margin-top: 1.1rem;
   padding-left: .85rem;
-  border-left: 2px solid var(--orchid-deep);
+  border-left: 1px solid var(--orchid-deep);
   font-size: .95rem;
   color: var(--ink-2);
   max-width: 62ch;
 }
 .nowline b { color: var(--ink); font-weight: 600; }
+.nowline__today {
+  appearance: none; border: 0; cursor: pointer;
+  background: transparent; padding: 0;
+  margin-left: .45rem;
+  font-family: var(--sans); font-size: inherit; font-weight: 600;
+  color: var(--orchid-deep);
+  text-decoration: underline; text-underline-offset: .18em;
+}
+.nowline__today:hover { color: var(--ink); }
 .nowline .lede {
   display: block;
   font-size: .71rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
@@ -549,17 +580,26 @@ a:hover { color: var(--ink); }
   display: grid; grid-template-columns: auto 1fr; gap: .2rem .7rem;
   padding: .95rem 1.15rem;
   background: var(--jasmine-2);
-  border-left: 3px solid var(--line-2);
+  border-left: 1px solid var(--line-2);
 }
 .callout--tier { margin-left: calc(var(--cord) + var(--reach)); }
 .callout > svg { width: 17px; height: 17px; margin-top: .22em; }
-.callout h4 {
+.callout h3, .callout h4 {
   font-family: var(--serif); font-weight: 600; font-size: 1.02rem;
   color: var(--ink); letter-spacing: -.01em; margin: 0; line-height: 1.25;
 }
-.callout h4 em { font-style: italic; }
+.callout h3 em, .callout h4 em { font-style: italic; }
 .callout p { margin-top: .4rem; font-size: .95rem; color: var(--ink-2); }
 .callout b { color: var(--ink); font-weight: 600; }
+
+/* the line the callout only has once you have told it when you are going */
+.callout__live {
+  margin-top: .7rem; padding-top: .7rem;
+  border-top: 1px solid var(--line);
+  font-size: .93rem; font-weight: 600;
+  color: var(--ink);
+}
+.callout__live[data-state="clear"] { color: var(--ink-3); font-weight: 400; }
 
 .callout[data-tone="warn"] { border-left-color: var(--ink); }
 .callout[data-tone="warn"] > svg { color: var(--ink); }
@@ -633,6 +673,16 @@ a:hover { color: var(--ink); }
   border: 1.5px solid var(--orchid);
   border-radius: 50%;
 }
+.seasonmark {
+  font-size: .71rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  padding: .12rem .5rem;
+  border: 1px solid currentColor;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+.seasonmark[data-state="in"]  { color: var(--gold-ink); background: var(--gold-wash); }
+.seasonmark[data-state="out"] { color: var(--ink-3); }
+
 .subband--day::after { border-color: var(--leaf); }
 .subband.is-empty { display: none; }
 
@@ -703,7 +753,7 @@ a:hover { color: var(--ink); }
   border: 1px solid var(--line);
   font-size: .83rem;
 }
-.hangtag dt { font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.hangtag dt { font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
 .hangtag dd { color: var(--ink); }
 
 /* a run of buds that are themselves day trips wears the day-tour colour */
@@ -791,6 +841,139 @@ a:hover { color: var(--ink); }
 .rule h3 { font-size: var(--name); letter-spacing: -.01em; }
 .rule h3 .th { display: block; margin-top: .1em; font-weight: 500; font-size: .9em; color: var(--orchid-deep); }
 .rule p { margin-top: .42rem; color: var(--ink-2); }
+
+/* ---------- THREADING A PLACE ON -------------------------------------------- */
+
+/* Scripted only. thailand.js hangs one of these off every bud, so a bud added
+   later gets it for free and a browser without JS never sees a dead control.
+   Phuket has no bud and so cannot be threaded — its tie is cut, and that is
+   the joke working. */
+.thread { display: none; }
+
+.js .thread {
+  display: inline-flex; align-items: center; gap: .42rem;
+  margin-top: 1rem;
+  padding: .36rem .78rem .36rem .6rem;
+  appearance: none; cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--line-2);
+  border-radius: 99px;
+  font-family: var(--sans); font-size: .8rem; font-weight: 600;
+  color: var(--ink-3);
+  transition: color .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+}
+.js .thread svg { width: 15px; height: 15px; flex: none; }
+.js .thread:hover { color: var(--ink); border-color: var(--orchid); background: var(--orchid-wash); }
+.js .thread[aria-pressed="true"] {
+  color: var(--jasmine);
+  background: var(--orchid-deep);
+  border-color: var(--orchid-deep);
+}
+.js .thread[aria-pressed="true"]:hover { background: var(--orchid); border-color: var(--orchid); }
+
+/* A finger is not a cursor: the ruler, the ties and the untie crosses are all
+   small by design on a mouse, and all of them get a real target on touch. */
+@media (pointer: coarse) {
+  .season__months button { min-height: 44px; }
+  .js .thread { padding-block: .6rem; }
+  .mine__x { padding: .7rem; }
+}
+
+/* ---------- THE GARLAND YOU STRING YOURSELF -------------------------------- */
+
+.mine { display: none; }
+.js .mine {
+  display: block;
+  position: relative;
+  margin-top: clamp(3.5rem, 9vh, 5.5rem);
+  margin-left: calc(var(--cord) + var(--reach));
+  padding: clamp(1.4rem, 4vw, 2rem) clamp(1.3rem, 4vw, 2rem) clamp(1.5rem, 4vw, 2.1rem);
+  background: var(--jasmine-2);
+  border-top: 2px solid var(--orchid-deep);
+  scroll-margin-top: 5.25rem;
+}
+/* it hangs off the cord like everything else */
+.js .mine::before {
+  content: "";
+  position: absolute; top: -1px; left: calc(var(--reach) * -1);
+  width: var(--reach); height: 2px;
+  background: var(--orchid-deep);
+}
+
+.mine__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: .3rem .9rem; }
+.mine__head h2 { font-size: clamp(1.3rem, 1.14rem + .7vw, 1.72rem); }
+.mine__head h2 .th { font-weight: 500; font-size: .84em; color: var(--orchid-deep); }
+.mine__count {
+  margin-left: auto;
+  font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.mine__empty { margin-top: .9rem; max-width: 58ch; font-size: .95rem; color: var(--ink-3); }
+.mine[data-has] .mine__empty { display: none; }
+
+.mine__list { margin-top: 1.2rem; display: grid; gap: .1rem; }
+.mine__list:empty { display: none; }
+.mine__list > li {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: baseline;
+  gap: .3rem .7rem;
+  padding: .6rem 0;
+  border-top: 1px solid var(--line);
+}
+.mine__mark { width: 15px; height: 15px; align-self: center; color: var(--orchid-deep); }
+.mine__name {
+  font-family: var(--serif); font-weight: 600; font-size: 1.05rem;
+  color: var(--ink); text-decoration: none;
+}
+.mine__name:hover { color: var(--orchid-deep); text-decoration: underline; }
+.mine__where {
+  display: block;
+  font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+.mine__x {
+  appearance: none; border: 0; cursor: pointer; background: transparent;
+  padding: .3rem; display: grid; place-items: center; color: var(--ink-3); border-radius: 50%;
+  transition: color .2s var(--ease), background .2s var(--ease);
+}
+.mine__x svg { width: 15px; height: 15px; }
+.mine__x:hover { color: var(--ink); background: var(--gold-wash); }
+
+.mine__acts { margin-top: 1.4rem; display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; }
+.mine__acts[hidden] { display: none; }
+.mine__btn {
+  appearance: none; cursor: pointer;
+  padding: .5rem 1rem;
+  background: var(--ink); color: var(--jasmine);
+  border: 1px solid var(--ink); border-radius: 99px;
+  font-family: var(--sans); font-size: .84rem; font-weight: 600;
+  transition: background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
+}
+.mine__btn:hover { background: var(--orchid-deep); border-color: var(--orchid-deep); }
+.mine__btn--quiet { background: transparent; color: var(--ink-3); border-color: var(--line-2); }
+.mine__btn--quiet:hover { background: var(--jasmine); color: var(--ink); border-color: var(--ink); }
+.mine__said { font-size: .84rem; font-weight: 600; color: var(--gold-ink); }
+
+/* the count, knotted into the index so it follows you down the page */
+.minechip {
+  display: none;
+  align-items: center; gap: .3rem;
+  padding: .34rem .5rem;
+  border: 1px solid var(--orchid);
+  border-radius: 99px;
+  background: var(--orchid-wash);
+  color: var(--orchid-deep);
+  text-decoration: none;
+  font-size: .82rem;
+  transition: background .25s var(--ease);
+}
+.js .minechip:not([hidden]) { display: inline-flex; }
+.minechip:hover { background: var(--orchid-pale); color: var(--ink); }
+.minechip svg { width: 14px; height: 14px; }
+.minechip b { font-weight: 600; font-variant-numeric: tabular-nums; }
 
 /* ---------- THE TASSEL ----------------------------------------------------- */
 
@@ -924,7 +1107,15 @@ a:hover { color: var(--ink); }
   :root { --cord: 13px; --reach: 7px; }
 
   .cord, .cord-thru, .tie, .knots, .top, .skip,
-  .tassel::after, .sift { display: none !important; }
+  .tassel::after, .sift, .thread, .minechip,
+  .mine__acts, .mine__empty, .season__hint { display: none !important; }
+
+  /* your garland is the whole reason to print this, so it prints — and only
+     when you actually strung one */
+  .js .mine { display: block; margin-left: 0; background: none; padding: 0; }
+  .js .mine:not([data-has]) { display: none; }
+  .mine { break-inside: avoid; }
+  .season__months button { color: #000; }
 
   .js [data-cinch],
   .js [data-cinch] .season__span,

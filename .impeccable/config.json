@@ -91,6 +91,36 @@
         ],
         "createdAt": "2026-09-11T20:48:04.857077Z",
         "reason": "deliberate: <html> and <body> both use overflow-x:clip so the hidden hover-peek cards, each centred on its book, cannot add phantom horizontal scroll on viewports the shelf does not fill. Both are named because overflow on <body> propagates to the viewport while <html> is `visible`, which would leave <body> itself clipping nothing. `clip` creates no scroll container, so position:sticky still works, and flipPeek() clamps a peek inside the viewport before it is ever shown: nothing visible is ever cut."
+      },
+      {
+        "rule": "extreme-negative-tracking",
+        "value": "*",
+        "files": [
+          "thailand.html",
+          "assets/css/thailand.css"
+        ],
+        "createdAt": "2026-09-19T16:56:31.370920Z",
+        "reason": "false positive on Thai script, not a design decision. The declared tracking on these headings is -0.015em and the computed value measures -0.011em (-0.186px at 16.74px). The detector infers tracking from rendered advance width against character count, and Thai vowel and tone marks (้ ำ ั ์) are combining glyphs with zero advance, so every Thai string measures far narrower than its character count implies. Every instance flagged is Thai-only text; no Latin string on the page trips it."
+      },
+      {
+        "rule": "repeating-stripes-gradient",
+        "value": "*",
+        "files": [
+          "assets/css/thailand.css",
+          "thailand.html"
+        ],
+        "createdAt": "2026-09-19T16:56:31.370920Z",
+        "reason": "designer intent: two measurement surfaces, neither decorative. (1) The burning-season band on the year chart is hatched rather than filled because it is the only window on the page told in the negative — gold means go, and 'avoid' had to be legible as not-gold without inventing a second hue. (2) The season track's month dividers are a repeating gradient at exactly 100%/12 so the twelve cells register against the month ruler above them; drawing twelve elements would have said the same thing with more markup."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "thailand.html",
+          "assets/css/thailand.css"
+        ],
+        "createdAt": "2026-09-19T16:56:31.370920Z",
+        "reason": "measurement artifact of the garland conceit. Every bud, rule and band hangs off a cord that runs outside its own box: .tie, .bud__mark, .rule__mark and .band__orchid are absolutely positioned at negative offsets so they sit ON the thread, which is the whole structural idea of the page. The detector reads those overhanging children as content flush against the edge. The actual content columns are inset by --pt (1.4-2rem) and the band by .8rem/clamp(.95rem,3vw,1.6rem)."
       }
     ]
   }

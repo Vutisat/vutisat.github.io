@@ -84,6 +84,15 @@
       <path d="m16.1 3.9-1.5 1.5M5.4 14.6l-1.5 1.5M16.1 16.1l-1.5-1.5M5.4 5.4 3.9 3.9"/>
     </g>
   </symbol>
+  <!-- the page's own sentence, drawn small: cord, tie, bud -->
+  <symbol id="knot" viewBox="0 0 20 20">
+    <path d="M3.4 2.6v14.8M3.4 10h7.4" fill="none" stroke="currentColor"
+          stroke-width="1.7" stroke-linecap="round"/>
+    <circle cx="14.2" cy="10" r="3.2" fill="currentColor"/>
+  </symbol>
+  <symbol id="untie" viewBox="0 0 20 20">
+    <path d="M6 6l8 8M14 6l-8 8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+  </symbol>
   <symbol id="tassel" viewBox="0 0 30 46">
     <circle cx="15" cy="6" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
     <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
@@ -141,6 +150,10 @@
         <a class="knot" href="#south"   data-tier="south"><span class="en">South</span><span class="th">ภาคใต้</span></a>
         <a class="knot" href="#central" data-tier="central"><span class="en">Bangkok</span><span class="th">ภาคกลาง</span></a>
         <a class="knot" href="#manners" data-tier="manners"><span class="en">Manners</span><span class="th">มารยาท</span></a>
+        <a class="minechip" href="#mine" data-mine-chip hidden>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#knot"/></svg>
+          <b data-mine-n>0</b><span class="vh">places on your garland</span>
+        </a>
         <div class="sift" role="group" aria-label="How much of the garland to show">
           <button type="button" data-sift="all"  aria-pressed="true">All 24</button>
           <button type="button" data-sift="must" aria-pressed="false">Must-do 6</button>
@@ -174,11 +187,24 @@
 
           <div class="season">
             <div class="season__line season__line--head">
-              <p class="season__label" aria-hidden="true"></p>
-              <ol class="season__months" aria-hidden="true">
-                <li>J</li><li>F</li><li>M</li><li>A</li><li>M</li><li>J</li>
-                <li>J</li><li>A</li><li>S</li><li>O</li><li>N</li><li>D</li>
-              </ol>
+              <p class="season__label season__label--pick">
+                <b>Planning for <span class="season__picked" data-picked>—</span></b>
+                <span class="season__hint">Pick the month you could travel. The whole guide answers.</span>
+              </p>
+              <div class="season__months" role="radiogroup" aria-label="The month you would travel">
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="1"><span aria-hidden="true">J</span><span class="vh">January</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="2"><span aria-hidden="true">F</span><span class="vh">February</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="3"><span aria-hidden="true">M</span><span class="vh">March</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="4"><span aria-hidden="true">A</span><span class="vh">April</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="5"><span aria-hidden="true">M</span><span class="vh">May</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="6"><span aria-hidden="true">J</span><span class="vh">June</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="7"><span aria-hidden="true">J</span><span class="vh">July</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="8"><span aria-hidden="true">A</span><span class="vh">August</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="9"><span aria-hidden="true">S</span><span class="vh">September</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="10"><span aria-hidden="true">O</span><span class="vh">October</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="11"><span aria-hidden="true">N</span><span class="vh">November</span></button>
+                <button type="button" role="radio" aria-checked="false" tabindex="-1" data-month="12"><span aria-hidden="true">D</span><span class="vh">December</span></button>
+              </div>
             </div>
 
             <div class="season__line" style="--row:1">
@@ -340,11 +366,12 @@
         <div class="callout callout--tier" data-tone="warn" data-cinch>
           <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
           <div>
-            <h4>Not February to April</h4>
+            <h3>Not February to April</h3>
             <p>
               This is the region burning season ruins. Everything below is worth the trip, and
               none of it is worth doing through the haze — <a href="#when">see the year</a>.
             </p>
+            <p class="callout__live" data-live="haze" hidden></p>
           </div>
         </div>
 
@@ -504,13 +531,14 @@
         <div class="callout callout--tier" data-tone="warn" data-cinch>
           <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
           <div>
-            <h4>One coast per trip — the south is really two trips</h4>
+            <h3>One coast per trip — the south is really two trips</h3>
             <p>
               The Andaman side and the Gulf side have <b>opposite rainy seasons</b>, so no month
               is good for both. <b>Andaman: Nov–Apr. Gulf: Jun–Sep.</b> Pick the coast that
               matches the month you can actually travel, then book inside that half of this
               section — <a href="#when">the year is charted up top</a>.
             </p>
+            <p class="callout__live" data-live="coast" hidden></p>
           </div>
         </div>
 
@@ -518,6 +546,7 @@
         <div class="subband" data-cinch>
           <h3>Andaman side <span class="th">ฝั่งอันดามัน</span></h3>
           <span class="subband__en">West coast · Nov – Apr</span>
+          <span class="seasonmark" data-coast="andaman" hidden></span>
         </div>
 
         <ol class="buds">
@@ -639,6 +668,7 @@
         <div class="subband" data-cinch>
           <h3>Gulf side <span class="th">ฝั่งอ่าวไทย</span></h3>
           <span class="subband__en">East coast · Jun – Sep</span>
+          <span class="seasonmark" data-coast="gulf" hidden></span>
         </div>
 
         <p class="tier__note tier__note--sub" data-cinch>
@@ -857,7 +887,7 @@
         <!-- ทริปวันเดียว -->
         <div class="subband subband--day" data-cinch>
           <h3>Day trips out of Bangkok <span class="th">ทริปวันเดียว</span></h3>
-          <span class="subband__en">All doable and back the same night</span>
+          <span class="subband__en">Back the same night</span>
         </div>
 
         <ol class="buds buds--day">
@@ -1023,6 +1053,29 @@
       </section>
 
     </main>
+
+    <!-- THE GARLAND YOU STRING YOURSELF ------------------------------------
+         Scripted only: thailand.js hangs the "thread it on" control off every
+         bud and fills this, so it stays out of the page entirely without JS. -->
+    <section class="mine" id="mine" aria-labelledby="mine-h">
+      <div class="mine__head">
+        <h2 id="mine-h">Your garland <span class="th">พวงมาลัยของคุณ</span></h2>
+        <p class="mine__count" data-mine-count>Nothing strung yet</p>
+      </div>
+
+      <p class="mine__empty" data-mine-empty>
+        Thread any place above onto your own garland and it gathers here, kept in the order I
+        would travel it. It survives a reload, and you can copy the whole thing out as a list.
+      </p>
+
+      <ol class="mine__list" data-mine-list></ol>
+
+      <div class="mine__acts" data-mine-acts hidden>
+        <button type="button" class="mine__btn" data-mine-copy>Copy the list</button>
+        <button type="button" class="mine__btn mine__btn--quiet" data-mine-clear>Take it all off</button>
+        <span class="mine__said" data-mine-said role="status" aria-live="polite"></span>
+      </div>
+    </section>
 
     <!-- THE TASSEL -->
     <footer class="tassel">
