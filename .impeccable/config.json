@@ -7,7 +7,7 @@
         "rule": "codex-grid-background",
         "value": "*",
         "files": [
-          "Styles/main.css"
+          "assets/css/main.css"
         ],
         "createdAt": "2026-08-31T21:19:01.805Z",
         "reason": "designer intent: faint drafting-grid is the committed 'reference/blueprint' world named in the direction contract (seed d1dd32ba OWN-WORLD); a domain-appropriate measurement substrate, masked to the hero corner"
@@ -40,7 +40,7 @@
         "rule": "side-tab",
         "value": "*",
         "files": [
-          "Styles/nyc.css"
+          "assets/css/nyc.css"
         ],
         "createdAt": "2026-09-05T03:20:07.043Z",
         "reason": "design system: page conceit is 'mapped like the subway, each place a stop on a colored line' (CSS header comment + every .spot/.stop/.dish/.tip); colored edge accent is the intended motif"
@@ -49,7 +49,7 @@
         "rule": "border-accent-on-rounded",
         "value": "*",
         "files": [
-          "Styles/nyc.css"
+          "assets/css/nyc.css"
         ],
         "createdAt": "2026-09-05T03:20:07.137Z",
         "reason": "design system: same subway-line accent motif on rounded stop cards (.tip top accent, etc.), intentional and consistent across the page"
@@ -58,7 +58,7 @@
         "rule": "marquee",
         "value": "*",
         "files": [
-          "preview-hero-motion.html"
+          "archive/preview-hero-motion.html"
         ],
         "createdAt": "2026-09-05T03:40:33.698Z",
         "reason": "intentional demo fixture: preview of user-requested landing motion; tradeoff disclosed in chat, ticker pauses on hover + honors reduced-motion"
@@ -68,7 +68,7 @@
         "value": "*",
         "files": [
           "library.html",
-          "Styles/library.css"
+          "assets/css/library.css"
         ],
         "createdAt": "2026-09-11T09:10:26.447935Z",
         "reason": "designer intent: the page's committed world is paper, cloth, wood and warm ink — a home library in late afternoon. The cream ground IS the paper the books sit against; it is the material the brief named, not a default warm off-white."
@@ -77,7 +77,7 @@
         "rule": "repeating-stripes-gradient",
         "value": "*",
         "files": [
-          "Styles/library.css"
+          "assets/css/library.css"
         ],
         "createdAt": "2026-09-11T09:10:26.447935Z",
         "reason": "designer intent: wood grain running along the shelf boards, masked to the ledge bands only (.wall::before). A material texture depicting a real surface, not stripes used as decoration."
@@ -87,7 +87,7 @@
         "value": "*",
         "files": [
           "library.html",
-          "Styles/library.css"
+          "assets/css/library.css"
         ],
         "createdAt": "2026-09-11T20:48:04.857077Z",
         "reason": "deliberate: <html> and <body> both use overflow-x:clip so the hidden hover-peek cards, each centred on its book, cannot add phantom horizontal scroll on viewports the shelf does not fill. Both are named because overflow on <body> propagates to the viewport while <html> is `visible`, which would leave <body> itself clipping nothing. `clip` creates no scroll container, so position:sticky still works, and flipPeek() clamps a peek inside the viewport before it is ever shown: nothing visible is ever cut."
