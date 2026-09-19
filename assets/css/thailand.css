@@ -18,6 +18,10 @@
    No cards, no shadows, no photographs. The component family is buds, ties,
    knots, bands, hang-tags and the tassel.
 
+   Every heading and every name reads English first, with the Thai set beneath
+   or beside it in the second voice — smaller, lighter, orchid. The one
+   exception is the title, which is Thai first on purpose.
+
    Type: Trirong (Thai + Latin serif) carries every name; Anuphan (Thai + Latin
    sans, variable) carries everything read at length. Self-hosted from ../fonts/
    in thai and latin subsets. No CDN.
@@ -328,11 +332,11 @@ a:hover { color: var(--ink); }
   text-decoration: none;
   transition: background .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease);
 }
-.knot .en { font-size: .67rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+.knot .th { font-size: .82em; font-weight: 500; color: var(--ink-3); }
 .knot:hover { border-color: var(--orchid); background: var(--orchid-wash); color: var(--ink); }
-.knot:hover .en { color: var(--orchid-deep); }
+.knot:hover .th { color: var(--orchid-deep); }
 .knot[aria-current="true"] { background: var(--orchid-deep); border-color: var(--orchid-deep); color: var(--jasmine); }
-.knot[aria-current="true"] .en { color: var(--orchid-pale); }
+.knot[aria-current="true"] .th { color: var(--orchid-pale); }
 
 /* Narrow: the index would stack three deep and eat the screen it is meant to
    help you move around, so it becomes one swipeable rail instead. */
@@ -385,10 +389,10 @@ a:hover { color: var(--ink); }
   display: flex; align-items: baseline; flex-wrap: wrap; gap: .25rem .8rem;
 }
 .band h2 { font-size: clamp(1.4rem, 1.16rem + 1.1vw, 2rem); color: var(--ink); }
-.band h2 .th { font-weight: 500; }
-.band__en {
-  font-size: .75rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--ink); opacity: .7;
+.band__th {
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(1.02rem, .94rem + .42vw, 1.32rem);
+  color: var(--ink); opacity: .68;
 }
 .band__count {
   margin-left: auto;
@@ -422,6 +426,7 @@ a:hover { color: var(--ink); }
   color: var(--ink-2);
 }
 .gloss b { font-family: var(--serif); font-weight: 600; color: var(--ink); font-size: 1.06em; }
+.gloss b.th { font-weight: 500; color: var(--orchid-deep); }
 
 /* ---------- BEFORE YOU GO — THE YEAR --------------------------------------- */
 
@@ -441,12 +446,7 @@ a:hover { color: var(--ink); }
 
 .when__head { padding-bottom: .9rem; border-bottom: 1px solid var(--line-2); }
 .when__head h3 { font-size: clamp(1.14rem, 1.06rem + .42vw, 1.42rem); }
-.when__head h3 .th { color: var(--orchid-deep); font-weight: 500; }
-.when__en {
-  font-family: var(--sans); font-size: .72rem; font-weight: 600;
-  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
-  margin-left: .25rem;
-}
+.when__head h3 .th { color: var(--orchid-deep); font-weight: 500; font-size: .86em; }
 .when__sub { margin-top: .4rem; font-size: .93rem; color: var(--ink-3); }
 
 .season { margin-top: 1.4rem; }
@@ -469,7 +469,7 @@ a:hover { color: var(--ink); }
   font-family: var(--serif); font-weight: 600; font-size: 1.02rem; color: var(--ink);
   letter-spacing: -.01em;
 }
-.season__label b .th { color: var(--orchid-deep); font-weight: 500; }
+.season__label b .th { color: var(--orchid-deep); font-weight: 500; font-size: .92em; }
 .season__range {
   font-size: .73rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
   color: var(--gold-ink); font-variant-numeric: tabular-nums;
@@ -573,7 +573,7 @@ a:hover { color: var(--ink); }
 .dates dt {
   font-family: var(--serif); font-weight: 600; font-size: 1.04rem; color: var(--ink);
 }
-.dates dt .th { color: var(--orchid-deep); font-weight: 500; }
+.dates dt .th { color: var(--orchid-deep); font-weight: 500; font-size: .9em; }
 .dates__alt { color: var(--ink-3); font-weight: 500; }
 .dates dd { margin-top: .3rem; font-size: .95rem; color: var(--ink-2); max-width: 62ch; }
 .dates dd b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -613,7 +613,7 @@ a:hover { color: var(--ink); }
   display: flex; align-items: baseline; flex-wrap: wrap; gap: .15rem .9rem;
 }
 .subband h3 { font-size: clamp(1.1rem, 1.04rem + .34vw, 1.34rem); }
-.subband h3 .th { color: var(--orchid-deep); font-weight: 500; }
+.subband h3 .th { color: var(--orchid-deep); font-weight: 500; font-size: .88em; }
 .subband__en {
   margin-left: auto;
   font-size: .71rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
@@ -674,8 +674,7 @@ a:hover { color: var(--ink); }
 .bud__rest { grid-column: 2; grid-row: 2; }
 
 .bud__name { font-size: var(--name); letter-spacing: -.015em; }
-.bud__name .th { color: var(--orchid-deep); font-weight: 500; }
-.bud__name .en { display: block; font-size: .9em; }
+.bud__name .th { display: block; font-size: .84em; font-weight: 500; color: var(--orchid-deep); }
 
 /* the verdict — a drawn mark plus its name in words, never colour alone */
 .verdict {
@@ -722,7 +721,7 @@ a:hover { color: var(--ink); }
 .leafs > li { position: relative; padding-left: 1.6rem; }
 .leafs svg { position: absolute; left: 0; top: .34em; width: 13px; height: 13px; color: var(--leaf); }
 .leafs b { font-family: var(--serif); font-weight: 600; color: var(--ink); }
-.leafs .th { font-family: var(--serif); font-weight: 600; color: var(--leaf); }
+.leafs .th { font-family: var(--serif); font-weight: 500; color: var(--leaf); }
 
 /* ---------- THE UNSTRUNG BUD ----------------------------------------------- */
 
@@ -746,7 +745,7 @@ a:hover { color: var(--ink); }
 }
 .unstrung__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: .25rem .8rem; }
 .unstrung__head h3 { font-size: clamp(1.18rem, 1.08rem + .5vw, 1.46rem); }
-.unstrung__head h3 .th { color: var(--ink-3); font-weight: 500; }
+.unstrung__head h3 .th { color: var(--ink-3); font-weight: 500; font-size: .88em; }
 .unstrung .verdict { color: var(--ink-3); }
 .unstrung p { margin-top: .6rem; color: var(--ink-2); }
 
@@ -790,7 +789,7 @@ a:hover { color: var(--ink); }
 
 .rule__in { grid-column: 2; grid-row: 1; max-width: 66ch; }
 .rule h3 { font-size: var(--name); letter-spacing: -.01em; }
-.rule h3 .th { display: block; font-weight: 500; font-size: .96em; color: var(--orchid-deep); }
+.rule h3 .th { display: block; margin-top: .1em; font-weight: 500; font-size: .9em; color: var(--orchid-deep); }
 .rule p { margin-top: .42rem; color: var(--ink-2); }
 
 /* ---------- THE TASSEL ----------------------------------------------------- */
