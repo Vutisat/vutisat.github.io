@@ -818,9 +818,26 @@ a:hover { color: var(--ink); }
   background: var(--jasmine);
 }
 .tassel p { color: var(--ink-2); max-width: 50ch; }
-.tassel__sign { margin-top: 1rem; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--ink); }
+/* the sign-off and the signature are one gesture — the hand that wrote the page */
+.tassel__sign { margin-top: 1.2rem; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--ink); }
 .tassel__sign .th { font-weight: 500; font-size: .72em; color: var(--orchid-deep); }
-.tassel__back { margin-top: 1.25rem; font-size: .95rem; color: var(--ink-3); }
+.tassel__name {
+  margin-top: .3rem;
+  font-family: var(--serif); font-style: italic; font-weight: 600;
+  font-size: 1.22rem; letter-spacing: -.01em;
+  color: var(--ink);
+}
+
+/* the way out is not part of the sign-off: it is ruled off and sent to the corner */
+.tassel p.tassel__back {
+  margin-top: clamp(2.5rem, 7vh, 4rem);
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  max-width: none;
+  text-align: right;
+  font-size: .88rem;
+  color: var(--ink-3);
+}
 
 /* ---------- THE SHORT GARLAND ---------------------------------------------- */
 
