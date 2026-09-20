@@ -842,139 +842,6 @@ a:hover { color: var(--ink); }
 .rule h3 .th { display: block; margin-top: .1em; font-weight: 500; font-size: .9em; color: var(--orchid-deep); }
 .rule p { margin-top: .42rem; color: var(--ink-2); }
 
-/* ---------- THREADING A PLACE ON -------------------------------------------- */
-
-/* Scripted only. thailand.js hangs one of these off every bud, so a bud added
-   later gets it for free and a browser without JS never sees a dead control.
-   Phuket has no bud and so cannot be threaded — its tie is cut, and that is
-   the joke working. */
-.thread { display: none; }
-
-.js .thread {
-  display: inline-flex; align-items: center; gap: .42rem;
-  margin-top: 1rem;
-  padding: .36rem .78rem .36rem .6rem;
-  appearance: none; cursor: pointer;
-  background: transparent;
-  border: 1px solid var(--line-2);
-  border-radius: 99px;
-  font-family: var(--sans); font-size: .8rem; font-weight: 600;
-  color: var(--ink-3);
-  transition: color .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
-}
-.js .thread svg { width: 15px; height: 15px; flex: none; }
-.js .thread:hover { color: var(--ink); border-color: var(--orchid); background: var(--orchid-wash); }
-.js .thread[aria-pressed="true"] {
-  color: var(--jasmine);
-  background: var(--orchid-deep);
-  border-color: var(--orchid-deep);
-}
-.js .thread[aria-pressed="true"]:hover { background: var(--orchid); border-color: var(--orchid); }
-
-/* A finger is not a cursor: the ruler, the ties and the untie crosses are all
-   small by design on a mouse, and all of them get a real target on touch. */
-@media (pointer: coarse) {
-  .season__months button { min-height: 44px; }
-  .js .thread { padding-block: .6rem; }
-  .mine__x { padding: .7rem; }
-}
-
-/* ---------- THE GARLAND YOU STRING YOURSELF -------------------------------- */
-
-.mine { display: none; }
-.js .mine {
-  display: block;
-  position: relative;
-  margin-top: clamp(3.5rem, 9vh, 5.5rem);
-  margin-left: calc(var(--cord) + var(--reach));
-  padding: clamp(1.4rem, 4vw, 2rem) clamp(1.3rem, 4vw, 2rem) clamp(1.5rem, 4vw, 2.1rem);
-  background: var(--jasmine-2);
-  border-top: 2px solid var(--orchid-deep);
-  scroll-margin-top: 5.25rem;
-}
-/* it hangs off the cord like everything else */
-.js .mine::before {
-  content: "";
-  position: absolute; top: -1px; left: calc(var(--reach) * -1);
-  width: var(--reach); height: 2px;
-  background: var(--orchid-deep);
-}
-
-.mine__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: .3rem .9rem; }
-.mine__head h2 { font-size: clamp(1.3rem, 1.14rem + .7vw, 1.72rem); }
-.mine__head h2 .th { font-weight: 500; font-size: .84em; color: var(--orchid-deep); }
-.mine__count {
-  margin-left: auto;
-  font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
-}
-
-.mine__empty { margin-top: .9rem; max-width: 58ch; font-size: .95rem; color: var(--ink-3); }
-.mine[data-has] .mine__empty { display: none; }
-
-.mine__list { margin-top: 1.2rem; display: grid; gap: .1rem; }
-.mine__list:empty { display: none; }
-.mine__list > li {
-  display: grid;
-  grid-template-columns: 18px 1fr auto;
-  align-items: baseline;
-  gap: .3rem .7rem;
-  padding: .6rem 0;
-  border-top: 1px solid var(--line);
-}
-.mine__mark { width: 15px; height: 15px; align-self: center; color: var(--orchid-deep); }
-.mine__name {
-  font-family: var(--serif); font-weight: 600; font-size: 1.05rem;
-  color: var(--ink); text-decoration: none;
-}
-.mine__name:hover { color: var(--orchid-deep); text-decoration: underline; }
-.mine__where {
-  display: block;
-  font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink-3);
-}
-.mine__x {
-  appearance: none; border: 0; cursor: pointer; background: transparent;
-  padding: .3rem; display: grid; place-items: center; color: var(--ink-3); border-radius: 50%;
-  transition: color .2s var(--ease), background .2s var(--ease);
-}
-.mine__x svg { width: 15px; height: 15px; }
-.mine__x:hover { color: var(--ink); background: var(--gold-wash); }
-
-.mine__acts { margin-top: 1.4rem; display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; }
-.mine__acts[hidden] { display: none; }
-.mine__btn {
-  appearance: none; cursor: pointer;
-  padding: .5rem 1rem;
-  background: var(--ink); color: var(--jasmine);
-  border: 1px solid var(--ink); border-radius: 99px;
-  font-family: var(--sans); font-size: .84rem; font-weight: 600;
-  transition: background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
-}
-.mine__btn:hover { background: var(--orchid-deep); border-color: var(--orchid-deep); }
-.mine__btn--quiet { background: transparent; color: var(--ink-3); border-color: var(--line-2); }
-.mine__btn--quiet:hover { background: var(--jasmine); color: var(--ink); border-color: var(--ink); }
-.mine__said { font-size: .84rem; font-weight: 600; color: var(--gold-ink); }
-
-/* the count, knotted into the index so it follows you down the page */
-.minechip {
-  display: none;
-  align-items: center; gap: .3rem;
-  padding: .34rem .5rem;
-  border: 1px solid var(--orchid);
-  border-radius: 99px;
-  background: var(--orchid-wash);
-  color: var(--orchid-deep);
-  text-decoration: none;
-  font-size: .82rem;
-  transition: background .25s var(--ease);
-}
-.js .minechip:not([hidden]) { display: inline-flex; }
-.minechip:hover { background: var(--orchid-pale); color: var(--ink); }
-.minechip svg { width: 14px; height: 14px; }
-.minechip b { font-weight: 600; font-variant-numeric: tabular-nums; }
-
 /* ---------- THE TASSEL ----------------------------------------------------- */
 
 .tassel {
@@ -1107,14 +974,8 @@ a:hover { color: var(--ink); }
   :root { --cord: 13px; --reach: 7px; }
 
   .cord, .cord-thru, .tie, .knots, .top, .skip,
-  .tassel::after, .sift, .thread, .minechip,
-  .mine__acts, .mine__empty, .season__hint { display: none !important; }
+  .tassel::after, .sift, .season__hint { display: none !important; }
 
-  /* your garland is the whole reason to print this, so it prints — and only
-     when you actually strung one */
-  .js .mine { display: block; margin-left: 0; background: none; padding: 0; }
-  .js .mine:not([data-has]) { display: none; }
-  .mine { break-inside: avoid; }
   .season__months button { color: #000; }
 
   .js [data-cinch],

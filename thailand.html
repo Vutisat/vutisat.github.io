@@ -84,15 +84,6 @@
       <path d="m16.1 3.9-1.5 1.5M5.4 14.6l-1.5 1.5M16.1 16.1l-1.5-1.5M5.4 5.4 3.9 3.9"/>
     </g>
   </symbol>
-  <!-- the page's own sentence, drawn small: cord, tie, bud -->
-  <symbol id="knot" viewBox="0 0 20 20">
-    <path d="M3.4 2.6v14.8M3.4 10h7.4" fill="none" stroke="currentColor"
-          stroke-width="1.7" stroke-linecap="round"/>
-    <circle cx="14.2" cy="10" r="3.2" fill="currentColor"/>
-  </symbol>
-  <symbol id="untie" viewBox="0 0 20 20">
-    <path d="M6 6l8 8M14 6l-8 8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-  </symbol>
   <symbol id="tassel" viewBox="0 0 30 46">
     <circle cx="15" cy="6" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
     <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
@@ -150,10 +141,6 @@
         <a class="knot" href="#south"   data-tier="south"><span class="en">South</span><span class="th">ภาคใต้</span></a>
         <a class="knot" href="#central" data-tier="central"><span class="en">Bangkok</span><span class="th">ภาคกลาง</span></a>
         <a class="knot" href="#manners" data-tier="manners"><span class="en">Manners</span><span class="th">มารยาท</span></a>
-        <a class="minechip" href="#mine" data-mine-chip hidden>
-          <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#knot"/></svg>
-          <b data-mine-n>0</b><span class="vh">places on your garland</span>
-        </a>
         <div class="sift" role="group" aria-label="How much of the garland to show">
           <button type="button" data-sift="all"  aria-pressed="true">All 24</button>
           <button type="button" data-sift="must" aria-pressed="false">Must-do 6</button>
@@ -1053,29 +1040,6 @@
       </section>
 
     </main>
-
-    <!-- THE GARLAND YOU STRING YOURSELF ------------------------------------
-         Scripted only: thailand.js hangs the "thread it on" control off every
-         bud and fills this, so it stays out of the page entirely without JS. -->
-    <section class="mine" id="mine" aria-labelledby="mine-h">
-      <div class="mine__head">
-        <h2 id="mine-h">Your garland <span class="th">พวงมาลัยของคุณ</span></h2>
-        <p class="mine__count" data-mine-count>Nothing strung yet</p>
-      </div>
-
-      <p class="mine__empty" data-mine-empty>
-        Thread any place above onto your own garland and it gathers here, kept in the order I
-        would travel it. It survives a reload, and you can copy the whole thing out as a list.
-      </p>
-
-      <ol class="mine__list" data-mine-list></ol>
-
-      <div class="mine__acts" data-mine-acts hidden>
-        <button type="button" class="mine__btn" data-mine-copy>Copy the list</button>
-        <button type="button" class="mine__btn mine__btn--quiet" data-mine-clear>Take it all off</button>
-        <span class="mine__said" data-mine-said role="status" aria-live="polite"></span>
-      </div>
-    </section>
 
     <!-- THE TASSEL -->
     <footer class="tassel">
