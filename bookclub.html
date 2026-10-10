@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>East of Eden Reading Club</title>
+  <meta name="description" content="A small reading club for Steinbeck's East of Eden. Winter into spring 2027: a Zoom every two weeks, then dinner together in New York when we finish.">
+  <meta property="og:title" content="East of Eden Reading Club">
+  <meta property="og:description" content="A small group reading Steinbeck's East of Eden. Zoom every two weeks from mid-January, dinner together at the end.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#F4ECDC">
+
+  <link rel="icon" type="image/png" href="assets/icons/favicon-32x32.png" sizes="32x32">
+  <link rel="preload" href="assets/fonts/ebgaramond-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/bookclub.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+  <header class="bar">
+    <div class="wrap bar__in">
+      <a href="#top" class="mark">East of Eden <span class="mark__sub">Reading Club</span></a>
+      <a href="index.html" class="bar__back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg><span>pobv.dev</span></a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="wrap hero__in">
+        <p class="eyebrow reveal">A small reading club &middot; Winter into Spring 2027</p>
+        <h1 class="reveal" data-d="1">East <em>of</em> Eden</h1>
+        <p class="hero__by reveal" data-d="2">John Steinbeck, 1952</p>
+        <p class="hero__lede reveal" data-d="3">I'm getting a few friends together to read this one slowly and talk about it as we go. Fewer than ten of us, a Zoom every two weeks, and dinner together in New York once we've all turned the last page.</p>
+        <div class="hero__cta reveal" data-d="3">
+          <a class="btn btn--gold" href="mailto:PobVuti@gmail.com?subject=East%20of%20Eden%20club%3A%20I'm%20in&amp;body=Hi%20Pob%2C%20count%20me%20in%20for%20the%20reading%20club!">I'm interested</a>
+          <a class="btn btn--ghost" href="#schedule">See the schedule</a>
+        </div>
+        <p class="hero__count reveal" data-d="3" id="countdown" hidden></p>
+      </div>
+
+      <svg class="valley" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <circle class="valley__sun" cx="905" cy="182" r="50"/>
+        <path class="valley__far"  d="M0 250 C 120 190 210 215 300 180 S 470 120 560 170 S 760 200 860 150 S 1060 120 1200 175 L1200 420 L0 420Z"/>
+        <path class="valley__mid"  d="M0 300 C 140 255 260 280 380 245 S 600 215 720 255 S 940 290 1050 245 S 1150 235 1200 250 L1200 420 L0 420Z"/>
+        <path class="valley__near" d="M0 350 C 160 320 300 340 460 318 S 760 300 900 330 S 1100 345 1200 325 L1200 420 L0 420Z"/>
+        <path class="valley__river" d="M-10 392 C 180 372 310 404 520 384 S 860 366 1010 388 S 1150 398 1210 384"/>
+      </svg>
+    </section>
+
+    <!-- AT A GLANCE -->
+    <section class="wrap glance" aria-label="At a glance">
+      <div class="glance__item">
+        <span class="glance__num">&lt;10</span>
+        <span class="glance__lbl">people, so everyone gets a word in</span>
+      </div>
+      <div class="glance__item">
+        <span class="glance__num">5</span>
+        <span class="glance__lbl">Zoom calls, every other Thursday</span>
+      </div>
+      <div class="glance__item">
+        <span class="glance__num">~50</span>
+        <span class="glance__lbl">pages a week, a relaxed pace</span>
+      </div>
+      <div class="glance__item">
+        <span class="glance__num">1</span>
+        <span class="glance__lbl">dinner in NYC to finish it off</span>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="wrap section about">
+      <div class="section__head">
+        <p class="eyebrow">The book</p>
+        <h2>Why this one</h2>
+      </div>
+      <div class="about__body">
+        <p>Steinbeck's big California novel, set in the Salinas Valley and following a couple of families across several generations. It's about 600 pages, which is exactly why it's nicer with company: long enough to live with for a few months, and full of things you'll want to talk through with someone.</p>
+        <p>No need to have read any Steinbeck before, and no homework beyond the reading. Come as you are.</p>
+      </div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <section class="wrap section" id="schedule">
+      <div class="section__head">
+        <p class="eyebrow">Proposed schedule</p>
+        <h2>Six checkpoints, January to April</h2>
+        <p class="section__note">Zoom calls are Thursdays, 7:30 to 8:45 pm ET. Dates are a starting point. If a lot of people can't do Thursdays, we'll move it.</p>
+      </div>
+
+      <ol class="trail">
+        <li class="stop stop--kick">
+          <div class="stop__date"><span class="stop__mon">Jan</span><span class="stop__day">14</span><span class="stop__dow">Thu</span></div>
+          <div class="stop__body">
+            <p class="stop__kind">Zoom &middot; Kickoff</p>
+            <h3>Meet everyone</h3>
+            <p>A short first call. Introductions, ground rules, and we all start reading that night.</p>
+            <button class="ics" data-ics="0" type="button">Add to calendar</button>
+          </div>
+        </li>
+        <li class="stop">
+          <div class="stop__date"><span class="stop__mon">Jan</span><span class="stop__day">28</span><span class="stop__dow">Thu</span></div>
+          <div class="stop__body">
+            <p class="stop__kind">Zoom &middot; Check-in 1</p>
+            <h3>Part One</h3>
+            <p class="stop__read">Read chapters 1 to 11</p>
+            <button class="ics" data-ics="1" type="button">Add to calendar</button>
+          </div>
+        </li>
+        <li class="stop">
+          <div class="stop__date"><span class="stop__mon">Feb</span><span class="stop__day">11</span><span class="stop__dow">Thu</span></div>
+          <div class="stop__body">
+            <p class="stop__kind">Zoom &middot; Check-in 2</p>
+            <h3>Part Two</h3>
+            <p class="stop__read">Read chapters 12 to 22</p>
+            <button class="ics" data-ics="2" type="button">Add to calendar</button>
+          </div>
+        </li>
+        <li class="stop">
+          <div class="stop__date"><span class="stop__mon">Feb</span><span class="stop__day">25</span><span class="stop__dow">Thu</span></div>
+          <div class="stop__body">
+            <p class="stop__kind">Zoom &middot; Check-in 3</p>
+            <h3>Part Three</h3>
+            <p class="stop__read">Read chapters 23 to 33</p>
+            <button class="ics" data-ics="3" type="button">Add to calendar</button>
+          </div>
+        </li>
+        <li class="stop">
+          <div class="stop__date"><span class="stop__mon">Mar</span><span class="stop__day">11</span><span class="stop__dow">Thu</span></div>
+          <div class="stop__body">
+            <p class="stop__kind">Zoom &middot; Check-in 4</p>
+            <h3>Part Four, first half</h3>
+            <p class="stop__read">Read chapters 34 to 44</p>
+            <p>Part Four is the longest section, so it gets split in two.</p>
+            <button class="ics" data-ics="4" type="button">Add to calendar</button>
+          </div>
+        </li>
+        <li class="stop stop--finale">
+          <div class="stop__date"><span class="stop__mon">Apr</span><span class="stop__day">3</span><span class="stop__dow">Sat</span></div>
+          <div class="stop__body">
+            <p class="stop__kind">In person &middot; The finale</p>
+            <h3>Dinner in New York</h3>
+            <p class="stop__read">Finish the book, chapters 45 to 55</p>
+            <p>The whole book is fair game, finally. Evening in Manhattan, place to be decided together. A few extra weeks before this one so nobody has to sprint to the end.</p>
+            <button class="ics" data-ics="5" type="button">Add to calendar</button>
+          </div>
+        </li>
+      </ol>
+
+      <div class="ics-all">
+        <button class="btn btn--ink" data-ics="all" type="button">Add all six to my calendar</button>
+        <span class="ics-all__note">Downloads one calendar file. Works with Google, Apple and Outlook.</span>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section class="wrap section" aria-labelledby="cal-h">
+      <div class="section__head">
+        <p class="eyebrow">At a glance</p>
+        <h2 id="cal-h">The calendar</h2>
+      </div>
+      <div class="legend">
+        <span><i class="dot dot--zoom"></i>Zoom check-in</span>
+        <span><i class="dot dot--finale"></i>In-person finale</span>
+        <span><i class="dot dot--read"></i>Reading weeks</span>
+      </div>
+      <div class="months" id="months">
+        <noscript><p class="section__note">Turn on JavaScript to see the month view. The dates are all listed above.</p></noscript>
+      </div>
+    </section>
+
+    <!-- RULES -->
+    <section class="section rules">
+      <div class="wrap">
+        <div class="section__head">
+          <p class="eyebrow">How it works</p>
+          <h2>A few house rules</h2>
+        </div>
+        <div class="rules__grid">
+          <div class="rule">
+            <span class="rule__n">I</span>
+            <h3>No spoilers, ever</h3>
+            <p>On calls and in the group chat, we only talk about what's been assigned so far. Reading ahead is totally fine, just keep it to yourself.</p>
+          </div>
+          <div class="rule">
+            <span class="rule__n">II</span>
+            <h3>Skip the introduction</h3>
+            <p>A lot of editions open with an essay that gives away the story. Save it, and any online summaries or reading guides, for after you finish.</p>
+          </div>
+          <div class="rule">
+            <span class="rule__n">III</span>
+            <h3>Go by chapters</h3>
+            <p>Page numbers differ between editions, so every checkpoint is a chapter number. Paperback, ebook, library copy and audiobook all count.</p>
+          </div>
+          <div class="rule">
+            <span class="rule__n">IV</span>
+            <h3>Behind? Still come</h3>
+            <p>Life happens. If you're a few chapters short, join anyway. You'll just hear a little more than you've read.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOIN -->
+    <section class="wrap section join">
+      <p class="eyebrow">Want in?</p>
+      <h2>Let me know by <em>January 4</em></h2>
+      <p class="join__body">That leaves time to grab a copy and settle on a meeting night. Spots are capped under ten, so the calls stay a conversation. Text me, or send a quick email. If you know someone who'd love this, feel free to pass the page along.</p>
+      <a class="btn btn--gold" href="mailto:PobVuti@gmail.com?subject=East%20of%20Eden%20club%3A%20I'm%20in&amp;body=Hi%20Pob%2C%20count%20me%20in%20for%20the%20reading%20club!">Email Pob: I'm in</a>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__in">
+      <p class="foot__sig">See you in the valley.<span>Pob</span></p>
+      <p class="foot__meta">East of Eden Reading Club<br><a href="index.html">back to pobv.dev</a></p>
+    </div>
+  </footer>
+
+  <script src="assets/js/bookclub.js"></script>
+</body>
+</html>
