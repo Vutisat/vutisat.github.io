@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Stacks, Overanalyzed</title>
+  <meta name="description" content="A riso-printed zine of charts nobody asked for, about every book on Pob's shelves.">
+  <meta property="og:title" content="The Stacks, Overanalyzed">
+  <meta property="og:description" content="Charts nobody asked for, about books somebody did buy.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#F2ECDF">
+  <meta name="color-scheme" content="light">
+
+  <link rel="icon" type="image/png" href="assets/icons/favicon-32x32.png" sizes="32x32">
+  <link rel="preload" href="assets/fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/splinemono-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/library-info.css">
+</head>
+<body>
+
+  <a href="#numbers" class="skip">Skip to the charts</a>
+
+  <header class="top">
+    <a href="index.html" class="top__home">&larr; pobv.dev</a>
+    <a href="library.html" class="top__lib">Browse the actual shelves &rarr;</a>
+  </header>
+
+  <main>
+
+    <!-- ======================== MASTHEAD ======================== -->
+    <section class="mast" aria-labelledby="mast-title">
+      <p class="mast__issue">
+        <span>Vol. 1</span>
+        <span>Issue <b data-stat="count">379</b></span>
+        <span>Free, obviously</span>
+      </p>
+      <h1 class="mast__title" id="mast-title">
+        <span class="ink" data-ink="The Stacks,">The Stacks,</span>
+        <span class="ink ink--pink" data-ink="Over&shy;analyzed">Over&shy;analyzed</span>
+      </h1>
+      <p class="mast__dek">Charts nobody asked for, about books somebody did&nbsp;buy. Every number below is counted live from Pob's shelf log, so if a new book lands, this zine reprints&nbsp;itself.</p>
+      <div class="mast__stamp" aria-hidden="true"><span>100%</span><span>real</span><span>books</span></div>
+    </section>
+
+    <!-- ======================== 01 NUMBERS ======================== -->
+    <section class="sec" id="numbers" aria-labelledby="h-numbers">
+      <header class="sec__head">
+        <span class="sec__no">01</span>
+        <h2 id="h-numbers" class="sec__title">The headline figures</h2>
+        <p class="sec__kicker">Big numbers, printed big.</p>
+      </header>
+
+      <div class="stats">
+        <div class="stat stat--blue">
+          <b class="stat__n" data-count data-stat="count">379</b>
+          <span class="stat__l">books on the shelves</span>
+        </div>
+        <div class="stat stat--pink">
+          <b class="stat__n" data-count data-stat="authors">0</b>
+          <span class="stat__l">different authors</span>
+        </div>
+        <div class="stat stat--yellow">
+          <b class="stat__n" data-stat="oldest">1532</b>
+          <span class="stat__l">oldest book: <i data-stat="oldestTitle"></i></span>
+        </div>
+        <div class="stat stat--green">
+          <b class="stat__n" data-count data-stat="span">0</b>
+          <span class="stat__l">years between the oldest and newest</span>
+        </div>
+        <div class="stat stat--orange">
+          <b class="stat__n" data-stat="median">2015</b>
+          <span class="stat__l">median publication year. The library is basically <i data-stat="medianAge"></i></span>
+        </div>
+        <div class="stat stat--purple">
+          <b class="stat__n" data-count data-stat="repeat">0</b>
+          <span class="stat__l">authors with more than one book here</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== 02 WAFFLE ======================== -->
+    <section class="sec" id="genres" aria-labelledby="h-genres">
+      <header class="sec__head">
+        <span class="sec__no">02</span>
+        <h2 id="h-genres" class="sec__title">One square, one book</h2>
+        <p class="sec__kicker">The whole collection as a waffle. Hover or tap a square to see which book it is.</p>
+      </header>
+
+      <div class="waffle-wrap">
+        <div class="waffle" id="waffle" role="img" aria-label="Every book as a coloured square, grouped by kind of book"></div>
+        <div class="waffle-side">
+          <ul class="legend" id="legend"></ul>
+          <p class="readout" id="readout" aria-live="polite"><span class="readout__hint">&uarr; pick a square, any square</span></p>
+        </div>
+      </div>
+      <p class="callout" id="genre-callout"></p>
+    </section>
+
+    <!-- ======================== 03 TIME ======================== -->
+    <section class="sec" id="time" aria-labelledby="h-time">
+      <header class="sec__head">
+        <span class="sec__no">03</span>
+        <h2 id="h-time" class="sec__title">Time machine</h2>
+        <p class="sec__kicker">When were these books first published? (Centuries until 1900, decades after that, because the 1500s really only have one book.)</p>
+      </header>
+      <div class="hist" id="hist"></div>
+      <div class="facts">
+        <p class="fact" id="fact-recent"></p>
+        <p class="fact" id="fact-gap"></p>
+        <p class="fact" id="fact-year"></p>
+      </div>
+    </section>
+
+    <!-- ======================== 04 AUTHORS ======================== -->
+    <section class="sec" id="authors" aria-labelledby="h-authors">
+      <header class="sec__head">
+        <span class="sec__no">04</span>
+        <h2 id="h-authors" class="sec__title">Repeat offenders</h2>
+        <p class="sec__kicker">The authors who keep getting invited back.</p>
+      </header>
+      <div class="podium" id="podium"></div>
+      <ol class="ranks" id="ranks"></ol>
+      <div class="club" id="club"></div>
+      <p class="callout" id="collab"></p>
+    </section>
+
+    <!-- ======================== 05 TITLES ======================== -->
+    <section class="sec" id="titles" aria-labelledby="h-titles">
+      <header class="sec__head">
+        <span class="sec__no">05</span>
+        <h2 id="h-titles" class="sec__title">Title fight</h2>
+        <p class="sec__kicker">In the blue corner, the shortest title. In the pink corner, a title that needs to catch its breath.</p>
+      </header>
+      <div class="bout" id="bout"></div>
+
+      <h3 class="sub">The words publishers can't stop using</h3>
+      <p class="sub__dek">Most common words across every title, with the boring ones (the, of, and&hellip;) thrown out.</p>
+      <div class="cloud" id="cloud"></div>
+    </section>
+
+    <!-- ======================== 06 PATTERNS ======================== -->
+    <section class="sec" id="patterns" aria-labelledby="h-patterns">
+      <header class="sec__head">
+        <span class="sec__no">06</span>
+        <h2 id="h-patterns" class="sec__title">Suspicious patterns</h2>
+        <p class="sec__kicker">Things we found by searching titles with a magnifying glass.</p>
+      </header>
+      <div class="stickers" id="stickers"></div>
+    </section>
+
+    <!-- ======================== 07 ALPHABET ======================== -->
+    <section class="sec" id="alphabet" aria-labelledby="h-alpha">
+      <header class="sec__head">
+        <span class="sec__no">07</span>
+        <h2 id="h-alpha" class="sec__title">A to Z (mostly)</h2>
+        <p class="sec__kicker">First letter of every title, ignoring a leading <i>The</i>, <i>A</i> or <i>An</i>, the way a librarian would.</p>
+      </header>
+      <div class="abc" id="abc"></div>
+      <p class="callout" id="abc-callout"></p>
+    </section>
+
+    <!-- ======================== 08 TOWER ======================== -->
+    <section class="sec" id="tower" aria-labelledby="h-tower">
+      <header class="sec__head">
+        <span class="sec__no">08</span>
+        <h2 id="h-tower" class="sec__title">Stack 'em up</h2>
+        <p class="sec__kicker">If you piled every book on top of each other, how tall would it be? Assuming a 3&nbsp;cm spine each, which is a guess, not a measurement.</p>
+      </header>
+      <div class="tower" id="tower-chart"></div>
+      <p class="callout" id="tower-callout"></p>
+    </section>
+
+    <!-- ======================== 09 BLIND DATE ======================== -->
+    <section class="sec" id="date" aria-labelledby="h-date">
+      <header class="sec__head">
+        <span class="sec__no">09</span>
+        <h2 id="h-date" class="sec__title">Blind date with a book</h2>
+        <p class="sec__kicker">Can't pick? Get some clues, guess, then reveal.</p>
+      </header>
+      <div class="date">
+        <div class="date__card" id="date-card">
+          <p class="date__label">Your date&rsquo;s profile</p>
+          <ul class="date__clues" id="date-clues"></ul>
+          <div class="date__reveal" id="date-reveal" hidden></div>
+        </div>
+        <div class="date__btns">
+          <button type="button" class="btn btn--pink" id="date-show">Reveal my date</button>
+          <button type="button" class="btn" id="date-next">New date</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <p>Printed in nine imaginary riso inks on imaginary newsprint. Data: the shelf log, <span id="sync-note">baked into the page</span>.</p>
+    <p><a href="library.html">Visit the library</a> &middot; <a href="index.html">pobv.dev home</a></p>
+  </footer>
+
+  <script src="assets/js/library-data.js"></script>
+  <script src="assets/js/library-info.js"></script>
+</body>
+</html>
