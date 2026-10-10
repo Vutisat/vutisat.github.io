@@ -82,6 +82,7 @@ em{font-style:italic}
 .hero h1 em{font-weight:400;color:var(--gold-ink);font-size:.72em}
 .hero__by{font:italic 400 1.25rem/1.3 var(--serif);color:var(--ink-3)}
 .hero__lede{max-width:36rem;margin-top:1.6rem;font-size:clamp(1.05rem,2.4vw,1.2rem);color:var(--ink-2)}
+.hero__lede--2{margin-top:1rem}
 .hero__cta{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.8rem}
 .hero__count{margin-top:1.1rem;font:500 .9rem/1.4 var(--sans);color:var(--ink-3)}
 .hero__count b{color:var(--gold-ink);font-weight:700;font-variant-numeric:tabular-nums}
@@ -122,6 +123,21 @@ em{font-style:italic}
 .about__body p{font-size:1.1rem;max-width:36rem}
 .about__body p + p{margin-top:1rem}
 @media (max-width:760px){.about{grid-template-columns:1fr;gap:1.2rem}}
+
+/* honors: the case for the book */
+.honors{list-style:none;margin:1.4rem 0 1.4rem;padding:0;border-top:1px solid var(--line)}
+.honors li{display:grid;grid-template-columns:8.5rem 1fr;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--line-2);font-size:.98rem;line-height:1.5}
+.honors__k{font:italic 500 1.12rem/1.35 var(--serif);color:var(--gold-ink)}
+@media (max-width:480px){.honors li{grid-template-columns:1fr;gap:.15rem}}
+
+/* schedule notes: open meeting day, audiobook pace */
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:0 0 2.4rem}
+@media (max-width:720px){.notes{grid-template-columns:1fr}}
+.note{background:var(--card);border:1px solid var(--line-2);border-radius:18px;padding:1.15rem 1.3rem 1.25rem}
+.note p{font-size:.98rem}
+.note strong{color:var(--ink);font-weight:650}
+.note .note__k{font:500 1.3rem/1.2 var(--serif);color:var(--ink);margin-bottom:.45rem}
+.note--tbd{background:var(--gold-wash);border:1.5px dashed var(--gold)}
 
 /* ---------- TRAIL (schedule) ---------- */
 .trail{list-style:none;margin:0;padding:0;position:relative}
