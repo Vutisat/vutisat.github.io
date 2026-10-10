@@ -228,6 +228,9 @@ em{font-style:italic}
 .join h2 em{color:var(--gold-ink);font-weight:400}
 .join__body{font-size:1.06rem;margin:0 auto 1.8rem;max-width:34rem}
 
+.join__ask{max-width:32rem;margin:0 auto 1.8rem;padding:1rem 1.25rem;border:1.5px dashed var(--gold);border-radius:16px;background:var(--gold-wash);font-size:.98rem;line-height:1.55;color:var(--ink-2)}
+.join__ask-k{display:block;font:italic 500 1.15rem/1.3 var(--serif);color:var(--gold-ink);margin-bottom:.3rem}
+
 /* ---------- FOOTER ---------- */
 .foot{border-top:1px solid var(--line);padding:2rem 0 2.6rem}
 .foot__in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.2rem;align-items:end}
