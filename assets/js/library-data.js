@@ -15,7 +15,7 @@
    headed "Rating" to the sheet and the live sync picks it up on the next page
    load -- columns are located by header name, so its position does not matter.
 
-   To re-bake (341 books as of 2026-09-11):
+   To re-bake (372 books as of 2026-10-10):
      curl -sSL "https://docs.google.com/spreadsheets/d/1LSyUoNO50mpBUlmAEt9lHR9n7XVE7jGSeH29lT9m1Ik/gviz/tq?tqx=out:csv" -o books.csv
    then ask Claude to regenerate this file from it.
 --------------------------------------------------------------------------- */
@@ -360,5 +360,36 @@ window.LIBRARY_SEED = [
   ["The Unmapping", "Denise S. Robbins", "Fiction", "2025"],
   ["Wild Dark Shore", "Charlotte McConaghy", "Literary Fiction", "2025"],
   ["The Midnight Train", "Matt Haig", "Fiction", "2026"],
-  ["Entrepreneurship and Startups (HBR)", "Harvard Business Review", "Business", "2018"]
+  ["Entrepreneurship and Startups (HBR)", "Harvard Business Review", "Business", "2018"],
+  ["The Picture of Dorian Gray", "Oscar Wilde", "Classic / Gothic", "1890"],
+  ["Death in Venice", "Thomas Mann", "Classic", "1912"],
+  ["Things Fall Apart", "Chinua Achebe", "Classic", "1958"],
+  ["Cat's Cradle", "Kurt Vonnegut", "Satire", "1963"],
+  ["Jonathan Livingston Seagull", "Richard Bach", "Fable", "1970"],
+  ["Blindness", "Jose Saramago", "Literary Fiction", "1995"],
+  ["The Man Who Died Seven Times", "Yasuhiko Nishizawa", "Mystery", "1995"],
+  ["Fight Club", "Chuck Palahniuk", "Literary Fiction", "1996"],
+  ["The God of Small Things", "Arundhati Roy", "Literary Fiction", "1997"],
+  ["Sightseeing", "Rattawut Lapcharoensap", "Short Stories", "2004"],
+  ["The Singer's Gun", "Emily St. John Mandel", "Literary Fiction", "2010"],
+  ["Between Two Fires", "Christopher Buehlman", "Historical Horror", "2012"],
+  ["We Were Liars", "E. Lockhart", "YA", "2014"],
+  ["Eileen", "Ottessa Moshfegh", "Literary Fiction", "2015"],
+  ["Becoming", "Michelle Obama", "Memoir", "2018"],
+  ["The Overstory", "Richard Powers", "Literary Fiction", "2018"],
+  ["The Silent Patient", "Alex Michaelides", "Thriller", "2019"],
+  ["Heaven's River", "Dennis E. Taylor", "Science Fiction", "2020"],
+  ["No One Is Talking About This", "Patricia Lockwood", "Literary Fiction", "2021"],
+  ["The Man Who Died Twice", "Richard Osman", "Mystery", "2021"],
+  ["Demon Copperhead", "Barbara Kingsolver", "Literary Fiction", "2022"],
+  ["The Bullet That Missed", "Richard Osman", "Mystery", "2022"],
+  ["Beasts of the Sea", "Iida Turpeinen", "Historical Fiction", "2023"],
+  ["The Last Devil to Die", "Richard Osman", "Mystery", "2023"],
+  ["Absolution", "Jeff VanderMeer", "Science Fiction", "2024"],
+  ["All Fours", "Miranda July", "Literary Fiction", "2024"],
+  ["The Last Murder at the End of the World", "Stuart Turton", "Mystery / Science Fiction", "2024"],
+  ["The End of the World as We Know It", "Christopher Golden and Brian Keene (eds.)", "Horror (anthology)", "2025"],
+  ["The Impossible Fortune", "Richard Osman", "Mystery", "2025"],
+  ["Exit Party", "Emily St. John Mandel", "Science Fiction", "2026"],
+  ["We Chase Shadows", "Richard Osman", "Mystery", "2026"],
 ];
