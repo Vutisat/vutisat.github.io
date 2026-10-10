@@ -1453,8 +1453,23 @@
   function hideChromeOnScroll(search) {
     var narrow = window.matchMedia("(max-width: 760px)");
     var lastY = window.scrollY, away = false, ticking = false;
-    var REVEAL_ABOVE = 150;   /* always visible near the top of the page */
     var JITTER = 6;           /* ignore sub-pixel scroll noise */
+    var stacks = $("stacks");
+    var controls = stacks && stacks.querySelector(".controls");
+
+    /* The scrollY at which the controls actually pin. The hide is a transform,
+       and a transform moves what you see but not the box it occupies -- so
+       sliding the controls away while they were still in normal flow (scrolled
+       past a fixed threshold but not yet stuck) lifted them over the hero and
+       left their whole height behind as an empty band above the first shelf.
+       Hiding is only safe once they are pinned; the point they pin at moves
+       with the hero's height, so it is measured rather than hard-coded.
+       #stacks is never sticky, so its rect is a reliable anchor. */
+    function pinnedFrom() {
+      if (!stacks || !controls) return Infinity;
+      var stickTop = parseFloat(getComputedStyle(controls).top) || 0;
+      return stacks.getBoundingClientRect().top + window.scrollY - stickTop;
+    }
 
     function set(next) {
       if (next === away) return;
@@ -1472,9 +1487,10 @@
         if (Math.abs(delta) < JITTER) return;
         lastY = y;
 
-        /* never hide on desktop, near the top, while typing, or with the
-           drawer open -- in each case the controls are what you are using */
-        if (!narrow.matches || y < REVEAL_ABOVE ||
+        /* never hide on desktop, before the controls have pinned, while
+           typing, or with the drawer open -- in each case either there is
+           nothing to step aside from or the controls are what you are using */
+        if (!narrow.matches || y <= pinnedFrom() ||
             document.activeElement === search || openBook) {
           set(false);
           return;
