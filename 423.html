@@ -184,7 +184,13 @@ ol.rules ul,ol.rules ol{margin:6px 0 0;padding-left:20px;color:var(--soft)}
 ol.rules ol{list-style:lower-alpha}
 ol.rules li li{margin:3px 0}
 
-footer{padding:28px 0 56px;text-align:center;color:var(--faint);font-size:15px}
+footer.wrap{position:relative;padding-top:28px;padding-bottom:128px;text-align:center;color:var(--faint);font-size:15px}
+
+/* a tiny freshly painted model horse in the corner, for Eleanor */
+.pony{position:absolute;right:12px;bottom:18px;width:104px;height:auto;transform-origin:50% 90%;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pony:hover .pony-horse,.pony.hop .pony-horse{animation:hop .6s ease-out}
+@keyframes hop{0%,100%{transform:translateY(0)}35%{transform:translateY(-7px) rotate(-3deg)}60%{transform:translateY(0)}75%{transform:translateY(-2px)}}
+.pony-horse{transform-box:fill-box;transform-origin:50% 100%}
 footer .voice{font-size:22px;color:var(--ink);display:block;margin-bottom:10px}
 
 @media (max-width:560px){
@@ -486,6 +492,61 @@ footer .voice{font-size:22px;color:var(--ink);display:block;margin-bottom:10px}
 <footer class="wrap">
   <span class="voice">I hope you have an amazing stay. Please don't hesitate to text me if anything comes up.</span>
   <a href="index.html">pobv.dev</a>
+  <svg class="pony" viewBox="0 0 124 100" role="img" aria-label="A tiny freshly painted model horse">
+    <!-- plinth -->
+    <rect x="28" y="84" width="72" height="9" rx="2" fill="#9A6B3F"/>
+    <rect x="28" y="84" width="72" height="2.5" rx="1.2" fill="#C08D5A"/>
+    <g class="pony-horse">
+<!-- tail -->
+    <path d="M90 43 Q104 45 104 60 Q104 72 99 76 Q100 64 95 56 Q92 51 89 49Z" fill="#2B1C14"/>
+    <!-- far legs (shaded) -->
+    <rect x="47" y="55" width="5" height="27" rx="2.4" fill="#6E4321"/>
+    <rect x="84" y="55" width="5" height="27" rx="2.4" fill="#6E4321"/>
+    <!-- body -->
+    <ellipse cx="66" cy="49" rx="26" ry="12.5" fill="#8C5A2E"/>
+    <!-- neck -->
+    <path d="M37 56 Q34 40 27 21 Q31 13 39 18 Q47 30 58 40 L50 58Z" fill="#8C5A2E"/>
+    <!-- head -->
+    <path d="M27 15 Q21 14 18 20 L10 33 Q8 39 13 40 L18 40 Q23 38 26 32 Q31 24 31 19Z" fill="#8C5A2E"/>
+    <!-- ears -->
+    <path d="M26 16 L27 8 L30.5 15Z" fill="#8C5A2E"/>
+    <!-- near legs -->
+    <rect x="40" y="55" width="5.4" height="27" rx="2.5" fill="#8C5A2E"/>
+    <rect x="77" y="55" width="5.4" height="27" rx="2.5" fill="#8C5A2E"/>
+    <!-- black points (lower legs) -->
+    <rect x="40" y="70" width="5.4" height="12" rx="2.5" fill="#2B1C14"/>
+    <rect x="47" y="70" width="5" height="12" rx="2.4" fill="#22160F"/>
+    <rect x="84" y="70" width="5" height="12" rx="2.4" fill="#22160F"/>
+    <rect x="77" y="70" width="5.4" height="12" rx="2.5" fill="#2B1C14"/>
+    <!-- one white sock -->
+    <rect x="77" y="74" width="5.4" height="8" rx="2.5" fill="#F7F1E6"/>
+    <!-- hooves -->
+    <rect x="39.5" y="80.5" width="6.4" height="3.5" rx="1" fill="#1A120C"/>
+    <rect x="46.5" y="80.5" width="6" height="3.5" rx="1" fill="#1A120C"/>
+    <rect x="76.5" y="80.5" width="6.4" height="3.5" rx="1" fill="#1A120C"/>
+    <rect x="83.5" y="80.5" width="6" height="3.5" rx="1" fill="#1A120C"/>
+    <!-- mane + forelock -->
+    <path d="M28 13 Q33 13 38 20 Q46 31 53 40 L49 42 Q41 32 35 23 Q31 17 27 17Z" fill="#2B1C14"/>
+    <path d="M27 14 Q24 15 23 19 Q26 17 28 17Z" fill="#2B1C14"/>
+    <!-- blaze -->
+    <path d="M22 19 Q20 26 15 34 Q13 38 15 39 Q19 33 23 22Z" fill="#F7F1E6"/>
+    <!-- eye, nostril -->
+    <circle cx="24" cy="23" r="1.3" fill="#1A120C"/>
+    <circle cx="24.5" cy="22.6" r=".4" fill="#fff"/>
+    <circle cx="12.5" cy="37" r=".8" fill="#4A2E18"/>
+    <!-- painted gloss highlight on the model -->
+    <path d="M50 41 Q66 36 82 40" stroke="#fff" stroke-opacity=".28" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </g>
+<!-- paint jar with a brush in it -->
+    <g transform="rotate(12 113 70)">
+    <rect x="111.5" y="50" width="3" height="32" rx="1.5" fill="#C9473A"/>
+    <rect x="111.2" y="45" width="3.6" height="6" fill="#B8B8B8"/>
+    <path d="M111.2 45 Q113 35 114.8 45Z" fill="#1F5A42"/>
+    </g>
+    <path d="M105 76 L119 76 L118 92 Q112 94 106 92Z" fill="#CFE0EA" fill-opacity=".85"/>
+    <path d="M105.6 84 L118.4 84 L118 92 Q112 94 106 92Z" fill="#1F5A42" fill-opacity=".55"/>
+    <rect x="104" y="74.5" width="16" height="2.5" rx="1.2" fill="#A9BFCB"/>
+  </svg>
 </footer>
 
 <script>
@@ -500,6 +561,12 @@ footer .voice{font-size:22px;color:var(--ink);display:block;margin-bottom:10px}
         setTimeout(function(){ btn.textContent = 'Copy'; }, 1600);
       });
     });
+  });
+
+  // Tap the little horse and it hops
+  var pony = document.querySelector('.pony');
+  if (pony) pony.addEventListener('click', function(){
+    pony.classList.remove('hop'); void pony.getBoundingClientRect(); pony.classList.add('hop');
   });
 
   // Highlight the jump-nav chip for the section in view
