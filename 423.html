@@ -184,13 +184,16 @@ ol.rules ul,ol.rules ol{margin:6px 0 0;padding-left:20px;color:var(--soft)}
 ol.rules ol{list-style:lower-alpha}
 ol.rules li li{margin:3px 0}
 
-footer.wrap{position:relative;padding-top:28px;padding-bottom:128px;text-align:center;color:var(--faint);font-size:15px}
+footer.wrap{position:relative;padding-top:28px;padding-bottom:168px;text-align:center;color:var(--faint);font-size:15px}
 
 /* a tiny freshly painted model horse in the corner, for Eleanor */
 .pony{position:absolute;right:12px;bottom:18px;width:104px;height:auto;transform-origin:50% 90%;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .pony:hover .pony-horse,.pony.hop .pony-horse{animation:hop .6s ease-out}
 @keyframes hop{0%,100%{transform:translateY(0)}35%{transform:translateY(-7px) rotate(-3deg)}60%{transform:translateY(0)}75%{transform:translateY(-2px)}}
 .pony-horse{transform-box:fill-box;transform-origin:50% 100%}
+.pony-say{position:absolute;right:44px;bottom:100px;padding:8px 13px;background:var(--card);color:var(--ink);border:1.5px solid var(--ink);border-radius:14px;font:600 14px/1.25 "Hanken",sans-serif;white-space:nowrap;box-shadow:var(--shadow);opacity:0;transform:translateY(6px) scale(.85);transform-origin:80% 100%;transition:opacity .2s ease,transform .25s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
+.pony-say::after{content:"";position:absolute;right:22px;bottom:-7px;width:11px;height:11px;background:var(--card);border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);transform:rotate(45deg)}
+.pony-say.show{opacity:1;transform:none}
 footer .voice{font-size:22px;color:var(--ink);display:block;margin-bottom:10px}
 
 @media (max-width:560px){
@@ -491,6 +494,7 @@ footer .voice{font-size:22px;color:var(--ink);display:block;margin-bottom:10px}
 
 <footer class="wrap">
   <span class="voice">I hope you have an amazing stay.<br>Please don't hesitate to text me if anything comes up.</span>
+  <p class="pony-say" aria-live="polite"></p>
   <svg class="pony" viewBox="0 0 124 100" role="img" aria-label="A tiny freshly painted model horse">
     <!-- plinth -->
     <rect x="28" y="84" width="72" height="9" rx="2" fill="#9A6B3F"/>
@@ -566,6 +570,12 @@ footer .voice{font-size:22px;color:var(--ink);display:block;margin-bottom:10px}
   var pony = document.querySelector('.pony');
   if (pony) pony.addEventListener('click', function(){
     pony.classList.remove('hop'); void pony.getBoundingClientRect(); pony.classList.add('hop');
+    var say = document.querySelector('.pony-say');
+    if (!say) return;
+    say.textContent = 'please don\u2019t start a fire \uD83D\uDD25';
+    say.classList.add('show');
+    clearTimeout(pony._t);
+    pony._t = setTimeout(function(){ say.classList.remove('show'); }, 3200);
   });
 
   // Highlight the jump-nav chip for the section in view
