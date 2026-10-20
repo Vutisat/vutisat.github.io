@@ -83,6 +83,12 @@ URLs people have linked to; moving a page into a subfolder silently breaks them.
 CSS reaches fonts via `../fonts/` — this resolves correctly only because stylesheets live in
 `assets/css/` and fonts in `assets/fonts/`. Keep that pairing if you move either.
 
+## Git authorship
+
+Commit as **Pob Vuti <pobvuti@gmail.com>**, never as "Claude". `.claude/settings.json` has a
+SessionStart hook that sets this in the repo's local git config; if `git config user.name` still
+says otherwise, set it before committing.
+
 ## Conventions that hold across the site
 
 These are structural, not stylistic — they apply everywhere without making the pages look alike.

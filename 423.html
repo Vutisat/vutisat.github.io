@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>423 · House Notes</title>
+<meta name="description" content="Everything you need while staying at 423: keys, trash, laundry, heat, lights, Wi-Fi, the kitchen, and the neighborhood.">
+<meta name="theme-color" content="#EFE9DF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141815" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" href="assets/icons/favicon-32x32.png" sizes="32x32">
+<link rel="preload" href="assets/fonts/hanken-var.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* ==========================================================================
+   423 — House Notes
+   A self-contained world: the note you leave on the counter for a house guest.
+   Plaster wall, a brass door plaque, forest-green ink, and one alarm red that
+   is reserved for genuine safety items (stove, flame, toaster oven) only.
+   Light + dark (follows the system). Hanken for reading, Garamond italic for voice.
+   ========================================================================== */
+@font-face{font-family:"Hanken";src:url("assets/fonts/hanken-var.woff2") format("woff2");font-weight:300 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Garamond";src:url("assets/fonts/ebgaramond-italic.woff2") format("woff2");font-weight:400 700;font-style:italic;font-display:swap}
+@font-face{font-family:"Mono";src:url("assets/fonts/jetbrains-var.woff2") format("woff2");font-weight:300 800;font-style:normal;font-display:swap}
+
+:root{
+  color-scheme:light;
+  --wall:#EFE9DF;
+  --card:#FBF8F2;
+  --ink:#1D2520;
+  --soft:#59615B;
+  --faint:#8A8F87;
+  --rule:#DDD5C7;
+  --green:#1F5A42;
+  --green-wash:#E2ECE4;
+  --brass:#B08A3E;
+  --brass-hi:#E3C77E;
+  --brass-lo:#7A5C22;
+  --alarm:#B9381F;
+  --alarm-wash:#F7E3DC;
+  --shadow:0 1px 0 rgba(60,45,20,.05),0 10px 28px -16px rgba(60,45,20,.28);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    color-scheme:dark;
+    --wall:#141815;
+    --card:#1C211D;
+    --ink:#ECE7DC;
+    --soft:#B3B4A9;
+    --faint:#80847C;
+    --rule:#2F3630;
+    --green:#7FC2A0;
+    --green-wash:#1E2C24;
+    --brass:#C9A55A;
+    --brass-hi:#EBD196;
+    --brass-lo:#7E6129;
+    --alarm:#F07B60;
+    --alarm-wash:#3A211B;
+    --shadow:0 1px 0 rgba(0,0,0,.2),0 12px 30px -18px rgba(0,0,0,.7);
+  }
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--wall);color:var(--ink);font:400 17px/1.6 "Hanken",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+em,.voice{font-family:"Garamond",Georgia,serif;font-style:italic;font-weight:500}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:12px;top:12px;background:var(--card);padding:8px 12px;z-index:50}
+
+/* ---- hero ---------------------------------------------------------------- */
+.hero{padding:56px 0 28px;text-align:center}
+.plaque{
+  display:inline-grid;place-items:center;width:132px;height:132px;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%,var(--brass-hi),var(--brass) 55%,var(--brass-lo));
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.45),inset 0 -3px 6px rgba(0,0,0,.25),0 14px 30px -14px rgba(80,55,10,.6);
+  position:relative;
+}
+.plaque::before,.plaque::after{content:"";position:absolute;width:7px;height:7px;border-radius:50%;left:50%;margin-left:-3.5px;background:var(--brass-lo);box-shadow:inset 0 1px 1px rgba(0,0,0,.4)}
+.plaque::before{top:12px}.plaque::after{bottom:12px}
+.plaque span{font:800 46px/1 "Hanken",sans-serif;letter-spacing:-.02em;color:#3D2C0C;text-shadow:0 1px 0 rgba(255,240,200,.55)}
+.hero h1{margin:26px 0 6px;font-size:clamp(34px,7vw,52px);line-height:1.05;letter-spacing:-.025em;font-weight:800}
+.hero h1 em{font-weight:500;letter-spacing:0;color:var(--green)}
+.hero p{margin:0 auto;max-width:34em;color:var(--soft)}
+
+/* ---- jump nav ------------------------------------------------------------ */
+.jump{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--wall) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.jump ul{list-style:none;margin:0 auto;padding:10px 20px;max-width:760px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.jump ul::-webkit-scrollbar{display:none}
+.jump a{display:block;white-space:nowrap;padding:6px 12px;border-radius:999px;font-size:14px;font-weight:600;color:var(--soft);text-decoration:none;border:1px solid var(--rule);background:var(--card)}
+.jump a:hover,.jump a.on{color:var(--card);background:var(--green);border-color:var(--green)}
+
+/* ---- the big three ------------------------------------------------------- */
+.musts{margin:28px 0 8px;padding:22px 22px 18px;border-radius:16px;background:var(--alarm-wash);border:1.5px solid color-mix(in srgb,var(--alarm) 45%,transparent)}
+.musts h2{margin:0 0 12px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--alarm)}
+.musts ol{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:m}
+.musts li{counter-increment:m;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;font-weight:500}
+.musts li::before{content:counter(m);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--alarm);color:var(--card);font-weight:800;font-size:14px;margin-top:1px}
+.musts strong{font-weight:800}
+
+/* ---- sections ------------------------------------------------------------ */
+section.room{margin:22px 0;padding:26px 24px 22px;background:var(--card);border-radius:16px;box-shadow:var(--shadow)}
+.room h2{display:flex;align-items:center;gap:12px;margin:0 0 16px;font-size:24px;letter-spacing:-.015em;line-height:1.2}
+.room h2 .ico{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--green-wash);color:var(--green)}
+.room h2 .ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.room h3{margin:22px 0 8px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.room h3:first-of-type{margin-top:4px}
+.room p{margin:0 0 10px}
+ul.ticks{margin:0;padding:0;list-style:none}
+ul.ticks>li{position:relative;padding:7px 0 7px 22px;border-top:1px dashed var(--rule)}
+ul.ticks>li:first-child{border-top:0}
+ul.ticks>li::before{content:"";position:absolute;left:3px;top:17px;width:7px;height:7px;border-radius:50%;background:var(--green)}
+ul.ticks ul{margin:6px 0 0;padding-left:18px;color:var(--soft)}
+ul.ticks ul li{margin:3px 0}
+.note{margin:12px 0 0;padding:12px 14px;border-radius:10px;background:var(--green-wash);font-size:15.5px}
+.note b{color:var(--green)}
+.warn{margin:12px 0 0;padding:12px 14px;border-radius:10px;background:var(--alarm-wash);color:var(--ink);font-size:15.5px;border-left:3px solid var(--alarm)}
+.warn b{color:var(--alarm)}
+.pill{display:inline-block;padding:1px 8px;border-radius:6px;font:600 14px/1.5 "Mono",ui-monospace,monospace;background:var(--wall);border:1px solid var(--rule)}
+
+/* keys */
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.key{padding:16px;border-radius:12px;border:1px solid var(--rule);background:var(--wall)}
+.key svg{width:46px;height:22px;display:block;margin-bottom:8px}
+.key b{display:block;font-size:17px}
+.key span{color:var(--soft);font-size:15.5px}
+
+/* trash gate diagram */
+.bins{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:6px 0 4px}
+.bin{border-radius:8px 8px 4px 4px;padding:14px 4px 10px;text-align:center;font-size:12px;font-weight:700;line-height:1.25;border:1.5px solid}
+.bin.card{border-color:#A27A45;background:color-mix(in srgb,#A27A45 16%,transparent)}
+.bin.rec{border-color:#3E78B5;background:color-mix(in srgb,#3E78B5 15%,transparent)}
+.bin.reg{border-color:var(--faint);background:color-mix(in srgb,var(--faint) 14%,transparent)}
+.bins-cap{display:flex;justify-content:space-between;font-size:12px;color:var(--faint);margin-bottom:14px}
+.sorts{display:grid;gap:8px}
+.sort{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:10px 0;border-top:1px dashed var(--rule)}
+.sort:first-child{border-top:0}
+.sort b{font-size:15px}
+.sort span{color:var(--soft)}
+
+/* temperature strip */
+.temps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:6px 0 12px}
+.temp{padding:12px;border-radius:10px;font-size:14.5px;line-height:1.4}
+.temp b{display:block;font:700 13px/1.3 "Mono",ui-monospace,monospace;margin-bottom:4px}
+.t-cold{background:color-mix(in srgb,#3E78B5 16%,transparent)}
+.t-mild{background:var(--green-wash)}
+.t-warm{background:color-mix(in srgb,#D9822B 18%,transparent)}
+
+/* wifi */
+.wifi{display:grid;gap:10px}
+.wifi-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:14px 16px;border-radius:12px;background:var(--wall);border:1px solid var(--rule)}
+.wifi-row small{width:100%;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.wifi-row code{font:600 19px/1.2 "Mono",ui-monospace,monospace;word-break:break-all}
+.copy{margin-left:auto;font:600 13px "Hanken",sans-serif;padding:6px 12px;border-radius:999px;border:1px solid var(--green);background:transparent;color:var(--green);cursor:pointer}
+.copy:hover{background:var(--green);color:var(--card)}
+
+/* spots */
+.spots{display:grid;gap:0}
+.spot{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:11px 0;border-top:1px dashed var(--rule)}
+.spot:first-child{border-top:0}
+.spot b{font-size:16.5px}
+.spot p{grid-column:1;margin:0;color:var(--soft);font-size:15.5px}
+.spot p+p{margin-top:2px}
+.spot a.map{grid-row:1/span 3;grid-column:2;align-self:start;font-size:13px;font-weight:600;white-space:nowrap}
+.skip-list{display:flex;flex-wrap:wrap;gap:8px}
+.skip-list span{padding:6px 12px;border-radius:999px;background:var(--alarm-wash);text-decoration:line-through;text-decoration-color:var(--alarm);font-weight:600}
+
+/* rules */
+ol.rules{margin:0;padding:0;list-style:none;counter-reset:r}
+ol.rules>li{counter-increment:r;position:relative;padding:12px 0 12px 44px;border-top:1px dashed var(--rule)}
+ol.rules>li:first-child{border-top:0}
+ol.rules>li::before{content:counter(r,decimal-leading-zero);position:absolute;left:0;top:12px;font:700 15px/1.6 "Mono",ui-monospace,monospace;color:var(--faint)}
+ol.rules>li.hot::before{color:var(--alarm)}
+ol.rules>li.hot>strong{color:var(--alarm)}
+ol.rules ul,ol.rules ol{margin:6px 0 0;padding-left:20px;color:var(--soft)}
+ol.rules ol{list-style:lower-alpha}
+ol.rules li li{margin:3px 0}
+
+footer{padding:28px 0 56px;text-align:center;color:var(--faint);font-size:15px}
+footer .voice{font-size:22px;color:var(--ink);display:block;margin-bottom:10px}
+
+@media (max-width:560px){
+  body{font-size:16.5px}
+  section.room{padding:22px 18px 18px;border-radius:14px}
+  .wrap{padding:0 16px}
+  .room h2{font-size:21px}
+  .keys{grid-template-columns:1fr}
+  .temps{grid-template-columns:1fr}
+  .sort{grid-template-columns:1fr;gap:2px}
+  .bin{font-size:10.5px;padding:12px 2px 8px}
+}
+@media print{
+  .jump,.copy{display:none}
+  body{background:#fff}
+  section.room{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#keys">Skip to the notes</a>
+
+<header class="hero wrap">
+  <div class="plaque" aria-hidden="true"><span>423</span></div>
+  <h1>Make yourself <em>at home.</em></h1>
+  <p>Everything you need while I'm away: keys, trash, heat, lights, the kitchen, and where to eat. Skim it now, come back whenever.</p>
+</header>
+
+<nav class="jump" aria-label="Sections">
+  <ul>
+    <li><a href="#keys">Keys</a></li>
+    <li><a href="#trash">Trash</a></li>
+    <li><a href="#laundry">Laundry</a></li>
+    <li><a href="#heat">Heat &amp; AC</a></li>
+    <li><a href="#lights">Lights &amp; Noise</a></li>
+    <li><a href="#wifi">Wi-Fi &amp; Gadgets</a></li>
+    <li><a href="#bath">Bathroom</a></li>
+    <li><a href="#supplies">Supplies</a></li>
+    <li><a href="#kitchen">Kitchen</a></li>
+    <li><a href="#groceries">Groceries</a></li>
+    <li><a href="#local">Local Spots</a></li>
+    <li><a href="#rules">House Rules</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+
+  <aside class="musts" aria-labelledby="musts-h">
+    <h2 id="musts-h">If you read nothing else</h2>
+    <ol>
+      <li><span><strong>Turn the gas stove off</strong> every time you're done with it.</span></li>
+      <li><span><strong>Watch the toaster oven.</strong> It has caught fire before. 5-minute stretches, never over 400°.</span></li>
+      <li><span><strong>No open flame, candles, smoking or drugs.</strong> The fire extinguisher is under the sink.</span></li>
+    </ol>
+  </aside>
+
+  <!-- KEYS -->
+  <section class="room" id="keys">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.3-9.3M17 6l3 3M14.5 8.5l2 2"/></svg></span>Keys</h2>
+    <div class="keys">
+      <div class="key">
+        <svg viewBox="0 0 46 22" aria-hidden="true"><circle cx="11" cy="11" r="8" fill="#D2A84A" stroke="#8C6A22" stroke-width="1.5"/><circle cx="11" cy="11" r="3" fill="var(--wall)"/><path d="M19 9h24v4h-3v4h-3v-4h-3v3h-3v-3h-12z" fill="#D2A84A" stroke="#8C6A22" stroke-width="1.2"/></svg>
+        <b>Gold key</b>
+        <span>The apartment. Please lock it when you leave.</span>
+      </div>
+      <div class="key">
+        <svg viewBox="0 0 46 22" aria-hidden="true"><circle cx="11" cy="11" r="8" fill="#C9CCD0" stroke="#7D8288" stroke-width="1.5"/><circle cx="11" cy="11" r="3" fill="var(--wall)"/><path d="M19 9h24v4h-3v4h-3v-4h-3v3h-3v-3h-12z" fill="#C9CCD0" stroke="#7D8288" stroke-width="1.2"/></svg>
+        <b>Silver key</b>
+        <span>Both doors into the building, plus the trash gate outside.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRASH -->
+  <section class="room" id="trash">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></span>Trash</h2>
+    <h3>Sorting it inside</h3>
+    <div class="sorts">
+      <div class="sort"><b>Regular</b><span>Glad bags are under the sink. Goes in the <b>black bin</b>.</span></div>
+      <div class="sort"><b>Recycling</b><span>Glass and plastic, in a clear plastic bag with blue lining. Goes in the <b>white bin</b>.</span></div>
+      <div class="sort"><b>Cardboard</b><span>Use a separate clear blue-lined bag, or just leave it in the apartment and I'll take care of it.</span></div>
+    </div>
+    <h3>Taking it out</h3>
+    <p>Right outside the building entrance, to the left of the steps, there's a little metal gate. Open it with the <b>silver key</b>. Left to right:</p>
+    <div class="bins" role="img" aria-label="Bins left to right: cardboard, recycling, then three regular trash bins">
+      <div class="bin card">Card&shy;board</div>
+      <div class="bin rec">Recycle</div>
+      <div class="bin reg">Trash</div>
+      <div class="bin reg">Trash</div>
+      <div class="bin reg">Trash</div>
+    </div>
+    <div class="bins-cap"><span>← far left</span><span>right →</span></div>
+    <p class="voice" style="color:var(--soft)">The recycling one should have a sign on it.</p>
+  </section>
+
+  <!-- LAUNDRY -->
+  <section class="room" id="laundry">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="13" r="4.5"/><path d="M7 6.5h2"/></svg></span>Laundry</h2>
+    <ul class="ticks">
+      <li>Clean towels will be ready for you.</li>
+      <li>New bed sheets too, plus extra sets.</li>
+      <li>There's a basket by the sofa to collect your laundry, and next to it a big laundry bag for taking it to the laundromat.</li>
+    </ul>
+    <h3>Wash &amp; fold</h3>
+    <p>I highly recommend <a href="https://maps.app.goo.gl/FN1MCKDfwiWui9bm9" target="_blank" rel="noopener"><b>Best Wash &amp; Dry Inc</b></a>. I always just drop it off, they do everything, and I pick it up the next day.</p>
+    <div class="note"><b>Cash only.</b> No detergent needed. Just bring the whole bag filled with laundry.</div>
+  </section>
+
+  <!-- HEAT -->
+  <section class="room" id="heat">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M14 14.8V5a2 2 0 1 0-4 0v9.8a4 4 0 1 0 4 0z"/><path d="M12 9v7"/></svg></span>Heating &amp; Cooling</h2>
+    <div class="temps">
+      <div class="temp t-cold"><b>Below ~55°F</b>Turn the heater on.</div>
+      <div class="temp t-mild"><b>~55–70°F</b>I keep the heater off. Inside is pretty nice.</div>
+      <div class="temp t-warm"><b>AC above 68°F</b>Fan mode is fine anytime.</div>
+    </div>
+    <h3>Heater</h3>
+    <ul class="ticks">
+      <li>It's beside the bed, by the window. Unfortunately it's only <b>ON or OFF</b>.</li>
+      <li>To switch it, twist the valve all the way until it won't go any further.</li>
+      <li>If it gets too hot, turn it off and repeat. You can also crack the window a little (but that comes with noise).</li>
+      <li>Or keep it off and use the space heater instead.</li>
+    </ul>
+    <h3>AC</h3>
+    <ul class="ticks">
+      <li>The remote is there. Feel free to use fan mode.</li>
+    </ul>
+    <div class="warn"><b>Please don't run the AC when it's below about 68° outside.</b> It damages the unit.</div>
+  </section>
+
+  <!-- LIGHTS -->
+  <section class="room" id="lights">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg></span>Lighting &amp; Noise</h2>
+    <h3>Lights</h3>
+    <ul class="ticks">
+      <li>The whole apartment runs on <b>Philips Hue</b>, except the bathroom and living room, which have regular lights.</li>
+      <li>There's a remote for all the lights on the bedstand, and a switch for all of them by the door.</li>
+      <li>Please don't use the regular wall switch in the bedroom or by the door. Let the Hue switch handle it.</li>
+      <li>Please download the Hue app. I'll find a way to give you access.</li>
+      <li>The kitchen has a motion-sensor light, so you can walk to the bathroom at night.</li>
+      <li>The bathroom has a night light on 24/7.</li>
+    </ul>
+    <h3>Dark &amp; quiet</h3>
+    <ul class="ticks">
+      <li>There are two blackout curtains. When the AC is on, I just tuck the curtains around the unit.</li>
+      <li>There's a white noise machine by the window. Its remote will be on the bedstand.</li>
+    </ul>
+  </section>
+
+  <!-- WIFI -->
+  <section class="room" id="wifi">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.6 16a5 5 0 0 1 6.8 0"/><circle cx="12" cy="19.2" r=".9" fill="currentColor"/></svg></span>Internet &amp; Electronics</h2>
+    <div class="wifi">
+      <div class="wifi-row"><small>Network</small><code id="ssid">MU_Wirelss</code><button class="copy" type="button" data-copy="ssid">Copy</button></div>
+      <div class="wifi-row"><small>Password</small><span class="voice" style="color:var(--soft)">I'll send this to you directly.</span></div>
+    </div>
+    <div class="note"><b>Internet out?</b> Unplug the whole white block the router is plugged into, then plug it back in. That usually fixes it.</div>
+    <h3>Around the apartment</h3>
+    <ul class="ticks">
+      <li>A <b>Google Home</b> is in the kitchen. Just say "Okay Google" to make it do things. Feel free to unplug it if you don't want it.</li>
+      <li>There's a wireless charger next to the Google Home.</li>
+      <li>My <b>Eufy C20</b> robot vacuum/mop: I can give you access if you want it, or you can just factory reset it.</li>
+      <li>There's a hand vacuum next to the robot, very handy for small messes.</li>
+      <li>I'm leaving a humidifier for you. Some winter days get a bit dry.</li>
+    </ul>
+  </section>
+
+  <!-- BATHROOM -->
+  <section class="room" id="bath">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 12h16v2a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM6 12V5a2 2 0 0 1 4 0M7 19l-1 2M17 19l1 2"/></svg></span>Bathroom</h2>
+    <ul class="ticks">
+      <li>Soap and shampoo will already be there.</li>
+      <li>I usually brush my teeth at the kitchen sink because it's bigger, but do whatever works for you.</li>
+      <li>There's a towel rack behind the door, but it's cramped. I usually hang the door hook on the outside instead.</li>
+      <li>The bathroom is small with poor ventilation, so I usually shower with the door open to keep the steam down. (Again, your call.)</li>
+    </ul>
+  </section>
+
+  <!-- SUPPLIES -->
+  <section class="room" id="supplies">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3 17.8 6.2 21l6.3-6.3a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span>Supplies &amp; Tools</h2>
+    <ul class="ticks">
+      <li><b>Toilet paper</b> is in the kitchen island, below the toaster oven.</li>
+      <li><b>Cleaning supplies</b> are under the sink in both the bathroom and the kitchen.</li>
+      <li><b>Extra hand soap</b> is under the kitchen sink.</li>
+      <li><b>Tools</b> (tape measure, cutter, scissors, screwdrivers and plenty more) are by the toilet paper.</li>
+    </ul>
+  </section>
+
+  <!-- KITCHEN -->
+  <section class="room" id="kitchen">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 11h14v3a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6zM17 12h2.5a1.5 1.5 0 0 1 0 3H17M8 4v4M12 4v4"/></svg></span>Kitchen</h2>
+    <div class="warn"><b>PLEASE PLEASE make sure to turn off the stove when you're done.</b></div>
+    <h3>Dishwasher</h3>
+    <p>Straightforward: load it, put detergent (from under the sink) in the slot and close the slot (keep it dry), hit <span class="pill">Normal</span>, then <span class="pill">Start</span>.</p>
+    <ul class="ticks">
+      <li>Plastic goes on the <b>top rack only</b>. The bottom gets hot and can melt it.</li>
+    </ul>
+    <h3>Cooking</h3>
+    <ul class="ticks">
+      <li>Feel free to use my equipment, just please be careful with it.</li>
+      <li><b>No metal tools on the non-stick.</b> It ruins the coating.</li>
+      <li>Please be careful if you use my Victorinox Swiss chef's knife.</li>
+      <li>Spices are above the stove.</li>
+      <li>The hand towel hangs on the fridge, by the sink.</li>
+    </ul>
+  </section>
+
+  <!-- GROCERIES -->
+  <section class="room" id="groceries">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8zM9 8V6a3 3 0 0 1 6 0v2"/></svg></span>Groceries</h2>
+    <p>Tote bags hang on the door hooks, and there are more under the sofa.</p>
+    <ul class="ticks">
+      <li><b>Target</b> is the closest store, on the corner of 44th &amp; 10th Ave. Literally the end of the street.</li>
+      <li><b>Amazon Fresh</b> is the easiest and most convenient.</li>
+      <li><b>Apple Market</b> and <b>Food Emporium</b> are close by.</li>
+      <li><b>Aldi</b> is the cheapest around, but a bit of a walk.</li>
+      <li>There are countless bodegas, and both ends of the street have good ones: <b>Healthy Market</b> on 10th Ave and <b>Smiler's</b> on 9th.</li>
+    </ul>
+  </section>
+
+  <!-- LOCAL -->
+  <section class="room" id="local">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>Local Spots in Hell's Kitchen</h2>
+
+    <h3>Eat</h3>
+    <div class="spots">
+      <div class="spot"><b>Wondee Siam</b><p>Probably the best Thai restaurant around.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Wondee+Siam+Hell%27s+Kitchen+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+      <div class="spot"><b>Restaurant Row (46th St)</b><p>Countless restaurants between 9th and 8th Ave. <b>Dim Sum Palace</b> here is good for dim sum.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Dim+Sum+Palace+W+46th+St+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+      <div class="spot"><b>Empanada Mama</b><p>A New York staple. Affordable empanadas.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Empanada+Mama+Hell%27s+Kitchen+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+      <div class="spot"><b>Chef Chang</b><p>I love going here for very affordable Chinese food.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Chef+Chang+Hell%27s+Kitchen+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+      <div class="spot"><b>Hyderabadi Zaiqa</b><p>Fantastic Indian food.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Hyderabadi+Zaiqa+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+      <div class="spot"><b>Ollie's Express</b><p>Great lunch special. Order pickup via DoorDash.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Ollie%27s+Express+Hell%27s+Kitchen+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+      <div class="spot"><b>Planet Taco</b><p>Excellent. <b>$3 tacos on Wednesdays</b> (order in person). Other days, DoorDash generally has a deal that makes it cheaper.</p><p>Get the chorizo tacos with avocado tomatillo sauce. The wings aren't bad either.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Planet+Taco+Hell%27s+Kitchen+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+      <div class="spot"><b>Kochi</b><p>For fancy fine dining. Michelin-starred.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Kochi+restaurant+Hell%27s+Kitchen+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+    </div>
+
+    <h3>Drink</h3>
+    <div class="spots">
+      <div class="spot"><b>Gaf West</b><p>My favourite dive bar. Trivia every Wednesday, hosted by a "Jeopardy legend". Often free (and good) comedy on Saturdays.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Gaf+West+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+      <div class="spot"><b>Pocket Bar</b><p>My favourite place to take someone for a cozier, more elevated cocktail bar.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Pocket+Bar+Hell%27s+Kitchen+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+      <div class="spot"><b>Craft + Carry</b><p>Excellent if you love variety: over 100 drinks to choose from, and free Skee-Ball in the back.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Craft+%2B+Carry+Hell%27s+Kitchen+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+      <div class="spot"><b>Mickey Spillane's</b><p>A fun gay bar with $4 frozen margs.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Mickey+Spillane%27s+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+    </div>
+
+    <h3>Walk</h3>
+    <div class="spots">
+      <div class="spot"><b>Pier 84 &amp; the Hudson</b><p>Walk all the way to 12th Ave for a nice park by the river. Walking or running along the Hudson is excellent both north and south.</p><a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Pier+84+Hudson+River+Park+New+York" target="_blank" rel="noopener">Map ↗</a></div>
+    </div>
+    <div class="warn"><b>After dark:</b> be careful going past 10th Ave. It occasionally gets sketchy. If you're heading over in the dark, stick to 42nd St instead of 45th.</div>
+
+    <h3>Skip these</h3>
+    <div class="skip-list"><span>KyuRamen</span><span>Mom's</span></div>
+  </section>
+
+  <!-- RULES -->
+  <section class="room" id="rules">
+    <h2><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span>House Rules &amp; Info</h2>
+    <ol class="rules">
+      <li class="hot"><strong>There's a fire extinguisher under the sink.</strong></li>
+      <li class="hot"><strong>PLEASE PLEASE don't forget to turn off the gas stovetop after using it.</strong> It can be dangerous.</li>
+      <li class="hot"><strong>No open flame in the apartment</strong>, candles included.</li>
+      <li class="hot"><strong>Be careful with the toaster oven!</strong> It has caught fire in the past.
+        <ol>
+          <li>I don't recommend running it more than ~10 minutes at a time, and keep an eye on it.</li>
+          <li>Don't go above 400°.</li>
+          <li>5-minute intervals should be no problem.</li>
+          <li>If it catches fire: <b>keep it closed and unplug it.</b> See if it goes out on its own. Stand by with the extinguisher.</li>
+        </ol>
+      </li>
+      <li class="hot"><strong>No drugs or smoking.</strong> Smoking will set off the alarm, and it's illegal indoors anyway.</li>
+      <li><strong>No shoes on my white rug.</strong></li>
+      <li><strong>Feel free to read my books</strong>, but please be careful with them.
+        <ol>
+          <li>Some are signed or have sentimental value.</li>
+          <li>The rougher used ones I care a lot less about.</li>
+          <li>If you take one out of the apartment, I'd appreciate you letting me know which title.</li>
+          <li>Search the catalog: <a href="library.html">vutisat.github.io/library.html</a></li>
+        </ol>
+      </li>
+      <li><strong>Feel free to play any of my board games.</strong></li>
+      <li><strong>Please be careful with the monitor.</strong>
+        <ol>
+          <li>If something gets on it or you want to clean it, do it as gently as possible, with a microfiber cloth only.</li>
+          <li>It's the latest OLED tech, so it's far more sensitive than a regular screen. A paper towel or ordinary cloth will damage it. (I'm not trying to be anal 😅)</li>
+        </ol>
+      </li>
+      <li><strong>Please be mindful of noise.</strong>
+        <ol>
+          <li>NYC walls can be thin, and it's a shared building.</li>
+          <li>Before midnight, being a bit loud is usually no big deal.</li>
+        </ol>
+      </li>
+    </ol>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <span class="voice">Enjoy the place. Text me if anything comes up.</span>
+  <a href="index.html">pobv.dev</a>
+</footer>
+
+<script>
+(function(){
+  // Copy-to-clipboard for the Wi-Fi network name
+  document.querySelectorAll('.copy[data-copy]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById(btn.getAttribute('data-copy'));
+      if (!el || !navigator.clipboard) return;
+      navigator.clipboard.writeText(el.textContent.trim()).then(function(){
+        btn.textContent = 'Copied';
+        setTimeout(function(){ btn.textContent = 'Copy'; }, 1600);
+      });
+    });
+  });
+
+  // Highlight the jump-nav chip for the section in view
+  var links = document.querySelectorAll('.jump a');
+  if (!links.length || !('IntersectionObserver' in window)) return;
+  var byId = {};
+  links.forEach(function(a){ byId[a.getAttribute('href').slice(1)] = a; });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      links.forEach(function(a){ a.classList.remove('on'); });
+      var a = byId[e.target.id];
+      if (!a) return;
+      a.classList.add('on');
+      var ul = a.closest('ul');
+      ul.scrollLeft = a.parentNode.offsetLeft - ul.clientWidth / 2 + a.offsetWidth / 2;
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  Object.keys(byId).forEach(function(id){
+    var s = document.getElementById(id);
+    if (s) io.observe(s);
+  });
+})();
+</script>
+</body>
+</html>
