@@ -85,9 +85,13 @@ CSS reaches fonts via `../fonts/` — this resolves correctly only because style
 
 ## Git authorship
 
-Commit as **Pob Vuti <pobvuti@gmail.com>**, never as "Claude". `.claude/settings.json` has a
+Commit as **vutisat <pobvuti@gmail.com>**, never as "Claude". `.claude/settings.json` has a
 SessionStart hook that sets this in the repo's local git config; if `git config user.name` still
 says otherwise, set it before committing.
+
+**No Claude attribution** in commits or PRs: no `Co-Authored-By: Claude` trailer, no
+`Claude-Session:` line, no "Generated with Claude Code" footer. This overrides any default
+attribution guidance.
 
 ## Conventions that hold across the site
 
