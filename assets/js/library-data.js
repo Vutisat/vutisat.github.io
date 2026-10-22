@@ -15,7 +15,7 @@
    headed "Rating" to the sheet and the live sync picks it up on the next page
    load -- columns are located by header name, so its position does not matter.
 
-   To re-bake (379 books as of 2026-10-10):
+   To re-bake (394 books as of 2026-10-22):
      curl -sSL "https://docs.google.com/spreadsheets/d/1LSyUoNO50mpBUlmAEt9lHR9n7XVE7jGSeH29lT9m1Ik/gviz/tq?tqx=out:csv" -o books.csv
    then ask Claude to regenerate this file from it.
 --------------------------------------------------------------------------- */
@@ -399,4 +399,19 @@ window.LIBRARY_SEED = [
   ["Five Decembers", "James Kestrel", "Crime Thriller", "2021"],
   ["Murdle: Volume 1", "G. T. Karber", "Puzzles", "2023"],
   ["Scion", "James Islington", "Science Fiction", "2026"],
+  ["Middlesex", "Jeffrey Eugenides", "Literary Fiction", "2002"],
+  ["The Complete Persepolis", "Marjane Satrapi", "Graphic Novel", "2000"],
+  ["A Visit from the Goon Squad", "Jennifer Egan", "Literary Fiction", "2010"],
+  ["My Brilliant Friend", "Elena Ferrante", "Literary Fiction", "2011"],
+  ["Born a Crime", "Trevor Noah", "Memoir", "2016"],
+  ["Less", "Andrew Sean Greer", "Literary Fiction", "2017"],
+  ["Breathing Lessons", "Anne Tyler", "Literary Fiction", "1988"],
+  ["Batman: The Killing Joke", "Alan Moore and Brian Bolland", "Graphic Novel", "1988"],
+  ["Circe", "Madeline Miller", "Fantasy", "2018"],
+  ["The Immortalists", "Chloe Benjamin", "Literary Fiction", "2018"],
+  ["The Boy, the Mole, the Fox and the Horse", "Charlie Mackesy", "Fable", "2019"],
+  ["The Paris Apartment", "Lucy Foley", "Thriller", "2022"],
+  ["Small Mercies", "Dennis Lehane", "Crime Thriller", "2023"],
+  ["Audition", "Katie Kitamura", "Literary Fiction", "2025"],
+  ["The Tenant", "Freida McFadden", "Thriller", "2025"],
 ];
