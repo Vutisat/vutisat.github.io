@@ -317,9 +317,8 @@ body{
 .about__plate{position:relative;margin-bottom:clamp(3rem,7vw,5.5rem)}
 .about__plate img{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:cover;object-position:70% 40%;
   border-radius:22px;box-shadow:0 40px 80px -40px rgba(19,19,22,.5)}
-.about__plate figcaption{display:flex;align-items:baseline;gap:.9rem;margin-top:1rem;
+.about__plate figcaption{margin-top:1rem;
   font-family:"Spline",monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
-.about__fig{color:var(--accent-ink);font-weight:600;padding-right:.9rem;border-right:1px solid var(--line-2)}
 .about__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,5rem);align-items:start}
 .about__quote{font-family:"Garamond",Georgia,serif;font-style:italic;font-weight:460;
   color:var(--ink);font-size:clamp(1.7rem,1.2rem + 2.2vw,2.9rem);line-height:1.22;letter-spacing:-.01em;text-wrap:balance}
