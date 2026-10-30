@@ -190,6 +190,128 @@
       </div>
     </section>
 
+    <!-- ======================== 10 WHICH CAME FIRST ======================== -->
+    <section class="sec" id="duel-sec" aria-labelledby="h-duel">
+      <header class="sec__head">
+        <span class="sec__no">10</span>
+        <h2 id="h-duel" class="sec__title">Which came first?</h2>
+        <p class="sec__kicker">Two books step into the ring. Pick the one that was published first. How long can your streak go?</p>
+      </header>
+      <div class="duel" id="duel"></div>
+      <div class="duel__foot">
+        <p class="duel__verdict" id="duel-verdict" aria-live="polite">&nbsp;</p>
+        <p class="duel__score" id="duel-score"></p>
+        <button type="button" class="btn btn--pink" id="duel-next" hidden>Next round</button>
+      </div>
+    </section>
+
+    <!-- ======================== 11 BIRTH YEAR ======================== -->
+    <section class="sec" id="birth" aria-labelledby="h-birth">
+      <header class="sec__head">
+        <span class="sec__no">11</span>
+        <h2 id="h-birth" class="sec__title">Your book twin</h2>
+        <p class="sec__kicker">Slide to the year you were born and see which books came out that year, plus how much of the shelf is older than you.</p>
+      </header>
+      <div class="birth">
+        <label class="birth__dial" for="birth-range">
+          <span class="birth__k">I was born in</span>
+          <b class="birth__y" id="birth-year">1995</b>
+          <input type="range" id="birth-range" min="1930" max="2026" value="1995" step="1">
+        </label>
+        <div class="birth__out" id="birth-out" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- ======================== 12 STRIP PLOT ======================== -->
+    <section class="sec" id="eras" aria-labelledby="h-eras">
+      <header class="sec__head">
+        <span class="sec__no">12</span>
+        <h2 id="h-eras" class="sec__title">Every genre has an era</h2>
+        <p class="sec__kicker">Every book as a dot, placed by publication year and sorted into its kind. The time axis gets squashed before 1980, otherwise the last forty years would be one big smudge. Hover or tap a dot.</p>
+      </header>
+      <div class="strip" id="strip" role="img" aria-label="Dot plot of every book by publication year, one row per kind of book"></div>
+      <p class="readout readout--strip" id="strip-readout" aria-live="polite"><span class="readout__hint">&uarr; poke a dot</span></p>
+      <p class="callout" id="strip-callout"></p>
+    </section>
+
+    <!-- ======================== 13 NAME TAGS ======================== -->
+    <section class="sec" id="names" aria-labelledby="h-names">
+      <header class="sec__head">
+        <span class="sec__no">13</span>
+        <h2 id="h-names" class="sec__title">Hello, my name is</h2>
+        <p class="sec__kicker">If every author on the shelf came to a party, these are the first names that would need a surname to tell them apart. Tap a tag to see who's who.</p>
+      </header>
+      <div class="tags" id="tags"></div>
+      <p class="tags__out" id="tags-out" aria-live="polite"></p>
+    </section>
+
+    <!-- ======================== 14 REMIXER ======================== -->
+    <section class="sec" id="remix-sec" aria-labelledby="h-remix">
+      <header class="sec__head">
+        <span class="sec__no">14</span>
+        <h2 id="h-remix" class="sec__title">The bestseller machine</h2>
+        <p class="sec__kicker">Take the front half of one title and the back half of another. Do the same with the authors' names. Publishers, call us.</p>
+      </header>
+      <div class="remix">
+        <div class="remix__stage" id="remix" aria-live="polite"></div>
+        <div class="remix__side">
+          <p class="remix__src" id="remix-src"></p>
+          <button type="button" class="btn btn--pink" id="remix-go">Print another</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== 15 BINGO ======================== -->
+    <section class="sec" id="bingo-sec" aria-labelledby="h-bingo">
+      <header class="sec__head">
+        <span class="sec__no">15</span>
+        <h2 id="h-bingo" class="sec__title">Shelf bingo</h2>
+        <p class="sec__kicker">Every square on this card is something the shelf really has. Stamp a square to see a book that fits it. Get five in a row and you win nothing at all.</p>
+      </header>
+      <div class="bingo-wrap">
+        <div class="bingo" id="bingo"></div>
+        <div class="bingo__side">
+          <p class="bingo__msg" id="bingo-msg" aria-live="polite">0 stamped. Keep going.</p>
+          <button type="button" class="btn" id="bingo-new">New card</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== 16 MARATHON ======================== -->
+    <section class="sec" id="marathon" aria-labelledby="h-run">
+      <header class="sec__head">
+        <span class="sec__no">16</span>
+        <h2 id="h-run" class="sec__title">Read it all</h2>
+        <p class="sec__kicker">Suppose you started today and read the whole shelf from oldest to newest. Set your pace.</p>
+      </header>
+      <div class="run">
+        <label class="run__dial" for="run-range">
+          <span class="run__k">Books per month</span>
+          <b class="run__n" id="run-pace">4</b>
+          <input type="range" id="run-range" min="1" max="30" value="4" step="1">
+        </label>
+        <div class="run__out">
+          <p class="run__big" id="run-big"></p>
+          <div class="run__years" id="run-years" aria-hidden="true"></div>
+          <ol class="run__legs" id="run-legs"></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== 17 LIBRARIAN ======================== -->
+    <section class="sec" id="ask" aria-labelledby="h-ask">
+      <header class="sec__head">
+        <span class="sec__no">17</span>
+        <h2 id="h-ask" class="sec__title">Ask the librarian</h2>
+        <p class="sec__kicker">Is that book on the shelf? Type a title or an author and you'll get an answer, stamp included.</p>
+      </header>
+      <div class="ask">
+        <label class="ask__label" for="ask-q">Search the shelf</label>
+        <input type="search" class="ask__q" id="ask-q" placeholder="e.g. dune, king, murder&hellip;" autocomplete="off" spellcheck="false">
+        <div class="ask__out" id="ask-out" aria-live="polite"></div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="foot">

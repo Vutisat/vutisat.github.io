@@ -135,6 +135,14 @@
     renderAbc();
     renderTower();
     newDate();
+    newDuel();
+    renderBirth();
+    renderStrip();
+    renderNames();
+    remix();
+    newBingo();
+    updateRun();
+    ask();
     countUp();
   }
 
@@ -471,15 +479,18 @@
     lastIdx = i;
     current = books[i];
     var b = current;
-    var initials = b.author.split(/\s+/).filter(function (w) { return /^[A-Z]/.test(w) && !/^(and|with)$/i.test(w); })
-      .map(function (w) { return w.charAt(0) + "."; }).join(" ");
+    var authors = b.author.split(/\s+(?:and|&|with)\s+|,\s*/i).filter(Boolean);
+    var initials = authors.map(function (a) {
+      return a.split(/\s+/).filter(function (w) { return /^[A-Z]/.test(w); })
+        .map(function (w) { return w.charAt(0) + "."; }).join(" ");
+    }).filter(Boolean).join(" & ");
     var era = !b.year ? "a mystery" : b.year < 1900 ? "the " + Math.floor(b.year / 100) * 100 + "s (vintage!)" : "the " + Math.floor(b.year / 10) * 10 + "s";
     var wc = b.title.split(/\s+/).length;
     var list = [
       ["Into", b.genre || "keeping it vague"],
       ["Born in", era],
       ["Name", plural(wc, "word") + ", starts with “" + stripArticle(b.title).charAt(0).toUpperCase() + "”"],
-      ["Parents' initials", initials || "?"]
+      [authors.length > 1 ? "Authors' initials" : "Author's initials", initials || "?"]
     ];
     clues.innerHTML = list.map(function (c) {
       return '<li><span class="date__k">' + esc(c[0]) + '</span><span class="date__v">' + esc(c[1]) + '</span></li>';
@@ -497,6 +508,424 @@
     if (card && !reduceMotion.matches) {
       card.classList.remove("is-pop"); void card.offsetWidth; card.classList.add("is-pop");
     }
+  }
+
+  /* ---- shared: split a byline into people -------------------------------- */
+  function people(author) {
+    return author.split(/\s+(?:and|&|with)\s+|,\s*/i)
+      .map(function (a) { return a.replace(/\s*\(eds?\.\)\s*/i, "").trim(); }).filter(Boolean);
+  }
+  function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
+  var MONTHS = "January February March April May June July August September October November December".split(" ");
+  function monthsFromNow(n) {
+    var d = new Date(), m = d.getMonth() + Math.round(n);
+    return MONTHS[((m % 12) + 12) % 12] + " " + (d.getFullYear() + Math.floor(m / 12));
+  }
+
+  /* ---- 10 which came first ----------------------------------------------- */
+  var duel = null, streak = 0, best = 0;
+  try { best = parseInt(localStorage.getItem("stacks-best"), 10) || 0; } catch (e) {}
+  function newDuel() {
+    var el = $("duel");
+    if (!el) return;
+    var dated = books.filter(function (b) { return b.year; });
+    if (dated.length < 2) return;
+    var a, b, tries = 0;
+    do { a = pick(dated); b = pick(dated); } while ((a === b || a.year === b.year) && ++tries < 200);
+    duel = { pair: [a, b], done: false };
+    el.innerHTML = duel.pair.map(function (bk, i) {
+      return '<button type="button" class="duel__card duel__card--' + (i ? "pink" : "blue") + '" data-side="' + i + '">' +
+        '<span class="duel__fam">' + esc(bk.fam.name) + '</span>' +
+        '<b class="duel__t">' + esc(bk.title) + '</b>' +
+        '<span class="duel__a">' + esc(bk.author) + '</span>' +
+        '<span class="duel__y">????</span></button>';
+    }).join('<span class="duel__or" aria-hidden="true">or</span>');
+    var v = $("duel-verdict"), nx = $("duel-next");
+    if (v) v.innerHTML = "&nbsp;";
+    if (nx) nx.hidden = true;
+    scoreDuel();
+  }
+  function scoreDuel() {
+    var s = $("duel-score");
+    if (s) s.innerHTML = "Streak <b>" + streak + "</b> &middot; Best <b>" + best + "</b>";
+  }
+  function pickDuel(side) {
+    if (!duel || duel.done) return;
+    duel.done = true;
+    var mine = duel.pair[side], theirs = duel.pair[1 - side];
+    var right = mine.year < theirs.year, older = right ? mine : theirs;
+    var gap = Math.abs(mine.year - theirs.year);
+    streak = right ? streak + 1 : 0;
+    if (streak > best) { best = streak; try { localStorage.setItem("stacks-best", best); } catch (e) {} }
+    $("duel").querySelectorAll(".duel__card").forEach(function (c) {
+      var i = +c.getAttribute("data-side"), bk = duel.pair[i];
+      c.querySelector(".duel__y").textContent = bk.year;
+      c.classList.add(bk === older ? "is-older" : "is-newer");
+      if (i === side) c.classList.add("is-picked");
+      c.setAttribute("aria-disabled", "true");
+    });
+    var quip = gap <= 2 ? "That was basically a coin toss." :
+               gap >= 100 ? "Only " + plural(gap, "year") + " apart. Practically neighbours." :
+               plural(gap, "year") + " apart.";
+    var v = $("duel-verdict");
+    if (v) v.innerHTML = (right ? "<b>Correct!</b> " : "<b>Nope.</b> ") + "<i>" + esc(shortTitle(older.title)) +
+      "</i> came first. " + quip + (right ? "" : " Streak reset.");
+    scoreDuel();
+    var nx = $("duel-next");
+    if (nx) { nx.hidden = false; nx.focus({ preventScroll: true }); }
+  }
+
+  /* ---- 11 book twin ------------------------------------------------------ */
+  function renderBirth() {
+    var r = $("birth-range");
+    if (!r) return;
+    r.max = NOW;
+    if (+r.value > NOW) r.value = NOW;
+    updateBirth();
+  }
+  function updateBirth() {
+    var r = $("birth-range"), out = $("birth-out"), yEl = $("birth-year");
+    if (!r || !out) return;
+    var y = +r.value;
+    if (yEl) yEl.textContent = y;
+    var dated = books.filter(function (b) { return b.year; });
+    var same = dated.filter(function (b) { return b.year === y; });
+    var older = dated.filter(function (b) { return b.year < y; }).length;
+    var younger = dated.length - older - same.length;
+    var html;
+    if (same.length) {
+      html = '<p class="birth__lead"><b>' + plural(same.length, "book") + "</b> on the shelf came out the same year you did:</p>" +
+        '<ul class="birth__list">' + same.map(function (b) {
+          return '<li><span class="sw ink-' + b.fam.ink + '"></span><i>' + esc(b.title) + "</i> <span>" + esc(b.author) + "</span></li>";
+        }).join("") + "</ul>";
+    } else {
+      var near = dated.slice().sort(function (a, b) { return Math.abs(a.year - y) - Math.abs(b.year - y) || a.year - b.year; })[0];
+      var d = Math.abs(near.year - y);
+      html = '<p class="birth__lead">Nothing on the shelf from ' + y + ". Your closest book twin is <i>" + esc(near.title) +
+        "</i> by " + esc(near.author) + " (" + near.year + "), " + plural(d, "year") + " " + (near.year < y ? "older" : "younger") + " than you.</p>";
+    }
+    var po = (older / dated.length) * 100, ps = (same.length / dated.length) * 100;
+    html += '<div class="birth__bar"><span class="birth__old" style="width:' + po + '%"></span>' +
+      '<span class="birth__same" style="width:' + ps + '%"></span></div>' +
+      '<p class="birth__split"><span><b>' + older + "</b> older than you</span>" +
+      (same.length ? "<span><b>" + same.length + "</b> your age</span>" : "") +
+      "<span><b>" + younger + "</b> younger</span></p>" +
+      '<p class="birth__quip">' + (po > 60 ? "Most of these books are your elders. Show some respect."
+        : po < 15 ? "You're older than almost everything here. Practically a first edition."
+        : "You're younger than " + pct(older, dated.length) + " of the shelf. A fresh release.") + "</p>";
+    out.innerHTML = html;
+  }
+
+  /* ---- 12 strip plot ----------------------------------------------------- */
+  var stripBooks = [];
+  function yearX(y, lo) {
+    var stops = [[Math.min(lo, 1899), 0], [1900, 18], [1980, 40], [NOW, 100]];
+    for (var i = 1; i < stops.length; i++) {
+      if (y <= stops[i][0]) {
+        var a = stops[i - 1], b = stops[i];
+        return a[1] + ((y - a[0]) / (b[0] - a[0] || 1)) * (b[1] - a[1]);
+      }
+    }
+    return 100;
+  }
+  function jitter(s) {
+    var h = 0;
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+    return 14 + (Math.abs(h) % 73);
+  }
+  function renderStrip() {
+    var el = $("strip");
+    if (!el) return;
+    var dated = books.filter(function (b) { return b.year; });
+    var lo = Math.min.apply(null, dated.map(function (b) { return b.year; }));
+    var rows = FAMS.map(function (f) {
+      var mine = dated.filter(function (b) { return b.fam === f; }).sort(function (a, b) { return a.year - b.year; });
+      return { f: f, books: mine, median: mine.length ? mine[Math.floor((mine.length - 1) / 2)].year : null };
+    }).filter(function (r) { return r.books.length; })
+      .sort(function (a, b) { return a.median - b.median; });
+    stripBooks = [];
+    var html = rows.map(function (r) {
+      var dots = r.books.map(function (b) {
+        var i = stripBooks.push(b) - 1;
+        return '<i class="dot ink-' + r.f.ink + '" data-i="' + i + '" style="left:' + yearX(b.year, lo).toFixed(2) +
+          '%;top:' + jitter(b.title) + '%"></i>';
+      }).join("");
+      return '<div class="strip__row"><span class="strip__name">' + esc(r.f.name) + "<small>median " + r.median + "</small></span>" +
+        '<div class="strip__track">' + dots + '<span class="strip__med" style="left:' + yearX(r.median, lo).toFixed(2) + '%"></span></div></div>';
+    }).join("");
+    var ticks = [1600, 1800, 1900, 1950, 1980, 2000, 2020].filter(function (t) { return t >= lo && t <= NOW; });
+    html += '<div class="strip__row strip__row--axis"><span class="strip__name"></span><div class="strip__axis">' +
+      ticks.map(function (t) {
+        return '<span class="strip__tick' + (t < 1900 ? " strip__tick--old" : "") + '" style="left:' + yearX(t, lo).toFixed(2) + '%">' + t + "</span>";
+      }).join("") + "</div></div>";
+    el.innerHTML = html;
+
+    var real = rows.filter(function (r) { return r.f.key !== "misc"; });
+    var c = $("strip-callout"), first = real[0], last = real[real.length - 1];
+    if (c && first && last && first !== last) c.innerHTML = "The oldest kind of book here is <b>" + esc(first.f.name) +
+      "</b> (median " + first.median + "). The newest is <b>" + esc(last.f.name) + "</b> (median " + last.median + "). " +
+      plural(last.median - first.median, "year") + " between them, give or take a war or two.";
+  }
+  function wireStrip() {
+    var el = $("strip"), out = $("strip-readout");
+    if (!el || !out) return;
+    var last = null;
+    function show(t) {
+      if (!t || !t.classList || !t.classList.contains("dot")) return;
+      var b = stripBooks[+t.getAttribute("data-i")];
+      if (!b) return;
+      if (last) last.classList.remove("is-hot");
+      t.classList.add("is-hot"); last = t;
+      out.innerHTML = '<span class="readout__fam ink-' + b.fam.ink + '">' + esc(b.fam.name) + "</span>" +
+        '<b class="readout__t">' + esc(b.title) + "</b>" +
+        '<span class="readout__a">' + esc(b.author) + " &middot; " + b.year + "</span>";
+    }
+    el.addEventListener("pointerover", function (e) { show(e.target); });
+    el.addEventListener("click", function (e) { show(e.target); });
+  }
+
+  /* ---- 13 name tags ------------------------------------------------------ */
+  var nameGroups = [];
+  function renderNames() {
+    var el = $("tags");
+    if (!el) return;
+    var who = Object.create(null);
+    books.forEach(function (b) { people(b.author).forEach(function (p) { who[p] = (who[p] || 0) + 1; }); });
+    var byFirst = Object.create(null), initialed = [];
+    Object.keys(who).forEach(function (p) {
+      var w = p.split(/\s+/);
+      if (w.length < 2) return;
+      if (/\./.test(w[0])) { initialed.push(p); return; }
+      (byFirst[w[0]] = byFirst[w[0]] || []).push(p);
+    });
+    nameGroups = Object.keys(byFirst).filter(function (f) { return byFirst[f].length > 1; })
+      .map(function (f) {
+        return { name: f, who: byFirst[f].sort(function (a, b) { return who[b] - who[a] || a.localeCompare(b); }),
+                 books: byFirst[f].reduce(function (n, p) { return n + who[p]; }, 0) };
+      })
+      .sort(function (a, b) { return b.who.length - a.who.length || b.books - a.books || a.name.localeCompare(b.name); })
+      .slice(0, 14);
+    var inks = ["pink", "blue", "green", "orange", "purple", "teal", "brown"];
+    el.innerHTML = nameGroups.map(function (g, i) {
+      return '<button type="button" class="tag tag--' + inks[i % inks.length] + '" data-i="' + i + '" aria-pressed="false" style="--r:' +
+        [-3, 2, -1.5, 3, -2, 1, 2.5][i % 7] + 'deg">' +
+        '<span class="tag__hi">Hello<small>my name is</small></span>' +
+        '<b class="tag__name">' + esc(g.name) + "</b>" +
+        '<span class="tag__n">&times;' + g.who.length + "</span></button>";
+    }).join("");
+    var out = $("tags-out");
+    if (out) {
+      var top = nameGroups[0];
+      out.innerHTML = top ? "<b>" + plural(top.who.length, "different " + top.name) + "</b> " + (top.who.length === 1 ? "is" : "are") +
+        " on the guest list. Then there are " + plural(initialed.length, "author") + " who go by initials" +
+        (initialed.length ? ", like " + esc(initialed.sort()[0]) : "") + ". Very mysterious." : "";
+      out.setAttribute("data-default", out.innerHTML);
+    }
+  }
+  function wireNames() {
+    var el = $("tags"), out = $("tags-out");
+    if (!el || !out) return;
+    el.addEventListener("click", function (e) {
+      var t = e.target.closest(".tag");
+      if (!t) return;
+      var on = t.getAttribute("aria-pressed") !== "true";
+      el.querySelectorAll(".tag").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+      if (!on) { out.innerHTML = out.getAttribute("data-default") || ""; return; }
+      t.setAttribute("aria-pressed", "true");
+      var g = nameGroups[+t.getAttribute("data-i")];
+      out.innerHTML = "<b>The " + esc(g.name) + "s:</b> " + g.who.map(function (p) { return esc(p); }).join(", ").replace(/, ([^,]*)$/, " and $1") +
+        ". Between them, " + plural(g.books, "book") + ".";
+    });
+  }
+
+  /* ---- 14 bestseller machine --------------------------------------------- */
+  function remix() {
+    var el = $("remix"), src = $("remix-src");
+    if (!el || books.length < 2) return;
+    var a, b, tries = 0;
+    do { a = pick(books); b = pick(books); } while ((a === b || a.author === b.author) && ++tries < 200);
+    var wa = shortTitle(a.title).split(/\s+/), wb = shortTitle(b.title).split(/\s+/);
+    var head = wa.slice(0, Math.max(1, Math.ceil(wa.length / 2)));
+    var tail = wb.slice(Math.min(wb.length - 1, Math.floor(wb.length / 2)));
+    var title = head.concat(tail).join(" ").replace(/[:;,\-–]+\s/g, " ").replace(/[:;,\-–]+$/, "");
+    var pa = people(a.author)[0].split(/\s+/), pb = people(b.author)[0].split(/\s+/);
+    var author = pa.length > 1 || pb.length > 1 ? pa[0] + " " + pb[pb.length - 1] : pa[0] + pb[0];
+    var inks = ["blue", "pink", "purple", "green", "orange", "teal", "yellow"];
+    var ink = pick(inks), accent = pick(inks.filter(function (x) { return x !== ink; }));
+    el.innerHTML = '<div class="cover cover--' + ink + '" style="--acc:var(--' + accent + ')">' +
+      '<span class="cover__pub">Overanalyzed Press</span>' +
+      '<b class="cover__t">' + esc(title) + "</b>" +
+      '<span class="cover__rule"></span>' +
+      '<span class="cover__a">' + esc(author) + "</span>" +
+      '<span class="cover__blurb">&ldquo;' + esc(pick(["Unputdownable.", "A triumph, probably.", "I have questions.", "Nobody asked for this.", "Better than the original two.", "Somehow it works.", "Instant classic (citation needed)."])) + "&rdquo;</span>" +
+      "</div>";
+    if (!reduceMotion.matches) { el.classList.remove("is-print"); void el.offsetWidth; el.classList.add("is-print"); }
+    if (src) src.innerHTML = 'Made from <i>' + esc(a.title) + "</i> (" + esc(a.author) + ") and <i>" + esc(b.title) +
+      "</i> (" + esc(b.author) + ").<br>Shelve under: <b>" + esc(a.fam.name) + "</b>" +
+      (a.fam === b.fam ? ", definitely." : " meets <b>" + esc(b.fam.name) + "</b>.");
+  }
+
+  /* ---- 15 shelf bingo ---------------------------------------------------- */
+  var bingoCard = [];
+  function bingoPool() {
+    var count = tally(books, function (b) { return b.author; });
+    var COLOR = /\b(red|blue|green|black|white|gold|golden|silver|gr[ae]y|yellow|purple|pink|orange)\b/i;
+    var BEAST = /\b(dogs?|cats?|birds?|wol(f|ves)|fox(es)?|lions?|bears?|horses?|dragons?|rabbits?|mice|mouse|fish|whales?|crows?|ravens?|owls?|bees?|spiders?|sharks?|tigers?|monkeys?|pigs?|elephants?|snakes?|butterfl\w+)\b/i;
+    return [
+      ["Published before 1900", function (b) { return b.year && b.year < 1900; }],
+      ["One-word title", function (b) { return !/\s/.test(b.title.trim()); }],
+      ["A number in the title", function (b) { return /\d/.test(b.title); }],
+      ["Title asks a question", function (b) { return /\?/.test(b.title); }],
+      ["Author has 3+ books here", function (b) { return count[b.author] >= 3; }],
+      ["Written by a team", function (b) { return people(b.author).length > 1; }],
+      ["Title starts with “The”", function (b) { return /^the\s/i.test(b.title); }],
+      ["Has pictures", function (b) { return b.fam.key === "pics"; }],
+      ["Has a dragon, or could", function (b) { return b.fam.key === "fantasy"; }],
+      ["Goes to space", function (b) { return b.fam.key === "scifi"; }],
+      ["Came out 2020 or later", function (b) { return b.year >= 2020; }],
+      ["From the 1980s", function (b) { return b.year >= 1980 && b.year < 1990; }],
+      ["Title over 35 characters", function (b) { return b.title.length > 35; }],
+      ["A colour in the title", function (b) { return COLOR.test(b.title); }],
+      ["An animal in the title", function (b) { return BEAST.test(b.title); }],
+      ["Promises to fix your life", function (b) { return b.fam.key === "hustle"; }],
+      ["Someone probably dies", function (b) { return b.fam.key === "chills"; }],
+      ["Author uses initials", function (b) { return /^[A-Z]\./.test(b.author); }],
+      ["Alliterative author", function (b) { var w = people(b.author)[0].split(/\s+/); return w.length > 1 && w[0].charAt(0) === w[w.length - 1].charAt(0); }],
+      ["Title is possessive", function (b) { return /\w['’]s\b/.test(b.title); }],
+      ["From the Dead Authors' Club", function (b) { return b.fam.key === "classics"; }],
+      ["“Life” in the title", function (b) { return /\b(life|lives|live|living)\b/i.test(b.title); }],
+      ["A how-to", function (b) { return /^how\b/i.test(b.title); }],
+      ["“World” in the title", function (b) { return /\bworlds?\b/i.test(b.title); }],
+      ["Big brain nonfiction", function (b) { return b.fam.key === "brainy"; }],
+      ["Published 2000–2009", function (b) { return b.year >= 2000 && b.year < 2010; }],
+      ["A girl in the title", function (b) { return /\bgirls?\b/i.test(b.title); }],
+      ["Ends with an S", function (b) { return /s$/i.test(shortTitle(b.title)); }],
+      ["Title has an “and”", function (b) { return /\s(and|&)\s/i.test(b.title); }],
+      ["A Mr, Mrs, Dr or Lady", function (b) { return /\b(mr|mrs|ms|dr|lady|lord|sir)\b\.?/i.test(b.title); }]
+    ].map(function (p) {
+      return { label: p[0], hits: books.filter(p[1]) };
+    }).filter(function (p) { return p.hits.length; });
+  }
+  function newBingo() {
+    var el = $("bingo");
+    if (!el) return;
+    var pool = bingoPool();
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    bingoCard = pool.slice(0, 24);
+    bingoCard.splice(12, 0, { label: "Free square", free: true });
+    if (bingoCard.length < 25) return;
+    el.innerHTML = '<div class="bingo__head" aria-hidden="true">' + "BINGO".split("").map(function (l) { return "<span>" + l + "</span>"; }).join("") + "</div>" +
+      bingoCard.map(function (c, i) {
+        return '<button type="button" class="cell' + (c.free ? " cell--free is-on" : "") + '" data-i="' + i + '" aria-pressed="' + (c.free ? "true" : "false") + '"' +
+          (c.free ? " disabled" : "") + ">" +
+          '<span class="cell__l">' + esc(c.label) + "</span>" +
+          '<span class="cell__b">' + (c.free ? "you own books" : "") + "</span></button>";
+      }).join("");
+    checkBingo();
+  }
+  var LINES = (function () {
+    var L = [], r, c;
+    for (r = 0; r < 5; r++) { L.push([0, 1, 2, 3, 4].map(function (k) { return r * 5 + k; })); }
+    for (c = 0; c < 5; c++) { L.push([0, 1, 2, 3, 4].map(function (k) { return k * 5 + c; })); }
+    L.push([0, 6, 12, 18, 24], [4, 8, 12, 16, 20]);
+    return L;
+  })();
+  function checkBingo() {
+    var el = $("bingo"), msg = $("bingo-msg");
+    if (!el) return;
+    var cells = el.querySelectorAll(".cell");
+    var on = [].map.call(cells, function (c) { return c.classList.contains("is-on"); });
+    var wins = LINES.filter(function (l) { return l.every(function (i) { return on[i]; }); });
+    cells.forEach(function (c) { c.classList.remove("is-win"); });
+    wins.forEach(function (l) { l.forEach(function (i) { cells[i].classList.add("is-win"); }); });
+    el.classList.toggle("is-bingo", wins.length > 0);
+    var n = on.filter(Boolean).length - 1;
+    if (msg) msg.innerHTML = wins.length
+      ? '<b class="bingo__yell">Bingo!</b>' + (wins.length > 1 ? " &times;" + wins.length + ". Greedy." : " Your prize is the satisfaction.")
+      : plural(n, "square") + " stamped. " + (n >= 18 ? "Statistically this is getting embarrassing." : "Keep going.");
+  }
+  function wireBingo() {
+    var el = $("bingo");
+    if (!el) return;
+    el.addEventListener("click", function (e) {
+      var cell = e.target.closest(".cell");
+      if (!cell || cell.disabled) return;
+      var c = bingoCard[+cell.getAttribute("data-i")];
+      var on = !cell.classList.contains("is-on");
+      cell.classList.toggle("is-on", on);
+      cell.setAttribute("aria-pressed", on ? "true" : "false");
+      cell.querySelector(".cell__b").textContent = on ? shortTitle(pick(c.hits).title) : "";
+      checkBingo();
+    });
+  }
+
+  /* ---- 16 read it all ---------------------------------------------------- */
+  function updateRun() {
+    var r = $("run-range"), big = $("run-big");
+    if (!r || !big) return;
+    var pace = +r.value, n = books.length, months = n / pace;
+    var pEl = $("run-pace");
+    if (pEl) pEl.textContent = pace;
+    var y = Math.floor(months / 12), m = Math.ceil(months - y * 12);
+    if (m === 12) { y++; m = 0; }
+    var span = (y ? plural(y, "year") : "") + (y && m ? ", " : "") + (m ? plural(m, "month") : "");
+    big.innerHTML = "<b>" + span + "</b> to read all " + n + " books. You'd turn the last page around <b>" + monthsFromNow(months) + "</b>.";
+
+    var years = $("run-years");
+    if (years) {
+      var startM = new Date().getMonth(), startY = new Date().getFullYear(), html = "", left = months, yr = startY, first = true;
+      var inks = ["blue", "pink", "green", "orange", "purple", "teal"], k = 0;
+      while (left > 0 && k < 80) {
+        var cap = first ? 12 - startM : 12, take = Math.min(cap, left);
+        html += '<span class="yr ink-' + inks[k % inks.length] + '" style="flex-grow:' + take.toFixed(2) + '">' + (take >= 4 ? "<em>" + yr + "</em>" : "") + "</span>";
+        left -= take; yr++; first = false; k++;
+      }
+      years.innerHTML = html;
+    }
+    var legs = $("run-legs");
+    if (legs) {
+      var order = books.filter(function (b) { return b.year; }).sort(function (a, b) { return a.year - b.year; });
+      if (!order.length) return;
+      var half = order[Math.floor(order.length / 2)];
+      var y2000 = order.filter(function (b) { return b.year < 2000; }).length;
+      var stops = [
+        ["This month", "you start with <i>" + esc(order[0].title) + "</i> (" + order[0].year + ")."],
+        [monthsFromNow(y2000 / pace), "you finally reach the year 2000."],
+        [monthsFromNow((order.length / 2) / pace), "halfway, with <i>" + esc(half.title) + "</i>."],
+        [monthsFromNow(order.length / pace), "you close the newest book, <i>" + esc(order[order.length - 1].title) + "</i>. Assuming no new books show up in the meantime. They will."]
+      ];
+      legs.innerHTML = stops.map(function (s) { return '<li><span class="run__when">' + s[0] + "</span> " + s[1] + "</li>"; }).join("");
+    }
+  }
+
+  /* ---- 17 ask the librarian ---------------------------------------------- */
+  function fold(s) { return String(s).toLowerCase().normalize ? String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "") : String(s).toLowerCase(); }
+  function ask() {
+    var q = $("ask-q"), out = $("ask-out");
+    if (!q || !out) return;
+    var raw = q.value.trim(), terms = fold(raw).split(/\s+/).filter(Boolean);
+    if (raw.length < 2) { out.innerHTML = '<p class="ask__hint">The librarian is waiting. Patiently. Mostly.</p>'; return; }
+    var hits = books.filter(function (b) {
+      var words = fold(b.title + " " + b.author).split(/[^a-z0-9']+/);
+      return terms.every(function (t) {
+        t = t.replace(/[^a-z0-9']/g, "");
+        return !t || words.some(function (w) { return w.indexOf(t) === 0; });
+      });
+    }).sort(function (a, b) {
+      var A = fold(stripArticle(a.title)).indexOf(terms[0]) === 0 ? 0 : 1, B = fold(stripArticle(b.title)).indexOf(terms[0]) === 0 ? 0 : 1;
+      return A - B || a.title.localeCompare(b.title);
+    });
+    if (!hits.length) {
+      out.innerHTML = '<p class="stamp stamp--no">Not on the shelf</p>' +
+        '<p class="ask__note">No match for &ldquo;' + esc(raw) + "&rdquo;. Sounds like a gift idea.</p>";
+      return;
+    }
+    out.innerHTML = '<p class="stamp stamp--yes">' + (hits.length === 1 ? "Yes, it's here" : plural(hits.length, "match", "matches")) + "</p>" +
+      '<ul class="ask__list">' + hits.slice(0, 8).map(function (b) {
+        return '<li><span class="sw ink-' + b.fam.ink + '"></span><a href="library.html?q=' + encodeURIComponent(b.title) + '"><b>' + esc(b.title) + "</b></a>" +
+          "<span>" + esc(b.author) + (b.year ? " &middot; " + b.year : "") + "</span></li>";
+      }).join("") + "</ul>" +
+      (hits.length > 8 ? '<p class="ask__note">&hellip;and ' + (hits.length - 8) + ' more. <a href="library.html?q=' + encodeURIComponent(raw) + '">See them all on the shelves &rarr;</a></p>' : "");
   }
 
   /* ---- count-up for the big numbers ------------------------------------- */
@@ -563,5 +992,18 @@
   var showBtn = $("date-show"), nextBtn = $("date-next");
   if (showBtn) showBtn.addEventListener("click", showDate);
   if (nextBtn) nextBtn.addEventListener("click", newDate);
+  wireStrip();
+  wireNames();
+  wireBingo();
+  var duelEl = $("duel");
+  if (duelEl) duelEl.addEventListener("click", function (e) {
+    var c = e.target.closest(".duel__card");
+    if (c) pickDuel(+c.getAttribute("data-side"));
+  });
+  [["duel-next", "click", newDuel], ["birth-range", "input", updateBirth], ["remix-go", "click", remix],
+   ["bingo-new", "click", newBingo], ["run-range", "input", updateRun], ["ask-q", "input", ask]].forEach(function (w) {
+    var n = $(w[0]);
+    if (n) n.addEventListener(w[1], w[2]);
+  });
   sync();
 })();
