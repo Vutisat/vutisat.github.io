@@ -3,14 +3,14 @@
 
    World: a Danish wool sample book on a winter afternoon. The intro is the
    book's cover: a length of petrol twill with a card-stock label sewn onto
-   it, Pob standing in front. Every page on the site is a swatch: a piece of
-   woven wool, pinked at the foot, with a label stitched onto it carrying a
-   real preview of that page. Each collection is cut from its own weave
-   (twill, herringbone, basketweave) and stands on its own teak ledge.
+   it, Pob standing in front. Every page is a swatch: a piece of woven wool,
+   pinked at the foot, with nothing on it but the page's name, embroidered in
+   satin stitch. Each collection is cut from its own weave (twill,
+   herringbone, basketweave) and stands on its own teak ledge.
 
-   Material is real, not drawn: the weaves, the thread, the teak and the
-   limewash are rendered texture rasters (assets/img/hub/*.webp) tinted with
-   multiply, and every preview is a screenshot of the actual page.
+   Material is real, not drawn: the weaves, floss, thread, teak, limewash and
+   window light are rendered texture rasters (assets/img/hub/*.webp) tinted
+   with multiply. The embroidered names stay live text.
 
    Palette is total: sage wall, card stock, ink, teak, and five wool dyes.
    Dyes are set bright because the weave multiplies them down to their
@@ -93,7 +93,7 @@ a{ color:inherit; }
 }
 
 /* a running stitch, sewn just inside an edge */
-.intro::before, .intro__label::before, .card__label::before, .foot__label::before{
+.intro::before, .intro__label::before, .foot__label::before{
   content:""; position:absolute; inset:var(--seam, 9px); pointer-events:none;
   background:
     var(--stitch) 0 0 / 24px 8px repeat-x,
@@ -229,40 +229,31 @@ a{ color:inherit; }
   content:""; position:absolute; left:50%; top:7px; width:9px; height:9px; margin-left:-4.5px; border-radius:50%;
   background:var(--wall-shade); box-shadow:inset 0 1px 2px rgba(30,36,33,.55);
 }
-/* the label stitched onto the wool, carrying the page */
-.card__label{
-  --seam:5px;
-  position:relative; display:flex; flex-direction:column; flex:1;
-  padding:12px 12px 14px; background:var(--stock);
-  box-shadow:0 1px 1px rgba(30,36,33,.22), 0 4px 8px -4px rgba(30,36,33,.35);
-}
-.card__label::before{ background-size:18px 6px, 18px 6px, 6px 18px, 6px 18px; opacity:.55; filter:brightness(.55); }
-.card__shot{
-  position:relative; z-index:1; display:block; aspect-ratio:16 / 10; overflow:hidden; background:#E6E8E1;
-  box-shadow:0 0 0 1px rgba(30,36,33,.10);
-}
-.card__shot img{
-  display:block; width:100%; height:100%; object-fit:cover; object-position:50% 0;
-  transform:scale(1.001); transform-origin:50% 0;
-  transition:transform .9s var(--ease);
-}
+/* the page's name, embroidered into the wool in satin stitch: real text,
+   filled with a floss raster multiplied into the thread colour, raised off
+   the cloth by a two-step shadow */
+.card{ --thread:#FFFDF7; align-items:center; justify-content:center; aspect-ratio:4 / 5; padding:30px 16px 40px; }
+.swatch--light .card{ --thread:#1F4A52; }
 .card__name{
-  margin-top:12px; font-weight:620; font-size:20px; line-height:1.1; letter-spacing:-.01em;
-  font-variation-settings:"opsz" 32;
-  transition:font-weight .45s var(--ease);
+  display:block; max-width:100%; text-align:center;
+  font-weight:800; font-variation-settings:"opsz" 96;
+  font-size:clamp(25px, 2.5vw, 34px); line-height:1.02; letter-spacing:-.015em;
+  overflow-wrap:anywhere; text-wrap:balance;
+  color:transparent; -webkit-text-stroke:.5px rgba(10,14,12,.28);
+  background:url("../img/hub/satin.webp") 0 0 / 48px 48px, var(--thread);
+  background-blend-mode:multiply;
+  -webkit-background-clip:text; background-clip:text;
+  filter:drop-shadow(0 1px 0 rgba(10,14,12,.45)) drop-shadow(0 3px 3px rgba(10,14,12,.3));
+  transition:background-position 1.4s var(--ease);
 }
-.card__cap{ margin-top:5px; font-size:13.5px; line-height:1.4; color:var(--ink-2); }
 
-/* reaching for a swatch: it straightens, lifts off the ledge, and the
-   preview drifts down the page a little, as if you'd started to read it */
-.card:hover, .card:focus-visible{
-  transform:rotate(0) translateY(-12px);
-}
-.card:hover .card__shot img, .card:focus-visible .card__shot img{ transform:scale(1.06) translateY(-4%); }
-.card:hover .card__name, .card:focus-visible .card__name{ font-weight:780; }
+/* reaching for a swatch: it straightens and lifts off the ledge, and the
+   light runs along the floss of its name */
+.card:hover, .card:focus-visible{ transform:rotate(0) translateY(-12px); }
+.card:hover .card__name, .card:focus-visible .card__name{ background-position:30px 0, 0 0; }
 .card:active{ transform:rotate(0) translateY(-7px); }
 .card:focus-visible{ outline:none; }
-.card:focus-visible .card__label{ outline:3px solid #2A6E7A; outline-offset:3px; }
+.swatch:has(.card:focus-visible){ outline:3px solid #2A6E7A; outline-offset:6px; }
 
 /* ---------------------------------------------------------------------------
    FOOT: the room ends at a teak sideboard, the woven label laid on top
@@ -327,10 +318,8 @@ a{ color:inherit; }
   /* an odd swatch out stands centred on a shelf of its own, not beside a gap */
   .swatch:last-child:nth-child(odd){ grid-column:1 / -1; justify-self:center; width:calc(50% - 8px); }
   .swatch:last-child:nth-child(odd)::before{ left:calc(-50% - 8px - var(--gutter)); right:calc(-50% - 8px - var(--gutter)); }
-  .card{ padding:20px 8px 36px; }
-  .card__label{ padding:11px 11px 12px; }
-  .card__name{ font-size:16.5px; margin-top:9px; }
-  .card__cap{ font-size:12.5px; }
+  .card{ padding:24px 10px 34px; }
+  .card__name{ font-size:clamp(20px, 6vw, 26px); }
 }
 
 /* ---------------------------------------------------------------------------
@@ -340,5 +329,5 @@ a{ color:inherit; }
   html{ scroll-behavior:auto; }
   *,*::before,*::after{ transition-duration:.01ms !important; }
   .card:hover, .card:focus-visible, .card:active, .index__tab:hover{ transform:rotate(var(--tilt, 0deg)); }
-  .card:hover .card__shot img, .card:focus-visible .card__shot img{ transform:none; }
+  .card:hover .card__name, .card:focus-visible .card__name{ background-position:0 0, 0 0; }
 }

@@ -11,7 +11,7 @@ Mode: Persuade (personal front door). Audience: friends, peers and recruiters on
 
 ## Direction contract
 
-THESIS: The site as a Danish wool sample book: the intro is its cover, every page a woven swatch. Refuses the link-in-bio stack of rounded buttons.
+THESIS: The site as a Danish wool sample book: the intro is its cover, every page a wool swatch bearing only its embroidered name. Refuses the link-in-bio stack of rounded buttons.
 
 OWN-WORLD: Limewashed sage wall #D3D9C8 lit by window light; five wool dyes (mustard, petrol, plum, moss, berry); three weaves (twill, herringbone, basketweave); raster thread stitching; teak ledges and sideboard; square edges, pinked feet.
 

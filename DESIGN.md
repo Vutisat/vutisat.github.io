@@ -259,8 +259,8 @@ reasons in `.impeccable/config.json`. Read those before "fixing" anything they c
 
 The site as a wool sample book on a winter afternoon. The intro is the book's cover: a length of
 petrol twill with a card-stock label sewn onto it, Pob's cutout portrait standing in front. Every
-page is a swatch: a piece of woven wool, pinked at the foot, punched with a ring hole, with a
-label stitched onto it carrying a real screenshot of that page. Each collection is cut from its
+page is a swatch: a piece of woven wool, pinked at the foot, punched with a ring hole, with
+nothing on it but the page's name, embroidered in satin stitch. Each collection is cut from its
 own weave and stands on its own teak ledge; the room ends at a teak sideboard.
 
 Material is real, not drawn. Weave, thread, teak, limewash and window light are rendered texture
@@ -273,7 +273,7 @@ outranks another. Light only: it is daytime.
 - One typeface, Bricolage Grotesque, carried entirely by weight and optical size.
 - Square corners everywhere except the punched ring hole.
 - Soft, cast, light-from-above shadows: swatches stand on ledges and lift when reached for.
-- Every preview is a screenshot of the real page; every raster carries its provenance.
+- Every raster carries its provenance.
 
 ## Colors
 
@@ -374,7 +374,7 @@ beneath it is floating, and floating is wrong here.
 
 ## Shapes
 
-Square corners throughout: cloth, labels, tabs, screenshots, ledges. The only round form is the
+Square corners throughout: cloth, labels, tabs, ledges. The only round form is the
 9px punched ring hole at each swatch's top centre (sage-shade fill, inset shadow), because a
 punch is round. Swatch feet are pinked: a 12×7px zigzag mask along the bottom edge. Running
 stitches sit just inside edges (`--seam` 12px cover, 8px cover label, 5px swatch and footer
@@ -385,12 +385,16 @@ darkened (.55 opacity, brightness .55) so the thread reads on white stock.
 
 ### Swatch (signature)
 Woven cloth (dye × weave, 240px tile, multiply) with padding `22px 11px 44px`, pinked foot,
-ring hole, tilted by `--tilt`. Inside, a stitched card-stock label: 16:10 screenshot (top-
-anchored, hairline ring), name, caption.
-- **Reach (hover / focus-visible):** straightens to 0°, lifts -12px, shadow deepens, the
-  screenshot scales 1.06 and drifts up 4% as if you'd started reading, the name goes to 780.
-  `.55s` (image `.9s`) on `--ease` `cubic-bezier(.16, 1, .3, 1)`. Active: -7px.
-- **Focus:** the outline moves onto the label (3px Focus Petrol, offset 3px).
+ring hole, tilted by `--tilt`, aspect 4:5. Its only content is the page's name, embroidered:
+live text (800, `clamp(25px, 2.5vw, 34px)`, opsz 96, centred, balanced) filled by
+`background-clip:text` with the satin floss raster (`satin.webp`, 48px) multiplied into the
+thread colour, a 0.5px dark edge, and a two-step drop shadow that raises it off the cloth.
+Thread is off-white `#FFFDF7`; on the one light dye (mustard, `.swatch--light`) it is dark
+petrol `#1F4A52`. No captions, figures or previews: the swatch says only its name.
+- **Reach (hover / focus-visible):** straightens to 0°, lifts -12px, shadow deepens, and the
+  light runs along the floss (the satin layer slides 30px over 1.4s). `.55s` lift on `--ease`
+  `cubic-bezier(.16, 1, .3, 1)`. Active: -7px.
+- **Focus:** a 3px Focus Petrol outline around the whole swatch, offset 6px.
 
 ### Index tabs (navigation)
 Thumb-index tabs on pale stock (`#ECEEE6`), each led by a 22px snip of its collection's woven
@@ -406,21 +410,22 @@ petrol strip with stock-coloured text, rotated -1.5° and laid on the teak sideb
 
 ### Motion
 Reduced motion: transitions collapse to .01ms, swatches keep their tilt and do not lift, the
-screenshot does not drift, smooth scroll is off. The swatch still answers by weight and shadow.
+floss does not slide, smooth scroll is off.
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** render new material (cloth, thread, wood, plaster, light) as a raster multiplied into a
   palette colour, and ship its provenance `.json` beside it.
-- **Do** give every new page a swatch with a real screenshot of that page, a dye from the five,
-  and its own `--tilt`; put it on its collection's ledge.
+- **Do** give every new page a swatch with just its embroidered name, a dye from the five (add
+  `.swatch--light` on mustard), and its own `--tilt`; put it on its collection's ledge. Keep text
+  off the swatch: no captions, figures or screenshots (the user rejected both as too much).
 - **Do** keep the three collections at equal weight, each on its own weave.
 - **Do** keep interactive response in weight, lift and shadow, with reduced-motion keeping
   the weight and shadow.
 
 ### Don't:
-- **Don't** round corners on cloth, labels, tabs or screenshots; the ring hole is the only circle.
+- **Don't** round corners on cloth, labels or tabs; the ring hole is the only circle.
 - **Don't** use a dye as flat colour, text, or border (text selection excepted).
 - **Don't** add a dark mode; this world is daytime.
 - **Don't** add a second typeface, a mono, or uppercase tracked labels above headings.
