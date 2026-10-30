@@ -7,9 +7,14 @@ records each world so it can be worked on faithfully — see `CLAUDE.md` for the
 | World | Scope | Documented |
 |---|---|---|
 | **Bright Editorial** | `index.html` · `assets/css/home.css` | in full below |
-| **The Reference** | `thailand.html`, `life.html`, `resume.html` · `assets/css/main.css` | in full below |
+| **The Reference** | `life.html`, `resume.html` · `assets/css/main.css` | in full below |
 | **Subway Guide** | `nyc.html` · `assets/css/nyc.css` | header comment in that file |
 | **The Library** | `library.html` · `assets/css/library.css` | header comment in that file |
+| **The Stacks, Overanalyzed** | `library-info.html` · `assets/css/library-info.css` | header comment in that file |
+| **The Orchid Garland** | `thailand.html` · `assets/css/thailand.css` | header comment in that file |
+| **Salinas Valley** | `bookclub.html` · `assets/css/bookclub.css` | header comment in that file |
+| **The Swatch Book** | `home.html` · `assets/css/swatch.css` | in full below (§4) |
+| **House Notes** | `423.html` (inline) | inline, self-contained |
 | **Planetarium Atlas** | `worldtour.html` (inline) | inline, self-contained |
 
 ---
@@ -117,12 +122,13 @@ Leave those comments in place rather than deleting them.
 
 # 2. The Reference — the shared sub-page world
 
-> `thailand.html`, `life.html`, `resume.html` + `assets/css/main.css` + `assets/js/main.js`.
+> `life.html`, `resume.html` + `assets/css/main.css` + `assets/js/main.js`.
 > Direction seed `d1dd32ba` (direction/persuade). Code-led build (no image generation available).
 >
 > **Scope note:** this world was originally the homepage too. It no longer is — `index.html`
-> moved to Bright Editorial in the 2026 rebuild. Everything below applies to the three sub-pages
-> and nothing else. Do not apply it to the homepage, the library, NYC, or worldtour.
+> moved to Bright Editorial in the 2026 rebuild. Everything below applies to these two sub-pages
+> and nothing else. Do not apply it to the homepage or any other world. (`thailand.html` also
+> used to live here; it now has its own world, The Orchid Garland.)
 
 ## World
 
@@ -202,7 +208,7 @@ dependencies and guards every feature, so sub-pages that lack an element simply 
 
 ---
 
-# 3. The other three worlds
+# 3. The other worlds
 
 Not restated here — each is documented where it lives, and the CSS header comments are the
 source of truth.
@@ -216,7 +222,207 @@ source of truth.
 - **Planetarium Atlas** (`worldtour.html`) — deep space `#0A0E1C`, neon glow, per-continent
   accents, a lat/long graticule as the literal map surface. Marcellus + EB Garamond.
   Fully self-contained in one inline `<style>`; flags load from `assets/flags/<iso>.svg`.
+- **The Stacks, Overanalyzed** (`library-info.html`) — a loud risograph zine of infographics
+  about the library's books. Newsprint `#F2ECDF`, nine flat riso inks with multiply blending,
+  misregistered headlines, stickers. Light only. Hanken at 800 + Spline Sans Mono. Every figure
+  is computed live from `library-data.js` and re-synced from the sheet; never hardcode a number.
+- **The Orchid Garland** (`thailand.html`) — the guide hangs from one strung cord: places are
+  jasmine buds tied onto it, regions are marigold bands knotted across it. Jasmine `#FBF7EF`,
+  one orchid purple as the only line and interactive colour. English first, Thai beneath.
+  Trirong + Anuphan. No cards, no shadows, no photographs.
+- **Salinas Valley** (`bookclub.html`) — East of Eden Reading Club at golden hour: dry-grass
+  paper, gold hills, a dusky ridge, oak-brown ink; the schedule is a trail down the valley.
+  Light only. EB Garamond + Hanken.
+- **The Swatch Book** (`home.html`) — candidate new landing page (`index.html` is still the
+  front door): a Danish wool sample book on a sage limewash wall. Documented in full in §4 below
+  and in the header comment of `assets/css/swatch.css`.
+- **House Notes** (`423.html`) — the note left on the counter for a house guest: plaster wall,
+  brass plaque, forest-green ink, one alarm red for real safety items only. Light and dark.
+  `noindex` and intentionally unlinked; never add it to a hub or nav.
 
 Design decisions already argued for in these worlds (the library's wood grain and cream ground,
 NYC's line-color edge accents, worldtour's graticule and glow) are recorded as exemptions with
 reasons in `.impeccable/config.json`. Read those before "fixing" anything they cover.
+
+---
+
+# 4. The Swatch Book — the hub (candidate landing page)
+
+> `home.html` + `assets/css/swatch.css`. No JS. Rasters in `assets/img/hub/`, each with a
+> provenance `.json` sidecar. A **candidate** front door: `index.html` is still the live one.
+> Self-contained: loads only `swatch.css`. The values below belong to this world alone; nothing
+> here is a site-wide token, and no other world's values apply to it.
+
+## Overview
+
+**Creative North Star: "The Danish Wool Sample Book"**
+
+The site as a wool sample book on a winter afternoon. The intro is the book's cover: a length of
+petrol twill with a card-stock label sewn onto it, Pob's cutout portrait standing in front. Every
+page is a swatch: a piece of woven wool, pinked at the foot, punched with a ring hole, with a
+label stitched onto it carrying a real screenshot of that page. Each collection is cut from its
+own weave and stands on its own teak ledge; the room ends at a teak sideboard.
+
+Material is real, not drawn. Weave, thread, teak, limewash and window light are rendered texture
+rasters multiplied into flat colour; CSS contributes only cut geometry (pinked edge, ring hole)
+and light on edges (the bevel on teak). Three collections of equal weight; no collection
+outranks another. Light only: it is daytime.
+
+**Key Characteristics:**
+- A total palette: sage wall, card stock, ink, teak, five wool dyes. Nothing outside it.
+- One typeface, Bricolage Grotesque, carried entirely by weight and optical size.
+- Square corners everywhere except the punched ring hole.
+- Soft, cast, light-from-above shadows: swatches stand on ledges and lift when reached for.
+- Every preview is a screenshot of the real page; every raster carries its provenance.
+
+## Colors
+
+A total palette: one cool plaster ground, one paper, one ink family, one wood, five dyes.
+
+### Primary
+- **Petrol Wool** (`--petrol` `#3F8F9C`): the cover cloth, the footer label, the Engineering
+  tab, and swatches in rotation. The house dye of the book.
+- **Focus Petrol** (`#2A6E7A`): the 3px focus outline everywhere, and (at 55% alpha) the
+  underline on the say-hi links. A darkened petrol so the ring holds contrast on wall and stock.
+
+### Secondary — the wool dyes
+All five are set bright on purpose (`--mustard #F2B63C`, `--plum #A8588A`, `--moss #82A062`,
+`--berry #D2566A`, plus petrol): the weave raster multiplies them down to their finished shade.
+Dyes appear only as woven cloth (cover, swatch, tab snip, footer label), never as flat fills,
+text, or borders. Mustard doubles as `::selection`.
+
+### Neutral
+- **Limewashed Sage** (`--wall` `#D3D9C8`): the page ground and `theme-color`. Mottled by
+  `wall.webp` (multiply, .85) and brightened top-left by a pale radial wash.
+- **Sage Shade** (`--wall-shade` `#B9C0AC`): the ring hole's fill; the scrollbar track.
+- **Card Stock** (`--stock` `#F7F7F3`): every label (cover label, swatch label) and the
+  footer label's text.
+- **Ink** (`--ink` `#1E2421`): headings, swatch names, link text.
+- **Ink 2** (`--ink-2` `#47504A`): intro prose, collection notes, captions.
+- **Teak** (`--teak` `#A8622C`): base under `teak.webp` for ledges and the sideboard.
+
+### Named Rules
+**The Dye-Is-Cloth Rule.** A dye only ever appears multiplied under a weave raster. A flat
+mustard rectangle is not this world. (The one sanctioned flat use is mustard as `::selection`.)
+
+**The Total Palette Rule.** New surfaces pick from wall, stock, ink, teak and the five dyes.
+Adding a sixth dye or a second ground breaks the book.
+
+## Typography
+
+**Display / Body / Label:** Bricolage Grotesque, self-hosted variable (`bricolage-var.woff2`,
+weight 200–800, `opsz` axis), fallback Helvetica Neue, Arial, system-ui.
+
+**Character:** a single grotesque with ink-trap warmth, scaled by optical size: tight and heavy
+at display, open at body. No second family, no mono, no italic face (the one `<i>` is synthetic).
+
+### Hierarchy
+- **Display** (780, `clamp(46px, 6.2vw, 84px)`, lh .94, -.035em, `opsz` 96, balanced): "Hi, I'm
+  Pob." on the cover label only.
+- **Headline** (740, `clamp(32px, 4.2vw, 52px)`, lh 1, -.03em, `opsz` 96): collection names.
+- **Title** (620 → 780 on reach, 20px, lh 1.1, -.01em, `opsz` 32): swatch names; 16.5px ≤560px.
+- **Body** (400, 17px base / intro `clamp(16px, 1.4vw, 18.5px)`, lh 1.55, max 36–38em, pretty
+  wrap): intro and collection notes, in `--ink-2`. The intro's last line steps up to 620 in ink.
+- **Label** (600, 15.5px, lh 1): index tabs and say-hi links. Captions 13.5px (12.5px mobile).
+  Footer label 600, 14px, +.04em, mixed case.
+
+### Named Rules
+**The Weight Answers Rule.** Interactive type responds by weight, not colour: swatch names go
+620 → 780, index tabs 600 → 720, eased on `--ease`. This survives reduced motion.
+
+## Layout
+
+- **Container:** `--max` 1240px, `--gutter` `clamp(16px, 4vw, 56px)`.
+- **Cover:** a two-column grid `minmax(220px, 4fr) / minmax(0, 7fr)`, bottom-aligned; the
+  portrait (max 380px) breaks out of the cloth's top edge by -22% and stands on its hem.
+- **Collections:** Engineering and Recommendations share a row (`.pair`, two equal columns,
+  gap `clamp(40px, 5vw, 80px)`), each with a two-wide shelf pushed to the bottom so both ledges
+  align. Lifestyle runs full width on a five-wide shelf. Each collection is its own weave:
+  Engineering twill, Recommendations basketweave, Lifestyle herringbone.
+- **Rhythm:** collections `clamp(64px, 8vw, 104px)` apart; footer `clamp(96px, 11vw, 150px)`
+  below; swatch row gap 56px, column gap `clamp(18px, 2.2vw, 30px)`; ledge 30px tall,
+  overhanging the shelf by 24px each side.
+- **Swatch tilt:** each swatch carries its own `--tilt` (±0.8–1.6°, alternating), rotating
+  from its foot.
+- **Responsive:** ≤1080px shelves go three-wide and each *row* of swatches gets its own run of
+  teak (per-swatch ledge segments) instead of one shelf-long ledge. ≤900px the pair stacks.
+  ≤820px the cover goes single-column, label first, portrait (max 280px) below; the second
+  window of light drops. ≤560px shelves go two-wide, ledges bleed to the gutter, and an odd
+  last swatch stands centred on its own run of teak rather than beside a gap.
+
+## Elevation & Depth
+
+Depth is physical and lit from above: things are sewn on, stood up, or laid down, and their
+shadows are soft, short-offset key plus long-blur ambient. No hard offset shadows.
+
+### Shadow Vocabulary
+- **Cover cloth** (`0 2px 2px rgba(30,36,33,.14), 0 30px 50px -24px rgba(30,36,33,.55)`).
+- **Sewn label** (cover: `0 1px 1px rgba(20,40,44,.25), 0 14px 26px -14px rgba(20,40,44,.6)`;
+  swatch: `0 1px 1px rgba(30,36,33,.22), 0 4px 8px -4px rgba(30,36,33,.35)`).
+- **Standing swatch** (`filter: drop-shadow(0 10px 12px rgba(30,36,33,.32))` →
+  `drop-shadow(0 24px 22px rgba(30,36,33,.38))` on reach). A filter on the parent, because the
+  pinked mask would clip a box-shadow.
+- **Teak ledge** (`0 18px 22px -12px rgba(40,30,20,.55)`), plus a gradient bevel: lit top face
+  (warm 35%→12% over 8px), a shadow line, a dark 3px bottom lip.
+- **Portrait** (`drop-shadow(0 16px 16px rgba(18,32,36,.4))`).
+- **Window light:** `light.webp` (1050×825, pale sage-white so it brightens without warming)
+  laid on the wall behind the cover at .85, a second smaller copy further down at .6.
+
+### Named Rules
+**The Stands-On-Teak Rule.** Every swatch stands on a ledge. A row of swatches without wood
+beneath it is floating, and floating is wrong here.
+
+## Shapes
+
+Square corners throughout: cloth, labels, tabs, screenshots, ledges. The only round form is the
+9px punched ring hole at each swatch's top centre (sage-shade fill, inset shadow), because a
+punch is round. Swatch feet are pinked: a 12×7px zigzag mask along the bottom edge. Running
+stitches sit just inside edges (`--seam` 12px cover, 8px cover label, 5px swatch and footer
+labels) from `stitch.webp` / `stitch-v.webp`; on swatch labels they are smaller (18×6) and
+darkened (.55 opacity, brightness .55) so the thread reads on white stock.
+
+## Components
+
+### Swatch (signature)
+Woven cloth (dye × weave, 240px tile, multiply) with padding `22px 11px 44px`, pinked foot,
+ring hole, tilted by `--tilt`. Inside, a stitched card-stock label: 16:10 screenshot (top-
+anchored, hairline ring), name, caption.
+- **Reach (hover / focus-visible):** straightens to 0°, lifts -12px, shadow deepens, the
+  screenshot scales 1.06 and drifts up 4% as if you'd started reading, the name goes to 780.
+  `.55s` (image `.9s`) on `--ease` `cubic-bezier(.16, 1, .3, 1)`. Active: -7px.
+- **Focus:** the outline moves onto the label (3px Focus Petrol, offset 3px).
+
+### Index tabs (navigation)
+Thumb-index tabs on pale stock (`#ECEEE6`), each led by a 22px snip of its collection's woven
+dye (120px weave tile). 600 → 720 weight, -3px lift and a longer shadow on hover.
+
+### Say-hi links
+Inline text links in ink, 600, a 2px Focus Petrol underline at 55% offset 5px, going full ink
+on hover.
+
+### Cover label / Footer label
+The cover label is card stock sewn onto the twill (stitch at 8px). The footer label is a woven
+petrol strip with stock-coloured text, rotated -1.5° and laid on the teak sideboard.
+
+### Motion
+Reduced motion: transitions collapse to .01ms, swatches keep their tilt and do not lift, the
+screenshot does not drift, smooth scroll is off. The swatch still answers by weight and shadow.
+
+## Do's and Don'ts
+
+### Do:
+- **Do** render new material (cloth, thread, wood, plaster, light) as a raster multiplied into a
+  palette colour, and ship its provenance `.json` beside it.
+- **Do** give every new page a swatch with a real screenshot of that page, a dye from the five,
+  and its own `--tilt`; put it on its collection's ledge.
+- **Do** keep the three collections at equal weight, each on its own weave.
+- **Do** keep interactive response in weight, lift and shadow, with reduced-motion keeping
+  the weight and shadow.
+
+### Don't:
+- **Don't** round corners on cloth, labels, tabs or screenshots; the ring hole is the only circle.
+- **Don't** use a dye as flat colour, text, or border (text selection excepted).
+- **Don't** add a dark mode; this world is daytime.
+- **Don't** add a second typeface, a mono, or uppercase tracked labels above headings.
+- **Don't** import tokens from `home.css`, `main.css` or any other world, and don't export
+  these to them.

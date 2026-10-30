@@ -202,6 +202,8 @@ html{scrollbar-color:var(--paper-3) var(--paper)}
 .hero__meta{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-top:1.6rem;font-size:.83rem;color:var(--ink-3)}
 .hero__count{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
 .sep{color:var(--line-2)}
+.hero__meta a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-2);transition:color .2s,border-color .2s}
+.hero__meta a:hover{color:var(--amber);border-color:var(--amber)}
 
 /* ---- controls ----------------------------------------------------------- */
 .stacks{padding-bottom:clamp(3rem,8vh,5rem)}

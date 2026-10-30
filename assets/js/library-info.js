@@ -139,8 +139,6 @@
     renderBirth();
     renderStrip();
     renderNames();
-    remix();
-    newBingo();
     updateRun();
     ask();
     countUp();
@@ -738,128 +736,7 @@
     });
   }
 
-  /* ---- 14 bestseller machine --------------------------------------------- */
-  function remix() {
-    var el = $("remix"), src = $("remix-src");
-    if (!el || books.length < 2) return;
-    var a, b, tries = 0;
-    do { a = pick(books); b = pick(books); } while ((a === b || a.author === b.author) && ++tries < 200);
-    var wa = shortTitle(a.title).split(/\s+/), wb = shortTitle(b.title).split(/\s+/);
-    var head = wa.slice(0, Math.max(1, Math.ceil(wa.length / 2)));
-    var tail = wb.slice(Math.min(wb.length - 1, Math.floor(wb.length / 2)));
-    var title = head.concat(tail).join(" ").replace(/[:;,\-–]+\s/g, " ").replace(/[:;,\-–]+$/, "");
-    var pa = people(a.author)[0].split(/\s+/), pb = people(b.author)[0].split(/\s+/);
-    var author = pa.length > 1 || pb.length > 1 ? pa[0] + " " + pb[pb.length - 1] : pa[0] + pb[0];
-    var inks = ["blue", "pink", "purple", "green", "orange", "teal", "yellow"];
-    var ink = pick(inks), accent = pick(inks.filter(function (x) { return x !== ink; }));
-    el.innerHTML = '<div class="cover cover--' + ink + '" style="--acc:var(--' + accent + ')">' +
-      '<span class="cover__pub">Overanalyzed Press</span>' +
-      '<b class="cover__t">' + esc(title) + "</b>" +
-      '<span class="cover__rule"></span>' +
-      '<span class="cover__a">' + esc(author) + "</span>" +
-      '<span class="cover__blurb">&ldquo;' + esc(pick(["Unputdownable.", "A triumph, probably.", "I have questions.", "Nobody asked for this.", "Better than the original two.", "Somehow it works.", "Instant classic (citation needed)."])) + "&rdquo;</span>" +
-      "</div>";
-    if (!reduceMotion.matches) { el.classList.remove("is-print"); void el.offsetWidth; el.classList.add("is-print"); }
-    if (src) src.innerHTML = 'Made from <i>' + esc(a.title) + "</i> (" + esc(a.author) + ") and <i>" + esc(b.title) +
-      "</i> (" + esc(b.author) + ").<br>Shelve under: <b>" + esc(a.fam.name) + "</b>" +
-      (a.fam === b.fam ? ", definitely." : " meets <b>" + esc(b.fam.name) + "</b>.");
-  }
-
-  /* ---- 15 shelf bingo ---------------------------------------------------- */
-  var bingoCard = [];
-  function bingoPool() {
-    var count = tally(books, function (b) { return b.author; });
-    var COLOR = /\b(red|blue|green|black|white|gold|golden|silver|gr[ae]y|yellow|purple|pink|orange)\b/i;
-    var BEAST = /\b(dogs?|cats?|birds?|wol(f|ves)|fox(es)?|lions?|bears?|horses?|dragons?|rabbits?|mice|mouse|fish|whales?|crows?|ravens?|owls?|bees?|spiders?|sharks?|tigers?|monkeys?|pigs?|elephants?|snakes?|butterfl\w+)\b/i;
-    return [
-      ["Published before 1900", function (b) { return b.year && b.year < 1900; }],
-      ["One-word title", function (b) { return !/\s/.test(b.title.trim()); }],
-      ["A number in the title", function (b) { return /\d/.test(b.title); }],
-      ["Title asks a question", function (b) { return /\?/.test(b.title); }],
-      ["Author has 3+ books here", function (b) { return count[b.author] >= 3; }],
-      ["Written by a team", function (b) { return people(b.author).length > 1; }],
-      ["Title starts with “The”", function (b) { return /^the\s/i.test(b.title); }],
-      ["Has pictures", function (b) { return b.fam.key === "pics"; }],
-      ["Has a dragon, or could", function (b) { return b.fam.key === "fantasy"; }],
-      ["Goes to space", function (b) { return b.fam.key === "scifi"; }],
-      ["Came out 2020 or later", function (b) { return b.year >= 2020; }],
-      ["From the 1980s", function (b) { return b.year >= 1980 && b.year < 1990; }],
-      ["Title over 35 characters", function (b) { return b.title.length > 35; }],
-      ["A colour in the title", function (b) { return COLOR.test(b.title); }],
-      ["An animal in the title", function (b) { return BEAST.test(b.title); }],
-      ["Promises to fix your life", function (b) { return b.fam.key === "hustle"; }],
-      ["Someone probably dies", function (b) { return b.fam.key === "chills"; }],
-      ["Author uses initials", function (b) { return /^[A-Z]\./.test(b.author); }],
-      ["Alliterative author", function (b) { var w = people(b.author)[0].split(/\s+/); return w.length > 1 && w[0].charAt(0) === w[w.length - 1].charAt(0); }],
-      ["Title is possessive", function (b) { return /\w['’]s\b/.test(b.title); }],
-      ["From the Dead Authors' Club", function (b) { return b.fam.key === "classics"; }],
-      ["“Life” in the title", function (b) { return /\b(life|lives|live|living)\b/i.test(b.title); }],
-      ["A how-to", function (b) { return /^how\b/i.test(b.title); }],
-      ["“World” in the title", function (b) { return /\bworlds?\b/i.test(b.title); }],
-      ["Big brain nonfiction", function (b) { return b.fam.key === "brainy"; }],
-      ["Published 2000–2009", function (b) { return b.year >= 2000 && b.year < 2010; }],
-      ["A girl in the title", function (b) { return /\bgirls?\b/i.test(b.title); }],
-      ["Ends with an S", function (b) { return /s$/i.test(shortTitle(b.title)); }],
-      ["Title has an “and”", function (b) { return /\s(and|&)\s/i.test(b.title); }],
-      ["A Mr, Mrs, Dr or Lady", function (b) { return /\b(mr|mrs|ms|dr|lady|lord|sir)\b\.?/i.test(b.title); }]
-    ].map(function (p) {
-      return { label: p[0], hits: books.filter(p[1]) };
-    }).filter(function (p) { return p.hits.length; });
-  }
-  function newBingo() {
-    var el = $("bingo");
-    if (!el) return;
-    var pool = bingoPool();
-    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
-    bingoCard = pool.slice(0, 24);
-    bingoCard.splice(12, 0, { label: "Free square", free: true });
-    if (bingoCard.length < 25) return;
-    el.innerHTML = '<div class="bingo__head" aria-hidden="true">' + "BINGO".split("").map(function (l) { return "<span>" + l + "</span>"; }).join("") + "</div>" +
-      bingoCard.map(function (c, i) {
-        return '<button type="button" class="cell' + (c.free ? " cell--free is-on" : "") + '" data-i="' + i + '" aria-pressed="' + (c.free ? "true" : "false") + '"' +
-          (c.free ? " disabled" : "") + ">" +
-          '<span class="cell__l">' + esc(c.label) + "</span>" +
-          '<span class="cell__b">' + (c.free ? "you own books" : "") + "</span></button>";
-      }).join("");
-    checkBingo();
-  }
-  var LINES = (function () {
-    var L = [], r, c;
-    for (r = 0; r < 5; r++) { L.push([0, 1, 2, 3, 4].map(function (k) { return r * 5 + k; })); }
-    for (c = 0; c < 5; c++) { L.push([0, 1, 2, 3, 4].map(function (k) { return k * 5 + c; })); }
-    L.push([0, 6, 12, 18, 24], [4, 8, 12, 16, 20]);
-    return L;
-  })();
-  function checkBingo() {
-    var el = $("bingo"), msg = $("bingo-msg");
-    if (!el) return;
-    var cells = el.querySelectorAll(".cell");
-    var on = [].map.call(cells, function (c) { return c.classList.contains("is-on"); });
-    var wins = LINES.filter(function (l) { return l.every(function (i) { return on[i]; }); });
-    cells.forEach(function (c) { c.classList.remove("is-win"); });
-    wins.forEach(function (l) { l.forEach(function (i) { cells[i].classList.add("is-win"); }); });
-    el.classList.toggle("is-bingo", wins.length > 0);
-    var n = on.filter(Boolean).length - 1;
-    if (msg) msg.innerHTML = wins.length
-      ? '<b class="bingo__yell">Bingo!</b>' + (wins.length > 1 ? " &times;" + wins.length + ". Greedy." : " Your prize is the satisfaction.")
-      : plural(n, "square") + " stamped. " + (n >= 18 ? "Statistically this is getting embarrassing." : "Keep going.");
-  }
-  function wireBingo() {
-    var el = $("bingo");
-    if (!el) return;
-    el.addEventListener("click", function (e) {
-      var cell = e.target.closest(".cell");
-      if (!cell || cell.disabled) return;
-      var c = bingoCard[+cell.getAttribute("data-i")];
-      var on = !cell.classList.contains("is-on");
-      cell.classList.toggle("is-on", on);
-      cell.setAttribute("aria-pressed", on ? "true" : "false");
-      cell.querySelector(".cell__b").textContent = on ? shortTitle(pick(c.hits).title) : "";
-      checkBingo();
-    });
-  }
-
-  /* ---- 16 read it all ---------------------------------------------------- */
+  /* ---- 14 read it all ---------------------------------------------------- */
   function updateRun() {
     var r = $("run-range"), big = $("run-big");
     if (!r || !big) return;
@@ -898,7 +775,7 @@
     }
   }
 
-  /* ---- 17 ask the librarian ---------------------------------------------- */
+  /* ---- 15 ask the librarian ---------------------------------------------- */
   function fold(s) { return String(s).toLowerCase().normalize ? String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "") : String(s).toLowerCase(); }
   function ask() {
     var q = $("ask-q"), out = $("ask-out");
@@ -994,14 +871,13 @@
   if (nextBtn) nextBtn.addEventListener("click", newDate);
   wireStrip();
   wireNames();
-  wireBingo();
   var duelEl = $("duel");
   if (duelEl) duelEl.addEventListener("click", function (e) {
     var c = e.target.closest(".duel__card");
     if (c) pickDuel(+c.getAttribute("data-side"));
   });
-  [["duel-next", "click", newDuel], ["birth-range", "input", updateBirth], ["remix-go", "click", remix],
-   ["bingo-new", "click", newBingo], ["run-range", "input", updateRun], ["ask-q", "input", ask]].forEach(function (w) {
+  [["duel-next", "click", newDuel], ["birth-range", "input", updateBirth],
+   ["run-range", "input", updateRun], ["ask-q", "input", ask]].forEach(function (w) {
     var n = $(w[0]);
     if (n) n.addEventListener(w[1], w[2]);
   });
