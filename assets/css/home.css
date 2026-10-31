@@ -176,9 +176,20 @@ body{
 .nav__links a:hover{color:var(--ink)}
 .nav__links a:hover::after{transform:scaleX(1)}
 .nav__cta{margin-left:.4rem;padding:.55em 1.1em;font-size:.92rem}
+/* phones keep Projects and Résumé in the bar: the links tighten, and below
+   560px the name shortens to "Pob V." to make room */
 @media (max-width:800px){
-  .nav__links{display:none}
-  .nav__cta{margin-left:auto}
+  .nav__in{gap:1rem}
+  .nav__links{gap:1.1rem}
+  .nav__links a{font-size:.9rem}
+}
+@media (max-width:560px){
+  .brand__rest{display:none}
+  .nav__cta{margin-left:0;padding:.5em .95em;font-size:.86rem}
+}
+@media (max-width:340px){
+  .nav__links{gap:.8rem}
+  .nav__links a{font-size:.84rem}
 }
 
 /* ==========================================================================
@@ -231,6 +242,8 @@ body{
   background:linear-gradient(165deg,var(--accent),#152AC0);
   box-shadow:0 40px 80px -40px rgba(33,54,224,.55);
 }
+/* the head may rise out of the arch; the body is cut cleanly at its base */
+.hero__block{clip-path:inset(-40% -40% 0 -40% round 0 0 24px 24px)}
 .hero__block::before{
   content:"";position:absolute;inset:0;border-radius:inherit;overflow:hidden;
   background:radial-gradient(120% 70% at 32% 6%,rgba(255,255,255,.30),transparent 52%);
@@ -252,7 +265,7 @@ body{
 @media (max-width:920px){
   .hero__grid{grid-template-columns:1fr;gap:2.5rem;min-height:0}
   .hero__art{order:-1;max-width:300px;margin-top:.5rem}
-  .hero__block{aspect-ratio:4/4.4;border-radius:150px 150px 22px 22px}
+  .hero__block{height:auto;aspect-ratio:4/4.4;border-radius:150px 150px 22px 22px}
   .hero__role{max-width:none}
 }
 
@@ -315,6 +328,13 @@ body{
   .job{grid-template-columns:1fr;gap:1rem}
   .job__co{font-size:1.5rem}
 }
+.job__now{display:inline-flex;align-items:center;gap:.5rem;color:var(--accent-ink)}
+.job__now::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.job__note{max-width:64ch;color:var(--ink-2)}
+.job--break .job__co{color:var(--ink-2)}
+.contact__mail{margin-top:1.1rem !important;font-size:.98rem !important}
+.contact__mail a{color:var(--paper);border-bottom:1px solid rgba(250,250,247,.35)}
+.contact__mail a:hover{border-color:var(--paper)}
 /* a job that has a full case study on projects.html points to it */
 .job__case{display:inline-flex;align-items:center;gap:.45rem;margin-top:1.3rem;font-weight:640;font-size:.96rem;color:var(--accent-ink);
   border-bottom:1.5px solid var(--accent-wash);padding-bottom:.1rem;transition:border-color .2s var(--ease),gap .25s var(--ease)}

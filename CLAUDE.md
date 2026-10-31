@@ -113,6 +113,11 @@ These are structural, not stylistic — they apply everywhere without making the
 - **Every feature guards its own elements.** `main.js` is shared by two pages with different
   markup, so each behavior checks its element exists and no-ops otherwise. Preserve that.
 - **`prefers-reduced-motion` is honored** by every animation, including the Canvas components.
+- **The live origin is `https://vutisat.github.io/`.** There is no custom domain (pobv.dev does
+  not resolve); canonical, `og:url` and `og:image` must use the github.io origin. `index.html`
+  carries the `Person` JSON-LD (`@id` `https://vutisat.github.io/#pob`, alternate name Thiti);
+  other pages reference that `@id` rather than redefining the person. `robots.txt` and
+  `sitemap.xml` live at the root; never list `423.html` in either. Share card: `assets/img/og-card.jpg`.
 - Metrics and career facts in the copy are **real and verified**. Never invent, round, or
   embellish a number, employer, or date. See `PRODUCT.md`.
 
