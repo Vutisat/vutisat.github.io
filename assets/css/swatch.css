@@ -2,7 +2,7 @@
    The Swatch Book — home.html
 
    World: a Danish wool sample book on a winter afternoon. The intro is the
-   book's cover: a length of petrol twill with a card-stock label sewn onto
+   book's cover: a length of periwinkle twill with a card-stock label sewn onto
    it, Pob standing in front, hung from the ceiling on two lengths of yarn.
    Every page is a swatch: a piece of woven wool, pinked at the foot, with
    nothing on it but the page's name, embroidered in satin stitch. Each
@@ -46,6 +46,10 @@
   --navy:#4A5F9C;
   --lilac:#A48DD2;
   --slate:#7D8C9B;
+  /* the cover: a light periwinkle, a soft tint of the navy tux in the portrait.
+     Other tried colours, and how to switch: docs/home-cover-colours.md */
+  --cover:#B3C4F2;
+  --cover-wash:rgba(236,240,255,.24);
 
   --twill:url("../img/hub/wool-twill.webp");
   --herring:url("../img/hub/wool-herring.webp");
@@ -155,7 +159,7 @@ a{ color:inherit; }
    THE COVER (intro), hung from the ceiling on two lengths of yarn
 --------------------------------------------------------------------------- */
 .intro{
-  --dye:var(--petrol); --weave:var(--twill); --seam:12px;
+  --dye:var(--cover); --weave:var(--twill); --seam:12px;
   position:relative; max-width:var(--max);
   margin:clamp(80px, 9vw, 120px) auto 0;
   margin-inline:max(var(--gutter), calc((100% - var(--max)) / 2));
@@ -171,9 +175,10 @@ a{ color:inherit; }
   background-image:
     radial-gradient(ellipse 70% 55% at 32% 18%, rgba(255,255,255,.16), transparent 70%),
     radial-gradient(ellipse 120% 80% at 50% 120%, rgba(0,0,0,.22), transparent 60%),
+    linear-gradient(var(--cover-wash), var(--cover-wash)), /* lifts a light dye over the weave; transparent for darker dyes (docs/home-cover-colours.md) */
     var(--twill);
-  background-size:auto, auto, 240px 240px;
-  background-blend-mode:normal, normal, multiply;
+  background-size:auto, auto, auto, 240px 240px;
+  background-blend-mode:normal, normal, normal, multiply;
   box-shadow:
     inset 0 10px 18px -6px rgba(255,255,255,.22),
     inset 0 -22px 34px -10px rgba(0,0,0,.32),

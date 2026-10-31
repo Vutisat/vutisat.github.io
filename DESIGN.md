@@ -299,7 +299,7 @@ reasons in `.impeccable/config.json`. Read those before "fixing" anything they c
 
 The site as a Danish wool sample book on a winter afternoon, on a limewashed sage wall lit by
 window light.
-- The intro is the book's **cover**: petrol twill with a raster-stitched hem, Pob's cutout
+- The intro is the book's **cover**: periwinkle twill (`--cover #B3C4F2` + wash; was petrol, then lime and marigold; options in `docs/home-cover-colours.md`) with a raster-stitched hem, Pob's cutout
   portrait standing on it, and a card-stock label sewn on carrying "Hi, I'm Pob.", the intro,
   index tabs and say-hi links. The cover **hangs from the ceiling on two lengths of yarn**.
 - Four collections, two per row: Engineering (Career, Résumé, Projects) with Recommendations (New York,
