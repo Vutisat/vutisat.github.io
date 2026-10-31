@@ -89,8 +89,11 @@
   reveal(".meadow", 0.6);
 
   /* ---- the cover rocks on its yarn when you scroll past ---------------- */
+  /* not on touch screens: re-rotating the whole cover every scroll frame
+     makes phones re-draw it, and they fall behind (half-drawn photo) */
+  var coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
   var cover = document.querySelector(".intro");
-  if (cover) {
+  if (cover && !coarse) {
     var lastY = window.scrollY, angle = 0, vel = 0, raf = 0;
     function step() {
       /* a damped spring pulling the panel back to hanging straight */

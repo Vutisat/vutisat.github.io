@@ -1,12 +1,13 @@
 /* Concerts & Shows — concerts.html
-   Lays every show from concerts-data.js into the drawer as a wristband,
-   grouped by year, newest first. Each band is a <details>, so it opens and
-   closes with keyboard and without any further script. Guards its elements. */
+   Lays every show into the drawer as a wristband, grouped by year, newest
+   first. Each band is a <details>, so it opens and closes with keyboard and
+   without any further script. First paint uses concerts-data.js; then the
+   Google Sheet (window.CONCERTS_SHEET) is re-read and, if it loads, the drawer
+   is redrawn from it. Guards its elements. */
 (function () {
   "use strict";
   var drawer = document.getElementById("drawer");
   var wish = document.getElementById("wish");
-  var shows = (window.CONCERTS || []).filter(function (s) { return s && s.artist && s.date; });
 
   function esc(t) {
     return String(t == null ? "" : t).replace(/[&<>"']/g, function (c) {
@@ -37,7 +38,9 @@
     return (1.05 / (L + 0.05)) >= ((L + 0.05) / (0.0074 + 0.05)) ? "#FFFFFF" : "#0E0C12";
   }
 
-  if (drawer) {
+  function render(list) {
+    var shows = (list || []).filter(function (s) { return s && s.artist && s.date; });
+    if (!drawer) return;
     if (!shows.length) {
       drawer.innerHTML = '<p class="drawer__empty">The drawer is empty. Add a show to concerts-data.js.</p>';
     } else {
@@ -75,6 +78,60 @@
       });
       drawer.innerHTML = html;
     }
+  }
+  render(window.CONCERTS);
+
+  /* ---- live sheet sync --------------------------------------------------
+     RFC 4180 CSV; columns found by header text, so the sheet can be
+     reordered. Rows whose Show column says No are left out. */
+  function parseCSV(text) {
+    var rows = [], row = [], cell = "", q = false;
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (q) {
+        if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; }
+        else cell += c;
+      } else if (c === '"') q = true;
+      else if (c === ",") { row.push(cell); cell = ""; }
+      else if (c === "\n" || c === "\r") {
+        if (c === "\r" && text[i + 1] === "\n") i++;
+        row.push(cell); rows.push(row); row = []; cell = "";
+      } else cell += c;
+    }
+    if (cell || row.length) { row.push(cell); rows.push(row); }
+    return rows;
+  }
+  /* the sheet may hand back a date as "9/23/2017"; keep the page's ISO form */
+  function isoDate(d) {
+    d = String(d || "").trim();
+    var m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(d);
+    if (m) return m[3] + "-" + ("0" + m[1]).slice(-2) + "-" + ("0" + m[2]).slice(-2);
+    return d;
+  }
+  function fromSheet(text) {
+    var all = parseCSV(text);
+    if (!all.length) return null;
+    var head = all[0].map(function (h) { return h.trim().toLowerCase(); });
+    function col(name) { return head.indexOf(name); }
+    var ev = col("event"), dt = col("date");
+    if (ev < 0 || dt < 0) return null;
+    var keys = { venue: "venue", city: "city", kind: "kind", band: "band", color: "color", "with": "with", support: "support", note: "note" };
+    var show = col("show");
+    var out = [];
+    all.slice(1).forEach(function (r) {
+      if (!r[ev] || !r[dt]) return;
+      if (show >= 0 && /^no$/i.test((r[show] || "").trim())) return;
+      var s = { artist: r[ev].trim(), date: isoDate(r[dt]) };
+      Object.keys(keys).forEach(function (k) { var i = col(keys[k]); if (i >= 0 && r[i]) s[k] = r[i].trim(); });
+      out.push(s);
+    });
+    return out.length ? out : null;
+  }
+  if (window.CONCERTS_SHEET && window.fetch && drawer) {
+    fetch(window.CONCERTS_SHEET, { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.text() : Promise.reject(); })
+      .then(function (t) { var list = fromSheet(t); if (list) render(list); })
+      .catch(function () { /* offline or not shared yet: the bundled copy stays */ });
   }
 
   if (wish) {

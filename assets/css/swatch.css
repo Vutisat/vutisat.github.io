@@ -70,18 +70,21 @@ html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; scrollbar-color:#8E
 body{
   margin:0; min-height:100dvh; position:relative;
   display:flow-root; /* keep the cover's top margin inside the body, so wall decor positions from the true top */
+  /* limewash: brush-mottled plaster multiplied into the wall colour, as a
+     background layer that scrolls with the page. (It used to be a fixed,
+     mix-blend-mode layer; phones re-blended it every scroll frame and fell
+     behind drawing the page.) The thin veil of wall colour stands in for the
+     old layer's .85 opacity. */
+  --wash:radial-gradient(ellipse 80% 60% at 12% 0%, rgba(246,250,240,.5), transparent 70%);
   background-color:var(--wall);
-  background-image:radial-gradient(ellipse 80% 60% at 12% 0%, rgba(246,250,240,.5), transparent 70%);
+  background-image:var(--wash), linear-gradient(rgba(211,217,200,.15), rgba(211,217,200,.15)), url("../img/hub/wall.webp");
+  background-size:auto, auto, 420px 420px;
+  background-blend-mode:normal, normal, multiply;
   color:var(--ink);
   font-family:var(--font); font-size:17px; line-height:1.55;
   font-optical-sizing:auto; font-weight:400;
   caret-color:var(--petrol);
   overflow-x:clip;
-}
-body::before{ /* limewash: brush-mottled plaster over the whole wall */
-  content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
-  background:url("../img/hub/wall.webp") 0 0 / 420px 420px;
-  mix-blend-mode:multiply; opacity:.85;
 }
 /* afternoon sun through a four-pane window, falling across the wall behind
    the cover; a second, fainter window further down the room */
@@ -325,13 +328,7 @@ a{ color:inherit; }
 .shelf::after{ left:-34px; right:-20px; z-index:-1; background:var(--log); padding-left:8px; background-clip:border-box, content-box; } /* left end + the run, which stops under the right end */
 .shelf::before{ right:-34px; width:44px; z-index:-1; background:var(--log-end); } /* the right-hand sawn end */
 #engineering .shelf{ --bx:-40px; } #recommendations .shelf{ --bx:-610px; } #travel .shelf{ --bx:-330px; } #lifestyle .shelf{ --bx:-520px; } /* offsets stay above -750px so the 1600px run outlasts the longest shelf */
-.swatch{
-  position:relative; z-index:1; display:flex;
-  /* the shadow lives here: the swatch's pinked mask would clip its own */
-  filter:drop-shadow(0 10px 12px rgba(30,36,33,.32));
-  transition:filter .55s var(--ease);
-}
-.swatch:has(.card:hover, .card:focus-visible){ filter:drop-shadow(0 24px 22px rgba(30,36,33,.38)); }
+.swatch{ position:relative; z-index:1; display:flex; }
 
 /* ---------------------------------------------------------------------------
    THE SWATCH
@@ -356,8 +353,11 @@ a{ color:inherit; }
     inset 0 6px 10px -4px rgba(255,255,255,.2),
     inset 0 -12px 18px -8px rgba(0,0,0,.3),
     inset 10px 0 16px -12px rgba(0,0,0,.18),
-    inset -10px 0 16px -12px rgba(0,0,0,.18);
-  transition:transform .55s var(--ease);
+    inset -10px 0 16px -12px rgba(0,0,0,.18),
+    /* the drop shadow onto the wall: a box-shadow, not a filter on the
+       swatch, so phones don't need an off-screen layer per tile */
+    0 10px 12px -2px rgba(30,36,33,.3);
+  transition:transform .55s var(--ease), box-shadow .55s var(--ease);
 }
 .swatch--light .card{ --thread:#1F4A52; }
 
@@ -380,7 +380,12 @@ a{ color:inherit; }
 
 /* reaching for a swatch: it straightens and lifts off the log, and the
    light runs along the floss of its name */
-.card:hover, .card:focus-visible{ transform:rotate(0) translateY(-12px); }
+.card:hover, .card:focus-visible{
+  transform:rotate(0) translateY(-12px);
+  box-shadow:inset 0 6px 10px -4px rgba(255,255,255,.2), inset 0 -12px 18px -8px rgba(0,0,0,.3),
+    inset 10px 0 16px -12px rgba(0,0,0,.18), inset -10px 0 16px -12px rgba(0,0,0,.18),
+    0 24px 22px -4px rgba(30,36,33,.36);
+}
 .card:hover .card__name, .card:focus-visible .card__name{ background-position:30px 0, 0 0; }
 .card:active{ transform:rotate(0) translateY(-7px); }
 .card:focus-visible{ outline:none; }
@@ -643,10 +648,10 @@ a{ color:inherit; }
 /* the light follows the visitor's own clock (set as data-time on <html>) */
 html[data-time="morning"] .sun{ opacity:.7; filter:saturate(.7) brightness(1.05); }
 html[data-time="evening"] .sun{ opacity:.95; filter:sepia(.75) saturate(2.2) hue-rotate(-12deg); }
-html[data-time="evening"] body{ background-image:radial-gradient(ellipse 80% 60% at 88% 10%, rgba(255,214,150,.32), transparent 70%); }
+html[data-time="evening"] body{ --wash:radial-gradient(ellipse 80% 60% at 88% 10%, rgba(255,214,150,.32), transparent 70%); }
 html[data-time="night"] .sun{ opacity:.55; filter:sepia(.4) hue-rotate(175deg) saturate(1.6) brightness(.95); }
-html[data-time="night"] body::after{ /* dusk settles on the wall, not on the swatches */
-  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+html[data-time="night"] body::after{ /* dusk settles on the wall, not on the swatches (absolute, not fixed: cheaper to scroll) */
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
   background:linear-gradient(rgba(38,52,92,.34), rgba(28,36,70,.42)); mix-blend-mode:multiply;
 }
 html[data-time="night"] .coll__note{ color:var(--ink); } /* keeps 4.5:1 on the dimmed wall */
