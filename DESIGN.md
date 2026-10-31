@@ -118,10 +118,15 @@ start visible, the count-up jumps to its final value, and the headline doesn't m
 Vanilla CSS/JS, no build step, no CDN, deploys as-is on GitHub Pages. `home.js` guards every
 feature, so removing a section from the HTML degrades silently.
 
-Note: the hero portrait (`.hero__art`) and the footer's `life.html` door are **commented out in
-the markup, intentionally**. `home.css` keys its single-column hero off
-`:has(.hero__art)` — uncommenting the figure restores the two-column hero with no CSS change.
-Leave those comments in place rather than deleting them.
+Hero portrait (**currently commented out of the markup, by request**; uncommenting restores it): the tuxedo cut-out (`pob-tuxedo.webp`) stands **in** the page with no backing
+shape. It rises from behind the dark Scale panel, which sits above it (`.scale` z-index 2), so
+the panel's top edge crops the body and acts as the ground; `--hero-pb` and `--tuck` set how far
+it runs under. Never put it back on a coloured block or arch: a cut-out on a blob reads as a
+sticker (the user rejected exactly that). The hero stacks below 1180px because the surname is
+too wide to share a row with the figure.
+
+The footer's `life.html` door is **commented out in the markup, intentionally**; leave the
+comment in place rather than deleting it.
 
 ---
 

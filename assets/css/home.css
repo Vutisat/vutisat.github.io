@@ -112,6 +112,8 @@ body{
 .btn--accent:hover{box-shadow:0 14px 34px -12px rgba(33,54,224,.7)}
 .btn--ghost{--bg:transparent;--fg:var(--ink);border:1.5px solid var(--line-2)}
 .btn--ghost:hover{--bg:var(--ink);--fg:var(--paper);border-color:var(--ink)}
+.hero__cta .btn--ghost{--bg:#fff}
+.hero__cta .btn--ghost:hover{--bg:var(--ink)}
 
 /* section heads */
 .s-head{margin-bottom:clamp(2.5rem,5vw,4rem);max-width:none}
@@ -198,12 +200,12 @@ body{
 /* ==========================================================================
    HERO
    ========================================================================== */
-.hero{position:relative;padding-top:clamp(2.5rem,6vh,4rem);padding-bottom:clamp(3rem,7vh,5.5rem);overflow:visible}
+.hero{position:relative;padding-top:clamp(2.5rem,6vh,4rem);padding-bottom:var(--hero-pb);overflow:visible}
 /* full-bleed: escape the centered wrap so the mesh spans the whole viewport width (body has overflow-x:hidden) */
 .hero__mesh{position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:0;pointer-events:none}
 .hero__grid{
   position:relative;z-index:1;
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(288px,352px);gap:clamp(1.5rem,4vw,3.5rem);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,420px);gap:clamp(1.5rem,4vw,3.5rem);
   align-items:center;min-height:min(76vh,680px);
 }
 /* With the portrait commented out of index.html the second track would still
@@ -211,7 +213,7 @@ body{
    the art itself, so putting the <figure> back restores the two-column hero
    without touching this file. Only above the breakpoint: below it the hero is
    already one column and hugs its content. */
-@media (min-width:921px){
+@media (min-width:1181px){
   .hero__grid:not(:has(.hero__art)){grid-template-columns:minmax(0,1fr);min-height:min(62vh,540px)}
 }
 .hero__lede{position:relative;z-index:2}
@@ -238,23 +240,15 @@ body{
 .hero__thesis .serif-em{color:var(--ink)}
 .hero__cta{display:flex;flex-wrap:wrap;gap:.85rem;margin-top:2.2rem}
 
-/* portrait as bold graphic block */
-.hero__art{position:relative;z-index:1;justify-self:center;align-self:center;width:100%;max-width:352px}
-.hero__block{
-  position:relative;height:clamp(420px,56vh,548px);border-radius:200px 200px 24px 24px;
-  background:linear-gradient(165deg,var(--accent),#152AC0);
-  box-shadow:0 40px 80px -40px rgba(33,54,224,.55);
-}
-/* the head may rise out of the arch; the body is cut cleanly at its base */
-.hero__block{clip-path:inset(-40% -40% 0 -40% round 0 0 24px 24px)}
-.hero__block::before{
-  content:"";position:absolute;inset:0;border-radius:inherit;overflow:hidden;
-  background:radial-gradient(120% 70% at 32% 6%,rgba(255,255,255,.30),transparent 52%);
-  mix-blend-mode:screen;
-}
+/* portrait: a cut-out standing in the page, not a sticker on a shape. It
+   rises from behind the dark Scale panel, whose top edge crops the body and
+   becomes the ground he stands on (.scale sits above it, z-index 2). */
+.hero{--hero-pb:clamp(3rem,7vh,5.5rem);--tuck:clamp(5rem,9vw,8rem)}
+.hero__art{position:relative;z-index:1;align-self:stretch;width:100%;margin:0}
 .hero__portrait{
-  position:absolute;left:50%;bottom:-2%;transform:translateX(-50%);
-  height:106%;width:auto;max-width:none;
+  position:absolute;left:50%;bottom:calc(-1 * (var(--hero-pb) + var(--tuck)));transform:translateX(-50%);
+  height:calc(100% + var(--hero-pb) + var(--tuck) + 1.5rem);max-height:min(720px,84vh);width:auto;max-width:none;
+  filter:drop-shadow(0 16px 22px rgba(19,19,22,.11));
 }
 .hero__tag{
   position:absolute;left:-1.4rem;bottom:2.2rem;z-index:3;
@@ -265,17 +259,18 @@ body{
 .hero__tag .k{font-family:"Spline",monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 .hero__tag .v{font-weight:700;color:var(--ink);font-size:.95rem;letter-spacing:-.01em}
 
-@media (max-width:920px){
+/* the name is too wide to share a row with the portrait below ~1180px, so
+   the hero stacks: name, thesis, buttons, then the figure rising behind Scale */
+@media (max-width:1180px){
   .hero__grid{grid-template-columns:1fr;gap:2.5rem;min-height:0}
-  .hero__art{order:-1;max-width:300px;margin-top:.5rem}
-  .hero__block{height:auto;aspect-ratio:4/4.4;border-radius:150px 150px 22px 22px}
+  .hero__art{height:clamp(320px,88vw,480px)}
   .hero__role{max-width:none}
 }
 
 /* ==========================================================================
    SCALE - the centerpiece (kinetic numbers)
    ========================================================================== */
-.scale{background:var(--ink);color:var(--paper);padding-block:var(--step);border-radius:34px;margin-inline:clamp(.6rem,2vw,1.4rem);position:relative;overflow:hidden}
+.scale{background:var(--ink);color:var(--paper);padding-block:var(--step);border-radius:34px;margin-inline:clamp(.6rem,2vw,1.4rem);position:relative;z-index:2;overflow:hidden}
 .scale::before{content:"";position:absolute;inset:0;
   background:radial-gradient(60% 50% at 85% 0%,rgba(33,54,224,.35),transparent 60%);pointer-events:none}
 .scale .wrap{position:relative}
