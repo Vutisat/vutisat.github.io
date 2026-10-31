@@ -384,7 +384,7 @@ the other soft, organic shape. Shadows are soft and offset.
   No props on the logs: identical decorations on every one read as unnatural. Swatches stand 4px
   into the bark; hover lifts a swatch 12px. Below 1080px each row gets its own pieces of log,
   each from its own stretch of bark and feathered into the one before (mask), with the sawn ends
-  at the row's ends. Connect hangs instead with tiny wooden clothespins from a three-ply rope (`rope-h.webp` tile) stretched between two turned wooden pegs (`cord-peg.webp`; pegs hidden below 1080px where each row has its own run)
+  at the row's ends. Connect hangs instead with tiny wooden clothespins from a three-ply rope (`rope-h.webp` tile) stretched between two turned wooden pegs (`cord-peg.webp`): eleven tiles in centred rows (6, then 4 below 1180px, 3 below 560px) on a 2n-column grid so a short last row starts one column in; each tile carries its own stretch of rope and the row's end tiles carry the pegs (CSS block "CONNECT LAYOUT")
   (hover straightens it, no lift).
 - **Index tabs:** card-stock tabs with a wool snip of the collection's dye.
 - **Hanging yarn:** two 5px yarn strands from the top of the page to the cover (`.intro::after`).

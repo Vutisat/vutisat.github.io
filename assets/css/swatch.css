@@ -390,18 +390,10 @@ a{ color:inherit; }
    CONNECT: smaller, square swatches, one per place to find Pob, each with
    the handle stitched in plain thread under the name
 --------------------------------------------------------------------------- */
-.shelf--small{ margin-top:52px; grid-template-columns:repeat(8, minmax(0, 1fr)); gap:48px clamp(14px, 1.8vw, 24px); }
 .shelf--small .card{ aspect-ratio:1; padding:14px; border-radius:clamp(12px, 1.3vw, 18px); }
 /* Connect hangs differently: pegged to a length of yarn with tiny wooden
    clothespins */
 .shelf--small{ --rail:url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x; } /* the same three-ply rope, run sideways */
-.shelf--small::after{ left:-24px; right:-24px; top:16px; bottom:auto; height:6px; border-radius:3px; background:var(--rail); filter:none; box-shadow:0 7px 5px -2px rgba(40,30,20,.28); }
-.shelf--small::before{ /* a turned wooden peg at each end, the line wrapped round it */
-  content:""; left:-33px; right:-33px; top:10px; bottom:auto; width:auto; height:18px; z-index:0;
-  background:url("../img/hub/cord-peg.webp") 0 0 / 18px 18px no-repeat, url("../img/hub/cord-peg.webp") 100% 0 / 18px 18px no-repeat;
-  filter:drop-shadow(0 3px 2px rgba(40,30,20,.3));
-}
-.shelf--small{ padding:30px 0 0; }
 .shelf--small .card{ transform-origin:50% 0; }
 .shelf--small .card:hover, .shelf--small .card:focus-visible, .shelf--small .card:active{ transform:rotate(0); } /* pegged: it straightens, it doesn't lift */
 .shelf--small .card::before{
@@ -437,6 +429,9 @@ a{ color:inherit; }
 .card__logo--instagram{ --logo:url("../img/hub/logos/instagram.svg"); }
 .card__logo--facebook{ --logo:url("../img/hub/logos/facebook.svg"); }
 .card__logo--tiktok{ --logo:url("../img/hub/logos/tiktok.svg"); }
+.card__logo--letterboxd{ --logo:url("../img/hub/logos/letterboxd.svg"); }
+.card__logo--goodreads{ --logo:url("../img/hub/logos/goodreads.svg"); }
+.card__logo--steam{ --logo:url("../img/hub/logos/steam.svg"); }
 .card__logo--chess{ --logo:url("../img/hub/logos/chess.svg"); }
 .card:hover .card__logo::before, .card:focus-visible .card__logo::before{ background-position:0 0, 18px 0, 0 0; }
 /* the two Instagrams: a tiny felt patch sewn onto the corner of the mark,
@@ -691,8 +686,6 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
   .swatch:nth-child(3n+1)::before{ background:url("../img/hub/birch-end-l.webp") 0 50% / 44px 70px no-repeat, url("../img/hub/birch.webp") var(--bx) 50% / 1600px 70px no-repeat; padding-left:8px; background-clip:border-box, content-box;  -webkit-mask:none; mask:none;}
   .swatch:nth-child(3n)::before, .swatch:last-child::before{ right:-10px; }
   .swatch:nth-child(3n)::after, .swatch:last-child::after{ right:-24px; width:44px; background:var(--log-end); }
-  .shelf--small .swatch::before, .shelf--small .swatch:nth-child(n)::before{ top:-14px; height:6px; border-radius:3px; background:var(--rail); filter:none; box-shadow:0 7px 5px -2px rgba(40,30,20,.28); }
-  .shelf--small .swatch::after{ display:none; }
 }
 @media (max-width:560px){
   .flower:not(.flower--phone){ display:none; }
@@ -710,7 +703,6 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
   .swatch:nth-child(odd)::before{ background:url("../img/hub/birch-end-l.webp") 0 50% / 44px 70px no-repeat, url("../img/hub/birch.webp") var(--bx) 50% / 1600px 70px no-repeat; padding-left:8px; background-clip:border-box, content-box;  -webkit-mask:none; mask:none;}
   .swatch:nth-child(even)::before, .swatch:last-child::before{ right:calc(14px - var(--gutter)); }
   .swatch:nth-child(even)::after, .swatch:last-child::after{ display:block; right:calc(var(--gutter) * -1); width:44px; background:var(--log-end); }
-  .shelf--small .swatch:nth-child(n)::after{ display:none; }
   /* an odd swatch out stands centred on a shelf of its own, not beside a gap */
   .swatch:last-child:nth-child(odd){ grid-column:1 / -1; justify-self:center; width:calc(50% - 8px); }
   .swatch:last-child:nth-child(odd)::before{ left:calc(-50% - 8px - var(--gutter)); right:calc(-50% + 6px - var(--gutter)); }
@@ -720,20 +712,61 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
   .index__tab{ font-size:15px; }
 }
 
-/* Connect keeps its squares small on smaller screens: four a row (capped), then three */
+/* ---------------------------------------------------------------------------
+   CONNECT LAYOUT: centred rows of small squares, each row pegged with
+   clothespins to its own length of rope, a turned wooden peg at each end.
+   Tiles span two columns of a 2n-column grid, so a short last row can start
+   one column in and sit centred. Desktop 6 a row, then 4, then 3 on phones.
+--------------------------------------------------------------------------- */
+.shelf.shelf--small{
+  --c:58px; --row:6;
+  margin-top:52px; padding:30px 0 0;
+  grid-template-columns:repeat(calc(var(--row) * 2), minmax(0, var(--c)));
+  justify-content:center; gap:52px 14px;
+}
+.shelf--small::after, .shelf--small::before{ display:none; }
+.shelf--small .swatch{ grid-column:span 2; }
+.shelf--small .swatch:nth-child(7){ grid-column:2 / span 2; }
+.shelf--small .swatch:nth-child(n)::before{ /* this tile's stretch of rope */
+  content:""; position:absolute; z-index:-1; top:-14px; bottom:auto; left:-14px; right:-14px; height:6px; width:auto;
+  border-radius:3px; background:var(--rail); filter:none; -webkit-mask:none; mask:none; padding:0;
+  box-shadow:0 7px 5px -2px rgba(40,30,20,.28);
+}
+.shelf--small .swatch:nth-child(n)::after{ display:none; }
+.shelf--small .swatch:nth-child(6n+1)::before{ left:-24px; }
+.shelf--small .swatch:nth-child(6n)::before, .shelf--small .swatch:last-child::before{ right:-24px; }
+.shelf.shelf--small .swatch:nth-child(n)::after{ /* the peg, at a row's ends only (shown below) */
+  content:""; position:absolute; z-index:-1; top:-20px; bottom:auto; width:18px; height:18px;
+  background:url("../img/hub/cord-peg.webp") 0 0 / 18px 18px no-repeat; filter:drop-shadow(0 3px 2px rgba(40,30,20,.3)); -webkit-mask:none; mask:none;
+}
+.shelf--small .swatch:nth-child(6n+1)::after, .shelf--small .swatch:nth-child(6n)::after, .shelf--small .swatch:last-child::after{ display:block; }
+.shelf--small .swatch:nth-child(6n+1)::after{ left:-34px; right:auto; }
+.shelf--small .swatch:nth-child(6n)::after, .shelf--small .swatch:last-child::after{ right:-34px; left:auto; }
 @media (max-width:1180px){
-  .shelf--small{ grid-template-columns:repeat(4, minmax(0, 140px)); }
+  .shelf.shelf--small{ --row:4; }
+  .shelf--small .swatch:nth-child(n){ grid-column:span 2; }
+  .shelf--small .swatch:nth-child(9){ grid-column:2 / span 2; }
+  .shelf--small .swatch:nth-child(n)::before{ left:-14px; right:-14px; }
+  .shelf--small .swatch:nth-child(n)::after{ display:none; }
+  .shelf--small .swatch:nth-child(4n+1)::before{ left:-24px; }
+  .shelf--small .swatch:nth-child(4n)::before, .shelf--small .swatch:last-child::before{ right:-24px; }
+  .shelf--small .swatch:nth-child(4n+1)::after, .shelf--small .swatch:nth-child(4n)::after, .shelf--small .swatch:last-child::after{ display:block; }
+  .shelf--small .swatch:nth-child(4n+1)::after{ left:-34px; right:auto; }
+  .shelf--small .swatch:nth-child(4n)::after, .shelf--small .swatch:last-child::after{ right:-34px; left:auto; }
 }
 @media (max-width:560px){
-  /* three a row on a six-column grid, so the last two sit centred */
-  .shelf--small{ grid-template-columns:repeat(6, minmax(0, 1fr)); gap:52px 14px; }
-  .shelf--small .swatch{ grid-column:span 2; }
-  .shelf--small .swatch:nth-child(7){ grid-column:2 / span 2; }
-  .shelf--small .swatch::before, .shelf--small .swatch:nth-child(n)::before{ left:-12px; right:-12px; }
-  .shelf--small .swatch:nth-child(3n+1)::before{ left:calc(var(--gutter) * -1); }
-  .shelf--small .swatch:nth-child(3n)::before{ right:calc(var(--gutter) * -1); }
-  .shelf--small .swatch:nth-child(7)::before{ left:calc(-50% - 7px - var(--gutter)); }
-  .shelf--small .swatch:nth-child(8)::before{ right:calc(-50% - 7px - var(--gutter)); }
+  .shelf.shelf--small{ --row:3; --c:1fr; grid-template-columns:repeat(6, minmax(0, 1fr)); padding-inline:22px; }
+  .shelf--small .swatch:nth-child(n){ grid-column:span 2; }
+  .shelf--small .swatch:nth-child(10){ grid-column:2 / span 2; }
+  .shelf--small .swatch:nth-child(n){ width:auto; justify-self:stretch; } /* not the logs' lone-swatch centring */
+  .shelf--small .swatch:nth-child(n)::before{ left:-14px; right:-14px; }
+  .shelf--small .swatch:nth-child(n)::after{ display:none; }
+  .shelf--small .swatch:nth-child(3n+1)::before{ left:-24px; }
+  .shelf--small .swatch:nth-child(3n)::before, .shelf--small .swatch:last-child::before{ right:-24px; }
+  .shelf--small .swatch:nth-child(3n+1)::after, .shelf--small .swatch:nth-child(3n)::after, .shelf--small .swatch:last-child::after{ display:block; }
+  .shelf--small .swatch:nth-child(3n+1)::after{ left:-34px; right:auto; }
+  .shelf--small .swatch:nth-child(3n)::after, .shelf--small .swatch:last-child::after{ right:-34px; left:auto; }
+  .shelf--small .card{ padding:10px; }
 }
 
 /* ---------------------------------------------------------------------------
