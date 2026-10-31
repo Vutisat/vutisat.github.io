@@ -46,6 +46,7 @@
   --navy:#4A5F9C;
   --lilac:#A48DD2;
   --slate:#7D8C9B;
+  --brick:#E0574C;
   /* the cover: a light periwinkle, a soft tint of the navy tux in the portrait.
      Other tried colours, and how to switch: docs/home-cover-colours.md */
   --cover:#B3C4F2;
@@ -338,9 +339,10 @@ a{ color:inherit; }
   background-image:
     radial-gradient(ellipse 80% 55% at 35% 18%, rgba(255,255,255,.18), transparent 70%),
     radial-gradient(ellipse 120% 70% at 50% 118%, rgba(0,0,0,.24), transparent 62%),
-    var(--weave, var(--twill));
-  background-size:auto, auto, 240px 240px;
-  background-blend-mode:normal, normal, multiply;
+    var(--weave, var(--twill)),
+    var(--pattern, linear-gradient(var(--dye), var(--dye))); /* a woven pattern under the weave, or plain dye */
+  background-size:auto, auto, 240px 240px, 100% 100%;
+  background-blend-mode:normal, normal, multiply, normal;
   box-shadow:
     inset 0 6px 10px -4px rgba(255,255,255,.2),
     inset 0 -12px 18px -8px rgba(0,0,0,.3),
@@ -463,6 +465,41 @@ a{ color:inherit; }
 }
 .shelf--small .swatch:first-child .card:focus-visible .tag, .shelf--small .swatch:last-child .card:focus-visible .tag{ translate:0 0; }
 .vh{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+
+/* ---------------------------------------------------------------------------
+   PATTERNED CLOTH AND EMBROIDERED MARKS on some swatches. A pattern is
+   woven under the same weave raster (so it still reads as wool), and the
+   marks are the satin-floss .card__logo used on the Connect tiles.
+   Every page swatch carries a mark + its name, and a card-stock .tag on hover.
+--------------------------------------------------------------------------- */
+.card--thai{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 6' preserveAspectRatio='none'%3E%3Crect width='1' height='6' fill='%23F2505E'/%3E%3Crect y='1' width='1' height='4' fill='%23FFFFFF'/%3E%3Crect y='2' width='1' height='2' fill='%234F60BC'/%3E%3C/svg%3E"); }             /* the Thai flag, woven in stripes */
+.card--taxi{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 120' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='c' width='12' height='12' patternUnits='userSpaceOnUse'%3E%3Crect width='12' height='12' fill='%23FFFFFF'/%3E%3Crect width='6' height='6' fill='%232A2A2A'/%3E%3Crect x='6' y='6' width='6' height='6' fill='%232A2A2A'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='96' height='120' fill='%23FFCB3A'/%3E%3Crect y='86' width='96' height='12' fill='url(%23c)'/%3E%3C/svg%3E"); }             /* a yellow cab with its checker band */
+.card--riso{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2' preserveAspectRatio='none'%3E%3Crect width='1' height='1' fill='%23FF7BAC'/%3E%3Crect x='1' width='1' height='1' fill='%23FFD23F'/%3E%3Crect y='1' width='1' height='1' fill='%2341B6C4'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%236C7BE0'/%3E%3C/svg%3E"); }             /* riso-ink patchwork, like the Stacks zine */
+.card--dusk{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 120' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23FFD983'/%3E%3Cstop offset='.55' stop-color='%23FFAE6E'/%3E%3Cstop offset='.8' stop-color='%23E88C7E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='120' fill='url(%23g)'/%3E%3Cpath d='M0 98 C14 90 24 94 36 88 S60 84 72 90 S88 86 96 89 V120 H0Z' fill='%238A6A92'/%3E%3Cpath d='M0 108 C20 102 40 106 56 101 S84 104 96 100 V120 H0Z' fill='%236C5578'/%3E%3C/svg%3E"); }             /* the Salinas Valley at golden hour */
+.card--gingham{ --pattern:repeating-linear-gradient(90deg, rgba(80,150,80,.34) 0 10px, transparent 10px 20px), repeating-linear-gradient(0deg, rgba(80,150,80,.34) 0 10px, transparent 10px 20px), linear-gradient(#FBFAF2, #FBFAF2); --thread:#1C3B21; } /* a green gingham tea towel */
+.card--stage{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 120' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='n' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%235B4A9E'/%3E%3Cstop offset='1' stop-color='%232E2660'/%3E%3C/linearGradient%3E%3ClinearGradient id='p' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23FF8FC8' stop-opacity='.95'/%3E%3Cstop offset='1' stop-color='%23FF8FC8' stop-opacity='.1'/%3E%3C/linearGradient%3E%3ClinearGradient id='y' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23FFE07A' stop-opacity='.95'/%3E%3Cstop offset='1' stop-color='%23FFE07A' stop-opacity='.1'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%238FE3FF' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='%238FE3FF' stop-opacity='.08'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='120' fill='url(%23n)'/%3E%3Cpath d='M6 0 L18 0 L52 120 L14 120Z' fill='url(%23p)'/%3E%3Cpath d='M78 0 L90 0 L82 120 L44 120Z' fill='url(%23y)'/%3E%3Cpath d='M44 0 L52 0 L70 120 L28 120Z' fill='url(%23b)' opacity='.7'/%3E%3Cg fill='%23FFF3C4'%3E%3Ccircle cx='30' cy='14' r='1.3'/%3E%3Ccircle cx='66' cy='22' r='1.1'/%3E%3Ccircle cx='20' cy='40' r='1'/%3E%3Ccircle cx='76' cy='48' r='1.2'/%3E%3Ccircle cx='58' cy='9' r='1'/%3E%3C/g%3E%3C/svg%3E"); } /* a stage at night, three spotlights and some glitter */
+.card--grid{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 120' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='d' width='8' height='8' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='4' cy='4' r='.9' fill='%23FFFFFF' fill-opacity='.6'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='96' height='120' fill='%234C63F7'/%3E%3Crect width='96' height='120' fill='url(%23d)'/%3E%3C/svg%3E"); }       /* cobalt with a dot grid, like the career page's hero mesh */
+.card--pinstripe{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 120' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='s' width='9' height='120' patternUnits='userSpaceOnUse'%3E%3Crect x='4' width='.7' height='120' fill='%23EDE9DF' fill-opacity='.75'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='96' height='120' fill='%235E6784'/%3E%3Crect width='96' height='120' fill='url(%23s)'/%3E%3C/svg%3E"); }  /* chalk-stripe suiting */
+.card--tartan{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 120' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='v' width='32' height='120' patternUnits='userSpaceOnUse'%3E%3Crect x='4' width='14' height='120' fill='%236E1A22' fill-opacity='.42'/%3E%3Crect x='10' width='2.4' height='120' fill='%2324346E' fill-opacity='.7'/%3E%3Crect x='25' width='1.1' height='120' fill='%23FFD66B' fill-opacity='.85'/%3E%3C/pattern%3E%3Cpattern id='h' width='96' height='32' patternUnits='userSpaceOnUse'%3E%3Crect y='4' width='96' height='14' fill='%236E1A22' fill-opacity='.42'/%3E%3Crect y='10' width='96' height='2.4' fill='%2324346E' fill-opacity='.7'/%3E%3Crect y='25' width='96' height='1.1' fill='%23FFD66B' fill-opacity='.85'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='96' height='120' fill='%23E35A4E'/%3E%3Crect width='96' height='120' fill='url(%23v)'/%3E%3Crect width='96' height='120' fill='url(%23h)'/%3E%3C/svg%3E"); }  /* a red tartan */
+.card--atlas{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 120' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%234A5FC0'/%3E%3Cstop offset='1' stop-color='%232A387E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='120' fill='url(%23g)'/%3E%3Cg fill='none' stroke='%23DDE6FF' stroke-opacity='.38' stroke-width='.7'%3E%3Cellipse cx='48' cy='60' rx='40' ry='52'/%3E%3Cellipse cx='48' cy='60' rx='26' ry='52'/%3E%3Cellipse cx='48' cy='60' rx='11' ry='52'/%3E%3Cpath d='M48 8V112'/%3E%3Cpath d='M12 36 Q48 30 84 36'/%3E%3Cpath d='M8 60 H88'/%3E%3Cpath d='M12 84 Q48 90 84 84'/%3E%3C/g%3E%3Cg fill='%23FFF6D6'%3E%3Ccircle cx='9' cy='10' r='.9'/%3E%3Ccircle cx='88' cy='16' r='1.1'/%3E%3Ccircle cx='84' cy='104' r='.8'/%3E%3Ccircle cx='7' cy='98' r='1'/%3E%3Ccircle cx='90' cy='70' r='.7'/%3E%3Ccircle cx='5' cy='52' r='.7'/%3E%3C/g%3E%3C/svg%3E"); }    /* a night-sky atlas: meridians, parallels, stars */
+.card--topo{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 120' preserveAspectRatio='none'%3E%3Crect width='96' height='120' fill='%23A3B26C'/%3E%3Cg fill='none' stroke='%23F1ECD2' stroke-opacity='.85' stroke-width='1.1'%3E%3Cpath d='M30 40 C40 28 62 30 66 42 S58 66 44 64 S22 52 30 40Z'/%3E%3Cpath d='M22 38 C34 18 70 20 76 40 S66 76 44 74 S10 58 22 38Z'/%3E%3Cpath d='M12 34 C28 6 80 8 88 38 S76 88 44 86 S-2 64 12 34Z'/%3E%3Cpath d='M-4 30 C20 -8 96 -6 104 36 S88 102 44 100 S-16 72 -4 30Z'/%3E%3Cpath d='M60 96 C70 90 86 94 86 104 S70 118 62 112 S52 100 60 96Z'/%3E%3Cpath d='M54 92 C68 80 96 86 96 104 S72 126 58 118 S42 100 54 92Z'/%3E%3Cpath d='M0 116 C20 108 40 112 52 120'/%3E%3C/g%3E%3C/svg%3E"); }      /* a trail map's contour lines on olive canvas */
+.card--bookcloth{ --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 120' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%238E5C3E'/%3E%3Cstop offset='.08' stop-color='%23A97452'/%3E%3Cstop offset='1' stop-color='%23A06E4E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='120' fill='url(%23g)'/%3E%3Crect x='0' width='7' height='120' fill='%236E4129' fill-opacity='.45'/%3E%3Cg fill='none' stroke='%23FFE38C' stroke-opacity='1'%3E%3Crect x='15' y='17' width='68' height='88' rx='2' stroke-width='1.4'/%3E%3Crect x='18.5' y='20.5' width='61' height='81' rx='1.5' stroke-width='.7'/%3E%3C/g%3E%3Cg fill='%23FFE38C' fill-opacity='1'%3E%3Cpath d='M15 13.8 L18.2 17 L15 20.2 L11.8 17Z'/%3E%3Cpath d='M83 13.8 L86.2 17 L83 20.2 L79.8 17Z'/%3E%3Cpath d='M15 101.8 L18.2 105 L15 108.2 L11.8 105Z'/%3E%3Cpath d='M83 101.8 L86.2 105 L83 108.2 L79.8 105Z'/%3E%3Ccircle cx='49' cy='27' r='1'/%3E%3Ccircle cx='45' cy='27' r='.6'/%3E%3Ccircle cx='53' cy='27' r='.6'/%3E%3Ccircle cx='49' cy='95' r='1'/%3E%3Ccircle cx='45' cy='95' r='.6'/%3E%3Ccircle cx='53' cy='95' r='.6'/%3E%3C/g%3E%3C/svg%3E"); } /* a cloth-bound hardcover: spine hinge, gilt double rule, corner diamonds */
+.card--icon{ gap:8px; }
+.card--icon .card__name{ font-size:clamp(14px, 14.5cqi, 24px); }
+.card--icon .card__logo{ width:38cqi; }
+.card__logo--briefcase{ --logo:url("../img/hub/logos/briefcase.svg"); }
+.card__logo--rocket-launch{ --logo:url("../img/hub/logos/rocket-launch.svg"); }
+.card__logo--globe-hemisphere-west{ --logo:url("../img/hub/logos/globe-hemisphere-west.svg"); }
+.card__logo--cooking-pot{ --logo:url("../img/hub/logos/cooking-pot.svg"); }
+.card__logo--backpack{ --logo:url("../img/hub/logos/backpack.svg"); }
+.card__logo--books{ --logo:url("../img/hub/logos/books.svg"); }
+.card__logo--chart-bar{ --logo:url("../img/hub/logos/chart-bar.svg"); }
+.card__logo--music-notes{ --logo:url("../img/hub/logos/music-notes.svg"); }
+.card__logo--file-text{ --logo:url("../img/hub/logos/file-text.svg"); }
+.card__logo--statue-of-liberty{ --logo:url("../img/hub/logos/statue-of-liberty.svg"); }
+.card__logo--flower-lotus{ --logo:url("../img/hub/logos/flower-lotus.svg"); }
+.card__logo--book-open{ --logo:url("../img/hub/logos/book-open.svg"); }
+.swatch:has(.card:hover, .card:focus-visible){ z-index:2; }
 
 /* ---------------------------------------------------------------------------
    FOOT: the page ends in a woolly meadow, felt flowers standing in a fringe

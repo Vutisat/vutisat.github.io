@@ -310,7 +310,7 @@ window light.
   (blog) are not on the hub. Every page is a **plush wool swatch** like the cover: soft
   rounded corners, a top sheen and underside shade, a real thread stitch sewn around the
   curve (`.seam--card`, finer stitch via `data-period`/`data-length`), a punched ring hole just
-  inside the seam, tilted, carrying only its name embroidered in satin stitch. Ledges have
+  inside the seam, tilted, carrying an embroidered mark (satin-floss icon, a CSS mask) over its name embroidered in satin stitch, and a card-stock `.tag` that drops in on hover/focus. Most swatches are woven with a page-specific pattern under the weave (`--pattern`); see the CSS block "PATTERNED CLOTH AND EMBROIDERED MARKS". A last Connect ledge holds small square logo swatches. Ledges have
   rounded ends. No pinked or other hard-cut edges. Weaves: Engineering and Travel
   twill, Recommendations basketweave, Lifestyle herringbone; each stands on a teak ledge.
 - Five **felt clouds** drift in the sky: one between the hanging yarns above the cover and four
@@ -414,7 +414,7 @@ above portrait) below 820px. Reduced motion: no lift, bob or floss slide.
 
 ## Do's and Don'ts
 
-- **Do** give new pages a swatch with only an embroidered name, a dye, and a `--tilt`.
+- **Do** give new pages a swatch with an embroidered mark + name, a `.tag`, a dye or a woven `--pattern` that evokes the page, and a `--tilt`. Keep the name legible over the pattern (dark `--thread` on light cloth).
 - **Do** ship a provenance `.json` with every new raster.
 - **Don't** put text, figures or screenshots on swatches.
 - **Don't** round the cloth or add characters; the clouds and hanging yarn are the only playful notes.
