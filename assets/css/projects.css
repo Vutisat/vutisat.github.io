@@ -6,8 +6,9 @@
    one project per screen, media leading, big confident type, real numbers.
    No costume. Each band is its own environment, the way Apple stages a
    product: a white hero under a drifting blue-teal glow, Sub Sea Sonics in
-   a deep-ocean dark band (light shafts, rising bubbles), Outreach in soft
-   grey, Redsky over a faint data grid. Near-black ink, one blue for links
+   a deep-ocean dark band (light shafts, rising bubbles), Outreach in warm
+   deal-room light with outreach pulsing out to buyer nodes, Redsky under a
+   literal red dusk sky with requests streaking across. Near-black ink, one blue for links
    and the active nav item (a lighter blue inside the sea). Geist.
 
    Motion is scroll-led and quiet (projects.js): content rises in, media
@@ -112,7 +113,6 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
    Project
 --------------------------------------------------------------------------- */
 .project{ padding:clamp(80px, 10vw, 140px) 0; }
-.project--grey{ background:var(--grey); }
 
 /* Sub Sea Sonics: the band goes under water */
 .project--sea{
@@ -146,13 +146,52 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
 }
 .project--sea .video{ box-shadow:0 40px 120px -40px rgba(90,176,255,.45), 0 0 0 1px rgba(255,255,255,.08); }
 
-/* Redsky: a faint data grid, fading out at the edges */
-.project--grid{ position:relative; isolation:isolate; }
-.project--grid::before{
-  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
-  background:radial-gradient(circle, rgba(0,102,204,.22) 1px, transparent 1.6px) 0 0 / 28px 28px;
-  -webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 30%, #000, transparent 75%); mask-image:radial-gradient(ellipse 70% 55% at 50% 30%, #000, transparent 75%);
+/* Datasite Outreach: warm deal-room light; one banker's outreach fans out
+   to buyers in the margins, a pulse travelling along each line */
+.project--deal{
+  position:relative; isolation:isolate; overflow:hidden;
+  background:
+    radial-gradient(90% 45% at 50% 0%, rgba(255,184,112,.30), transparent 65%),
+    linear-gradient(180deg, #FFF4E8 0%, #FBF6F0 40%, #F5F5F7 100%);
 }
+.project > .deal{ position:absolute; inset:0; z-index:-1; max-width:none; margin:0; padding:0; pointer-events:none;
+  -webkit-mask-image:radial-gradient(ellipse 40% 85% at 50% 52%, transparent 72%, #000 100%); mask-image:radial-gradient(ellipse 40% 85% at 50% 52%, transparent 72%, #000 100%); }
+.deal svg{ width:100%; height:100%; display:block; }
+.deal__lines path{ fill:none; stroke:rgba(214,122,44,.22); stroke-width:1.5; }
+.deal__pulses path{ fill:none; stroke:#E8833A; stroke-width:3; stroke-linecap:round; stroke-dasharray:0 1; }
+.js .deal__pulses path{ stroke-dasharray:.03 1; stroke-dashoffset:.03; animation:send 5s cubic-bezier(.45,0,.3,1) infinite; animation-delay:var(--d); }
+@keyframes send{ 0%{ stroke-dashoffset:.03; } 60%, 100%{ stroke-dashoffset:-1; } }
+.deal__nodes circle{ fill:#FFF8F0; stroke:rgba(214,122,44,.55); stroke-width:1.5; animation:ping 4s ease-in-out infinite; animation-delay:var(--t); transform-box:fill-box; transform-origin:center; }
+.deal__nodes .deal__hub{ fill:#E8833A; stroke:#fff; stroke-width:3; animation:none; }
+@keyframes ping{ 0%, 100%{ transform:scale(1); } 50%{ transform:scale(1.35); fill:#FFE2C4; } }
+
+/* Target Redsky: a literal red sky at dusk; requests streak across it */
+.project--sky{
+  --ink:#F5F5F7; --ink-2:rgba(245,245,247,.74); --ink-3:rgba(245,245,247,.6); --line:rgba(255,255,255,.14);
+  --blue:#FF8A7A; --grey:rgba(255,255,255,.05);
+  position:relative; isolation:isolate; overflow:hidden; color:var(--ink);
+  background:
+    radial-gradient(110% 48% at 50% 0%, rgba(214,40,40,.55), transparent 64%),
+    radial-gradient(50% 40% at 90% 70%, rgba(255,110,60,.14), transparent 70%),
+    linear-gradient(180deg, #3A0D12 0%, #1E0A10 40%, #120810 75%, #0B070C 100%);
+}
+.project--sky ::selection{ background:#8C1E24; color:#fff; }
+.project > .sky{ position:absolute; inset:0; z-index:-1; max-width:none; margin:0; padding:0; pointer-events:none;
+  /* streaks run bright in the margins and all but vanish behind the copy */
+  -webkit-mask-image:linear-gradient(90deg, #000 6%, rgba(0,0,0,.08) 24%, rgba(0,0,0,.08) 76%, #000 94%); mask-image:linear-gradient(90deg, #000 6%, rgba(0,0,0,.08) 24%, rgba(0,0,0,.08) 76%, #000 94%); }
+.sky__s{
+  position:absolute; top:var(--y); left:0; width:var(--w); height:1.5px; border-radius:2px; opacity:var(--o);
+  background:linear-gradient(90deg, transparent, rgba(255,170,150,.55) 70%, #fff);
+  transform:translateX(-120%); animation:streak var(--d) linear infinite; animation-delay:var(--t);
+}
+@keyframes streak{ to{ transform:translateX(calc(100vw + 120%)); } }
+.project--sky .flow{ border:1px solid var(--line); background:rgba(28,12,18,.82); }
+.project--sky .flow__lines path{ stroke:rgba(255,255,255,.22); }
+.project--sky .flow__lines .flow__out{ stroke:var(--blue); }
+.project--sky .flow__src rect, .project--sky .flow__dst rect{ fill:#22121A; }
+.project--sky .flow__hub rect{ fill:#fff; }
+.project--sky .flow__hubname{ fill:#1D1D1F; }
+.project--sky .flow__hubsub{ fill:#6E6E73; }
 .project > *{ max-width:var(--max); margin-left:auto; margin-right:auto; padding-left:var(--gutter); padding-right:var(--gutter); }
 .project__head{ text-align:center; }
 .project__meta{ margin:18px 0 0; font-size:17px; line-height:1.4; font-weight:600; color:var(--ink-3); }
@@ -276,5 +315,5 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
   html{ scroll-behavior:auto; }
   *,*::before,*::after{ transition:none !important; animation:none !important; }
   .js .flow path{ stroke-dashoffset:0; }
-  .sea__b{ display:none; }
+  .sea__b, .sky__s{ display:none; }
 }
