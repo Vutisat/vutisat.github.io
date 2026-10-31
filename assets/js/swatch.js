@@ -67,22 +67,26 @@
     return;
   }
 
-  /* ---- swatches settle, flowers grow, as each comes into view ---------- */
+  /* ---- swatches settle as each shelf comes into view; the meadow waits
+     until most of it is on screen, then every flower springs up at once --- */
   document.querySelectorAll(".shelf").forEach(function (shelf) {
     shelf.querySelectorAll(".swatch").forEach(function (sw, i) { sw.style.setProperty("--i", i); });
   });
-  document.querySelectorAll(".meadow .flower").forEach(function (f, i) { f.style.setProperty("--i", i); });
-  var watched = document.querySelectorAll(".shelf, .meadow");
-  if ("IntersectionObserver" in window) {
+  function reveal(selector, threshold) {
+    var els = document.querySelectorAll(selector);
+    if (!("IntersectionObserver" in window)) {
+      els.forEach(function (el) { el.classList.add("is-in"); });
+      return;
+    }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
       });
-    }, { threshold: 0.25 });
-    watched.forEach(function (el) { io.observe(el); });
-  } else {
-    watched.forEach(function (el) { el.classList.add("is-in"); });
+    }, { threshold: threshold });
+    els.forEach(function (el) { io.observe(el); });
   }
+  reveal(".shelf", 0.25);
+  reveal(".meadow", 0.6);
 
   /* ---- the cover rocks on its yarn when you scroll past ---------------- */
   var cover = document.querySelector(".intro");

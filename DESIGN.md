@@ -309,10 +309,9 @@ window light.
   so shorter rows simply end sooner; notes never widen a column. Life List and the Notebook
   (blog) are not on the hub. Every page is a **plush wool swatch** like the cover: soft
   rounded corners, a top sheen and underside shade, a real thread stitch sewn around the
-  curve (`.seam--card`, finer stitch via `data-period`/`data-length`), a punched ring hole just
-  inside the seam, tilted, carrying an embroidered mark (satin-floss icon, a CSS mask) over its name embroidered in satin stitch, and a card-stock `.tag` that drops in on hover/focus. Most swatches are woven with a page-specific pattern under the weave (`--pattern`); see the CSS block "PATTERNED CLOTH AND EMBROIDERED MARKS". A last Connect ledge holds small square logo swatches. Ledges have
+  curve (`.seam--card`, finer stitch via `data-period`/`data-length`), tilted, carrying an embroidered mark (satin-floss icon, a CSS mask) over its name embroidered in satin stitch, and a card-stock `.tag` that drops in on hover/focus. Most swatches are woven with a page-specific pattern under the weave (`--pattern`); see the CSS block "PATTERNED CLOTH AND EMBROIDERED MARKS". A last Connect ledge holds small square logo swatches. Ledges have
   rounded ends. No pinked or other hard-cut edges. Weaves: Engineering and Travel
-  twill, Recommendations basketweave, Lifestyle herringbone; each stands on a teak ledge.
+  twill, Recommendations basketweave, Lifestyle herringbone; each collection stands on its own birch log (teak ledges were too generic; hanging from a brass rail, a knitting needle or a branch on yarn loops was tried and rejected, and the punched ring holes went with it; a tapering branch log made every shelf read as a cone pointing right; the same two acorns on every log looked staged).
 - Five **felt clouds** drift in the sky: one between the hanging yarns above the cover and four
   in the side margins (wide screens). Below 1460px only two small ones stay, in the strip of
   sky above the cover. All bob gently at different paces.
@@ -354,7 +353,7 @@ names 800, `clamp(25px, 2.5vw, 34px)`, satin embroidery via `background-clip:tex
 ## Materials
 
 Procedural rasters tinted by multiply: `wool-twill|herring|basket.webp` (240px), `stitch.webp` /
-`stitch-v.webp` (running stitch on straight edges), `satin.webp`, `teak.webp` (ledges),
+`stitch-v.webp` (running stitch on straight edges), `satin.webp`, `teak.webp` (unused since the birch logs), `birch.webp` + `birch-end-l.webp` + `birch-end-r.webp` (the log shelves),
 `wall.webp`, `light.webp`, `cloud.webp`, and for the meadow `felt-grass.webp`,
 `felt-daisy|tulip|buttonflower.webp`.
 
@@ -367,16 +366,26 @@ sewn by `assets/js/swatch.js`: the original curved, shaded stitch (an SVG `<symb
 as `stitch.webp`) placed every 22px along an SVG rounded-rect path, rotated to its tangent, and
 re-sewn on resize. Without JS a layered dashed path (shadow, thread, highlight) shows instead.
 Never replace a stitch with a plain CSS dashed border.
-Swatches, tabs and ledges stay square-cut; the ring hole is the only small circle. Clouds are
+Swatches and tabs stay square-cut;  Clouds are
 the other soft, organic shape. Shadows are soft and offset.
 
 ## Components
 
-- **Swatch (signature):** 4:5 wool, pinked foot (mask), ring hole, `--tilt`. Reach (hover /
+- **Swatch (signature):** 4:5 wool, pinked foot (mask), `--tilt`, no hole. Reach (hover /
   focus-visible): straightens, lifts 12px, shadow deepens, the light runs along the floss (satin
   layer slides 30px). Focus: 3px ring around the swatch.
-- **Ledge:** a 30px teak run with a lit top face; below 1080px each row gets its own, and an
-  odd last swatch stands centred on a full shelf.
+- **Log:** three procedural rasters (`assets/img/hub/birch.webp`, a 1600×70 CSS px run of bark,
+  and `birch-end-l.webp` / `birch-end-r.webp`, 44×70 sawn ends): off-white bark with grey mottling,
+  fine tapered grey-brown lenticels in loose clusters, a few ragged dark bands, peeled spots and
+  specks of lichen; ends with a thin bark rim, faint rings, a pith and drying checks. Each end's
+  bark fades into the run, so the long run (`.shelf::after`, left end layered over it) stops under
+  the right end (`.shelf::before`) and one log fits any length. Each collection starts the run at
+  its own offset (`--bx` on `#id .shelf`), so knots, peels and lichen land differently on every log.
+  No props on the logs: identical decorations on every one read as unnatural. Swatches stand 4px
+  into the bark; hover lifts a swatch 12px. Below 1080px each row gets its own pieces of log,
+  each from its own stretch of bark and feathered into the one before (mask), with the sawn ends
+  at the row's ends. Connect hangs instead from a length of yarn with tiny wooden clothespins
+  (hover straightens it, no lift).
 - **Index tabs:** card-stock tabs with a wool snip of the collection's dye.
 - **Hanging yarn:** two 5px yarn strands from the top of the page to the cover (`.intro::after`).
 - **Clouds:** cream felt (`cloud.webp`), five on wide screens, two small ones above the cover
@@ -395,11 +404,11 @@ motion every one of them is skipped and the page stands still; without JS it is 
   top of the page), then a small damped spring rocks it when you scroll past near the top. The
   yarn strands run 600px past the top of the page so their cut ends never show mid-swing. Keep
   the swing subtle: a stronger wobble was rejected.
-- **Swatches settle:** the first time each shelf enters view, its swatches drop onto the ledge
+- **Swatches settle:** the first time each shelf enters view, its swatches drop onto the log
   in turn (90ms apart, soft overshoot).
 - **Cloud depth:** clouds drift upward at different depths (`--depth`) on a CSS scroll timeline,
   on top of their bob. Browsers without scroll timelines keep only the bob.
-- **Meadow:** flowers grow up out of the grass when it enters view, then sway. There is no
+- **Meadow:** once 60% of it is on screen, every flower springs up out of the grass at once (a springy .9s scale with a few tens of ms of jitter, not a left-to-right wave), then sways. There is no
   hover interaction (a cursor-nod was tried and removed as janky).
 - **Time of day:** `data-time` on `<html>` (morning / day / evening / night, from the visitor's
   local clock, stamped inline in `<head>` so the first paint is right) retints the window
