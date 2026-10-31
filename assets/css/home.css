@@ -169,6 +169,7 @@ body{
   .egg{transition:opacity .01s}
   .egg.is-open{transform:none}
 }
+.brand{white-space:nowrap}
 .brand .d{color:var(--accent)}
 .nav__links{display:flex;gap:1.7rem;margin-left:auto}
 .nav__links a{color:var(--ink-2);font-weight:520;font-size:.96rem;position:relative;padding:.3rem 0;transition:color .2s var(--ease)}
@@ -188,8 +189,10 @@ body{
   .nav__cta{margin-left:0;padding:.5em .95em;font-size:.86rem}
 }
 @media (max-width:340px){
-  .nav__links{gap:.8rem}
+  .nav__in{gap:.7rem}
+  .nav__links{gap:.75rem}
   .nav__links a{font-size:.84rem}
+  .nav__cta{padding:.45em .8em;font-size:.82rem}
 }
 
 /* ==========================================================================
