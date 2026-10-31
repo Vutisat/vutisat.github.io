@@ -217,11 +217,14 @@ a{ color:inherit; }
 .intro::after{ /* the two lengths of yarn it hangs from */
   /* they run well past the top of the page, so the cut ends never show
      however the cover swings */
-  content:""; position:absolute; left:12%; right:12%; bottom:100%; height:calc(clamp(80px, 9vw, 120px) + 600px); pointer-events:none;
-  /* a twisted two-ply cord, darker than the wall, with its own shadow */
+  content:""; position:absolute; left:calc(12% - 6px); right:calc(12% - 6px); bottom:100%; height:calc(clamp(80px, 9vw, 120px) + 600px); pointer-events:none;
+  /* three-ply rope (a procedural tile), each finished just above the cover
+     with a whipping of cream thread and a wooden bead, macramé-style */
   background:
-    repeating-linear-gradient(155deg, #6E4F2A 0 3px, #B88A52 3px 5px, #8A6436 5px 7px) 0 0 / 7px 100% no-repeat,
-    repeating-linear-gradient(155deg, #6E4F2A 0 3px, #B88A52 3px 5px, #8A6436 5px 7px) 100% 0 / 7px 100% no-repeat;
+    url("../img/hub/cord-bead.webp") 0 calc(100% - 4px) / 20px 30px no-repeat,
+    url("../img/hub/cord-bead.webp") 100% calc(100% - 4px) / 20px 30px no-repeat,
+    url("../img/hub/rope-v.webp") 6px 100% / 8px 18px repeat-y,
+    url("../img/hub/rope-v.webp") calc(100% - 6px) 100% / 8px 18px repeat-y;
   filter:drop-shadow(2px 3px 2px rgba(30,36,33,.35));
 }
 .intro__me{
@@ -391,9 +394,13 @@ a{ color:inherit; }
 .shelf--small .card{ aspect-ratio:1; padding:14px; border-radius:clamp(12px, 1.3vw, 18px); }
 /* Connect hangs differently: pegged to a length of yarn with tiny wooden
    clothespins */
-.shelf--small{ --rail:repeating-linear-gradient(155deg, #6E4F2A 0 3px, #B88A52 3px 5px, #8A6436 5px 7px); }
-.shelf--small::after{ left:-24px; right:-24px; top:17px; bottom:auto; height:4px; border-radius:2px; background:var(--rail); filter:none; box-shadow:0 7px 5px -2px rgba(40,30,20,.28); }
-.shelf--small::before{ display:none; }
+.shelf--small{ --rail:url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x; } /* the same three-ply rope, run sideways */
+.shelf--small::after{ left:-24px; right:-24px; top:16px; bottom:auto; height:6px; border-radius:3px; background:var(--rail); filter:none; box-shadow:0 7px 5px -2px rgba(40,30,20,.28); }
+.shelf--small::before{ /* a turned wooden peg at each end, the line wrapped round it */
+  content:""; left:-33px; right:-33px; top:10px; bottom:auto; width:auto; height:18px; z-index:0;
+  background:url("../img/hub/cord-peg.webp") 0 0 / 18px 18px no-repeat, url("../img/hub/cord-peg.webp") 100% 0 / 18px 18px no-repeat;
+  filter:drop-shadow(0 3px 2px rgba(40,30,20,.3));
+}
 .shelf--small{ padding:30px 0 0; }
 .shelf--small .card{ transform-origin:50% 0; }
 .shelf--small .card:hover, .shelf--small .card:focus-visible, .shelf--small .card:active{ transform:rotate(0); } /* pegged: it straightens, it doesn't lift */
@@ -684,7 +691,7 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
   .swatch:nth-child(3n+1)::before{ background:url("../img/hub/birch-end-l.webp") 0 50% / 44px 70px no-repeat, url("../img/hub/birch.webp") var(--bx) 50% / 1600px 70px no-repeat; padding-left:8px; background-clip:border-box, content-box;  -webkit-mask:none; mask:none;}
   .swatch:nth-child(3n)::before, .swatch:last-child::before{ right:-10px; }
   .swatch:nth-child(3n)::after, .swatch:last-child::after{ right:-24px; width:44px; background:var(--log-end); }
-  .shelf--small .swatch::before, .shelf--small .swatch:nth-child(n)::before{ top:-13px; height:4px; border-radius:2px; background:var(--rail); filter:none; box-shadow:0 7px 5px -2px rgba(40,30,20,.28); }
+  .shelf--small .swatch::before, .shelf--small .swatch:nth-child(n)::before{ top:-14px; height:6px; border-radius:3px; background:var(--rail); filter:none; box-shadow:0 7px 5px -2px rgba(40,30,20,.28); }
   .shelf--small .swatch::after{ display:none; }
 }
 @media (max-width:560px){

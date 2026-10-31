@@ -384,7 +384,7 @@ the other soft, organic shape. Shadows are soft and offset.
   No props on the logs: identical decorations on every one read as unnatural. Swatches stand 4px
   into the bark; hover lifts a swatch 12px. Below 1080px each row gets its own pieces of log,
   each from its own stretch of bark and feathered into the one before (mask), with the sawn ends
-  at the row's ends. Connect hangs instead from a length of yarn with tiny wooden clothespins
+  at the row's ends. Connect hangs instead with tiny wooden clothespins from a three-ply rope (`rope-h.webp` tile) stretched between two turned wooden pegs (`cord-peg.webp`; pegs hidden below 1080px where each row has its own run)
   (hover straightens it, no lift).
 - **Index tabs:** card-stock tabs with a wool snip of the collection's dye.
 - **Hanging yarn:** two 5px yarn strands from the top of the page to the cover (`.intro::after`).
@@ -427,3 +427,5 @@ above portrait) below 820px. Reduced motion: no lift, bob or floss slide.
 - **Do** ship a provenance `.json` with every new raster.
 - **Don't** put text, figures or screenshots on swatches.
 - **Don't** round the cloth or add characters; the clouds and hanging yarn are the only playful notes.
+
+- **Cover cords:** three-ply rope (`rope-v.webp`, an 8×18 tile repeated on y), each finished just above the cover with a whipping of cream thread and a wooden bead (`cord-bead.webp`), macramé-style.
