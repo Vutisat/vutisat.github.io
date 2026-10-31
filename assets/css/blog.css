@@ -1,0 +1,215 @@
+/* ===========================================================================
+   The Notebook — blog.html and post.html
+
+   World: pocket memo books on a desk. Every entry is its own little book:
+   a kraft (or dyed) board cover with rounded corners and a printed frame,
+   stapled on the spine, its date and place rubber-stamped in red. Opening
+   one shows the cover on the left and a ruled page on the right, with side
+   thoughts pinned in the outer margin.
+
+   The desk is dark slate linoleum so the books and paper carry the light.
+   Jost (geometric, the memo-book cover voice) for covers, stamps and labels;
+   Literata for reading. Material: assets/img/blog/kraft.webp.
+=========================================================================== */
+
+@font-face{ font-family:"Jost"; src:url("../fonts/jost-var.woff2") format("woff2"); font-weight:400 800; font-display:swap; }
+@font-face{ font-family:"Literata"; src:url("../fonts/literata-var.woff2") format("woff2"); font-weight:400 700; font-style:normal; font-display:swap; }
+@font-face{ font-family:"Literata"; src:url("../fonts/literata-italic-var.woff2") format("woff2"); font-weight:400 700; font-style:italic; font-display:swap; }
+
+:root{
+  --desk:#34403F;
+  --desk-2:#2A3433;
+  --paper:#FBFAF4;
+  --rule:rgba(70,104,140,.22);
+  --ink:#22201C;
+  --ink-2:#55514A;
+  --stamp:#C2302B;
+  --kraft:#D6B080;
+  --cover-blue:#2E5E8C;
+  --cover-red:#A63A2E;
+  --cover-green:#4C7550;
+  --on-desk:#E7ECE8;
+  --on-desk-2:#AEB9B5;
+  --label:"Jost", system-ui, sans-serif;
+  --read:"Literata", Georgia, serif;
+  --max:1180px;
+  --gutter:clamp(16px, 4vw, 48px);
+  --ease:cubic-bezier(.16, 1, .3, 1);
+  color-scheme:light;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0; min-height:100dvh; background:var(--desk);
+  background-image:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,.06), transparent 70%);
+  color:var(--on-desk); font-family:var(--label); font-size:17px; line-height:1.55;
+}
+::selection{ background:#F2D38A; color:var(--ink); }
+a{ color:inherit; }
+:focus-visible{ outline:3px solid #F2D38A; outline-offset:4px; }
+.skip{ position:absolute; left:-9999px; top:8px; z-index:5; background:#F2D38A; color:var(--ink); padding:8px 12px; }
+.skip:focus{ left:8px; }
+.top{ max-width:var(--max); margin:0 auto; padding:18px var(--gutter); display:flex; gap:22px; }
+.top__home{ font-weight:600; font-size:15px; text-decoration:none; color:var(--on-desk-2); }
+.top__home:hover{ color:var(--on-desk); }
+main{ max-width:var(--max); margin:0 auto; padding:0 var(--gutter); }
+.nojs{ color:var(--on-desk-2); }
+
+/* ---------------------------------------------------------------------------
+   THE MEMO BOOK (cover)
+--------------------------------------------------------------------------- */
+.book{
+  --board:var(--kraft); --print:#2B2620;
+  position:relative; display:flex; flex-direction:column; aspect-ratio:9 / 14;
+  padding:22px 20px 18px 26px; border-radius:10px;
+  background:url("../img/blog/kraft.webp") 0 0 / 320px 320px, var(--board);
+  background-blend-mode:multiply;
+  color:var(--print); text-decoration:none;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), 0 2px 2px rgba(0,0,0,.25), 0 18px 26px -14px rgba(0,0,0,.6);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.book--blue{ --board:var(--cover-blue); --print:#F2EEE4; }
+.book--red{ --board:var(--cover-red); --print:#F6EEE4; }
+.book--green{ --board:var(--cover-green); --print:#F2EEE4; }
+.book::before{ /* the printed frame */
+  content:""; position:absolute; inset:12px 12px 12px 18px; border:1.5px solid currentColor; border-radius:5px; opacity:.4; pointer-events:none;
+}
+.book::after{ /* two staples down the spine */
+  content:""; position:absolute; left:6px; top:22%; bottom:22%; width:4px;
+  background:linear-gradient(#cfd2d4, #8c9094) top / 4px 18px no-repeat, linear-gradient(#cfd2d4, #8c9094) bottom / 4px 18px no-repeat;
+  border-radius:1px;
+}
+.book__title{ margin-top:8px; font-size:clamp(20px, 2vw, 25px); font-weight:700; line-height:1.15; letter-spacing:-.005em; text-wrap:balance; }
+.book__stamp{ /* rubber stamp in red ink */
+  margin-top:auto; align-self:flex-start; display:flex; flex-direction:column; gap:1px;
+  padding:5px 9px 6px; border:2px solid var(--stamp); border-radius:3px; color:var(--stamp);
+  font-size:13px; font-weight:700; letter-spacing:.12em; line-height:1.15;
+  transform:rotate(-4deg); mix-blend-mode:multiply;
+}
+.book--kraft .book__stamp, .book:not(.book--blue):not(.book--red):not(.book--green) .book__stamp{ color:#9A1D18; border-color:#9A1D18; }
+/* real rubber-stamp ink: grain and voids from a mask, never two alike */
+.book__stamp, .open__stamp{
+  -webkit-mask:url("../img/blog/stamp-ink.webp") var(--ink-x, 0) var(--ink-y, 0) / 400px 200px;
+          mask:url("../img/blog/stamp-ink.webp") var(--ink-x, 0) var(--ink-y, 0) / 400px 200px;
+}
+.row__item:nth-child(2) .book__stamp{ --ink-x:-120px; --ink-y:-60px; }
+.row__item:nth-child(3) .book__stamp{ --ink-x:-240px; --ink-y:-30px; }
+.row__item:nth-child(4) .book__stamp{ --ink-x:-60px; --ink-y:-110px; }
+.open__stamp{ --ink-x:-180px; --ink-y:-90px; }
+.book--blue .book__stamp, .book--red .book__stamp, .book--green .book__stamp{ color:#F7D9C8; border-color:#F7D9C8; mix-blend-mode:normal; }
+.book__stamp small{ font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; }
+
+/* ---------------------------------------------------------------------------
+   INDEX: the row of books on the desk
+--------------------------------------------------------------------------- */
+.mast{ padding:clamp(24px, 5vw, 60px) 0 clamp(30px, 5vw, 56px); }
+.mast__band{
+  display:inline-block; margin:0; padding:clamp(10px, 1.6vw, 18px) clamp(20px, 3vw, 34px);
+  background:url("../img/blog/kraft.webp") 0 0 / 320px 320px, var(--kraft); background-blend-mode:multiply;
+  color:#2B2620; border-radius:8px; transform:rotate(-1deg);
+  font-size:clamp(44px, 8vw, 96px); font-weight:800; letter-spacing:-.02em; line-height:1;
+  box-shadow:0 2px 2px rgba(0,0,0,.25), 0 20px 30px -16px rgba(0,0,0,.6);
+}
+.mast__dek{ max-width:40em; margin:28px 0 0; color:var(--on-desk-2); font-size:clamp(16px, 1.6vw, 18.5px); }
+.books{ position:relative; }
+.row{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; align-items:flex-end; gap:48px 34px; }
+.row__item{ display:flex; flex-direction:column; flex:0 0 clamp(180px, 19vw, 230px); }
+/* each book stands on its own run of the desk's front edge; the runs meet
+   across the gaps, and the summaries sit below the edge at an even height */
+.row__item::after{
+  content:""; order:1; height:14px; margin:0 -17px 14px;
+  background:linear-gradient(rgba(255,255,255,.10), rgba(255,255,255,0) 2px), linear-gradient(#2A3433, #222B2A);
+  box-shadow:0 14px 24px -10px rgba(0,0,0,.6);
+}
+.row__item .book{ order:0; }
+.row__summary{ order:2; min-height:4.65em; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.row__item:first-child{ flex-basis:clamp(250px, 27vw, 330px); }
+.row__item:first-child .book__title{ font-size:clamp(24px, 2.6vw, 32px); }
+.row__item:nth-child(3n+1) .book{ transform:rotate(-1.4deg); }
+.row__item:nth-child(3n+2) .book{ transform:rotate(1deg); }
+.row__item:nth-child(3n) .book{ transform:rotate(-.4deg); }
+.row__item .book:hover, .row__item .book:focus-visible{ transform:rotate(0) translateY(-8px); box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), 0 2px 2px rgba(0,0,0,.25), 0 30px 34px -16px rgba(0,0,0,.65); }
+.row__summary{ margin:0; color:var(--on-desk-2); font-size:15.5px; }
+
+/* ---------------------------------------------------------------------------
+   READER: the book, open
+--------------------------------------------------------------------------- */
+.open{
+  display:grid; grid-template-columns:minmax(180px, 250px) minmax(0, 1fr); gap:0; margin-top:clamp(10px, 3vw, 30px);
+}
+.open__cover{ position:sticky; top:24px; align-self:start; border-radius:10px 0 0 10px; transform:none; }
+.open__page{
+  position:relative; min-height:70vh; color:var(--ink);
+  padding:clamp(30px, 5vw, 64px) clamp(250px, 24vw, 300px) clamp(40px, 6vw, 72px) clamp(28px, 5vw, 64px);
+  background:
+    linear-gradient(90deg, transparent 0 calc(100% - clamp(232px, 22vw, 280px)), rgba(194,48,43,.35) calc(100% - clamp(232px, 22vw, 280px)) calc(100% - clamp(232px, 22vw, 280px) + 1px), transparent 0),
+    repeating-linear-gradient(transparent 0 31px, var(--rule) 31px 32px),
+    var(--paper);
+  border-radius:0 6px 6px 0;
+  box-shadow:0 2px 2px rgba(0,0,0,.2), 0 26px 40px -20px rgba(0,0,0,.6);
+}
+.open__loading, .open__error{ font-family:var(--read); color:var(--ink-2); }
+.open__head{ margin-bottom:28px; }
+.open__stamp{
+  display:inline-flex; gap:12px; margin:0; padding:5px 10px 6px; border:2px solid var(--stamp); border-radius:3px; color:var(--stamp);
+  font-size:13px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; transform:rotate(-2.5deg); mix-blend-mode:multiply;
+}
+.open__title{ margin:20px 0 0; font-family:var(--label); font-weight:800; font-size:clamp(34px, 5vw, 56px); line-height:1.02; letter-spacing:-.02em; text-wrap:balance; }
+
+.prose{ font-family:var(--read); font-size:18px; line-height:32px; max-width:38em; overflow-wrap:break-word; }
+.open > *{ min-width:0; }
+.prose p, .prose ul, .prose ol, .prose blockquote, .prose pre, .prose figure{ margin:0 0 32px; }
+.prose h2{ font-family:var(--label); font-weight:700; font-size:24px; line-height:32px; margin:48px 0 16px; letter-spacing:-.005em; }
+.prose h3{ font-family:var(--label); font-weight:700; font-size:19px; line-height:32px; margin:32px 0 0; }
+.prose h4{ font-family:var(--label); font-weight:700; font-size:17px; margin:24px 0 0; }
+.prose ul, .prose ol{ padding-left:1.3em; }
+.prose a{ color:var(--cover-blue); text-decoration-thickness:1.5px; text-underline-offset:3px; }
+.prose code{ overflow-wrap:anywhere; font-family:ui-monospace, Menlo, monospace; font-size:.86em; padding:1px 5px; background:rgba(70,104,140,.1); border-radius:3px; }
+.prose pre{ scrollbar-color:var(--rule) transparent; padding:14px 18px; background:#F0EFE7; outline:1.5px dashed var(--rule); outline-offset:-6px; overflow-x:auto; line-height:1.6; font-size:15px; }
+.prose pre code{ padding:0; background:none; font-size:inherit; overflow-wrap:normal; }
+.prose blockquote{ position:relative; padding:0 0 0 44px; font-style:italic; color:var(--ink-2); }
+.prose blockquote::before{ /* a big stamped quote mark, in the date stamp's red */
+  content:"\201C"; position:absolute; left:0; top:-6px; font-family:var(--label); font-weight:800; font-style:normal;
+  font-size:56px; line-height:1; color:var(--stamp); opacity:.85; }
+.prose blockquote p{ margin:0; }
+.prose hr{ border:0; height:32px; margin:0 0 32px; background:radial-gradient(circle, var(--ink-2) 0 1.6px, transparent 2px) 0 50% / 18px 32px repeat-x; width:72px; }
+.prose figure{ margin-left:0; margin-right:0; }
+.prose img{ display:block; max-width:100%; height:auto; padding:8px 8px 22px; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,.18); transform:rotate(-.6deg); }
+/* margin notes, pinned in the outer gutter beside their paragraph */
+.note-mark{ color:var(--stamp); font-weight:700; margin-left:1px; }
+.note{
+  float:right; clear:right; width:clamp(200px, 19vw, 240px); margin-right:calc(clamp(220px, 21vw, 262px) * -1); margin-top:2px;
+  font-family:var(--label); font-size:14px; line-height:1.45; color:var(--ink-2);
+}
+.note::before{ content:"* "; color:var(--stamp); font-weight:700; }
+
+.flip{ display:flex; justify-content:space-between; gap:20px; margin:40px 0 0 clamp(0px, 20vw, 250px); }
+.flip__link{ display:block; text-decoration:none; color:var(--on-desk-2); font-weight:500; font-size:17px; max-width:24em; }
+.flip__link cite{ font-style:normal; font-weight:700; color:var(--on-desk); }
+.flip__link--newer{ text-align:right; margin-left:auto; }
+.flip__link:hover{ color:#F2D38A; }
+
+.foot{ max-width:var(--max); margin:0 auto; padding:72px var(--gutter) 56px; font-size:15px; color:var(--on-desk-2); }
+.foot a{ text-underline-offset:4px; }
+
+@media (max-width:900px){
+  .open{ grid-template-columns:1fr; }
+  .open__cover{ display:flex; flex-direction:row; align-items:center; justify-content:flex-end; aspect-ratio:auto; position:relative; top:auto; border-radius:10px 10px 0 0; padding:14px 18px 14px 26px; min-height:64px; }
+  .open__cover .book__title{ display:none; }
+  .open__cover .book__stamp{ display:none; } /* the page's own stamp sits just below */
+  .open__page{ padding:32px 22px 48px; border-radius:0 0 6px 6px; background:repeating-linear-gradient(transparent 0 31px, var(--rule) 31px 32px), var(--paper); }
+  .note{ float:none; display:block; width:auto; margin:8px 0 0; }
+  .flip{ margin-left:0; }
+}
+@media (max-width:520px){
+  .row{ gap:34px 18px; }
+  .row__item{ flex:0 0 calc(50% - 9px); }
+  .row__item:first-child{ flex-basis:100%; }
+  .row__item:first-child .book{ max-width:260px; }
+  .book{ padding:16px 14px 14px 20px; }
+  .book__title{ font-size:17px; margin-top:12px; }
+  .prose{ font-size:17px; }
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ transition:none !important; }
+}

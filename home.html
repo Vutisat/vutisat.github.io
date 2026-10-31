@@ -15,19 +15,35 @@
   <link rel="icon" type="image/png" href="assets/icons/favicon-32x32.png" sizes="32x32">
   <link rel="preload" href="assets/fonts/bricolage-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/swatch.css">
+  <script>(function(h){document.documentElement.setAttribute("data-time",h>=5&&h<10?"morning":h<16?"day":h<20?"evening":"night")})(new Date().getHours())</script>
 </head>
 <body>
 
   <a href="#engineering" class="skip">Skip to the pages</a>
+  <svg class="defs" aria-hidden="true" focusable="false" width="0" height="0">
+    <defs>
+      <linearGradient id="thread-light" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#e9e6dc"/><stop offset="1" stop-color="#a9a597"/></linearGradient>
+      <linearGradient id="thread-dark" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b9b5a8"/><stop offset=".55" stop-color="#8f8b7e"/><stop offset="1" stop-color="#5f5c52"/></linearGradient>
+      <symbol id="stitch-light" viewBox="1 0 16 8"><path d="M3 5.4 C7 3.4, 11 2.6, 15 2.6" stroke="rgba(0,0,0,.35)" stroke-width="2.6" stroke-linecap="round" fill="none" transform="translate(.5 .8)"/><path d="M3 5.4 C7 3.4, 11 2.6, 15 2.6" stroke="url(#thread-light)" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M4 4.6 C7.5 3.2, 10.5 2.5, 13.5 2.4" stroke="rgba(255,255,255,.7)" stroke-width=".5" stroke-linecap="round" fill="none"/></symbol>
+      <symbol id="stitch-dark" viewBox="1 0 16 8"><path d="M3 5.4 C7 3.4, 11 2.6, 15 2.6" stroke="rgba(0,0,0,.2)" stroke-width="2.6" stroke-linecap="round" fill="none" transform="translate(.5 .8)"/><path d="M3 5.4 C7 3.4, 11 2.6, 15 2.6" stroke="url(#thread-dark)" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M4 4.6 C7.5 3.2, 10.5 2.5, 13.5 2.4" stroke="rgba(255,255,255,.55)" stroke-width=".5" stroke-linecap="round" fill="none"/></symbol>
+    </defs>
+  </svg>
   <div class="sun" aria-hidden="true"></div>
+  <img class="cloud cloud--a" src="assets/img/hub/cloud.webp" alt="" width="340" height="190" aria-hidden="true">
+  <img class="cloud cloud--b" src="assets/img/hub/cloud.webp" alt="" width="340" height="190" aria-hidden="true">
+  <img class="cloud cloud--c" src="assets/img/hub/cloud.webp" alt="" width="340" height="190" aria-hidden="true">
+  <img class="cloud cloud--d" src="assets/img/hub/cloud.webp" alt="" width="340" height="190" aria-hidden="true">
+  <img class="cloud cloud--e" src="assets/img/hub/cloud.webp" alt="" width="340" height="190" aria-hidden="true">
 
   <main>
 
     <!-- ======================== INTRO ======================== -->
     <header class="intro">
-      <img class="intro__me" src="assets/img/pobbody.png" alt="Pob, smiling, in a navy sweater" width="629" height="901">
+      <svg class="seam" data-stitch="stitch-light" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg>
+      <img class="intro__me" src="assets/img/pob-tuxedo.webp" alt="Pob in a midnight-blue tuxedo and black bow tie, smiling, buttoning the jacket" width="760" height="1122">
 
       <div class="intro__label">
+        <svg class="seam seam--label" data-stitch="stitch-dark" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg>
         <h1 class="intro__hi">Hi, I&rsquo;m Pob.</h1>
         <p class="intro__p">I live in New York, grew up in Thailand, and have been to about 80 countries. By day I&rsquo;m a staff software engineer building systems at scale. The rest of the time: books, maps, and too many restaurant lists.</p>
         <p class="intro__p intro__p--warm">Have a look around.</p>
@@ -35,7 +51,8 @@
         <nav class="index" aria-label="Collections">
           <a class="index__tab" style="--dye:var(--petrol)" href="#engineering">Engineering</a>
           <a class="index__tab" style="--dye:var(--plum)" href="#recommendations">Recommendations</a>
-          <a class="index__tab" style="--dye:var(--mustard)" href="#lifestyle">Lifestyle</a>
+          <a class="index__tab" style="--dye:var(--cornflower)" href="#travel">Travel</a>
+          <a class="index__tab" style="--dye:var(--cocoa)" href="#lifestyle">Lifestyle</a>
         </nav>
 
         <p class="hello">Say hi:
@@ -51,71 +68,120 @@
     <div class="pair">
 
       <!-- ======================== ENGINEERING ======================== -->
-      <section class="coll coll--twill" id="engineering" aria-labelledby="h-eng">
+      <section class="coll coll--twill" id="engineering" aria-labelledby="h-eng" style="--n:3">
         <div class="coll__head">
           <h2 id="h-eng" class="coll__name">Engineering</h2>
           <p class="coll__note">Billing systems, petabyte-scale pipelines, and the infrastructure behind target.com.</p>
         </div>
         <ul class="shelf">
           <li class="swatch" style="--dye:var(--petrol);--tilt:-1.4deg">
-            <a class="card" href="index.html"><span class="card__name">Career</span></a>
+            <a class="card" href="index.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">Career</span></a>
           </li>
-          <li class="swatch" style="--dye:var(--moss);--tilt:1.1deg">
-            <a class="card" href="resume.html"><span class="card__name">R&eacute;sum&eacute;</span></a>
+          <li class="swatch" style="--dye:var(--rust);--tilt:1.1deg">
+            <a class="card" href="resume.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">R&eacute;sum&eacute;</span></a>
+          </li>
+          <li class="swatch" style="--dye:var(--slate);--tilt:-0.8deg">
+            <a class="card" href="projects.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">Projects</span></a>
           </li>
         </ul>
       </section>
 
       <!-- ======================== RECOMMENDATIONS ======================== -->
-      <section class="coll coll--basket" id="recommendations" aria-labelledby="h-recs">
+      <section class="coll coll--basket" id="recommendations" aria-labelledby="h-recs" style="--n:3">
         <div class="coll__head">
           <h2 id="h-recs" class="coll__name">Recommendations</h2>
-          <p class="coll__note">The city I live in and the country I grew up in.</p>
+          <p class="coll__note">The city I live in, the country I grew up in, and what I cook at home.</p>
         </div>
         <ul class="shelf">
           <li class="swatch swatch--light" style="--dye:var(--mustard);--tilt:-1.2deg">
-            <a class="card" href="nyc.html"><span class="card__name">New York</span></a>
+            <a class="card" href="nyc.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">New York</span></a>
           </li>
           <li class="swatch" style="--dye:var(--plum);--tilt:1.4deg">
-            <a class="card" href="thailand.html"><span class="card__name">Thailand</span></a>
+            <a class="card" href="thailand.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">Thailand</span></a>
+          </li>
+          <li class="swatch" style="--dye:var(--moss);--tilt:-1.2deg">
+            <a class="card" href="recipes.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">Recipes</span></a>
           </li>
         </ul>
       </section>
 
     </div>
 
-    <!-- ======================== LIFESTYLE ======================== -->
-    <section class="coll coll--herring" id="lifestyle" aria-labelledby="h-life">
-      <div class="coll__head">
-        <h2 id="h-life" class="coll__name">Lifestyle</h2>
-        <p class="coll__note">About 80 countries, a few hundred books, and a book club starting <i>East of Eden</i> this winter.</p>
-      </div>
-      <ul class="shelf">
-        <li class="swatch" style="--dye:var(--plum);--tilt:1.3deg">
-          <a class="card" href="worldtour.html"><span class="card__name">World Tour</span></a>
-        </li>
-        <li class="swatch swatch--light" style="--dye:var(--mustard);--tilt:-0.9deg">
-          <a class="card" href="library.html"><span class="card__name">The Library</span></a>
-        </li>
-        <li class="swatch" style="--dye:var(--berry);--tilt:1.6deg">
-          <a class="card" href="library-info.html"><span class="card__name">The Stacks</span></a>
-        </li>
-        <li class="swatch" style="--dye:var(--petrol);--tilt:-1.5deg">
-          <a class="card" href="life.html"><span class="card__name">Life List</span></a>
-        </li>
-        <li class="swatch" style="--dye:var(--moss);--tilt:0.8deg">
-          <a class="card" href="bookclub.html"><span class="card__name">Book Club</span></a>
-        </li>
-      </ul>
-    </section>
+    <div class="pair">
+
+      <!-- ======================== TRAVEL ======================== -->
+      <section class="coll coll--twill" id="travel" aria-labelledby="h-travel" style="--n:2">
+        <div class="coll__head">
+          <h2 id="h-travel" class="coll__name">Travel</h2>
+          <p class="coll__note">About 80 countries, and everything that fits in the bag.</p>
+        </div>
+        <ul class="shelf">
+          <li class="swatch" style="--dye:var(--cornflower);--tilt:1.3deg">
+            <a class="card" href="worldtour.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">World Tour</span></a>
+          </li>
+          <li class="swatch" style="--dye:var(--coral);--tilt:-1deg">
+            <a class="card" href="uses.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">Uses</span></a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ======================== LIFESTYLE ======================== -->
+      <section class="coll coll--herring" id="lifestyle" aria-labelledby="h-life" style="--n:4">
+        <div class="coll__head">
+          <h2 id="h-life" class="coll__name">Lifestyle</h2>
+          <p class="coll__note">A few hundred books, a drawer of concert wristbands, and a book club starting <i>East of Eden</i> this winter.</p>
+        </div>
+        <ul class="shelf">
+          <li class="swatch" style="--dye:var(--cocoa);--tilt:-0.9deg">
+            <a class="card" href="library.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">The Library</span></a>
+          </li>
+          <li class="swatch" style="--dye:var(--berry);--tilt:1.6deg">
+            <a class="card" href="library-info.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">The Stacks</span></a>
+          </li>
+          <li class="swatch" style="--dye:var(--navy);--tilt:0.8deg">
+            <a class="card" href="bookclub.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">Book Club</span></a>
+          </li>
+          <li class="swatch" style="--dye:var(--lilac);--tilt:1.1deg">
+            <a class="card" href="concerts.html"><svg class="seam seam--card" data-stitch="stitch-light" data-period="15" data-length="10" aria-hidden="true" focusable="false"><rect class="seam__shadow" width="100%" height="100%"/><rect class="seam__thread" width="100%" height="100%"/><rect class="seam__shine" width="100%" height="100%"/></svg><span class="card__name">Concerts</span></a>
+          </li>
+        </ul>
+      </section>
+
+    </div>
 
   </main>
 
   <footer class="foot">
-    <div class="foot__top">
-      <p class="foot__label">Pob Vutisalchavakul</p>
+    <div class="meadow" aria-hidden="true">
+      <span class="bug bfly bug--phone" style="--x:14%;--y:184px;--dur:19s;--delay:-3s"><img class="bfly__wings" src="assets/img/hub/wings-coral.webp" alt="" width="200" height="160"><img class="bfly__body" src="assets/img/hub/bfly-body.webp" alt="" width="200" height="160"></span>
+      <span class="bug bfly" style="--x:47%;--y:210px;--dur:23s;--delay:-9s"><img class="bfly__wings" src="assets/img/hub/wings-lilac.webp" alt="" width="200" height="160"><img class="bfly__body" src="assets/img/hub/bfly-body.webp" alt="" width="200" height="160"></span>
+      <span class="bug bfly" style="--x:79%;--y:174px;--dur:21s;--delay:-14s"><img class="bfly__wings" src="assets/img/hub/wings-mustard.webp" alt="" width="200" height="160"><img class="bfly__body" src="assets/img/hub/bfly-body.webp" alt="" width="200" height="160"></span>
+      <span class="bug bee bug--phone" style="--x:30%;--y:142px;--dur:11s;--delay:-2s"><img class="bee__wings" src="assets/img/hub/bee-wings.webp" alt="" width="120" height="100"><img class="bee__body" src="assets/img/hub/bee-body.webp" alt="" width="120" height="100"></span>
+      <span class="bug bee" style="--x:64%;--y:158px;--dur:13s;--delay:-7s"><img class="bee__wings" src="assets/img/hub/bee-wings.webp" alt="" width="120" height="100"><img class="bee__body" src="assets/img/hub/bee-body.webp" alt="" width="120" height="100"></span>
+      <img class="flower flower--phone" style="--x:4.84%;--h:217;--r:2deg;--mx:9.7%;--mh:155" src="assets/img/hub/felt-buttonflower.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:10.16%;--h:144;--r:-3deg" src="assets/img/hub/felt-sunflower.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower flower--phone" style="--x:14.93%;--h:230;--r:-4deg;--mx:23.3%;--mh:103" src="assets/img/hub/felt-tulip.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:19.43%;--h:142;--r:-3deg" src="assets/img/hub/felt-poppy.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:24.76%;--h:225;--r:-3deg" src="assets/img/hub/felt-buttonflower.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower flower--phone" style="--x:30.34%;--h:151;--r:3deg;--mx:37.91%;--mh:164" src="assets/img/hub/felt-sunflower.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:35.52%;--h:206;--r:3deg" src="assets/img/hub/felt-forgetmenot.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower flower--phone" style="--x:40.57%;--h:156;--r:-2deg;--mx:38.17%;--mh:101" src="assets/img/hub/felt-forgetmenot.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:45.76%;--h:206;--r:-3deg" src="assets/img/hub/felt-buttonflower.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower flower--phone" style="--x:51.35%;--h:153;--r:2deg;--mx:58.95%;--mh:161" src="assets/img/hub/felt-daisy.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:56.25%;--h:207;--r:3deg" src="assets/img/hub/felt-tulip.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:60.08%;--h:142;--r:2deg" src="assets/img/hub/felt-tulip.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower flower--phone" style="--x:63.37%;--h:221;--r:2deg;--mx:73.56%;--mh:108" src="assets/img/hub/felt-lavender.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:67.46%;--h:166;--r:-2deg" src="assets/img/hub/felt-poppy.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower flower--phone" style="--x:72.92%;--h:209;--r:-4deg;--mx:86.13%;--mh:147" src="assets/img/hub/felt-poppy.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:78.51%;--h:146;--r:-3deg" src="assets/img/hub/felt-daisy.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:82.74%;--h:229;--r:-2deg" src="assets/img/hub/felt-lavender.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:86.97%;--h:170;--r:3deg" src="assets/img/hub/felt-buttonflower.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower" style="--x:93.24%;--h:227;--r:-3deg" src="assets/img/hub/felt-daisy.webp" alt="" width="220" height="330" loading="lazy">
+      <img class="flower flower--phone" style="--x:98.28%;--h:152;--r:4deg;--mx:98.7%;--mh:111" src="assets/img/hub/felt-lavender.webp" alt="" width="220" height="330" loading="lazy">
     </div>
   </footer>
+
+  <script src="assets/js/swatch.js" defer></script>
 
 
 </body>

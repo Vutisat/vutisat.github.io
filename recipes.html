@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipes from Home &middot; ครัวที่บ้าน</title>
+  <meta name="description" content="Thai home cooking from someone who grew up there: a small pantry shelf of recipes, each in four simple stages.">
+  <meta name="theme-color" content="#C8221B">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" type="image/png" href="assets/icons/favicon-32x32.png" sizes="32x32">
+  <link rel="preload" href="assets/fonts/chonburi-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/recipes.css">
+</head>
+<body>
+
+  <a href="#shelf" class="skip">Skip to the shelf</a>
+
+  <header class="top">
+    <a href="home.html" class="top__home">Home</a>
+  </header>
+
+  <main>
+    <section class="mast" aria-labelledby="title">
+      <div class="label label--red label--mast">
+        <h1 id="title" class="label__name"><span class="label__th" lang="th">ครัวที่บ้าน</span><span class="label__en">Recipes from Home</span></h1>
+        <p class="label__small">Thai home cooking &middot; four stages every time &middot; best eaten with rice</p>
+      </div>
+      <p class="sample" id="sample">Sample recipes for now. The family ones are on their way.</p>
+    </section>
+
+    <section class="shelf" id="shelf" aria-label="The shelf">
+      <ul class="shelf__row" id="shelf-row"></ul>
+      <div class="shelf__board" aria-hidden="true"></div>
+    </section>
+
+    <div id="plates"></div>
+    <noscript><p class="nojs">The recipes need JavaScript to come off the shelf.</p></noscript>
+  </main>
+
+  <footer class="foot">
+    <a href="home.html">back home</a>
+  </footer>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="chilli" viewBox="0 0 24 24"><path d="M15.8 3.2c.6-.9 1.7-1.3 2.7-.9.3.1.3.5 0 .6-.8.3-1.3.9-1.4 1.7 1.3.9 2 2.4 1.7 4.1-.6 4.4-4.5 9.6-11 12.6-.6.3-1.3-.3-1.1-.9 1.6-4.5 3.3-9.3 6.2-12.5 1-1.1 2.2-1.6 3.4-1.6.1-1.1-.1-2.1-.5-3.1z"/></symbol>
+  </svg>
+
+  <script src="assets/js/recipes-data.js"></script>
+  <script src="assets/js/recipes.js"></script>
+</body>
+</html>

@@ -139,6 +139,12 @@ body{
 .nav__in{display:flex;align-items:center;gap:2rem;height:68px}
 .brand-wrap{position:relative}
 .brand{font-weight:800;letter-spacing:-.02em;color:var(--ink);font-size:1.06rem}
+/* index.html <-> projects.html: a cross-document view transition, with the
+   name in each nav gliding into the other (projects.css names its own). */
+@media (prefers-reduced-motion:no-preference){
+  @view-transition{navigation:auto}
+  .brand{view-transition-name:pob-name}
+}
 
 /* ---- easter egg menu (click the name 5×) ---- */
 .egg{position:absolute;top:calc(100% + 14px);left:-6px;z-index:200;min-width:222px;
@@ -309,6 +315,39 @@ body{
   .job{grid-template-columns:1fr;gap:1rem}
   .job__co{font-size:1.5rem}
 }
+/* a job that has a full case study on projects.html points to it */
+.job__case{display:inline-flex;align-items:center;gap:.45rem;margin-top:1.3rem;font-weight:640;font-size:.96rem;color:var(--accent-ink);
+  border-bottom:1.5px solid var(--accent-wash);padding-bottom:.1rem;transition:border-color .2s var(--ease),gap .25s var(--ease)}
+.job__case:hover{border-color:var(--accent);gap:.7rem}
+
+/* ==========================================================================
+   SELECTED WORK: three doors into projects.html
+   ========================================================================== */
+.picks{padding-bottom:var(--step)}
+.picks__list{list-style:none;padding:0;border-top:1px solid var(--ink)}
+.pick{
+  display:grid;grid-template-columns:.34fr 1fr auto;gap:clamp(1rem,4vw,3.5rem);align-items:center;
+  padding:clamp(1.6rem,3.2vw,2.6rem) 0;border-bottom:1px solid var(--line);color:var(--ink);
+  transition:background .3s var(--ease);
+}
+.pick__when{font-family:"Spline",monospace;font-size:.82rem;letter-spacing:.04em;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.pick__now{display:inline-flex;align-items:center;gap:.5rem;color:var(--accent-ink)}
+.pick__now::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.pick__t{display:block;font-weight:800;font-size:clamp(1.45rem,1rem + 1.8vw,2.5rem);line-height:1.08;letter-spacing:-.03em;text-wrap:balance;transition:color .25s var(--ease)}
+.pick__d{display:block;margin-top:.6rem;color:var(--ink-2);max-width:56ch}
+.pick__go{display:grid;place-items:center;width:3.2rem;height:3.2rem;border-radius:50%;border:1px solid var(--line);font-size:1.25rem;color:var(--ink);
+  transition:background .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease),transform .35s var(--ease)}
+.pick:hover{background:var(--paper-2)}
+.pick:hover .pick__t{color:var(--accent-ink)}
+.pick:hover .pick__go{background:var(--accent);border-color:var(--accent);color:var(--paper);transform:translateX(4px)}
+.picks__all{margin-top:2rem;font-weight:640}
+.picks__all a{border-bottom:1.5px solid var(--accent-wash);padding-bottom:.1rem;transition:border-color .2s var(--ease)}
+.picks__all a:hover{border-color:var(--accent)}
+@media (max-width:720px){
+  .pick{grid-template-columns:1fr auto;gap:.7rem 1rem}
+  .pick__when{grid-column:1 / -1}
+  .pick__go{width:2.6rem;height:2.6rem;font-size:1.05rem}
+}
 
 /* ==========================================================================
    ABOUT - the human
@@ -370,6 +409,8 @@ body{
 .open li svg{flex:none;width:1.15rem;height:1.15rem;margin-top:.2rem;fill:none;stroke:#8E9BFF;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .open li .t{display:block;font-weight:640;color:var(--paper);letter-spacing:-.01em}
 .open li .d{display:block;margin-top:.25rem;color:rgba(250,250,247,.6);font-size:.95rem;line-height:1.5}
+.open__link{display:inline-block;margin-top:.35rem;color:#B9C0FF;font-weight:600;border-bottom:1px solid rgba(185,192,255,.35);transition:border-color .2s var(--ease)}
+.open__link:hover{border-color:#B9C0FF}
 .socials{display:flex;gap:.4rem;margin-top:2.4rem}
 .socials a{width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(250,250,247,.22);border-radius:50%;transition:.25s var(--ease)}
 .socials a svg{width:18px;height:18px;fill:rgba(250,250,247,.8);transition:fill .25s var(--ease)}

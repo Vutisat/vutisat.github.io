@@ -1334,7 +1334,7 @@
                            "<dt>Print run</dt><dd>One</dd>";
     $("pSrc").innerHTML = 'Written and bound at home. ' +
       '<a href="mailto:PobVuti@gmail.com">Say hello</a>, or ' +
-      '<a href="index.html">see the rest of the site</a>.';
+      '<a href="home.html">see the rest of the site</a>.';
   }
 
   function openPanel(b, trigger, silent) {

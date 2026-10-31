@@ -1,0 +1,145 @@
+/* ===========================================================================
+   Uses — uses.html
+
+   World: a workshop pegboard shadow board. The board is perforated
+   hardboard painted in flat zones, one colour per category, the zones
+   divided only by where the paint changes. Every tool hangs on a steel hook
+   over its own painted silhouette, so an empty outline shows what's out in
+   use. Names are embossed label-maker tape. An index card clipped to each
+   zone says why the picked tool is there.
+
+   Light: a garage in daylight. One family, Archivo, across its widths:
+   condensed for the tape, regular for the cards.
+   Material: assets/img/uses/hardboard.webp, multiplied into each paint.
+=========================================================================== */
+
+@font-face{ font-family:"Archivo"; src:url("../fonts/archivo-var.woff2") format("woff2"); font-weight:400 900; font-stretch:62% 125%; font-display:swap; }
+
+:root{
+  --wall:#D9DCDC;
+  --ink:#1C1C1E;
+  --ink-2:#4A4945;
+  --blue:#2F67C2;
+  --red:#D9482F;
+  --yellow:#EDB42C;
+  --green:#3C9A6E;
+  --steel:#2A2B2E;
+  --font:"Archivo", system-ui, sans-serif;
+  --max:1240px;
+  --gutter:clamp(16px, 4vw, 48px);
+  --ease:cubic-bezier(.16, 1, .3, 1);
+  color-scheme:light;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scrollbar-color:var(--steel) var(--wall); }
+body{
+  margin:0; min-height:100dvh; background:var(--wall);
+  background-image:linear-gradient(rgba(0,0,0,.035) 1px, transparent 1px);
+  background-size:100% 6px;
+  color:var(--ink); font-family:var(--font); font-size:17px; line-height:1.55;
+  overflow-x:clip;
+}
+::selection{ background:var(--yellow); color:var(--ink); }
+a{ color:inherit; }
+:focus-visible{ outline:3px solid var(--ink); outline-offset:4px; }
+.skip{ position:absolute; left:-9999px; top:8px; z-index:5; background:var(--ink); color:#fff; padding:8px 12px; }
+.skip:focus{ left:8px; }
+.top{ max-width:var(--max); margin:0 auto; padding:18px var(--gutter); }
+.top__home{ font-weight:600; font-size:15px; text-decoration:none; color:var(--ink-2); }
+.top__home:hover{ color:var(--ink); }
+main{ max-width:var(--max); margin:0 auto; padding:0 var(--gutter); }
+
+/* embossed label-maker tape */
+.tape{
+  display:inline-block; margin:0; padding:3px 10px 4px; background:#151517; color:#F4F4F2;
+  font-family:var(--font); font-stretch:75%; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
+  font-size:13px; line-height:1.3; border-radius:2px;
+  box-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+.tape--big{ font-size:clamp(52px, 10vw, 120px); padding:8px 28px 12px; letter-spacing:.06em; transform:rotate(-1.2deg); }
+
+.mast{ padding:clamp(20px, 5vw, 56px) 0 clamp(28px, 4vw, 44px); }
+.mast__dek{ max-width:40em; margin:26px 0 0; color:var(--ink-2); font-size:clamp(16px, 1.6vw, 18.5px); }
+.sample{ display:inline-block; margin:14px 0 0; padding:4px 12px; background:#FFF6C8; font-size:14px; color:var(--ink); transform:rotate(-.8deg); box-shadow:0 2px 4px rgba(0,0,0,.12); }
+.sample[hidden]{ display:none; }
+
+/* ---------------------------------------------------------------------------
+   THE BOARD: painted zones, perforated, edge to edge
+--------------------------------------------------------------------------- */
+.board{
+  display:grid; grid-template-columns:repeat(3, minmax(0, 1fr));
+  border:12px solid #6B5B47; border-radius:4px;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.25), 0 30px 50px -24px rgba(30,25,20,.55);
+}
+.zone{
+  --paint:var(--blue);
+  position:relative; display:flex; flex-direction:column; gap:18px;
+  padding:26px 26px 22px; min-height:360px;
+  background:
+    radial-gradient(circle at 12.5px 12.5px, rgba(20,18,15,.55) 0 3.2px, rgba(255,255,255,.18) 3.6px 4.2px, transparent 4.6px) 0 0 / 25px 25px,
+    url("../img/uses/hardboard.webp") 0 0 / 320px 320px,
+    var(--paint);
+  background-blend-mode:normal, multiply, normal;
+}
+.zone--blue{ --paint:var(--blue); }
+.zone--red{ --paint:var(--red); }
+.zone--yellow{ --paint:var(--yellow); }
+.zone--green{ --paint:var(--green); }
+.zone--wide{ grid-column:span 2; }
+/* the third zone takes two columns so the second row fills the board edge to edge */
+.zone:nth-child(3){ grid-column:span 2; }
+/* tools with their own top (handle, binding, rings, hopper) hang from it, not a hook */
+.hang--self .hook{ display:none; }
+.tape--zone{ align-self:flex-start; font-size:15px; }
+.hangs{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(118px, 1fr)); gap:22px 18px; flex:1; align-content:start; }
+.hang{ display:flex; }
+.tool{
+  position:relative; flex:1; display:flex; flex-direction:column; align-items:center; gap:10px;
+  padding:14px 4px 6px; background:none; border:0; cursor:pointer; color:inherit; font:inherit;
+}
+.hook{ /* two steel pegs the tool hangs on */
+  position:absolute; z-index:2; top:0; left:50%; width:50px; height:30px; margin-left:-25px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 30'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M12.5 2v16a5 5 0 0 0 10 0' stroke='%231d1e21' stroke-width='3.4'/%3E%3Cpath d='M37.5 2v16a5 5 0 0 1-10 0' stroke='%231d1e21' stroke-width='3.4'/%3E%3Cpath d='M11.6 3v14' stroke='%23c9ccd0' stroke-width='1'/%3E%3Cpath d='M36.6 3v14' stroke='%23c9ccd0' stroke-width='1'/%3E%3C/g%3E%3Ccircle cx='12.5' cy='2.5' r='3.2' fill='%23141310'/%3E%3Ccircle cx='37.5' cy='2.5' r='3.2' fill='%23141310'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  filter:drop-shadow(0 2px 1px rgba(0,0,0,.35));
+}
+.tool__art{ width:100%; max-width:110px; aspect-ratio:1; overflow:visible; }
+/* the painted silhouette: a darker coat of the zone's own paint, a touch larger */
+.tool__outline{ fill:#151517; transform:scale(1.14); transform-origin:50% 50%; } /* the painted silhouette, the board's black */
+.tool__body{ fill:#6A6E74; transition:transform .45s var(--ease), filter .45s var(--ease); filter:drop-shadow(0 3px 2px rgba(0,0,0,.35)); }
+.tool .tape{ font-size:12px; }
+.is-out .tape{ background:#F4F4F2; color:#151517; }
+/* picking a tool: it lifts off its hook, showing the outline beneath */
+.tool:hover .tool__body, .tool:focus-visible .tool__body, .tool.is-picked .tool__body{ transform:translateY(-8px); filter:drop-shadow(0 12px 8px rgba(0,0,0,.4)); }
+.tool:focus-visible{ outline-color:#fff; }
+
+/* the index card clipped to each zone */
+.card{
+  position:relative; margin:0; min-height:86px; padding:14px 16px 12px;
+  background:#FBFBF8 repeating-linear-gradient(transparent 0 23px, rgba(47,103,194,.18) 23px 24px) 0 34px;
+  box-shadow:0 2px 4px rgba(0,0,0,.18); transform:rotate(-.6deg);
+  font-size:15.5px; line-height:1.5;
+}
+.card::before{ /* bulldog clip */
+  content:""; position:absolute; top:-10px; left:22px; width:40px; height:16px; border-radius:3px;
+  background:linear-gradient(#5b5d62, #2b2c30); box-shadow:0 2px 2px rgba(0,0,0,.35);
+}
+.card__hint{ color:var(--ink-2); }
+.card__name{ display:block; font-stretch:85%; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+.card__note{ display:block; color:var(--ink-2); }
+.nojs{ color:var(--ink-2); }
+
+.foot{ max-width:var(--max); margin:0 auto; padding:72px var(--gutter) 56px; font-size:15px; color:var(--ink-2); }
+.foot a{ text-underline-offset:4px; }
+
+@media (max-width:980px){
+  .board{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .zone--wide, .zone:nth-child(3), .zone:last-child{ grid-column:1 / -1; }
+}
+@media (max-width:620px){
+  .board{ grid-template-columns:1fr; border-width:8px; }
+  .zone{ padding:22px 16px 18px; min-height:0; }
+  .hangs{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ transition:none !important; }
+}

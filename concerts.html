@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concerts &amp; Shows</title>
+  <meta name="description" content="Every concert, festival and show Pob has been to, each kept as the wristband worn home.">
+  <meta name="theme-color" content="#15131A">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" type="image/png" href="assets/icons/favicon-32x32.png" sizes="32x32">
+  <link rel="preload" href="assets/fonts/bigshoulders-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/concerts.css">
+</head>
+<body>
+
+  <a href="#drawer" class="skip">Skip to the wristbands</a>
+
+  <header class="top">
+    <a href="home.html" class="top__home">Home</a>
+  </header>
+
+  <main>
+    <section class="mast" aria-labelledby="title">
+      <div class="band band--woven band--mast" style="--c:#E4572E;--ink:#FFFFFF">
+        <span class="band__clasp" aria-hidden="true"></span>
+        <h1 id="title" class="band__weave">Concerts &amp; Shows</h1>
+        <span class="band__tail" aria-hidden="true"></span>
+      </div>
+      <p class="mast__dek">Every show I've been to, kept the way it came home: as the wristband I forgot to cut off. Open one to read the night.</p>
+      <p class="sample" id="sample">Sample bands for now. The real drawer is coming.</p>
+    </section>
+
+    <section class="drawer" id="drawer" aria-label="Wristbands, newest first">
+      <noscript><p class="drawer__empty">The wristbands need JavaScript to come out of the drawer.</p></noscript>
+    </section>
+
+    <section class="wish" aria-labelledby="wish-h">
+      <h2 id="wish-h" class="wish__h">Still to see</h2>
+      <p class="wish__dek">Unworn bands, waiting in the corner of the drawer.</p>
+      <ul class="wish__list" id="wish"></ul>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <a href="home.html">back home</a>
+  </footer>
+
+  <script src="assets/js/concerts-data.js"></script>
+  <script src="assets/js/concerts.js"></script>
+</body>
+</html>

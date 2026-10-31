@@ -1,0 +1,184 @@
+/* ===========================================================================
+   Recipes from Home — recipes.html
+
+   World: a Thai pantry shelf. Every recipe wears a label in the vernacular
+   of retro Thai condiment and grocery packaging: a saturated flat ground,
+   an ornate gold double border, the name in Thai first and English beneath,
+   small print along the foot. The shelf is white enamel with a chilli-red
+   rim, like an old kitchen tray. Each recipe opens as a full label printed
+   in the same four stages, at the same scale, every time.
+
+   Light: it is a kitchen at midday. Chonburi carries the names (Thai and
+   Latin); Sarabun carries everything you read while cooking.
+   Material: assets/img/recipes/enamel.webp, multiplied over white.
+=========================================================================== */
+
+@font-face{ font-family:"Chonburi"; src:url("../fonts/chonburi-thai.woff2") format("woff2"); unicode-range:U+0E01-0E5B, U+200C-200D, U+25CC; font-display:swap; }
+@font-face{ font-family:"Chonburi"; src:url("../fonts/chonburi-latin.woff2") format("woff2"); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122; font-display:swap; }
+@font-face{ font-family:"Sarabun"; src:url("../fonts/sarabun-400-thai.woff2") format("woff2"); font-weight:400; unicode-range:U+0E01-0E5B, U+200C-200D, U+25CC; font-display:swap; }
+@font-face{ font-family:"Sarabun"; src:url("../fonts/sarabun-400-latin.woff2") format("woff2"); font-weight:400; unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122; font-display:swap; }
+@font-face{ font-family:"Sarabun"; src:url("../fonts/sarabun-600-thai.woff2") format("woff2"); font-weight:600; unicode-range:U+0E01-0E5B, U+200C-200D, U+25CC; font-display:swap; }
+@font-face{ font-family:"Sarabun"; src:url("../fonts/sarabun-600-latin.woff2") format("woff2"); font-weight:600; unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122; font-display:swap; }
+
+:root{
+  --enamel:#F7F8F6;
+  --ink:#1D1B19;
+  --ink-2:#4B4741;
+  --red:#C8221B;
+  --green:#1F7A3C;
+  --gold:#F2B01E;
+  --blue:#1D5FA8;
+  --black:#1E1C1B;
+  --foil:#E9C46A;
+  --display:"Chonburi", Georgia, serif;
+  --body:"Sarabun", system-ui, sans-serif;
+  --max:1180px;
+  --gutter:clamp(16px, 4vw, 48px);
+  --ease:cubic-bezier(.16, 1, .3, 1);
+  color-scheme:light;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+body{
+  margin:0; min-height:100dvh;
+  background:var(--enamel) url("../img/recipes/enamel.webp") 0 0 / 480px 480px;
+  background-blend-mode:multiply;
+  color:var(--ink); font-family:var(--body); font-size:18px; line-height:1.6;
+  border-top:10px solid var(--red);
+}
+::selection{ background:var(--gold); color:var(--ink); }
+a{ color:inherit; }
+:focus-visible{ outline:3px solid var(--blue); outline-offset:4px; }
+.skip{ position:absolute; left:-9999px; top:8px; z-index:5; background:var(--ink); color:#fff; padding:8px 12px; }
+.skip:focus{ left:8px; }
+.top{ max-width:var(--max); margin:0 auto; padding:18px var(--gutter); }
+.top__home{ font-weight:600; font-size:15px; text-decoration:none; color:var(--ink-2); }
+.top__home:hover{ color:var(--red); }
+main{ max-width:var(--max); margin:0 auto; padding:0 var(--gutter); }
+
+/* ---------------------------------------------------------------------------
+   THE LABEL: flat ground, a gold double rule inset, corner ornaments
+--------------------------------------------------------------------------- */
+.label{
+  --g:var(--red); --on:#FFF7E8;
+  position:relative; display:flex; flex-direction:column; align-items:center; text-align:center;
+  background:var(--g); color:var(--on); text-decoration:none;
+  box-shadow:
+    inset 0 0 0 6px var(--g), inset 0 0 0 8px var(--foil),
+    inset 0 0 0 11px var(--g), inset 0 0 0 12px var(--foil);
+}
+.label--red{ --g:var(--red); }
+.label--green{ --g:var(--green); }
+.label--gold{ --g:var(--gold); --on:#2A1A06; --foil:#8A5A0A; }
+.label--blue{ --g:var(--blue); }
+.label--black{ --g:var(--black); }
+.label::before{ /* kanok-style curls on all four corners, printed in foil inside the double rule */
+  content:""; position:absolute; inset:14px; pointer-events:none; background:var(--foil);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2030%2030%27%3E%3Cg%20transform%3D%27rotate%280%2015%2015%29%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M3%2027V9a6%206%200%200%201%206-6h18%27/%3E%3Cpath%20d%3D%27M8%2027V14a6%206%200%200%201%206-6h13%27/%3E%3Cpath%20d%3D%27M14%2014c4%200%206%202%206%205s-2%204-4%204-3-1-3-3%201-2%202-2%27/%3E%3C/g%3E%3C/svg%3E") left top / 26px 26px no-repeat, url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2030%2030%27%3E%3Cg%20transform%3D%27rotate%2890%2015%2015%29%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M3%2027V9a6%206%200%200%201%206-6h18%27/%3E%3Cpath%20d%3D%27M8%2027V14a6%206%200%200%201%206-6h13%27/%3E%3Cpath%20d%3D%27M14%2014c4%200%206%202%206%205s-2%204-4%204-3-1-3-3%201-2%202-2%27/%3E%3C/g%3E%3C/svg%3E") right top / 26px 26px no-repeat, url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2030%2030%27%3E%3Cg%20transform%3D%27rotate%28180%2015%2015%29%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M3%2027V9a6%206%200%200%201%206-6h18%27/%3E%3Cpath%20d%3D%27M8%2027V14a6%206%200%200%201%206-6h13%27/%3E%3Cpath%20d%3D%27M14%2014c4%200%206%202%206%205s-2%204-4%204-3-1-3-3%201-2%202-2%27/%3E%3C/g%3E%3C/svg%3E") right bottom / 26px 26px no-repeat, url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2030%2030%27%3E%3Cg%20transform%3D%27rotate%28270%2015%2015%29%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M3%2027V9a6%206%200%200%201%206-6h18%27/%3E%3Cpath%20d%3D%27M8%2027V14a6%206%200%200%201%206-6h13%27/%3E%3Cpath%20d%3D%27M14%2014c4%200%206%202%206%205s-2%204-4%204-3-1-3-3%201-2%202-2%27/%3E%3C/g%3E%3C/svg%3E") left bottom / 26px 26px no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2030%2030%27%3E%3Cg%20transform%3D%27rotate%280%2015%2015%29%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M3%2027V9a6%206%200%200%201%206-6h18%27/%3E%3Cpath%20d%3D%27M8%2027V14a6%206%200%200%201%206-6h13%27/%3E%3Cpath%20d%3D%27M14%2014c4%200%206%202%206%205s-2%204-4%204-3-1-3-3%201-2%202-2%27/%3E%3C/g%3E%3C/svg%3E") left top / 26px 26px no-repeat, url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2030%2030%27%3E%3Cg%20transform%3D%27rotate%2890%2015%2015%29%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M3%2027V9a6%206%200%200%201%206-6h18%27/%3E%3Cpath%20d%3D%27M8%2027V14a6%206%200%200%201%206-6h13%27/%3E%3Cpath%20d%3D%27M14%2014c4%200%206%202%206%205s-2%204-4%204-3-1-3-3%201-2%202-2%27/%3E%3C/g%3E%3C/svg%3E") right top / 26px 26px no-repeat, url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2030%2030%27%3E%3Cg%20transform%3D%27rotate%28180%2015%2015%29%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M3%2027V9a6%206%200%200%201%206-6h18%27/%3E%3Cpath%20d%3D%27M8%2027V14a6%206%200%200%201%206-6h13%27/%3E%3Cpath%20d%3D%27M14%2014c4%200%206%202%206%205s-2%204-4%204-3-1-3-3%201-2%202-2%27/%3E%3C/g%3E%3C/svg%3E") right bottom / 26px 26px no-repeat, url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2030%2030%27%3E%3Cg%20transform%3D%27rotate%28270%2015%2015%29%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M3%2027V9a6%206%200%200%201%206-6h18%27/%3E%3Cpath%20d%3D%27M8%2027V14a6%206%200%200%201%206-6h13%27/%3E%3Cpath%20d%3D%27M14%2014c4%200%206%202%206%205s-2%204-4%204-3-1-3-3%201-2%202-2%27/%3E%3C/g%3E%3C/svg%3E") left bottom / 26px 26px no-repeat;
+}
+.label > *{ position:relative; }
+.label__th{ display:block; font-family:var(--display); font-weight:400; line-height:1.25; }
+.label__en{ display:block; font-family:var(--display); font-weight:400; text-transform:uppercase; letter-spacing:.06em; line-height:1.1; }
+.label__brand{ margin:0; font-family:var(--body); font-weight:600; font-size:14px; letter-spacing:.1em; opacity:.9; }
+.label__small{ margin:12px 0 0; padding-top:10px; border-top:1px solid color-mix(in srgb, var(--foil) 70%, transparent); font-size:13.5px; letter-spacing:.03em; opacity:.92; }
+
+/* masthead: the big shelf label */
+.mast{ padding:clamp(16px, 4vw, 40px) 0 0; }
+.label--mast{ padding:clamp(28px, 5vw, 56px) clamp(24px, 5vw, 64px) clamp(24px, 4vw, 40px); max-width:880px; margin:0 auto; }
+.label--mast .label__name{ margin:10px 0 0; }
+.label--mast .label__th{ font-size:clamp(48px, 9vw, 104px); text-shadow:2px 3px 0 #7E1410; }
+.label--mast .label__en{ font-size:clamp(20px, 3vw, 32px); margin-top:4px; color:var(--on); }
+.sample{ text-align:center; margin:18px 0 0; font-size:15px; color:var(--ink-2); }
+.sample[hidden]{ display:none; }
+
+/* ---------------------------------------------------------------------------
+   THE SHELF: tins with metal rims, standing on enamel
+--------------------------------------------------------------------------- */
+.shelf{ margin-top:clamp(40px, 6vw, 72px); }
+.shelf__row{
+  list-style:none; margin:0; padding:0 12px;
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:18px; align-items:end;
+}
+.tin{ position:relative; padding:14px 0; }
+.tin::before, .tin::after{ /* the tin's rolled rims */
+  content:""; position:absolute; left:-4px; right:-4px; height:14px;
+  background:url("../img/recipes/tin-rim.webp") center / 100% 100% no-repeat;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.25));
+}
+.tin::before{ top:0; } .tin::after{ bottom:0; }
+.label--tin{
+  min-height:clamp(220px, 23vw, 260px); padding:40px 22px 32px; justify-content:center; gap:6px;
+  transition:transform .4s var(--ease);
+}
+.label--tin .label__th{ font-size:clamp(20px, 1.9vw, 26px); text-wrap:balance; word-break:keep-all; }
+.label--tin .label__en{ font-size:12.5px; font-family:var(--body); font-weight:600; letter-spacing:.08em; text-wrap:balance; hyphens:manual; }
+.label--tin .label__meta span{ white-space:nowrap; }
+.label--tin .label__meta{ margin-top:auto; display:flex; gap:10px; align-items:center; font-size:13px; font-weight:600; }
+.tin:hover .label--tin, .label--tin:focus-visible{ transform:translateY(-4px); }
+.tin:hover{ filter:drop-shadow(0 10px 10px rgba(30,20,10,.25)); }
+.shelf__board{
+  height:27px; margin:0 -8px;
+  /* enamel top, chilli-red rolled rim along the front edge */
+  background:linear-gradient(rgba(255,255,255,.25), rgba(0,0,0,.1) 78%, var(--red) 78%, #a81b15), url("../img/recipes/enamel.webp") 0 0 / 240px 240px, #F2F4F2;
+  background-blend-mode:normal, multiply, normal;
+  box-shadow:0 14px 18px -10px rgba(30,20,10,.35);
+}
+
+/* chilli heat marks */
+.heat{ display:inline-flex; gap:1px; vertical-align:middle; }
+.heat__c{ width:16px; height:16px; fill:currentColor; opacity:.28; }
+.heat__c.is-on{ opacity:1; }
+.label--gold .heat__c.is-on{ fill:var(--red); }
+
+/* ---------------------------------------------------------------------------
+   THE RECIPE: a full label, then the same four stages every time
+--------------------------------------------------------------------------- */
+.plate{ margin-top:clamp(72px, 10vw, 120px); scroll-margin-top:24px; }
+.label--plate{ padding:34px 44px 26px; }
+.label--plate .label__name{ margin:0; }
+.label--plate .label__th{ font-size:clamp(38px, 6vw, 64px); }
+.label--plate .label__en{ font-size:clamp(16px, 2vw, 21px); margin-top:4px; color:var(--on); }
+.label--gold.label--plate .label__en{ color:var(--on); }
+.label--plate .label__meta{ display:flex; gap:22px; justify-content:center; align-items:center; margin:14px 0 0; font-size:15px; font-weight:600; }
+.stages{
+  /* the label's back panel: plain label stock, the same foil double rule */
+  display:grid; grid-template-columns:repeat(4, minmax(0, 1fr));
+  background:#FBF7EE; padding:8px;
+  box-shadow:inset 0 0 0 4px var(--g), inset 0 0 0 6px var(--foil), inset 0 0 0 9px #FBF7EE, inset 0 0 0 10px var(--foil);
+}
+.stage{ padding:22px 20px 26px; }
+.stage + .stage{ border-left:1px solid color-mix(in srgb, var(--foil) 70%, transparent); }
+.stage__h{ display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 10px; margin:0 0 12px; }
+.stage__n{
+  display:inline-grid; place-items:center; width:28px; height:28px; border-radius:50%;
+  background:var(--red); color:#fff; font-size:14px; font-weight:600; align-self:center;
+}
+.stage__en{ font-family:var(--display); font-size:19px; text-transform:uppercase; letter-spacing:.05em; }
+.stage__th{ font-size:15px; color:var(--ink-2); }
+.stage__list{ margin:0; padding-left:1.2em; font-size:16.5px; line-height:1.55; }
+.stage__list li + li{ margin-top:6px; }
+ul.stage__list{ list-style:"–  "; }
+.plate__note{ margin:16px 0 0; color:var(--ink-2); font-size:16px; }
+.plate__back{ display:inline-block; margin-top:10px; font-size:15px; font-weight:600; color:var(--red); text-underline-offset:4px; }
+.nojs{ text-align:center; color:var(--ink-2); }
+
+.foot{ max-width:var(--max); margin:0 auto; padding:80px var(--gutter) 56px; font-size:15px; color:var(--ink-2); }
+.foot a{ text-decoration-color:var(--red); text-underline-offset:4px; }
+
+@media (max-width:900px){
+  .stages{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .stage:nth-child(3){ border-left:0; }
+  .stage:nth-child(n+3){ border-top:1px solid color-mix(in srgb, var(--foil) 70%, transparent); }
+}
+@media (max-width:560px){
+  .stages{ grid-template-columns:1fr; }
+  .stage + .stage{ border-left:0; border-top:1px solid color-mix(in srgb, var(--foil) 70%, transparent); }
+  .shelf__row{ grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; }
+  .tin:last-child:nth-child(odd){ grid-column:1 / -1; justify-self:center; width:calc(50% - 7px); }
+  body{ font-size:17px; }
+}
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ transition:none !important; }
+}

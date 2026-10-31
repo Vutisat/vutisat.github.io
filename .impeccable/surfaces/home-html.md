@@ -11,13 +11,13 @@ Mode: Persuade (personal front door). Audience: friends, peers and recruiters on
 
 ## Direction contract
 
-THESIS: The site as a Danish wool sample book: the intro is its cover, every page a wool swatch bearing only its embroidered name. Refuses the link-in-bio stack of rounded buttons.
+THESIS: The site as a Danish wool sample book: the intro is its cover, hung on yarn; every page a wool swatch bearing only its embroidered name. Refuses the link-in-bio stack of rounded buttons.
 
-OWN-WORLD: Limewashed sage wall #D3D9C8 lit by window light; five wool dyes (mustard, petrol, plum, moss, berry); three weaves (twill, herringbone, basketweave); raster thread stitching; teak ledges and sideboard; square edges, pinked feet.
+OWN-WORLD: Limewashed sage wall #D3D9C8 lit by window light; five wool dyes; three weaves (twill, herringbone, basketweave); raster thread stitching; teak ledges and sideboard; square edges, pinked feet; felt clouds and hanging yarn as the only soft notes.
 
-STORY: Visitors meet Pob in one breath, see three collections of equal weight, pick a swatch, go.
+STORY: Visitors meet Pob in one breath, see four collections of equal weight, pick a swatch, go.
 
-FIRST VIEWPORT: Full-width petrol twill cover: cutout portrait standing left, a stitched card-stock label right with "Hi, I'm Pob.", intro, index tabs, say-hi links. Engineering and Recommendations heads at the fold.
+FIRST VIEWPORT: Full-width petrol twill cover hung on two yarn strands: cutout portrait left, stitched card-stock label right with "Hi, I'm Pob.", intro, index tabs, say-hi links; a felt cloud in the margin; collection heads at the fold.
 
 FORM: Wool swatch book, candidate 5 of 7, seed 976d754d. Raises: total palette (built); label weight responds on reach (built); weave as grid (OPEN: not built, the layout is a card grid, not warp/weft logic). Added in build: a distinct weave per collection.
 
