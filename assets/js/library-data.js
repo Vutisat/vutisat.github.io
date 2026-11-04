@@ -15,7 +15,7 @@
    headed "Rating" to the sheet and the live sync picks it up on the next page
    load -- columns are located by header name, so its position does not matter.
 
-   To re-bake (394 books as of 2026-10-22):
+   To re-bake (401 books as of 2026-11-04):
      curl -sSL "https://docs.google.com/spreadsheets/d/1LSyUoNO50mpBUlmAEt9lHR9n7XVE7jGSeH29lT9m1Ik/gviz/tq?tqx=out:csv" -o books.csv
    then ask Claude to regenerate this file from it.
 --------------------------------------------------------------------------- */
@@ -414,4 +414,11 @@ window.LIBRARY_SEED = [
   ["Small Mercies", "Dennis Lehane", "Crime Thriller", "2023"],
   ["Audition", "Katie Kitamura", "Literary Fiction", "2025"],
   ["The Tenant", "Freida McFadden", "Thriller", "2025"],
+  ["Jade City", "Fonda Lee", "Fantasy", "2017"],
+  ["Jade War", "Fonda Lee", "Fantasy", "2019"],
+  ["Jade Legacy", "Fonda Lee", "Fantasy", "2021"],
+  ["Yesteryear", "Caro Claire Burke", "Fiction", "2026"],
+  ["The Correspondent", "Virginia Evans", "Literary Fiction", "2025"],
+  ["The God of the Woods", "Liz Moore", "Mystery", "2024"],
+  ["John Dies at the End", "David Wong", "Horror", "2007"],
 ];
