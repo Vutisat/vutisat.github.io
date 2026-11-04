@@ -4,16 +4,18 @@
    World: a Danish wool sample book on a winter afternoon. The intro is the
    book's cover: a length of periwinkle twill with a card-stock label sewn onto
    it, Pob standing in front, hung from the ceiling on two lengths of yarn.
-   Every page is a swatch: a piece of woven wool, pinked at the foot, with
-   nothing on it but the page's name, embroidered in satin stitch. Each
-   collection is cut from its own weave (twill, herringbone, basketweave)
-   and stands on its own teak ledge. Two felt clouds hang in the margins.
+   Every page is a plush, rounded swatch of woven wool with a satin-embroidered
+   mark over its name. Each collection is cut from its own weave (twill,
+   herringbone, basketweave) and stands on its own birch log; the Connect
+   swatches are pegged to rope. Felt clouds drift in the sky and the page
+   ends in a felt meadow. Full record: DESIGN.md section 4.
 
-   Material is real, not drawn: the weaves, floss, thread, teak, limewash,
-   window light and clouds are rendered texture rasters (assets/img/hub/*.webp)
-   tinted with multiply. The embroidered names stay live text.
+   Material is real, not drawn: the weaves, floss, thread, birch, rope,
+   limewash, window light, clouds and felt are rendered texture rasters
+   (assets/img/hub/*.webp) tinted with multiply. The embroidered names stay
+   live text.
 
-   Palette is total: sage wall, card stock, ink, teak, and five wool dyes.
+   Palette is total: sage wall, card stock, ink, and the wool dyes.
    Dyes are set bright because the weave multiplies them down to their
    finished shade. Light only: it is daytime.
    One typeface, Bricolage Grotesque (variable weight + optical size).
@@ -31,7 +33,6 @@
   --stock:#F7F7F3;
   --ink:#1E2421;
   --ink-2:#47504A;
-  --teak:#A8622C;
 
   /* wool dyes, pre-multiply */
   --mustard:#F2B63C;
@@ -522,7 +523,6 @@ a{ color:inherit; }
 .card__logo--music-notes{ --logo:url("../img/hub/logos/music-notes.svg"); }
 .card__logo--file-text{ --logo:url("../img/hub/logos/file-text.svg"); }
 .card__logo--statue-of-liberty{ --logo:url("../img/hub/logos/statue-of-liberty.svg"); }
-.card__logo--flower-lotus{ --logo:url("../img/hub/logos/flower-lotus.svg"); }
 .card__logo--book-open{ --logo:url("../img/hub/logos/book-open.svg"); }
 .swatch:has(.card:hover, .card:focus-visible){ z-index:2; }
 

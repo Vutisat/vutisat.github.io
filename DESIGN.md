@@ -161,13 +161,11 @@ regions and **vermilion** reserved strictly for the live/active mark.
 | `--ink-2` | `#3C3C41` | body / secondary |
 | `--ink-3` | `#5E5C5A` | muted (meets 4.5:1 on paper) |
 | `--line` | `rgba(24,24,27,.16)` | hairline rules, borders |
-| `--cobalt` | `#2540D6` | structural accent, links, active states |
-| `--cobalt-2` | `#1B2E9E` | cobalt text on light |
-| `--cobalt-wash` | `rgba(37,64,214,.08)` | active/hover fills |
-| `--vermilion` | `#C63D28` | live/active mark ONLY (hot node, live dots) |
+| `--cobalt` | `#2540D6` | structural accent, links, labels, list markers, focus |
+| `--vermilion` | `#C63D28` | live/active mark ONLY (today: the dot in the `pobv.dev` brand) |
 
-Rules: cobalt commits at region scale, never scattered. Vermilion is scarce — the "hot path",
-the "systems online" pulse, the "open to" dot. Nothing else.
+Rules: cobalt commits at region scale, never scattered. Vermilion is scarce — a single mark,
+nothing else.
 
 Note this is a *different* warm bone (`#F4F1EA`) and a *different* cobalt (`#2540D6`) than the
 homepage's. That is not drift to be reconciled; they are two worlds.
@@ -176,45 +174,42 @@ homepage's. That is not drift to be reconciled; they are two worlds.
 
 Self-hosted woff2 in `assets/fonts/`, no CDN.
 
-- **Spectral** (serif, 400/500/600) — display: hero name, section titles, entry roles, sign-off.
+- **Spectral** (serif, 400/500/600) — display: page titles and section titles.
   Chosen because it was engineered for on-screen document reading — the reference-document world.
 - **Hanken Grotesk** (variable 400–700) — body, UI, buttons.
-- **JetBrains Mono** (variable) — real data only: metrics, addresses (`§1`, `/overview`), version
-  tags, clocks, chips. Never decorative "tech" costume.
+- **JetBrains Mono** (variable) — labels and data only: the brand, back link, chapter labels,
+  counters. Never decorative "tech" costume.
 
-Display uses `text-wrap:balance`, tracking `-.022em`. Body measure ~66ch.
+Titles track `-.022em`.
 
 ## Signature elements
 
-- **⌘K command palette** (`.cmdk`) — direct page addressing; open with ⌘K/Ctrl-K or `/`, keyboard
-  navigable, keyword-filtered; groups Sections / Pages / Off the clock / Find me.
-- **Changelog** (`.log`, `.entry`) — experience as a dated version history (v4.0…v0.1) that
-  visibly matures, signed "— Pob" at the foot.
-- **Drafting-grid substrate** — faint two-axis grid on `body::before`, masked to the hero corner;
+- **Drafting-grid substrate** — faint two-axis grid on `body::before`, masked to the top corner;
   a deliberate blueprint/measurement surface, core to the world (not decorative default).
-- **Living system diagram** (`.sys`) — SVG nodes with cobalt data-flow packets animated along
-  real edge paths via `getPointAtLength`, a session clock, and a metric count-up. Freezes to a
-  static readable state under `prefers-reduced-motion`. *(Authored for the former homepage; the
-  CSS remains in `main.css` for any sub-page that wants it.)*
+- **Diamond list markers** — rotated squares outlined in cobalt (`.place-list`).
+
+The former homepage's ⌘K palette, changelog and living system diagram were removed from
+`main.css` / `main.js` in the November 2026 cleanup; neither sub-page used them. They are in git
+history if a sub-page ever needs them.
 
 ## Components
 
-Buttons `.btn` / `.btn--ghost` (ink fill / hairline ghost, lift on hover). Chips `.chip` (mono,
-hairline, cobalt on hover). Diamond list markers (rotated square, cobalt outline). Margin notes
-`.mnote` (top-rule + cobalt mono key). Callouts `.guide-note[--danger|--success]` (full 1px
-border + tinted ground, no side-tab). Section header `.s-head` with functional `§n · /addr`.
-Sub-pages share the world via `.subnav` + `.guide-*` classes. No per-page styles, no jQuery.
+Sticky translucent `.subnav` (brand + back link). Page frame `.guide-page` with `.guide-header`
+and `.guide-section` blocks. Buttons `.btn` / `.btn--ghost` (ink fill / hairline ghost, lift on
+hover), grouped in `.hero__cta`. Life List: `.country-grid` / `.country-item`, `.person-card`,
+`.placeholder-note`. Footer `.guide-foot`. `resume.html` adds a few inline rules for its PDF
+frame. No jQuery.
 
 ## Motion
 
-One authored moment (the diagram) plus a single scroll-reveal entrance (`.reveal`, exponential
-ease-out from a visible-by-default fallback). Everything honors `prefers-reduced-motion`.
+A single scroll-reveal entrance (`.reveal`, exponential ease-out; shown immediately when
+`IntersectionObserver` is missing). Everything honors `prefers-reduced-motion`.
 Browser surfaces themed: cobalt selection, custom scrollbar, cobalt focus ring.
 
 ## Constraints
 
 Static, hand-editable, no build step, deploys as-is on GitHub Pages. `assets/js/main.js` has no
-dependencies and guards every feature, so sub-pages that lack an element simply skip it.
+dependencies and does one thing (reveal on view); it no-ops on a page with no `.reveal`.
 
 ---
 
@@ -336,7 +331,7 @@ rounded "Woolly World" restyle (only its clouds and hanging yarn were kept).
 ## Colors
 
 Light only. Wall `#D3D9C8` (limewash raster multiplied at .85), card stock `#F7F7F3`, ink
-`#1E2421` / `#47504A`, teak `#A8622C`. Wool dyes set bright because the weave multiplies them
+`#1E2421` / `#47504A`. Wool dyes set bright because the weave multiplies them
 down: mustard `#F2B63C`, petrol `#3F8F9C`, plum `#A8588A`, moss `#82A062`, berry `#D2566A`, rust
 `#D9773A`, cornflower `#6F92D2`, coral `#EE957F`, cocoa `#A06E4E`, navy `#4A5F9C`, lilac `#A48DD2`, slate `#7D8C9B`.
 Every hub swatch has its own dye (no repeats), warm and cool alternating along each row.

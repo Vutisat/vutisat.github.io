@@ -80,7 +80,6 @@ main{ max-width:var(--max); margin:0 auto; padding:0 var(--gutter); }
 .label > *{ position:relative; }
 .label__th{ display:block; font-family:var(--display); font-weight:400; line-height:1.25; }
 .label__en{ display:block; font-family:var(--display); font-weight:400; text-transform:uppercase; letter-spacing:.06em; line-height:1.1; }
-.label__brand{ margin:0; font-family:var(--body); font-weight:600; font-size:14px; letter-spacing:.1em; opacity:.9; }
 .label__small{ margin:12px 0 0; padding-top:10px; border-top:1px solid color-mix(in srgb, var(--foil) 70%, transparent); font-size:13.5px; letter-spacing:.03em; opacity:.92; }
 
 /* masthead: the big shelf label */

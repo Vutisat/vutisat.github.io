@@ -67,11 +67,6 @@ body{
 .wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(1.25rem,5vw,3rem)}
 .bleed{max-width:var(--bleed)}
 
-.mono{
-  font-family:"Spline",ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-weight:450; font-size:.72rem; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--ink-3);
-}
 .serif-em{font-family:"Garamond",Georgia,serif;font-style:italic;font-weight:460}
 
 .display{
@@ -117,7 +112,6 @@ body{
 
 /* section heads */
 .s-head{margin-bottom:clamp(2.5rem,5vw,4rem);max-width:none}
-.s-head .kicker{display:block;margin-bottom:1.1rem}
 .s-head h2{
   font-size:clamp(2.1rem,1.4rem + 3.6vw,4.4rem);
   font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1.0;text-wrap:balance;
@@ -217,12 +211,6 @@ body{
   .hero__grid:not(:has(.hero__art)){grid-template-columns:minmax(0,1fr);min-height:min(62vh,540px)}
 }
 .hero__lede{position:relative;z-index:2}
-.hero__eyebrow{display:flex;align-items:center;gap:.7rem;margin-bottom:1.6rem}
-.hero__eyebrow .avail{display:inline-flex;align-items:center;gap:.5rem;color:var(--ink-2)}
-.hero__eyebrow .pulse{width:8px;height:8px;border-radius:50%;background:var(--accent);position:relative;flex:none}
-.hero__eyebrow .pulse::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--accent);animation:ping 2.4s var(--ease) infinite}
-@keyframes ping{0%{transform:scale(1);opacity:.6}70%,100%{transform:scale(3);opacity:0}}
-
 .hero h1{
   font-size:clamp(2.7rem,1rem + 7.4vw,7.4rem);
   font-weight:800;color:var(--ink);letter-spacing:-.038em;line-height:.9;
@@ -230,12 +218,6 @@ body{
 }
 .hero h1 .l{display:block;overflow:hidden}
 .hero h1 .l > span{display:block;will-change:transform}
-.hero__role{
-  display:block;font-size:clamp(1rem,.9rem + .8vw,1.5rem);font-weight:600;
-  color:var(--ink-2);letter-spacing:-.01em;line-height:1.25;margin-top:1.3rem;
-  max-width:22ch;
-}
-.hero__role b{color:var(--accent-ink);font-weight:700}
 .hero__thesis{margin-top:1.7rem;max-width:46ch;color:var(--ink-2);font-size:clamp(1.02rem,.98rem + .3vw,1.18rem)}
 .hero__thesis .serif-em{color:var(--ink)}
 .hero__cta{display:flex;flex-wrap:wrap;gap:.85rem;margin-top:2.2rem}
@@ -250,21 +232,12 @@ body{
   height:calc(100% + var(--hero-pb) + var(--tuck) + 1.5rem);max-height:min(720px,84vh);width:auto;max-width:none;
   filter:drop-shadow(0 16px 22px rgba(19,19,22,.11));
 }
-.hero__tag{
-  position:absolute;left:-1.4rem;bottom:2.2rem;z-index:3;
-  background:var(--paper);border:1px solid var(--line);border-radius:14px;
-  padding:.7rem .95rem;box-shadow:0 18px 40px -20px rgba(19,19,22,.4);
-  display:flex;flex-direction:column;gap:.15rem;
-}
-.hero__tag .k{font-family:"Spline",monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-.hero__tag .v{font-weight:700;color:var(--ink);font-size:.95rem;letter-spacing:-.01em}
 
 /* the name is too wide to share a row with the portrait below ~1180px, so
    the hero stacks: name, thesis, buttons, then the figure rising behind Scale */
 @media (max-width:1180px){
   .hero__grid{grid-template-columns:1fr;gap:2.5rem;min-height:0}
   .hero__art{height:clamp(320px,88vw,480px)}
-  .hero__role{max-width:none}
 }
 
 /* ==========================================================================
@@ -275,7 +248,6 @@ body{
   background:radial-gradient(60% 50% at 85% 0%,rgba(33,54,224,.35),transparent 60%);pointer-events:none}
 .scale .wrap{position:relative}
 .scale__head{max-width:34ch;margin-bottom:clamp(3rem,6vw,5rem)}
-.scale__head .kicker{color:rgba(250,250,247,.55);display:block;margin-bottom:1.1rem}
 .scale__head h2{font-size:clamp(2rem,1.3rem + 3.4vw,4rem);font-weight:800;color:var(--paper);letter-spacing:-.03em;line-height:1.02;text-wrap:balance}
 .scale__head .serif-em{color:#B9C0FF}
 
@@ -452,7 +424,6 @@ body{
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none}
-  .hero__eyebrow .pulse::after{animation:none}
   .hero h1 .l > span{transform:none !important}
   *{scroll-behavior:auto}
 }

@@ -2,17 +2,17 @@
 
 A browsable shelf of every physical book Pob owns. Its own self-contained world
 (own fonts, tokens and reset), the same standalone posture as `nyc.html` — it
-borrows nothing from `Styles/home.css` or `Styles/main.css`, and `DESIGN.md`
-(the shared site system) does not apply to it.
+shares nothing with any other page except the dataset `assets/js/library-data.js`,
+which `library-info.html` also reads.
 
 | File | Role |
 |---|---|
 | `library.html` | Markup and copy. No inline `<style>`, no inline JS. |
-| `Styles/library.css` | Self-contained: own `@font-face`, `:root`, reset. |
-| `Styles/library.js` | Render, search, sort, filter, drawer, live sync. Plain IIFE, no dependencies. |
-| `Styles/library-data.js` | Baked snapshot of the sheet: `window.LIBRARY_SEED`. |
+| `assets/css/library.css` | Self-contained: own `@font-face`, `:root`, reset. |
+| `assets/js/library.js` | Render, search, sort, filter, drawer, live sync. Plain IIFE, no dependencies. |
+| `assets/js/library-data.js` | Baked snapshot of the sheet: `window.LIBRARY_SEED`. |
 
-Linked from the homepage's secret menu (click the brand 5×).
+Linked from the hub (`home.html`), the career page's secret menu (click the name in the nav 5×), and `library-info.html`.
 
 ---
 
@@ -49,7 +49,7 @@ its own header in as a book.
 curl -sSL "https://docs.google.com/spreadsheets/d/1LSyUoNO50mpBUlmAEt9lHR9n7XVE7jGSeH29lT9m1Ik/gviz/tq?tqx=out:csv" -o books.csv
 ```
 
-then regenerate `Styles/library-data.js` from it (rows are
+then regenerate `assets/js/library-data.js` from it (rows are
 `[Title, Author, Genre, Year, Rating]`).
 
 ---

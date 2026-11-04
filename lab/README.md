@@ -13,7 +13,7 @@ Copy a single file into a project and it works standalone. All of them:
 | File | Global | Effect | Key opts |
 |------|--------|--------|----------|
 | `fluid-ink.js` | `Lab.fluidInk` | Real fluid sim (Stam stable-fluids); drag to swirl blue ink | `n, dt, fade, force, ink` + `.splash()` |
-| `flow-field.js` | `Lab.flowField` | Value-noise flow field, silk-like trails; cursor parts the stream | `count, scale, speed, color` |
+| `flow-field.js` | `Lab.flowField` | Value-noise flow field, silk-like trails; cursor parts the stream | `count, scale, speed, color, fade` |
 | `magnetic-grid.js` | `Lab.magneticGrid` | Dot mesh warps toward the cursor (gravity well) | `gap, range, pull, restColor, lineColor, lines, glow, restSize, hotSize, eventTarget` |
 | `physics-type.js` | `Lab.physicsType` | Letters are rigid bodies with gravity; grab and fling | `text, size, color, accent` + `.reset()` |
 

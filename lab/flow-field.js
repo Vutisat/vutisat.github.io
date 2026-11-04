@@ -32,6 +32,12 @@ window.Lab.flowField = function (canvas, opts) {
 
   var W = 0, H = 0, ps = [];
 
+  function rgba(hex, a) {                              // "#RRGGBB" -> "rgba(r,g,b,a)"
+    var n = parseInt(hex.replace("#", ""), 16);
+    return "rgba(" + (n >> 16 & 255) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")";
+  }
+  var TRAIL = rgba(PAPER, 0.055), STROKE = rgba(COLOR, 0.30);
+
   function fitClear() {
     var r = canvas.getBoundingClientRect();
     W = r.width; H = r.height;
@@ -65,10 +71,10 @@ window.Lab.flowField = function (canvas, opts) {
   var t = 0;
   function step(dt) {
     t += dt;
-    ctx.fillStyle = "rgba(250,250,247,0.055)";       // fade previous frame -> trails
+    ctx.fillStyle = TRAIL;                           // fade previous frame -> trails
     ctx.fillRect(0, 0, W, H);
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "rgba(33,54,224,0.30)";
+    ctx.strokeStyle = STROKE;
     ctx.beginPath();
     for (var i = 0; i < ps.length; i++) {
       var p = ps[i];

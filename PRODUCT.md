@@ -24,26 +24,26 @@ A senior/staff engineer who pairs deep systems experience (billing at billions o
 
 ## Operating Context
 
-- Hosted on GitHub Pages at `vutisat.github.io`, served under the personal domains **pobv.me** and **pobv.dev**.
-- Single-page primary experience (`index.html`) with sections: Hero, About, Experience (timeline), Skills, Contact. Résumé is linked as a PDF (`resume.pdf`) and an HTML variant (`resume.html`).
-- A playful hidden layer exists and is a real part of the site's character: a secret nav revealing **Thailand Recs** (`thailand.html`), **NYC Recs** (`nyc.html`), and a **Life List** (`life.html`), plus other easter eggs added over time.
+- Hosted on GitHub Pages at `https://vutisat.github.io/`. There is no custom domain (pobv.dev and pobv.me do not resolve).
+- The career page (`index.html`) is a single page with sections: Hero, Scale, Work (timeline), Selected projects, About, Capabilities, Contact. It pairs with the case-study page `projects.html`. Résumé is linked as a PDF (`resume.pdf`) and an HTML variant (`resume.html`).
+- A personal layer is a real part of the site's character: guides (`nyc.html`, `thailand.html`), the World Tour atlas, the library, book club, concerts, recipes, uses and a blog. On `index.html` they hide behind a secret menu (click the name 5×); `home.html` (the Swatch Book) gathers them all openly and is the candidate new landing page, while `index.html` is still the front door.
 - Pob maintains and updates the site himself; content changes (résumé swaps, new recs) happen by hand.
 
 ## Capabilities and Constraints
 
-- Static site: plain HTML, CSS, and JavaScript with no build step or framework; jQuery is present. New work should assume direct-edit, no-bundler deployment on GitHub Pages unless Pob decides otherwise.
-- External runtime dependencies currently loaded from CDNs: Google Fonts (Inter, JetBrains Mono) and Font Awesome; social/brand imagery lives as local PNGs.
+- Static site: plain HTML, CSS, and JavaScript with no build step, framework or jQuery. New work should assume direct-edit, no-bundler deployment on GitHub Pages unless Pob decides otherwise.
+- No CDN dependencies: every font is self-hosted woff2 in `assets/fonts/`, and icons are inline SVG or local files. The library and concerts pages read their Google Sheets live at runtime.
 - Content is real and self-authored; career facts, employers, dates, and metrics are factual and must not be altered or embellished without Pob's confirmation.
 
 ## Brand Commitments
 
 - **Voice: kindness and servant-leadership.** The warm, humble, people-first tone throughout the copy ("show up with kindness and thoughtfulness, in code and in life") is intentional and binding. Future copy and design must preserve this register — confident about the work, never boastful about the person.
-- Identity: "Pob Vutisalchavakul," handle `pobv` (logo reads `pobv.dev`), personal domains pobv.me / pobv.dev.
+- Identity: "Pob Vutisalchavakul," handle `pobv` (some page logos read `pobv.dev`, as a wordmark only).
 
 ## Evidence on Hand
 
 - Real work history with concrete, verifiable metrics (billions in billing processed, ~10M daily hits at Target, petabyte-scale warehouse, 15M-user feature).
-- Real assets in repo: `resume.pdf`, social banner/icon PNGs, favicon set under `icons/`, and hand-written recommendation content (`NYC_recs.txt`, `Thailand_recs.txt`).
+- Real assets in repo: `resume.pdf`, portraits and photos in `assets/img/`, the favicon set under `assets/icons/`, and hand-written recommendation content (`docs/NYC_recs.txt`, `docs/Thailand_recs.txt`).
 - No third-party testimonials, quotes, or endorsements are present; future work must not fabricate any.
 
 ## Product Principles
