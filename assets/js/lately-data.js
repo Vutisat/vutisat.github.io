@@ -40,5 +40,42 @@ window.LATELY = {
    "v": "c99ec88e"
   }
  ],
- "books": []
+ "books": [
+  {
+   "title": "Sea of Tranquility",
+   "author": "Emily St. John Mandel",
+   "rating": 5.0,
+   "reviewed": false,
+   "url": "https://www.goodreads.com/review/show/8928835709",
+   "cover": "assets/img/lately/book-1.jpg",
+   "v": "cce12d12"
+  },
+  {
+   "title": "The Two Towers",
+   "author": "J.R.R. Tolkien",
+   "rating": 5.0,
+   "reviewed": false,
+   "url": "https://www.goodreads.com/review/show/1914829347",
+   "cover": "assets/img/lately/book-2.jpg",
+   "v": "120fb709"
+  },
+  {
+   "title": "The Alchemist",
+   "author": "Paulo Coelho",
+   "rating": 5.0,
+   "reviewed": false,
+   "url": "https://www.goodreads.com/review/show/6147891759",
+   "cover": "assets/img/lately/book-3.jpg",
+   "v": "01759529"
+  },
+  {
+   "title": "Man's Search for Meaning",
+   "author": "Viktor E. Frankl",
+   "rating": 5.0,
+   "reviewed": true,
+   "url": "https://www.goodreads.com/review/show/5349814299",
+   "cover": "assets/img/lately/book-4.jpg",
+   "v": "28d8705e"
+  }
+ ]
 };

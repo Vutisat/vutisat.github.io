@@ -2,9 +2,9 @@
 # and books (Goodreads) Pob rated. Runs scripts/lately.py and commits only when
 # something changed. Public repo, so GitHub-hosted minutes are free.
 #
-# Books need the repo secret GOODREADS_RSS: the RSS link at the bottom of Pob's
-# "read" shelf on Goodreads (it carries a private read-only key). Without it the
-# films still update and the books keep whatever they last had.
+# Books come from Goodreads' public bookshelf widget, which orders by DATE READ,
+# so set "date read" on a finished book for it to show. No secret needed; an
+# optional GOODREADS_RSS secret (a shelf RSS URL with its key) overrides it.
 name: Lately
 
 on:
