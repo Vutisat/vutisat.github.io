@@ -784,7 +784,7 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
    card stock carries the rating, embroidered as satin-floss stars (half stars
    too) and, when there's a written review, a little stitched ≡. Title and
    year/author come up on the card-stock .tag on hover/focus, like Connect.
-   Filled by swatch.js from assets/js/lately-data.js (written every 6 hours by
+   Filled by swatch.js from assets/js/lately-data.js (written once a day by
    scripts/lately.py); the section stays hidden until it has something to hang.
 --------------------------------------------------------------------------- */
 .lately{

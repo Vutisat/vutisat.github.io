@@ -388,7 +388,7 @@ the other soft, organic shape. Shadows are soft and offset.
   slip with the rating as rust satin-floss stars (half stars by width) and a stitched ≡ when there's
   a written review; title and year/author on the hover/focus `.tag`. Each strand has an embroidered
   mark (Letterboxd / open book). Prints drop in with the shelf settle. Data comes from
-  `assets/js/lately-data.js`, written by `scripts/lately.py` (GitHub Action every 6h); a strand with
+  `assets/js/lately-data.js`, written by `scripts/lately.py` (GitHub Action once a day); a strand with
   no data stays hidden. Goodreads ratings are whole stars, so book slips never show halves.
 - **Index tabs:** card-stock tabs with a wool snip of the collection's dye.
 - **Hanging yarn:** two 5px yarn strands from the top of the page to the cover (`.intro::after`).

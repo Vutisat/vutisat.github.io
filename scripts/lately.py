@@ -14,7 +14,7 @@ assets/js/lately-data.js for swatch.js to hang on the rope.
          GOODREADS_RSS environment variable / Actions secret and it is used instead.)
 
 If a feed fails or comes back empty, that half keeps its previous data, so an outage
-never blanks the section. Standard library only; run by .github/workflows/lately.yml.
+never blanks the section. Standard library only; run once a day by .github/workflows/lately.yml.
 """
 import datetime as dt
 import email.utils
@@ -31,9 +31,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IMG_DIR = os.path.join(ROOT, "assets", "img", "lately")
 DATA = os.path.join(ROOT, "assets", "js", "lately-data.js")
 LETTERBOXD_RSS = "https://letterboxd.com/thepobv/rss/"
+# Goodreads caches each widget by its id for a long time, so every day asks under a
+# new id (lately-YYYYMMDD) and gets the shelf as it is now.
 GOODREADS_WIDGET = ("https://www.goodreads.com/review/custom_widget/63639907.lately"
                     "?cover_size=large&num_books=4&order=d&shelf=read&show_author=1&show_cover=1"
-                    "&show_rating=1&show_review=1&show_title=1&sort=date_read&widget_id=lately")
+                    "&show_rating=1&show_review=1&show_title=1&sort=date_read&widget_id=lately-{day}")
 UA = "Mozilla/5.0 (compatible; vutisat.github.io lately; +https://vutisat.github.io/)"
 NS = {"letterboxd": "https://letterboxd.com", "tmdb": "https://themoviedb.org"}
 COUNT = 4
@@ -105,7 +107,7 @@ def books(url):
 
 def books_widget():
     """Parse the widget's document.write() payload: one container per book."""
-    raw = fetch(GOODREADS_WIDGET).decode("utf-8", "replace")
+    raw = fetch(GOODREADS_WIDGET.format(day=dt.date.today().strftime("%Y%m%d"))).decode("utf-8", "replace")
     s = raw.replace("\\n", "\n").replace('\\"', '"').replace("\\/", "/").replace("\\'", "'")
     out = []
     for chunk in re.split(r'<div class="gr_custom_each_container[^"]*">', s)[1:]:
@@ -188,7 +190,7 @@ def main():
         return
     data = {"updated": dt.date.today().isoformat(), **data}
     with open(DATA, "w", encoding="utf-8") as f:
-        f.write("/* Written by scripts/lately.py (run every 6 hours by .github/workflows/lately.yml).\n"
+        f.write("/* Written by scripts/lately.py (run once a day by .github/workflows/lately.yml).\n"
                 "   The last four films (Letterboxd) and books (Goodreads) Pob rated. Don't edit by hand. */\n")
         f.write("window.LATELY = " + json.dumps(data, ensure_ascii=False, indent=1) + ";\n")
     print("wrote", os.path.relpath(DATA, ROOT))

@@ -1,4 +1,4 @@
-/* Written by scripts/lately.py (run every 6 hours by .github/workflows/lately.yml).
+/* Written by scripts/lately.py (run once a day by .github/workflows/lately.yml).
    The last four films (Letterboxd) and books (Goodreads) Pob rated. Don't edit by hand. */
 window.LATELY = {
  "updated": "2026-11-11",
@@ -42,40 +42,40 @@ window.LATELY = {
  ],
  "books": [
   {
+   "title": "To Be Taught, If Fortunate",
+   "author": "Becky Chambers",
+   "rating": 2.0,
+   "reviewed": false,
+   "url": "https://www.goodreads.com/review/show/9095330259",
+   "cover": "assets/img/lately/book-1.jpg",
+   "v": "32908c2d"
+  },
+  {
+   "title": "The Glass Hotel",
+   "author": "Emily St. John Mandel",
+   "rating": 3.0,
+   "reviewed": false,
+   "url": "https://www.goodreads.com/review/show/8983387421",
+   "cover": "assets/img/lately/book-2.jpg",
+   "v": "f8b87932"
+  },
+  {
    "title": "Sea of Tranquility",
    "author": "Emily St. John Mandel",
    "rating": 5.0,
    "reviewed": false,
    "url": "https://www.goodreads.com/review/show/8928835709",
-   "cover": "assets/img/lately/book-1.jpg",
+   "cover": "assets/img/lately/book-3.jpg",
    "v": "cce12d12"
   },
   {
-   "title": "The Two Towers",
-   "author": "J.R.R. Tolkien",
-   "rating": 5.0,
+   "title": "Piranesi",
+   "author": "Susanna Clarke",
+   "rating": 3.0,
    "reviewed": false,
-   "url": "https://www.goodreads.com/review/show/1914829347",
-   "cover": "assets/img/lately/book-2.jpg",
-   "v": "120fb709"
-  },
-  {
-   "title": "The Alchemist",
-   "author": "Paulo Coelho",
-   "rating": 5.0,
-   "reviewed": false,
-   "url": "https://www.goodreads.com/review/show/6147891759",
-   "cover": "assets/img/lately/book-3.jpg",
-   "v": "01759529"
-  },
-  {
-   "title": "Man's Search for Meaning",
-   "author": "Viktor E. Frankl",
-   "rating": 5.0,
-   "reviewed": true,
-   "url": "https://www.goodreads.com/review/show/5349814299",
+   "url": "https://www.goodreads.com/review/show/8928851758",
    "cover": "assets/img/lately/book-4.jpg",
-   "v": "28d8705e"
+   "v": "41d88fbe"
   }
  ]
 };

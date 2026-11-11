@@ -1,6 +1,6 @@
 {
   "what": "Cover slots for the Lately strands on home.html: film-1..4.jpg (Letterboxd posters) and book-1..4.jpg (Goodreads covers).",
   "source": "Fetched by scripts/lately.py from Letterboxd's public RSS (https://letterboxd.com/thepobv/rss/) and Goodreads' public bookshelf widget for Pob's read shelf (sorted by date read).",
-  "updated_by": ".github/workflows/lately.yml, every 6 hours; files are overwritten in place, so the slots never accumulate.",
+  "updated_by": ".github/workflows/lately.yml, once a day; files are overwritten in place, so the slots never accumulate.",
   "rights": "Film posters and book covers belong to their publishers/studios; shown small as a personal record of what Pob watched and read, each linking back to its Letterboxd or Goodreads page."
 }

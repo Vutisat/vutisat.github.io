@@ -9,7 +9,7 @@ name: Lately
 
 on:
   schedule:
-    - cron: "17 */6 * * *"
+    - cron: "17 13 * * *"   # once a day, 13:17 UTC (morning in New York)
   workflow_dispatch:
 
 permissions:
