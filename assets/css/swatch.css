@@ -258,6 +258,8 @@ a{ color:inherit; }
 }
 .intro__p{ margin:0 0 12px; max-width:36em; font-size:clamp(16px, 1.4vw, 18.5px); color:var(--ink-2); text-wrap:pretty; }
 .intro__p--warm{ color:var(--ink); font-weight:620; }
+.intro__p a{ color:inherit; text-decoration:underline; text-decoration-color:var(--mustard); text-decoration-thickness:2px; text-underline-offset:3px; }
+.intro__p a:hover{ text-decoration-color:var(--ink); }
 
 /* thumb-index tabs: card stock with a wool snip of each collection's dye */
 .index{ display:flex; flex-wrap:wrap; gap:10px; margin:24px 0 0; }
