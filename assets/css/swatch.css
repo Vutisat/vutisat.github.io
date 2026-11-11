@@ -818,9 +818,9 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
   background-blend-mode:normal, multiply, normal;
   -webkit-mask:var(--logo) center / contain no-repeat; mask:var(--logo) center / contain no-repeat;
 }
-.lately__mark--films{ --logo:url("../img/hub/logos/letterboxd.svg"); }
+.lately__mark--films{ --logo:url("../img/hub/logos/film-slate.svg"); }
 .lately__mark--books{ --logo:url("../img/hub/logos/book-open.svg"); }
-.lately__mark--games{ --logo:url("../img/hub/logos/steam.svg"); }
+.lately__mark--games{ --logo:url("../img/hub/logos/game-controller.svg"); }
 
 /* Playing: the last three games, as Steam's wide header tiles, on a rope of
    their own across the whole width below the films and books */
