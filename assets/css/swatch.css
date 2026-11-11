@@ -825,7 +825,10 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
 /* Playing: the last three games, as Steam's wide header tiles, on a rope of
    their own across the whole width below the films and books */
 .lately__strand--games{ grid-column:1 / -1; }
-.lately__line.lately__line--wide{ --gw:clamp(200px, 22vw, 300px); grid-template-columns:repeat(3, minmax(0, var(--gw))); }
+/* sized to hold about the same area as a poster (≈1.8× its width), so the
+   wide tiles don't outweigh the films and books above them */
+.lately__line.lately__line--wide{ --gw:clamp(150px, 21vw, 196px); grid-template-columns:repeat(3, minmax(0, var(--gw))); }
+@media (min-width:1100px){ .lately__line.lately__line--wide{ --gw:clamp(150px, 11.5vw, 168px); } }
 .print--wide .print__cover{ aspect-ratio:460 / 215; }
 
 .lately__line{
@@ -913,7 +916,7 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
   .lately{ --pw:200px; }
   .lately__line{ grid-template-columns:repeat(2, minmax(0, var(--pw))); }
   /* games stay wide: one to a rope, so the tile can be read */
-  .lately__line.lately__line--wide{ grid-template-columns:minmax(0, 320px); row-gap:58px; }
+  .lately__line.lately__line--wide{ grid-template-columns:minmax(0, 240px); row-gap:58px; }
   .lately__line.lately__line--wide .print:nth-child(n)::before{ left:-34px; right:-34px; padding-inline:16px;
     background:url("../img/hub/cord-peg.webp") 0 0 / 18px 18px no-repeat, url("../img/hub/cord-peg.webp") 100% 0 / 18px 18px no-repeat, url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x;
     background-clip:border-box, border-box, content-box; padding-block:0; background-origin:border-box, border-box, border-box; }
