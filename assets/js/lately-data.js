@@ -44,7 +44,7 @@ window.LATELY = {
   {
    "title": "To Be Taught, If Fortunate",
    "author": "Becky Chambers",
-   "rating": 2.0,
+   "rating": 2.5,
    "reviewed": false,
    "url": "https://www.goodreads.com/review/show/9095330259",
    "cover": "assets/img/lately/book-1.jpg",

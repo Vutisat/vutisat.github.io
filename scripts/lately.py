@@ -115,7 +115,9 @@ def books_widget():
         if not title:
             continue
         author = re.search(r'gr_custom_author[^"]*">.*?<a[^>]*>([^<]+)</a>', chunk, re.S)
-        rating = len(re.findall(r"gr_flat_red_star_active", chunk))
+        # whole stars are *_active.png; a half star is *_50pct.png (Goodreads allows halves now)
+        rating = len(re.findall(r"gr_flat_red_star_active", chunk)) + \
+            sum(int(p) / 100 for p in re.findall(r"gr_flat_red_star_(\d+)pct", chunk))
         if not rating:
             continue  # shelved but not rated
         img = re.search(r'gr_custom_book_container[^"]*">.*?<img[^>]+src="([^"]+)"', chunk, re.S)
