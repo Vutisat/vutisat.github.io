@@ -824,7 +824,9 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
 
 /* Playing: the last three games, as Steam's wide header tiles, on a rope of
    their own across the whole width below the films and books */
-.lately__strand--games{ grid-column:1 / -1; }
+/* the strand is only as wide as its rope, so the mark, the name and "All on
+   Steam" sit over the rope's ends like Watching and Reading do */
+.lately__strand--games{ grid-column:1 / -1; justify-self:center; width:fit-content; max-width:100%; }
 /* sized to hold about the same area as a poster (≈1.8× its width), so the
    wide tiles don't outweigh the films and books above them */
 .lately__line.lately__line--wide{ --gw:clamp(150px, 21vw, 196px); grid-template-columns:repeat(3, minmax(0, var(--gw))); }

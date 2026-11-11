@@ -91,6 +91,14 @@
         '<span class="print__slip" aria-hidden="true"><span class="stars" style="--r:' + r + '"></span>' +
         (it.reviewed ? '<span class="print__review"></span>' : "") + '</span></li>';
     }).join("");
+    /* a cover that fails to load takes its print off the rope, never a broken frame */
+    line.querySelectorAll(".print__cover").forEach(function (img) {
+      img.addEventListener("error", function () {
+        var li = img.closest(".print");
+        if (li && li.parentNode) li.parentNode.removeChild(li);
+        if (!line.children.length) strand.hidden = true;
+      });
+    });
     strand.hidden = false;
     any = true;
   });
