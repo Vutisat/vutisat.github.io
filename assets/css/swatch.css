@@ -617,6 +617,8 @@ a{ color:inherit; }
 @media (prefers-reduced-motion:no-preference){
   .js .shelf:not(.is-in) .swatch{ opacity:0; translate:0 -26px; }
   .js .shelf.is-in .swatch{ animation:settle .7s cubic-bezier(.34, 1.45, .64, 1) both; animation-delay:calc(var(--i, 0) * 90ms); }
+  .js .lately__line:not(.is-in) .print{ opacity:0; translate:0 -26px; }
+  .js .lately__line.is-in .print{ animation:settle .7s cubic-bezier(.34, 1.45, .64, 1) both; animation-delay:calc(var(--i, 0) * 90ms); }
 }
 @keyframes settle{ from{ opacity:0; translate:0 -26px; } 60%{ opacity:1; } to{ opacity:1; translate:0 0; } }
 
@@ -775,11 +777,150 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
 }
 
 /* ---------------------------------------------------------------------------
+   LATELY: the last four films (Letterboxd) and books (Goodreads) Pob rated,
+   pegged up like prints drying on a line. Not swatches: card-stock-edged
+   prints hung by the same wooden clothespins from the same three-ply rope as
+   Connect, a turned peg at each end of every row. Under each print a slip of
+   card stock carries the rating, embroidered as satin-floss stars (half stars
+   too) and, when there's a written review, a little stitched ≡. Title and
+   year/author come up on the card-stock .tag on hover/focus, like Connect.
+   Filled by swatch.js from assets/js/lately-data.js (written every 6 hours by
+   scripts/lately.py); the section stays hidden until it has something to hang.
+--------------------------------------------------------------------------- */
+.lately{
+  --pw:clamp(112px, 10.4vw, 150px); --pg:clamp(16px, 1.8vw, 26px);
+  --star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.4l2.95 6.2 6.75.85-4.98 4.66 1.3 6.73L12 17.6l-6.02 3.24 1.3-6.73L2.3 9.45l6.75-.85z'/%3E%3C/svg%3E");
+  display:grid; gap:56px clamp(40px, 5vw, 80px); margin-top:30px;
+}
+@media (min-width:1100px){
+  .lately{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .lately:not(:has(.lately__strand[data-lately="books"]:not([hidden]))){ grid-template-columns:minmax(0, 1fr); }
+}
+/* one strand alone gets the whole width, so its prints can be bigger */
+@media (min-width:561px){
+  .lately:not(:has(.lately__strand[data-lately="books"]:not([hidden]))){ --pw:clamp(130px, 14vw, 196px); --pg:clamp(22px, 3vw, 44px); }
+  .lately:not(:has(.lately__strand[data-lately="books"]:not([hidden]))) .stars{ --s:16px; }
+}
+.lately__strand[hidden]{ display:none; }
+.lately__head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.lately__name{ margin:0; font-weight:720; font-variation-settings:"opsz" 48; font-size:clamp(22px, 2.2vw, 28px); letter-spacing:-.02em; }
+.lately__all{ margin-left:auto; font-weight:600; font-size:15px; color:var(--ink-2); text-decoration:none; }
+.lately__all:hover{ color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
+/* the strand's mark, embroidered in rust floss like the Connect logos */
+.lately__mark{
+  width:30px; aspect-ratio:1; flex:none;
+  filter:drop-shadow(0 1px 0 rgba(10,14,12,.25));
+  background:
+    linear-gradient(125deg, rgba(255,255,255,.28), rgba(255,255,255,0) 45%, rgba(0,0,0,.14)),
+    url("../img/hub/satin.webp") 0 0 / 28px 28px,
+    var(--rust);
+  background-blend-mode:normal, multiply, normal;
+  -webkit-mask:var(--logo) center / contain no-repeat; mask:var(--logo) center / contain no-repeat;
+}
+.lately__mark--films{ --logo:url("../img/hub/logos/letterboxd.svg"); }
+.lately__mark--books{ --logo:url("../img/hub/logos/book-open.svg"); }
+
+.lately__line{
+  list-style:none; margin:46px 0 0; padding:0 30px;
+  display:grid; grid-template-columns:repeat(4, minmax(0, var(--pw))); justify-content:center; gap:58px var(--pg);
+}
+.print{ position:relative; --tilt:0deg; }
+/* this print's stretch of rope, with a peg where a row ends */
+.print::before{
+  content:""; position:absolute; z-index:0; top:-17px; height:18px;
+  left:calc(var(--pg) / -2); right:calc(var(--pg) / -2);
+  background:url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x;
+  background-clip:content-box; padding-block:6px; filter:drop-shadow(0 7px 4px rgba(40,30,20,.22));
+}
+.print:first-child::before{ left:-34px; padding-left:16px;
+  background:url("../img/hub/cord-peg.webp") 0 0 / 18px 18px no-repeat, url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x;
+  background-clip:border-box, content-box; padding-block:0; background-origin:border-box, border-box; }
+.print:last-child::before{ right:-34px; padding-right:16px;
+  background:url("../img/hub/cord-peg.webp") 100% 0 / 18px 18px no-repeat, url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x;
+  background-clip:border-box, content-box; padding-block:0; background-origin:border-box, border-box; }
+.print:first-child:last-child::before{
+  background:url("../img/hub/cord-peg.webp") 0 0 / 18px 18px no-repeat, url("../img/hub/cord-peg.webp") 100% 0 / 18px 18px no-repeat, url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x;
+}
+
+.print__card{
+  position:relative; z-index:1; display:block;
+  padding:5px; border-radius:3px; background:var(--stock);
+  rotate:var(--tilt); transform-origin:50% 0;
+  box-shadow:0 1px 2px rgba(20,30,26,.25), 0 14px 18px -10px rgba(30,36,33,.45);
+  transition:rotate .5s var(--ease), box-shadow .35s var(--ease);
+}
+.print__card::before{ /* the clothespin, as on Connect */
+  content:""; position:absolute; z-index:2; left:50%; pointer-events:none;
+  top:-16px; width:9px; height:26px; margin-left:-4.5px; border-radius:2px 2px 3px 3px;
+  background:
+    linear-gradient(transparent 10px, #A9AAA6 10px, #E4E5E0 11px, #8C8D88 12.5px, transparent 12.5px),
+    linear-gradient(90deg, transparent 4px, rgba(60,35,15,.5) 4px 5px, transparent 5px),
+    linear-gradient(90deg, #C9A06C, #F0D6AE 45%, #B8915E);
+  box-shadow:0 2px 2px rgba(30,20,10,.35);
+}
+.print__cover{ display:block; width:100%; height:auto; aspect-ratio:2 / 3; object-fit:cover; border-radius:1px; background:#DCDCD4; }
+.print__card:hover, .print__card:focus-visible{ rotate:0deg; box-shadow:0 1px 2px rgba(20,30,26,.25), 0 22px 22px -10px rgba(30,36,33,.5); }
+.print__card:focus-visible{ outline:3px solid #2A6E7A; outline-offset:4px; }
+.print .tag{ white-space:normal; width:max-content; max-width:220px; text-align:center; }
+@media (hover:hover){ .print__card:hover .tag{ opacity:1; translate:-50% 0; } }
+.print__card:focus-visible .tag{ opacity:1; translate:-50% 0; }
+.print:has(.print__card:hover, .print__card:focus-visible){ z-index:3; }
+.print:first-child .tag{ left:0; translate:0 6px; } .print:first-child .tag::after{ left:24px; }
+.print:last-child .tag{ left:auto; right:0; translate:0 6px; } .print:last-child .tag::after{ left:auto; right:20px; }
+@media (hover:hover){ .print:first-child .print__card:hover .tag, .print:last-child .print__card:hover .tag{ translate:0 0; } }
+.print:first-child .print__card:focus-visible .tag, .print:last-child .print__card:focus-visible .tag{ translate:0 0; }
+
+/* the rating, embroidered on a slip of card stock sewn under the print */
+.print__slip{
+  position:relative; display:flex; align-items:center; justify-content:center; gap:6px;
+  width:fit-content; margin:10px auto 0; padding:5px 9px 5px;
+  border-radius:6px; background:var(--stock); rotate:calc(var(--tilt) * -1.4);
+  box-shadow:inset 0 0 0 2px var(--stock), inset 0 0 0 3px rgba(71,80,74,.0), 0 1px 2px rgba(20,40,44,.2);
+  outline:1px dashed rgba(71,80,74,.35); outline-offset:-4px;
+}
+.stars{ --s:14px; position:relative; width:calc(var(--s) * 5); height:var(--s); flex:none; }
+.stars::before, .stars::after{
+  content:""; position:absolute; inset:0 auto 0 0;
+  -webkit-mask:var(--star) 0 50% / var(--s) var(--s) repeat-x; mask:var(--star) 0 50% / var(--s) var(--s) repeat-x;
+}
+.stars::before{ width:100%; background:rgba(71,80,74,.2); }
+.stars::after{
+  width:calc(var(--r, 0) * var(--s));
+  background:
+    linear-gradient(125deg, rgba(255,255,255,.3), rgba(255,255,255,0) 50%, rgba(0,0,0,.12)),
+    url("../img/hub/satin.webp") 0 0 / 20px 20px,
+    var(--rust);
+  background-blend-mode:normal, multiply, normal;
+}
+.print__review{ /* a written review: three short stitched lines, as on Letterboxd */
+  width:12px; height:10px; flex:none;
+  background:repeating-linear-gradient(var(--ink-2) 0 1.6px, transparent 1.6px 4px);
+  -webkit-mask:linear-gradient(90deg, #000 70%, transparent 70%) 0 100% / 100% 3.6px no-repeat, linear-gradient(#000, #000) 0 0 / 100% 6.4px no-repeat;
+  mask:linear-gradient(90deg, #000 70%, transparent 70%) 0 100% / 100% 3.6px no-repeat, linear-gradient(#000, #000) 0 0 / 100% 6.4px no-repeat;
+  opacity:.75;
+}
+
+/* narrow: two to a row, each row on its own length of rope */
+@media (max-width:560px){
+  .lately{ --pw:200px; }
+  .lately__line{ grid-template-columns:repeat(2, minmax(0, var(--pw))); }
+  .print:nth-child(odd)::before{ left:-34px; padding-left:16px;
+    background:url("../img/hub/cord-peg.webp") 0 0 / 18px 18px no-repeat, url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x;
+    background-clip:border-box, content-box; padding-block:0; background-origin:border-box, border-box; }
+  .print:nth-child(even)::before{ right:-34px; padding-right:16px; left:calc(var(--pg) / -2);
+    background:url("../img/hub/cord-peg.webp") 100% 0 / 18px 18px no-repeat, url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x;
+    background-clip:border-box, content-box; padding-block:0; background-origin:border-box, border-box; }
+  .print:nth-child(odd) .tag{ left:0; right:auto; translate:0 6px; } .print:nth-child(odd) .tag::after{ left:24px; right:auto; }
+  .print:nth-child(even) .tag{ left:auto; right:0; translate:0 6px; } .print:nth-child(even) .tag::after{ left:auto; right:20px; }
+}
+
+/* ---------------------------------------------------------------------------
    Reduced motion: nothing moves; the swatch still answers by shadow
 --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion:reduce){
   html{ scroll-behavior:auto; }
   *,*::before,*::after{ transition-duration:.01ms !important; }
   .card:hover, .card:focus-visible, .card:active, .index__tab:hover{ transform:rotate(var(--tilt, 0deg)); }
+  .print__card:hover, .print__card:focus-visible{ rotate:var(--tilt); }
   .card:hover .card__name, .card:focus-visible .card__name{ background-position:0 0, 0 0; }
 }

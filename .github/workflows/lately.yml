@@ -1,0 +1,44 @@
+# Keeps the "Lately" strands on home.html current: the last four films (Letterboxd)
+# and books (Goodreads) Pob rated. Runs scripts/lately.py and commits only when
+# something changed. Public repo, so GitHub-hosted minutes are free.
+#
+# Books need the repo secret GOODREADS_RSS: the RSS link at the bottom of Pob's
+# "read" shelf on Goodreads (it carries a private read-only key). Without it the
+# films still update and the books keep whatever they last had.
+name: Lately
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lately
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch the latest films and books
+        env:
+          GOODREADS_RSS: ${{ secrets.GOODREADS_RSS }}
+        run: python3 scripts/lately.py
+
+      - name: Commit if anything changed
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "vutisat"
+          git config user.email "pobvuti@gmail.com"
+          git add assets/js/lately-data.js assets/img/lately
+          git commit -m "Lately: update films and books"
+          git push

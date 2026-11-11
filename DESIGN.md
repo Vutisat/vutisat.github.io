@@ -381,6 +381,15 @@ the other soft, organic shape. Shadows are soft and offset.
   each from its own stretch of bark and feathered into the one before (mask), with the sawn ends
   at the row's ends. Connect hangs instead with tiny wooden clothespins from a three-ply rope (`rope-h.webp` tile) stretched between two turned wooden pegs (`cord-peg.webp`): eleven tiles in centred rows (6, then 4 below 1180px, 3 below 560px) on a 2n-column grid so a short last row starts one column in; each tile carries its own stretch of rope and the row's end tiles carry the pegs (CSS block "CONNECT LAYOUT")
   (hover straightens it, no lift).
+- **Lately (films and books):** between Lifestyle and Connect. Not swatches: the last four films
+  (Letterboxd) and books (Goodreads) Pob rated, hung as card-stock-edged prints by the same wooden
+  clothespins from the same three-ply rope and turned pegs as Connect (four to a rope, two per rope
+  on phones; the two strands sit side by side from 1100px). Under each print, a stitched card-stock
+  slip with the rating as rust satin-floss stars (half stars by width) and a stitched ≡ when there's
+  a written review; title and year/author on the hover/focus `.tag`. Each strand has an embroidered
+  mark (Letterboxd / open book). Prints drop in with the shelf settle. Data comes from
+  `assets/js/lately-data.js`, written by `scripts/lately.py` (GitHub Action every 6h); a strand with
+  no data stays hidden.
 - **Index tabs:** card-stock tabs with a wool snip of the collection's dye.
 - **Hanging yarn:** two 5px yarn strands from the top of the page to the cover (`.intro::after`).
 - **Clouds:** cream felt (`cloud.webp`), five on wide screens, two small ones above the cover

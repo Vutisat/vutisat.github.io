@@ -49,6 +49,46 @@
   }
 })();
 
+/* Lately: hang the last four films and books on their ropes, from
+   assets/js/lately-data.js (written by scripts/lately.py). Guards its own
+   elements; with no data the section simply stays hidden. */
+(function () {
+  "use strict";
+  var section = document.getElementById("lately");
+  var data = window.LATELY;
+  if (!section || !data) return;
+  function esc(t) {
+    return String(t == null ? "" : t).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  var TILTS = [-1.6, 1.2, -0.8, 1.5];
+  var SITES = { films: "Letterboxd", books: "Goodreads" };
+  var any = false;
+  ["films", "books"].forEach(function (kind) {
+    var items = (data[kind] || []).filter(function (it) { return it && it.title && it.cover; }).slice(0, 4);
+    var strand = section.querySelector('[data-lately="' + kind + '"]');
+    if (!strand || !items.length) return;
+    var line = strand.querySelector(".lately__line");
+    line.innerHTML = items.map(function (it, i) {
+      var r = Math.max(0, Math.min(5, +it.rating || 0));
+      var sub = kind === "films" ? it.year : it.author;
+      var said = esc(it.title) + (sub ? ", " + esc(sub) : "") + ". Rated " + r + " out of 5 stars" +
+        (it.reviewed ? ", with a review" : "") + ", on " + SITES[kind] + " (opens in a new tab)";
+      return '<li class="print" style="--i:' + i + ';--tilt:' + TILTS[i % 4] + 'deg">' +
+        '<a class="print__card" href="' + esc(it.url) + '" rel="noopener" target="_blank">' +
+        '<img class="print__cover" src="' + esc(it.cover) + (it.v ? "?v=" + esc(it.v) : "") + '" alt="" width="230" height="345" loading="lazy" decoding="async">' +
+        '<span class="vh">' + said + '</span>' +
+        '<span class="tag" aria-hidden="true">' + esc(it.title) + (sub ? " · " + esc(sub) : "") + '</span></a>' +
+        '<span class="print__slip" aria-hidden="true"><span class="stars" style="--r:' + r + '"></span>' +
+        (it.reviewed ? '<span class="print__review"></span>' : "") + '</span></li>';
+    }).join("");
+    strand.hidden = false;
+    any = true;
+  });
+  if (any) section.hidden = false;
+})();
+
 /* A living room: the cover swings on its yarn, swatches settle onto their
    ledges, the meadow grows, and the light follows the visitor's clock. Everything here guards its own
    elements; reduced motion keeps the room still. */
@@ -63,7 +103,7 @@
   root.setAttribute("data-time", h >= 5 && h < 10 ? "morning" : h < 16 ? "day" : h < 20 ? "evening" : "night");
 
   if (still) {
-    document.querySelectorAll(".shelf, .meadow").forEach(function (el) { el.classList.add("is-in"); });
+    document.querySelectorAll(".shelf, .lately__line, .meadow").forEach(function (el) { el.classList.add("is-in"); });
     return;
   }
 
@@ -86,6 +126,7 @@
     els.forEach(function (el) { io.observe(el); });
   }
   reveal(".shelf", 0.25);
+  reveal(".lately__line", 0.25);
   reveal(".meadow", 0.6);
 
   /* ---- the cover rocks on its yarn when you scroll past ---------------- */
