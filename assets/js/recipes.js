@@ -18,6 +18,16 @@
     for (var i = 0; i < 3; i++) s += '<svg class="heat__c' + (i < n ? " is-on" : "") + '" aria-hidden="true"><use href="#chilli"/></svg>';
     return s + "</span>";
   }
+  /* the photo window printed on the label, like the dish shot on a packet;
+     a recipe with no photo gets an emblem of its first Thai letter instead */
+  function windowed(r, size) {
+    if (r.photo) {
+      return '<span class="label__photo label__photo--' + size + '"><img src="' + esc(r.photo) + '" alt="' + esc(size === "tin" ? "" : r.alt) +
+        '" width="720" height="720" loading="lazy" decoding="async"></span>';
+    }
+    return '<span class="label__photo label__photo--' + size + ' label__photo--mark" aria-hidden="true"><span lang="th">' +
+      esc((r.th || "").charAt(0)) + '</span></span>';
+  }
   var STAGES = [
     ["gather", "Gather", "เตรียม"],
     ["prepare", "Prepare", "หั่น โขลก"],
@@ -27,7 +37,7 @@
 
   if (row) {
     row.innerHTML = recipes.map(function (r, i) {
-      return '<li class="tin" style="--i:' + i + '"><a class="label label--' + colour(r) + ' label--tin" href="#' + esc(r.id) + '">' +
+      return '<li class="tin" style="--i:' + i + '"><a class="label label--' + colour(r) + ' label--tin" href="#' + esc(r.id) + '">' + windowed(r, "tin") +
         '<span class="label__th" lang="th">' + esc(r.th) + '</span>' +
         '<span class="label__en">' + esc(r.en) + '</span>' +
         '<span class="label__meta">' + heat(r.heat) + '<span>' + esc(r.time) + '</span></span></a></li>';
@@ -44,7 +54,8 @@
           '<' + tag + ' class="stage__list">' + items.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + '</' + tag + '></div>';
       }).join("");
       return '<article class="plate" id="' + esc(r.id) + '" aria-labelledby="h-' + esc(r.id) + '">' +
-        '<header class="label label--' + colour(r) + ' label--plate">' +
+        '<header class="label label--' + colour(r) + ' label--plate">' + windowed(r, "plate") +
+        (r.photo ? '<span class="label__suggest">Serving suggestion · <span lang="th">ตัวอย่างการเสิร์ฟ</span></span>' : "") +
         '<h2 id="h-' + esc(r.id) + '" class="label__name"><span class="label__th" lang="th">' + esc(r.th) + '</span>' +
         '<span class="label__en">' + esc(r.en) + '</span></h2>' +
         '<p class="label__meta">' + heat(r.heat) + '<span>Serves ' + esc(r.serves) + '</span><span>' + esc(r.time) + '</span></p>' +
@@ -54,6 +65,18 @@
         '<a class="plate__back" href="#shelf">Back to the shelf</a>' +
         '</article>';
     }).join("");
+  }
+
+  /* every photo, credited */
+  var credits = document.getElementById("credits");
+  var shot = recipes.filter(function (r) { return r.photo && r.credit; });
+  if (credits && shot.length) {
+    credits.innerHTML = "Photos from Wikimedia Commons: " + shot.map(function (r) {
+      var c = r.credit;
+      return '<a href="' + esc(c.source) + '">' + esc(r.en) + '</a> by ' + esc(c.by) +
+        (c.licenceUrl ? ' (<a href="' + esc(c.licenceUrl) + '">' + esc(c.licence) + '</a>)' : ' (' + esc(c.licence) + ')');
+    }).join("; ") + ". Cropped to square.";
+    credits.hidden = false;
   }
 
   var sample = document.getElementById("sample");
