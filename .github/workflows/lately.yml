@@ -1,5 +1,5 @@
 # Keeps the "Lately" strands on home.html current: the last four films (Letterboxd)
-# and books (Goodreads) Pob rated. Runs scripts/lately.py and commits only when
+# and books (Goodreads) Pob rated, and the last three games he played (Steam). Runs scripts/lately.py and commits only when
 # something changed. Public repo, so GitHub-hosted minutes are free.
 #
 # Books come from Goodreads' public bookshelf widget, which orders by DATE READ,

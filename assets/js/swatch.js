@@ -63,14 +63,26 @@
     });
   }
   var TILTS = [-1.6, 1.2, -0.8, 1.5];
-  var SITES = { films: "Letterboxd", books: "Goodreads" };
+  var SITES = { films: "Letterboxd", books: "Goodreads", games: "Steam" };
   var any = false;
-  ["films", "books"].forEach(function (kind) {
-    var items = (data[kind] || []).filter(function (it) { return it && it.title && it.cover; }).slice(0, 4);
+  ["films", "books", "games"].forEach(function (kind) {
+    var items = (data[kind] || []).filter(function (it) { return it && it.title && it.cover; }).slice(0, kind === "games" ? 3 : 4);
     var strand = section.querySelector('[data-lately="' + kind + '"]');
     if (!strand || !items.length) return;
     var line = strand.querySelector(".lately__line");
     line.innerHTML = items.map(function (it, i) {
+      if (kind === "games") {
+        /* a game's slip says how long and how lately, not how good */
+        var hrs = it.hours ? it.hours + " hrs" : "";
+        var when = it.last ? (/^Playing/.test(it.last) ? it.last : "last played " + it.last) : "";
+        var line2 = [hrs, when].filter(Boolean).join(" · ");
+        return '<li class="print print--wide" style="--i:' + i + ';--tilt:' + (TILTS[i % 4] * 0.6) + 'deg">' +
+          '<a class="print__card" href="' + esc(it.url) + '" rel="noopener" target="_blank">' +
+          '<img class="print__cover" src="' + esc(it.cover) + (it.v ? "?v=" + esc(it.v) : "") + '" alt="" width="460" height="215" loading="lazy" decoding="async">' +
+          '<span class="vh">' + esc(it.title) + (line2 ? ", " + esc(line2) : "") + ", on Steam (opens in a new tab)</span>" +
+          '<span class="tag" aria-hidden="true">' + esc(it.title) + '</span></a>' +
+          (line2 ? '<span class="print__slip print__slip--text" aria-hidden="true">' + esc(line2) + '</span>' : "") + '</li>';
+      }
       var r = Math.max(0, Math.min(5, +it.rating || 0));
       var sub = kind === "films" ? it.year : it.author;
       var said = esc(it.title) + (sub ? ", " + esc(sub) : "") + ". Rated " + r + " out of 5 stars" +

@@ -778,6 +778,7 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
 
 /* ---------------------------------------------------------------------------
    LATELY: the last four films (Letterboxd) and books (Goodreads) Pob rated,
+   and the last three games he played (Steam, wide tiles, below the two),
    pegged up like prints drying on a line. Not swatches: card-stock-edged
    prints hung by the same wooden clothespins from the same three-ply rope as
    Connect, a turned peg at each end of every row. Under each print a slip of
@@ -819,6 +820,17 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
 }
 .lately__mark--films{ --logo:url("../img/hub/logos/letterboxd.svg"); }
 .lately__mark--books{ --logo:url("../img/hub/logos/book-open.svg"); }
+.lately__mark--games{ --logo:url("../img/hub/logos/steam.svg"); }
+
+/* Playing: the last three games, as Steam's wide header tiles, on a rope of
+   their own across the whole width below the films and books */
+.lately__strand--games{ grid-column:1 / -1; }
+.lately__line.lately__line--wide{ --gw:clamp(200px, 22vw, 300px); grid-template-columns:repeat(3, minmax(0, var(--gw))); }
+.print--wide .print__cover{ aspect-ratio:460 / 215; }
+.print__slip--text{
+  font-size:12.5px; font-weight:650; letter-spacing:.01em; color:var(--ink-2);
+  white-space:nowrap; font-variant-numeric:tabular-nums;
+}
 
 .lately__line{
   list-style:none; margin:46px 0 0; padding:0 30px;
@@ -904,6 +916,12 @@ html[data-time="night"] .cloud{ filter:drop-shadow(0 10px 10px rgba(10,20,40,.3)
 @media (max-width:560px){
   .lately{ --pw:200px; }
   .lately__line{ grid-template-columns:repeat(2, minmax(0, var(--pw))); }
+  /* games stay wide: one to a rope, so the tile can be read */
+  .lately__line.lately__line--wide{ grid-template-columns:minmax(0, 320px); row-gap:58px; }
+  .lately__line.lately__line--wide .print:nth-child(n)::before{ left:-34px; right:-34px; padding-inline:16px;
+    background:url("../img/hub/cord-peg.webp") 0 0 / 18px 18px no-repeat, url("../img/hub/cord-peg.webp") 100% 0 / 18px 18px no-repeat, url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x;
+    background-clip:border-box, border-box, content-box; padding-block:0; background-origin:border-box, border-box, border-box; }
+  .lately__line.lately__line--wide .print:nth-child(n) .tag{ left:50%; right:auto; translate:-50% 6px; } .lately__line.lately__line--wide .print:nth-child(n) .tag::after{ left:50%; right:auto; }
   .print:nth-child(odd)::before{ left:-34px; padding-left:16px;
     background:url("../img/hub/cord-peg.webp") 0 0 / 18px 18px no-repeat, url("../img/hub/rope-h.webp") 0 50% / 15px 6px repeat-x;
     background-clip:border-box, content-box; padding-block:0; background-origin:border-box, border-box; }

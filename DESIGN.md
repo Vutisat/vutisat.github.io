@@ -387,7 +387,9 @@ the other soft, organic shape. Shadows are soft and offset.
   on phones; the two strands sit side by side from 1100px). Under each print, a stitched card-stock
   slip with the rating as rust satin-floss stars (half stars by width) and a stitched ≡ when there's
   a written review; title and year/author on the hover/focus `.tag`. Each strand has an embroidered
-  mark (Letterboxd / open book). Prints drop in with the shelf settle. Data comes from
+  mark (Letterboxd / open book / Steam). Below them a full-width **Playing** rope holds the last
+  three Steam games as wide 460×215 header tiles (one per rope on phones), each with a card-stock
+  slip reading "N hrs · last played Mon D" instead of stars. Prints drop in with the shelf settle. Data comes from
   `assets/js/lately-data.js`, written by `scripts/lately.py` (GitHub Action once a day); a strand with
   no data stays hidden. Half stars show for both (Goodreads added half-star ratings).
 - **Index tabs:** card-stock tabs with a wool snip of the collection's dye.

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Lately: the last four films and books Pob rated, for the "Lately" strands on home.html.
+"""Lately: the last four films and books Pob rated, and the last three games he played,
+for the "Lately" strands on home.html.
 
 Reads two feeds, saves each cover into assets/img/lately/ under a fixed slot name
 (film-1.jpg ... book-4.jpg, so old covers are overwritten, never piled up), and writes
@@ -12,6 +13,8 @@ assets/js/lately-data.js for swatch.js to hang on the rope.
          READ, so a finished book needs its "date read" set on Goodreads to come first.
          (If a shelf RSS URL with its private key is ever available, set it as the
          GOODREADS_RSS environment variable / Actions secret and it is used instead.)
+  Games: the "Recent Activity" list on Pob's public Steam profile (the three games he
+         played last), shown as Steam's wide 460x215 header tiles.
 
 If a feed fails or comes back empty, that half keeps its previous data, so an outage
 never blanks the section. Standard library only; run once a day by .github/workflows/lately.yml.
@@ -39,6 +42,9 @@ GOODREADS_WIDGET = ("https://www.goodreads.com/review/custom_widget/63639907.lat
 UA = "Mozilla/5.0 (compatible; vutisat.github.io lately; +https://vutisat.github.io/)"
 NS = {"letterboxd": "https://letterboxd.com", "tmdb": "https://themoviedb.org"}
 COUNT = 4
+STEAM_PROFILE = "https://steamcommunity.com/id/pobthiti/"
+STEAM_HEADER = "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/{app}/header.jpg"
+GAMES = 3
 
 
 def fetch(url):
@@ -134,18 +140,51 @@ def books_widget():
     return out[:COUNT]
 
 
+def games():
+    """The Recent Activity blocks on the profile page: name, store link, hours, last played."""
+    req = urllib.request.Request(STEAM_PROFILE, headers={"User-Agent": UA, "Accept-Language": "en-US"})
+    with urllib.request.urlopen(req, timeout=20) as r:
+        s = r.read().decode("utf-8", "replace")
+    out = []
+    for block in re.findall(r'<div class="recent_game">(.*?)<div class="game_info_achievements', s, re.S):
+        name = re.search(r'class="game_name"><a[^>]*href="([^"]+)"[^>]*>([^<]+)</a>', block)
+        if not name:
+            continue
+        app = re.search(r"/app/(\d+)", name.group(1))
+        capsule = re.search(r'class="game_capsule" src="([^"]+)"', block)
+        details = re.search(r'game_info_details">(.*?)</div>', block, re.S)
+        info = strip_tags(details.group(1)) if details else ""
+        hours = re.search(r"([\d.,]+) hrs on record", info)
+        last = re.search(r"last played on (.+)$", info)
+        out.append({
+            "title": html.unescape(name.group(2)).strip(),
+            "hours": hours.group(1) if hours else "",
+            "last": last.group(1).strip() if last else ("Playing now" if "Currently In-Game" in info else ""),
+            "url": f"https://store.steampowered.com/app/{app.group(1)}/" if app else html.unescape(name.group(1)),
+            "src": STEAM_HEADER.format(app=app.group(1)) if app else "",
+            "fallback": html.unescape(capsule.group(1)) if capsule else "",
+        })
+        if len(out) == GAMES:
+            break
+    return out
+
+
 def hang(kind, items):
     """Save each cover into its slot and swap the remote URL for the local one."""
     os.makedirs(IMG_DIR, exist_ok=True)
     for i, it in enumerate(items, 1):
-        src = it.pop("src", "")
+        src, fallback = it.pop("src", ""), it.pop("fallback", "")
         it["cover"], it["v"] = "", ""
-        if not src:
-            continue
-        try:
-            data = fetch(src)
-        except Exception as e:  # a missing cover shouldn't sink the rest
-            print(f"  cover failed for {it['title']}: {e}", file=sys.stderr)
+        data = None
+        for url in (src, fallback):
+            if not url:
+                continue
+            try:
+                data = fetch(url)
+                break
+            except Exception as e:  # a missing cover shouldn't sink the rest
+                print(f"  cover failed for {it['title']} ({url}): {e}", file=sys.stderr)
+        if data is None:
             continue
         name = f"{kind}-{i}.jpg"
         path = os.path.join(IMG_DIR, name)
@@ -168,7 +207,7 @@ def previous():
 
 def main():
     prev = previous()
-    data = {"films": prev.get("films", []), "books": prev.get("books", [])}
+    data = {k: prev.get(k, []) for k in ("films", "books", "games")}
 
     try:
         got = films()
@@ -187,13 +226,22 @@ def main():
     except Exception as e:
         print(f"books: kept previous ({e})", file=sys.stderr)
 
-    if data["films"] == prev.get("films") and data["books"] == prev.get("books"):
+    try:
+        got = games()
+        if got:
+            data["games"] = hang("game", got)
+        print(f"games: {len(got)}")
+    except Exception as e:
+        print(f"games: kept previous ({e})", file=sys.stderr)
+
+    if all(data[k] == prev.get(k) for k in data):
         print("no change")
         return
     data = {"updated": dt.date.today().isoformat(), **data}
     with open(DATA, "w", encoding="utf-8") as f:
         f.write("/* Written by scripts/lately.py (run once a day by .github/workflows/lately.yml).\n"
-                "   The last four films (Letterboxd) and books (Goodreads) Pob rated. Don't edit by hand. */\n")
+                "   The last four films (Letterboxd) and books (Goodreads) Pob rated, and the last three\n"
+                "   games he played (Steam). Don't edit by hand. */\n")
         f.write("window.LATELY = " + json.dumps(data, ensure_ascii=False, indent=1) + ";\n")
     print("wrote", os.path.relpath(DATA, ROOT))
 
