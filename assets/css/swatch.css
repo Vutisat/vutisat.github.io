@@ -257,6 +257,20 @@ a{ color:inherit; }
   text-wrap:balance;
 }
 .intro__p{ margin:0 0 12px; max-width:36em; font-size:clamp(16px, 1.4vw, 18.5px); color:var(--ink-2); text-wrap:pretty; }
+/* a hello: the hand waves once as the cover settles, and again on hover */
+.intro__wave{ display:inline-block; font-size:.82em; transform-origin:70% 80%; }
+@media (prefers-reduced-motion:no-preference){
+  .intro__wave{ animation:wave 1.8s ease-in-out .9s 1 both; }
+  .intro__hi:hover .intro__wave{ animation:wave-again 1.8s ease-in-out 0s 1 both; } /* a second name so hover replays it */
+}
+@keyframes wave{
+  0%, 60%, 100%{ rotate:0deg; }
+  10%, 30%{ rotate:14deg; } 20%{ rotate:-8deg; } 40%{ rotate:-4deg; } 50%{ rotate:10deg; }
+}
+@keyframes wave-again{
+  0%, 60%, 100%{ rotate:0deg; }
+  10%, 30%{ rotate:14deg; } 20%{ rotate:-8deg; } 40%{ rotate:-4deg; } 50%{ rotate:10deg; }
+}
 .intro__p--warm{ color:var(--ink); font-weight:620; }
 .intro__p a{ color:inherit; text-decoration:underline; text-decoration-color:var(--mustard); text-decoration-thickness:2px; text-underline-offset:3px; }
 .intro__p a:hover{ text-decoration-color:var(--ink); }
