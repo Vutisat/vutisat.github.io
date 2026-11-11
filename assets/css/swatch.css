@@ -258,7 +258,8 @@ a{ color:inherit; }
 }
 .intro__p{ margin:0 0 12px; max-width:36em; font-size:clamp(16px, 1.4vw, 18.5px); color:var(--ink-2); text-wrap:pretty; }
 /* a hello: the hand waves once as the cover settles, and again on hover */
-.intro__wave{ display:inline-block; font-size:.82em; transform-origin:70% 80%; }
+/* the heading's tight tracking squeezes the space before it, so give it its own gap */
+.intro__wave{ display:inline-block; font-size:.82em; margin-left:.16em; letter-spacing:0; transform-origin:70% 80%; }
 @media (prefers-reduced-motion:no-preference){
   .intro__wave{ animation:wave 1.8s ease-in-out .9s 1 both; }
   .intro__hi:hover .intro__wave{ animation:wave-again 1.8s ease-in-out 0s 1 both; } /* a second name so hover replays it */
