@@ -92,6 +92,18 @@
       <path d="M18.5 9.8C20 18.5 18.2 29 20.4 41.5"/>
     </g>
   </symbol>
+  <symbol id="keep-off" viewBox="0 0 20 20">
+    <circle cx="10" cy="10" r="7.1" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M10 6.6v6.8M6.6 10h6.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="keep-on" viewBox="0 0 20 20">
+    <circle cx="10" cy="10" r="7.9" fill="currentColor"/>
+    <path d="m6.4 10.2 2.5 2.6 4.7-5.2" fill="none" style="stroke:var(--tick,#FBF7EF)" stroke-width="1.7"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="untie" viewBox="0 0 20 20">
+    <path d="M5.5 5.5l9 9M14.5 5.5l-9 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
   <symbol id="back" viewBox="0 0 24 24">
     <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
@@ -136,22 +148,49 @@
     <nav class="knots off" aria-label="Sections">
       <i class="cord-thru" aria-hidden="true"></i>
       <div class="knots__in">
+        <a class="knot" href="#glance"  data-tier="glance" hidden><span class="en">At a glance</span><span class="th">ภาพรวม</span></a>
         <a class="knot" href="#before"  data-tier="before"><span class="en">Before you go</span><span class="th">ก่อนไป</span></a>
         <a class="knot" href="#north"   data-tier="north"><span class="en">North</span><span class="th">ภาคเหนือ</span></a>
         <a class="knot" href="#south"   data-tier="south"><span class="en">South</span><span class="th">ภาคใต้</span></a>
         <a class="knot" href="#central" data-tier="central"><span class="en">Bangkok</span><span class="th">ภาคกลาง</span></a>
         <a class="knot" href="#manners" data-tier="manners"><span class="en">Manners</span><span class="th">มารยาท</span></a>
-        <div class="sift" role="group" aria-label="How much of the garland to show">
-          <button type="button" data-sift="all"  aria-pressed="true">All 24</button>
-          <button type="button" data-sift="must" aria-pressed="false">Must-do 6</button>
+        <div class="sift" role="group" aria-label="Which places to show">
+          <button type="button" data-sift="all"  aria-pressed="true">All <span class="n">24</span></button>
+          <button type="button" data-sift="top"  aria-pressed="false">Top picks <span class="n">18</span></button>
+          <button type="button" data-sift="must" aria-pressed="false">Must-do <span class="n">6</span></button>
+          <button type="button" data-sift="mine" aria-pressed="false" hidden>Mine <span class="n">0</span></button>
         </div>
+        <button type="button" class="tripbtn" data-trip-open data-count="0" hidden>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#keep-on"/></svg>
+          My trip <b class="n">0</b>
+        </button>
       </div>
     </nav>
 
     <main id="start" class="strand">
 
+      <!-- ภาพรวม — built by thailand.js from the places below, so it can
+           never disagree with them. Without the script it stays hidden. -->
+      <section class="tier glance" id="glance" aria-labelledby="glance-h" hidden>
+        <div class="band" data-cinch>
+          <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
+          <h2 id="glance-h">At a glance</h2>
+          <span class="band__th th">ภาพรวม</span>
+          <span class="band__count" data-glance-count></span>
+        </div>
+
+        <p class="tier__note" data-cinch>
+          The whole garland on one screen, strung the way the guide runs. Tap a name to read
+          about it, and tap <span class="glance__plus" aria-hidden="true"><svg viewBox="0 0 20 20"><use href="#keep-off"/></svg></span><span class="vh">the add button</span>
+          to put it on your trip. <span class="glance__month" data-glance-month></span>
+        </p>
+
+        <div class="glance__strands" data-glance data-cinch></div>
+      </section>
+
       <!-- ก่อนออกเดินทาง ------------------------------------------------- -->
       <section class="tier" id="before" aria-labelledby="before-h">
+        <figure class="tier__photo"><img src="assets/img/thailand/region-before.webp" alt="Thousands of paper lanterns rising over a crowd at Yi Peng in Chiang Mai" width="1600" height="700" loading="eager" decoding="async"></figure>
         <div class="band" data-cinch>
           <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
           <h2 id="before-h">Before you go</h2>
@@ -334,7 +373,8 @@
       </section>
 
       <!-- ภาคเหนือ ------------------------------------------------------- -->
-      <section class="tier" id="north" aria-labelledby="north-h">
+      <section class="tier" id="north" data-coast="north" aria-labelledby="north-h">
+        <figure class="tier__photo"><img src="assets/img/thailand/region-north.webp" alt="First light over a sea of cloud from the cliffs at Phu Chi Fa" width="1600" height="700" loading="lazy" decoding="async"></figure>
         <div class="band" data-cinch>
           <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
           <h2 id="north-h">The North</h2>
@@ -342,30 +382,32 @@
           <span class="band__count" data-counts><b class="n">7</b> <span class="u">places</span></span>
         </div>
 
-        <p class="tier__note" data-cinch>
-          Mountains and forests. Chiang Mai <span class="th">เชียงใหม่</span> and
-          Chiang Rai <span class="th">เชียงราย</span> are the two major cities and the natural
-          bases to sleep in. But if you can find a legitimate place to stay near Phu Chi Fa —
-          do that instead.
-        </p>
-        <p class="gloss" data-cinch><b>doi</b> <b class="th">ดอย</b> <span>— a mountain peak. It prefixes half the names up here.</span></p>
+        <div class="tier__intro">
+          <p class="tier__note" data-cinch>
+            Mountains and forests. Chiang Mai <span class="th">เชียงใหม่</span> and
+            Chiang Rai <span class="th">เชียงราย</span> are the two major cities and the natural
+            bases to sleep in. But if you can find a legitimate place to stay near Phu Chi Fa —
+            do that instead.
+          </p>
+          <p class="gloss" data-cinch><b>doi</b> <b class="th">ดอย</b> <span>— a mountain peak. It prefixes half the names up here.</span></p>
 
-        <div class="callout callout--tier" data-tone="warn" data-cinch>
-          <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
-          <div>
-            <h3>Not February to April</h3>
-            <p>
-              This is the region burning season ruins. Everything below is worth the trip, and
-              none of it is worth doing through the haze — <a href="#when">see the year</a>.
-            </p>
-            <p class="callout__live" data-live="haze" hidden></p>
+          <div class="callout callout--tier" data-tone="warn" data-cinch>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
+            <div>
+              <h3>Not February to April</h3>
+              <p>
+                This is the region burning season ruins. Everything below is worth the trip, and
+                none of it is worth doing through the haze — <a href="#when">see the year</a>.
+              </p>
+              <p class="callout__live" data-live="haze" hidden></p>
+            </div>
           </div>
         </div>
 
         <ol class="buds">
           <li class="bud is-first" data-mark="must" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/phu-chi-fa.webp" alt="Sunrise over a valley filled with cloud, seen from Phu Chi Fa" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Phu Chi Fa</span><span class="th">ภูชี้ฟ้า</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>Must-do <span class="th">ห้ามพลาด</span></p>
@@ -384,8 +426,8 @@
           </li>
 
           <li class="bud" data-mark="must" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/wat-rong-khun.webp" alt="The all-white Wat Rong Khun reflected in its pond" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Wat Rong Khun</span><span class="th">วัดร่องขุ่น</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>Must-do <span class="th">ห้ามพลาด</span></p>
@@ -402,8 +444,8 @@
           </li>
 
           <li class="bud" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/baan-dam.webp" alt="A dark teak hall with a steep carved roof at Baan Dam" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Baan Dam — the Black House</span><span class="th">บ้านดำ</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -422,8 +464,8 @@
           </li>
 
           <li class="bud" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/the-golden-triangle.webp" alt="The Mekong at the Golden Triangle, with a Thailand sign on a roof in the foreground" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">The Golden Triangle</span><span class="th">สามเหลี่ยมทองคำ</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -441,8 +483,8 @@
           </li>
 
           <li class="bud" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/doi-tung.webp" alt="Formal flower beds and lawns of the Mae Fah Luang garden at Doi Tung" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Doi Tung</span><span class="th">ดอยตุง</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -459,8 +501,8 @@
           </li>
 
           <li class="bud" data-mark="time" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/doi-mae-salong.webp" alt="Rows of tea bushes on a hillside at Mae Salong" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Doi Mae Salong</span><span class="th">ดอยแม่สลอง</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>If you have time <span class="th">ถ้ามีเวลา</span></p>
@@ -479,8 +521,8 @@
           </li>
 
           <li class="bud" data-mark="time" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/doi-inthanon.webp" alt="One of the two royal chedis near the summit of Doi Inthanon" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Doi Inthanon</span><span class="th">ดอยอินทนนท์</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>If you have time <span class="th">ถ้ามีเวลา</span></p>
@@ -501,6 +543,7 @@
 
       <!-- ภาคใต้ --------------------------------------------------------- -->
       <section class="tier" id="south" aria-labelledby="south-h">
+        <figure class="tier__photo"><img src="assets/img/thailand/region-south.webp" alt="Limestone karst islands rising from the water of Phang Nga Bay" width="1600" height="700" loading="lazy" decoding="async"></figure>
         <div class="band" data-cinch>
           <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
           <h2 id="south-h">The South</h2>
@@ -508,25 +551,28 @@
           <span class="band__count" data-counts><b class="n">7</b> <span class="u">places</span></span>
         </div>
 
-        <p class="tier__note" data-cinch>
-          The most beautiful beaches are along the Andaman Coast — Trang <span class="th">ตรัง</span>,
-          Krabi <span class="th">กระบี่</span>, and the islands scattered off them. That is the
-          side I would send you to, and Koh Lanta is the base to do it from.
-        </p>
-        <p class="gloss" data-cinch><b>koh</b> <b class="th">เกาะ</b> <span>(also spelled ko) — island. Everything below with a “Koh” is one.</span></p>
+        <div class="tier__intro">
+          <p class="tier__note" data-cinch>
+            The most beautiful beaches are along the Andaman Coast — Trang <span class="th">ตรัง</span>,
+            Krabi <span class="th">กระบี่</span>, and the islands scattered off them. That is the
+            side I would send you to, and Koh Lanta is the base to do it from.
+          </p>
+          <p class="gloss" data-cinch><b>koh</b> <b class="th">เกาะ</b> <span>(also spelled ko) — island. Everything below with a “Koh” is one.</span></p>
 
-        <div class="callout callout--tier" data-tone="warn" data-cinch>
-          <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
-          <div>
-            <h3>One coast per trip — the south is really two trips</h3>
-            <p>
-              The Andaman side and the Gulf side have <b>opposite rainy seasons</b>, so no month
-              is good for both. <b>Andaman: Nov–Apr. Gulf: Jun–Sep.</b> Pick the coast that
-              matches the month you can actually travel, then book inside that half of this
-              section — <a href="#when">the year is charted up top</a>.
-            </p>
-            <p class="callout__live" data-live="coast" hidden></p>
+          <div class="callout callout--tier" data-tone="warn" data-cinch>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
+            <div>
+              <h3>One coast per trip — the south is really two trips</h3>
+              <p>
+                The Andaman side and the Gulf side have <b>opposite rainy seasons</b>, so no month
+                is good for both. <b>Andaman: Nov–Apr. Gulf: Jun–Sep.</b> Pick the coast that
+                matches the month you can actually travel, then book inside that half of this
+                section — <a href="#when">the year is charted up top</a>.
+              </p>
+              <p class="callout__live" data-live="coast" hidden></p>
+            </div>
           </div>
+
         </div>
 
         <!-- ฝั่งอันดามัน -->
@@ -538,8 +584,8 @@
 
         <ol class="buds">
           <li class="bud is-first" data-mark="must" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/koh-lanta.webp" alt="A long sandy beach lined with palms and huts on Koh Lanta" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Koh Lanta</span><span class="th">เกาะลันตา</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>Must-do <span class="th">ห้ามพลาด</span></p>
@@ -583,8 +629,8 @@
           </li>
 
           <li class="bud" data-mark="must" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/khao-sok.webp" alt="Forested limestone karsts above the green water of Cheow Lan lake" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Khao Sok National Park</span><span class="th">เขาสก</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>Must-do <span class="th">ห้ามพลาด</span></p>
@@ -607,8 +653,8 @@
           </li>
 
           <li class="bud" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/koh-phi-phi.webp" alt="Longtail boats moored in a turquoise bay at Koh Phi Phi" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Koh Phi Phi</span><span class="th">เกาะพีพี</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -622,8 +668,8 @@
           </li>
 
           <li class="bud" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/ao-phang-nga.webp" alt="Koh Tapu, James Bond Island, a needle of rock standing in the bay" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Ao Phang Nga National Park</span><span class="th">อ่าวพังงา</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -640,6 +686,7 @@
 
         <!-- off the cord, with its tie cut -->
         <div class="unstrung" data-cinch>
+          <img class="bud__photo" src="assets/img/thailand/phuket.webp" alt="A crowded beach and hotels along Patong Bay, Phuket" width="640" height="480" loading="lazy" decoding="async">
           <div class="unstrung__head">
             <h3>Phuket <span class="th">ภูเก็ต</span></h3>
             <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-cut"/></svg>Skip it <span class="th">ข้าม</span></p>
@@ -666,8 +713,8 @@
 
         <ol class="buds">
           <li class="bud is-first" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/koh-tao.webp" alt="People on a wide beach at low tide on Koh Tao at sunset" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Koh Tao</span><span class="th">เกาะเต่า</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -685,8 +732,8 @@
           </li>
 
           <li class="bud" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/ang-thong.webp" alt="Green islands scattered across the sea in Ang Thong Marine Park, from a viewpoint" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Ang Thong Marine Park</span><span class="th">หมู่เกาะอ่างทอง</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -703,8 +750,8 @@
           </li>
 
           <li class="bud" data-mark="time" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/koh-samui.webp" alt="Clear water and palms on the beach at Chaweng, Koh Samui" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Koh Samui</span><span class="th">เกาะสมุย</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>If you have time <span class="th">ถ้ามีเวลา</span></p>
@@ -730,6 +777,7 @@
 
       <!-- ภาคกลาง -------------------------------------------------------- -->
       <section class="tier" id="central" aria-labelledby="central-h">
+        <figure class="tier__photo"><img src="assets/img/thailand/region-central.webp" alt="Wat Arun's central prang seen across the Chao Phraya, with a boat at the pier" width="1600" height="700" loading="lazy" decoding="async"></figure>
         <div class="band" data-cinch>
           <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
           <h2 id="central-h">Central — Bangkok</h2>
@@ -737,17 +785,19 @@
           <span class="band__count" data-counts><b class="n">10</b> <span class="u">places</span></span>
         </div>
 
-        <p class="tier__note" data-cinch>
-          Bangkok <span class="th">กรุงเทพฯ</span> is where you will land and where you will
-          leave from, so give it real days rather than the leftovers. Three of those days can
-          leave the city entirely — the day trips are at the bottom of this section.
-        </p>
-        <p class="gloss" data-cinch><b>wat</b> <b class="th">วัด</b> <span>— a Buddhist temple. The big ones enforce covered shoulders and knees.</span></p>
+        <div class="tier__intro">
+          <p class="tier__note" data-cinch>
+            Bangkok <span class="th">กรุงเทพฯ</span> is where you will land and where you will
+            leave from, so give it real days rather than the leftovers. Three of those days can
+            leave the city entirely — the day trips are at the bottom of this section.
+          </p>
+          <p class="gloss" data-cinch><b>wat</b> <b class="th">วัด</b> <span>— a Buddhist temple. The big ones enforce covered shoulders and knees.</span></p>
+        </div>
 
         <ol class="buds">
           <li class="bud is-first" data-mark="must" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/wat-phra-kaew.webp" alt="Golden chedis and temple roofs of Wat Phra Kaew" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Wat Phra Kaew &amp; the Grand Palace</span><span class="th">วัดพระแก้ว</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>Must-do <span class="th">ห้ามพลาด</span></p>
@@ -766,8 +816,8 @@
           </li>
 
           <li class="bud" data-mark="must" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/wat-pho.webp" alt="The golden reclining Buddha inside Wat Pho" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Wat Arun &amp; Wat Pho</span><span class="th">วัดอรุณ · วัดโพธิ์</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-solid"/></svg>Must-do <span class="th">ห้ามพลาด</span></p>
@@ -786,8 +836,8 @@
           </li>
 
           <li class="bud" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/yaowarat.webp" alt="Neon signs crowding Yaowarat Road at night" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Yaowarat — Chinatown</span><span class="th">เยาวราช</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -804,8 +854,8 @@
           </li>
 
           <li class="bud" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/chao-phraya.webp" alt="The Bangkok skyline lit up and reflected in the Chao Phraya at night" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">The river at night, from ICON Siam</span><span class="th">ล่องเรือเจ้าพระยา</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -824,8 +874,8 @@
           </li>
 
           <li class="bud" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/siam.webp" alt="The glass front of Siam Paragon" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Siam</span><span class="th">สยาม</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -840,8 +890,8 @@
           </li>
 
           <li class="bud" data-mark="time" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/jim-thompson.webp" alt="Red-brown teak houses of the Jim Thompson House among tropical plants" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Jim Thompson House</span><span class="th">บ้านจิม ทอมป์สัน</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>If you have time <span class="th">ถ้ามีเวลา</span></p>
@@ -856,8 +906,8 @@
           </li>
 
           <li class="bud" data-mark="time" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/moca.webp" alt="The grey stone facade of MOCA Bangkok" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">MOCA Bangkok</span><span class="th">พิพิธภัณฑ์ MOCA</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>If you have time <span class="th">ถ้ามีเวลา</span></p>
@@ -879,8 +929,8 @@
 
         <ol class="buds buds--day">
           <li class="bud is-first" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/maeklong.webp" alt="Market stalls pressed against the tracks at the Maeklong Railway Market" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Amphawa &amp; the Maeklong Railway Market</span><span class="th">ตลาดน้ำอัมพวา · ตลาดร่มหุบ</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -916,8 +966,8 @@
           </li>
 
           <li class="bud" data-mark="rec" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/ayutthaya.webp" alt="Brick prangs and ruins at Wat Mahathat, Ayutthaya" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Ayutthaya</span><span class="th">อยุธยา</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-half"/></svg>Recommended <span class="th">แนะนำ</span></p>
@@ -938,8 +988,8 @@
           </li>
 
           <li class="bud" data-mark="time" data-cinch>
-            <i class="tie"></i>
             <svg class="bud__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>
+            <img class="bud__photo" src="assets/img/thailand/khao-yai.webp" alt="Haew Narok waterfall dropping through forest in Khao Yai" width="640" height="480" loading="lazy" decoding="async">
             <div class="bud__head">
               <h3 class="bud__name"><span class="en">Khao Yai National Park</span><span class="th">เขาใหญ่</span></h3>
               <p class="verdict"><svg viewBox="0 0 20 20" aria-hidden="true"><use href="#bud-open"/></svg>If you have time <span class="th">ถ้ามีเวลา</span></p>
@@ -959,6 +1009,7 @@
 
       <!-- มารยาท --------------------------------------------------------- -->
       <section class="tier" id="manners" aria-labelledby="manners-h">
+        <figure class="tier__photo"><img src="assets/img/thailand/region-manners.webp" alt="Jasmine phuang malai garlands and marigolds laid out on a Bangkok flower stall" width="1600" height="700" loading="lazy" decoding="async"></figure>
         <div class="band" data-cinch>
           <svg class="band__orchid" viewBox="0 0 24 24" aria-hidden="true"><use href="#orchid"/></svg>
           <h2 id="manners-h">Manners</h2>
@@ -973,7 +1024,6 @@
 
         <ol class="rules">
           <li class="rule is-first" data-do="no" data-cinch>
-            <i class="tie"></i>
             <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
             <div class="rule__in">
               <h3>Don't touch anyone's head or hair <span class="th">อย่าแตะหัวใคร</span></h3>
@@ -981,7 +1031,6 @@
             </div>
           </li>
           <li class="rule" data-do="no" data-cinch>
-            <i class="tie"></i>
             <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
             <div class="rule__in">
               <h3>Don't step on money or books <span class="th">อย่าเหยียบเงินหรือหนังสือ</span></h3>
@@ -989,7 +1038,6 @@
             </div>
           </li>
           <li class="rule" data-do="no" data-cinch>
-            <i class="tie"></i>
             <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
             <div class="rule__in">
               <h3>Don't criticise the monarchy <span class="th">อย่าวิจารณ์สถาบันพระมหากษัตริย์</span></h3>
@@ -997,7 +1045,6 @@
             </div>
           </li>
           <li class="rule" data-do="no" data-cinch>
-            <i class="tie"></i>
             <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
             <div class="rule__in">
               <h3>Don't touch any Buddhist sculpture <span class="th">อย่าแตะพระพุทธรูป</span></h3>
@@ -1005,7 +1052,6 @@
             </div>
           </li>
           <li class="rule" data-do="no" data-cinch>
-            <i class="tie"></i>
             <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#dont"/></svg>
             <div class="rule__in">
               <h3>Don't be careless with your things <span class="th">อย่าประมาทเรื่องทรัพย์สิน</span></h3>
@@ -1013,7 +1059,6 @@
             </div>
           </li>
           <li class="rule" data-do="yes" data-cinch>
-            <i class="tie"></i>
             <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#do"/></svg>
             <div class="rule__in">
               <h3>Keep your wallet in your front pocket <span class="th">เก็บกระเป๋าสตางค์ไว้กระเป๋าหน้า</span></h3>
@@ -1021,7 +1066,6 @@
             </div>
           </li>
           <li class="rule" data-do="yes" data-cinch>
-            <i class="tie"></i>
             <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#do"/></svg>
             <div class="rule__in">
               <h3>Cover your shoulders and knees at temples <span class="th">แต่งกายสุภาพเมื่อเข้าวัด</span></h3>
@@ -1029,7 +1073,6 @@
             </div>
           </li>
           <li class="rule" data-do="yes" data-cinch>
-            <i class="tie"></i>
             <svg class="rule__mark" viewBox="0 0 20 20" aria-hidden="true"><use href="#do"/></svg>
             <div class="rule__in">
               <h3>Stand for the national anthem <span class="th">ยืนตรงเคารพเพลงชาติ</span></h3>
@@ -1040,6 +1083,23 @@
       </section>
 
     </main>
+
+    <!-- MY TRIP — your own short garland, kept in this browser -->
+    <dialog class="trip" aria-labelledby="trip-h">
+      <div class="trip__head">
+        <h2 id="trip-h">My trip <span class="th">ทริปของฉัน</span></h2>
+        <button type="button" class="trip__close" data-trip-close>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><use href="#untie"/></svg><span class="vh">Close</span>
+        </button>
+      </div>
+      <p class="trip__sub" data-trip-sub></p>
+      <div class="trip__body" data-trip-list></div>
+      <div class="trip__foot">
+        <button type="button" class="trip__act trip__act--main" data-trip-copy>Copy as a list</button>
+        <button type="button" class="trip__act" data-trip-only>Show only these</button>
+        <button type="button" class="trip__act trip__act--quiet" data-trip-clear>Clear</button>
+      </div>
+    </dialog>
 
     <!-- THE TASSEL -->
     <footer class="tassel">
@@ -1052,6 +1112,42 @@
         </p>
         <p class="tassel__sign">Bon voyage <span class="th">ขอให้เดินทางปลอดภัย</span></p>
         <p class="tassel__name">— Pob</p>
+        <details class="credits">
+          <summary>Photo credits</summary>
+          <p>All photographs are from Wikimedia Commons, cropped and resized; none were altered otherwise.</p>
+          <ul>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Festival_Yi_Peng._ChiangMai,_Tailandia._(16786888573).jpg">Yi Peng, Chiang Mai</a> — Carlos Adampol Galindo from DF, México, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:First_Light_at_Phu_Chi_Fa_National_Park.jpg">Phu Chi Fa at first light</a> — Phapoom, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Sunrise_at_Pu_Chi_Fah_03.jpg">Phu Chi Fa</a> — Pulperm Phungprachit, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Chiang_Rai_-_Wat_Rong_Khun_%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%A3%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%82%E0%B8%B8%E0%B9%88%E0%B8%99_(2026)_-_img_11.jpg">Wat Rong Khun</a> — Chainwit., <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Muzeum_Baan_Dam,_nazywane_%E2%80%9ECzarnym_Domem%E2%80%9D_w_Chiang_Rai,_Tajlandia.jpg">Baan Dam</a> — Szwendam się, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Sop_Ruak-02.jpg">Sop Ruak, the Golden Triangle</a> — Wayne77, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:DoiTungGarden.JPG">Doi Tung garden</a> — Elgaard, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Mae_Salong_2023-04-16-5.jpg">Mae Salong</a> — Alexey Komarov, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Doi_Inthanon_Chiang_Mai_Thailand.jpg">Doi Inthanon</a> — Grossbildjaeger, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Phang_Nga_Bay,_Karst_islands,_Thailand.jpg">Phang Nga Bay</a> — Vyacheslav Argenberg, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2016_Prowincja_Krabi,_Ko_Lanta_Yai,_Pla%C5%BCa_Klong_Khong_(16).jpg">Koh Lanta</a> — Marcin Konsek, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Cheow_Lan_Lake_shoreline.jpg">Cheow Lan lake</a> — The Cosmonaut, <a href="https://creativecommons.org/licenses/by-sa/2.5/ca/">CC BY-SA 2.5 ca</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Isla_Ko_Phi_Phi_Don,_Tailandia,_2013-08-19,_DD_12.JPG">Koh Phi Phi</a> — Diego Delso, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Isla_Tapu,_Phuket,_Tailandia,_2013-08-20,_DD_36.JPG">Koh Tapu</a> — Diego Delso, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Patong_Beach_Phuket_November_2012.jpg">Patong, Phuket</a> — Arnaud-Victor Monteux, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Mae_Haad_beach_Ko_Tao.jpg">Koh Tao</a> — kallerna, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Mu_Ko_Ang_Thong,_Islands_in_the_sea_2,_Thailand.jpg">Ang Thong</a> — Vyacheslav Argenberg, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Samui_2015_febr._Chaweng_-_panoramio.jpg">Chaweng, Koh Samui</a> — Roma Neus, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Wat_Arun_03-2012-01.JPG">Wat Arun</a> — Rolf Heinrich, Köln, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Wat_Phra_Kaew_by_Ninara_TSP_edit_crop.jpg">Wat Phra Kaew</a> — Ninara (edit: TSP), <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Wat_Pho,_Bangkok,_Tailandia,_2013-08-22,_DD_06.jpg">Wat Pho</a> — Diego Delso, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Yaowarat_at_night_(32455695783).jpg">Yaowarat</a> — Ninara from Helsinki, Finland, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Chao_Phraya_river..JPG">The Chao Phraya</a> — Panyawat boontanom, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Siam_Paragon_06.23.jpg">Siam Paragon</a> — Supanut Arunoprayote, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Main_House_of_Jim_Thompson_photo_Don_Ramey_Logan.jpg">Jim Thompson House</a> — Don Ramey Logan, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Museum_of_Contemporary_Art_(MOCA),_Bangkok,_Thailand_-_20161201-05.jpg">MOCA Bangkok</a> — Smuconlaw, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Maeklong_Railway_Market_05.jpg">Maeklong Railway Market</a> — Codas, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Templo_Mahathat,_Ayutthaya,_Tailandia,_2013-08-23,_DD_06.jpg">Wat Mahathat, Ayutthaya</a> — Diego Delso, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Haew_narok_waterfall_first_tier.jpg">Haew Narok, Khao Yai</a> — Tontanthailand, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Bangkok,_Thailand,_March_2023_-_Jasmine_phuang_malai_(flower_garland).jpg">Phuang malai, Bangkok</a> — Sharon Hahn Darlin, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a></li>
+          </ul>
+        </details>
         <p class="tassel__back"><a href="home.html">back home</a></p>
       </div>
     </footer>

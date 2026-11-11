@@ -15,12 +15,25 @@
    set as text on jasmine (2.05:1) — --gold-ink is the only readable gold.
    Banana-leaf green is scarce and belongs to the day tours alone.
 
-   No cards, no shadows, no photographs. The component family is buds, ties,
-   knots, bands, hang-tags and the tassel.
+   The cord runs down the left edge and stays slim, so the page can spend its
+   width on reading. Each region is a chapter that opens on a photograph with
+   its marigold band knotted over the bottom edge, and inside it the places are
+   strung across the page in rows: a pale strand along the top of each row,
+   every bud hanging from it by a short tie, picture first. Photographs are
+   real places from Wikimedia Commons, credited at the tassel; never stock
+   people-posing, never decorative. No shadows. The component family is buds,
+   ties, knots, bands, hang-tags and the tassel.
 
    Every heading and every name reads English first, with the Thai set beneath
    or beside it in the second voice — smaller, lighter, orchid. The one
    exception is the title, which is Thai first on purpose.
+
+   It is also a planning tool, so the garland can be laid flat. "At a glance"
+   restrings every place as three short strands, one per region, on one screen;
+   any bud can be added to "my trip", your own short garland, kept in this
+   browser, opened as a panel and copied out as a plain list. The sift narrows
+   the strand to all / top picks / must-do / mine. Orchid stays the only
+   interactive colour: a kept bud's toggle fills orchid-deep.
 
    Type: Trirong (Thai + Latin serif) carries every name; Anuphan (Thai + Latin
    sans, variable) carries everything read at length. Self-hosted from ../fonts/
@@ -92,30 +105,21 @@
   --sans:  "Anuphan", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ease:  cubic-bezier(.16, 1, .3, 1);
-  --wrap:  1080px;
+  --wrap:  1400px;
   --gut:   clamp(1.25rem, 4vw, 2.5rem);
 
-  --cord: 24px;   /* x of the cord, from the wrap's content edge */
-  --reach: 22px;  /* how far a tie reaches from the cord to its bud */
+  --cord: 10px;   /* x of the cord, from the wrap's content edge */
+  --reach: 18px;  /* how far a tie reaches from the cord to what it holds */
   --strung: 0px;  /* how much cord is strung — set by thailand.js; it is the scroll */
 
-  /* The cord column is empty by nature, so a plainly centred wrap throws the
-     whole page right. Once there is slack, widen the box and spend it all on the
-     right padding: the ink then sits optically centred with the cord inset. */
   --wrap-box: var(--wrap);
   --wrap-pr:  var(--gut);
 
   color-scheme: light;
 }
 
-@media (min-width: 720px)  { :root { --cord: 88px;  --reach: 30px; } }
-@media (min-width: 1000px) { :root { --cord: 152px; --reach: 34px; } }
-@media (min-width: 1240px) {
-  :root {
-    --wrap-box: calc(var(--wrap) + var(--cord));
-    --wrap-pr:  calc(var(--gut) + var(--cord));
-  }
-}
+@media (min-width: 720px)  { :root { --cord: 14px; --reach: 26px; } }
+@media (min-width: 1000px) { :root { --cord: 18px; --reach: 34px; } }
 
 /* ---------- BASE ----------------------------------------------------------- */
 
@@ -246,16 +250,6 @@ a:hover { color: var(--ink); }
   background: var(--orchid-deep);
 }
 
-/* a tie — the stitch from the cord across to what it holds */
-.tie {
-  position: absolute;
-  left: var(--cord);
-  width: var(--reach);
-  height: 1px;
-  background: var(--line-2);
-  transform-origin: left center;
-}
-
 /* ---------- THE TITLE TAG -------------------------------------------------- */
 
 .head { position: relative; padding-block: clamp(3rem, 10vh, 5.75rem) clamp(2.25rem, 6vh, 3.5rem); }
@@ -380,6 +374,42 @@ a:hover { color: var(--ink); }
 }
 .sift button:hover { color: var(--ink); background: var(--gold-wash); }
 .sift button[aria-pressed="true"] { background: var(--gold); color: var(--ink); }
+.sift button .n { font-variant-numeric: tabular-nums; opacity: .7; }
+.sift button[hidden] { display: none; }
+
+/* my trip — the short garland you are keeping */
+.tripbtn {
+  appearance: none; cursor: pointer;
+  margin-left: .4rem;
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .42rem .8rem .42rem .55rem;
+  border: 1px solid var(--orchid-deep);
+  border-radius: 99px;
+  background: var(--jasmine); color: var(--orchid-deep);
+  font-family: var(--sans); font-size: .79rem; font-weight: 600; letter-spacing: .03em;
+  transition: background .25s var(--ease), color .25s var(--ease);
+}
+.tripbtn svg { width: 16px; height: 16px; }
+.tripbtn .n { font-variant-numeric: tabular-nums; }
+.tripbtn:hover { background: var(--orchid-wash); }
+.tripbtn:not([data-count="0"]) { background: var(--orchid-deep); color: var(--jasmine); --tick: var(--orchid-deep); }
+.tripbtn:not([data-count="0"]):hover { background: var(--ink); border-color: var(--ink); }
+.tripbtn[hidden] { display: none; }
+
+/* Narrow: the rail is already a swipe, so the trip rides in the corner instead —
+   and only once there is something on it. A jasmine ring, not a shadow. */
+@media (max-width: 1239px) {
+  .tripbtn {
+    position: fixed; z-index: 40;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    margin: 0;
+    padding: .7rem 1.05rem .7rem .8rem;
+    font-size: .88rem;
+    box-shadow: 0 0 0 4px var(--jasmine);
+  }
+  .tripbtn[data-count="0"] { display: none; }
+}
 .sift button:focus-visible { outline-offset: -3px; }
 
 /* ---------- THE STRAND ----------------------------------------------------- */
@@ -387,7 +417,22 @@ a:hover { color: var(--ink); }
 .strand { position: relative; padding-bottom: clamp(2rem, 6vh, 3.5rem); }
 .tier { position: relative; scroll-margin-top: 5.25rem; }
 
-/* the marigold band knotted across the cord */
+/* Each region opens on a photograph, the width of the reading column. */
+.tier__photo {
+  margin: clamp(3rem, 8vh, 5rem) 0 0 calc(var(--cord) + var(--reach));
+  position: relative;
+  background: var(--jasmine-2);
+}
+.tier__photo img {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 4 / 1; object-fit: cover;
+  max-height: 40vh;
+}
+@media (max-width: 999px) { .tier__photo img { aspect-ratio: 5 / 2; } }
+@media (max-width: 599px) { .tier__photo img { aspect-ratio: 2 / 1; } }
+
+/* the marigold band knotted across the cord — over a photo's lower edge when
+   the chapter has one, so picture and name read as one sign */
 .band {
   position: relative;
   margin-top: clamp(3rem, 8vh, 5.25rem);
@@ -396,7 +441,12 @@ a:hover { color: var(--ink); }
   padding: .8rem clamp(.95rem, 3vw, 1.6rem);
   display: flex; align-items: baseline; flex-wrap: wrap; gap: .25rem .8rem;
 }
-.band h2 { font-size: clamp(1.4rem, 1.16rem + 1.1vw, 2rem); color: var(--ink); }
+.tier__photo + .band {
+  margin-top: clamp(-3.4rem, -6vw, -1.6rem);
+  margin-right: clamp(1rem, 8vw, 7rem);
+  padding-block: clamp(.85rem, 1.8vw, 1.25rem);
+}
+.band h2 { font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.6rem); color: var(--ink); }
 .band__th {
   font-family: var(--serif); font-weight: 500;
   font-size: clamp(1.02rem, .94rem + .42vw, 1.32rem);
@@ -418,6 +468,22 @@ a:hover { color: var(--ink); }
   background: var(--jasmine);
   border-radius: 50%;
   padding: 3px;
+}
+
+/* a region's note and its warning share a row on wide screens */
+.tier__intro { margin-left: calc(var(--cord) + var(--reach)); }
+.tier__intro > .tier__note, .tier__intro > .gloss, .tier__intro > .callout--tier { margin-left: 0; }
+@media (min-width: 1000px) {
+  .tier__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    grid-template-areas: "note warn" "gloss warn";
+    column-gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+  .tier__intro > .tier__note { grid-area: note; }
+  .tier__intro > .gloss { grid-area: gloss; justify-self: start; }
+  .tier__intro > .callout--tier { grid-area: warn; margin-top: 1.45rem; }
 }
 
 .tier__note { margin-top: 1.45rem; margin-left: calc(var(--cord) + var(--reach)); max-width: 62ch; color: var(--ink-2); }
@@ -448,8 +514,22 @@ a:hover { color: var(--ink); }
 .when, .kitbox {
   margin-top: clamp(1.9rem, 5vh, 2.9rem);
   margin-left: calc(var(--cord) + var(--reach));
-  max-width: 70ch;
   scroll-margin-top: 5.25rem;
+}
+/* the year needs width; the two callouts and the two dates pair up beside it */
+.season, .nowline { max-width: 62rem; }
+@media (min-width: 1000px) {
+  .when {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: start;
+  }
+  .when > .when__head, .when > .season, .when > .nowline, .when > .dates { grid-column: 1 / -1; }
+  .when > .callout { max-width: none; align-self: stretch; }
+  .dates { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .kit { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .kit > li { max-width: none; }
 }
 
 .when__head { padding-bottom: .9rem; border-bottom: 1px solid var(--line-2); }
@@ -638,15 +718,13 @@ a:hover { color: var(--ink); }
 .kit b { font-family: var(--serif); font-weight: 600; font-size: 1.04rem; color: var(--ink); }
 .kit span { font-size: .95rem; color: var(--ink-2); }
 
-@media (min-width: 860px) {
-  .kit > li { grid-template-columns: minmax(0, 18ch) 1fr; align-items: baseline; }
-}
+
 
 /* ---------- SUB-BANDS — a smaller knot across the cord --------------------- */
 
 .subband {
   position: relative;
-  margin-top: clamp(2.25rem, 6vh, 3.25rem);
+  margin-top: clamp(2rem, 5vh, 2.75rem);
   margin-left: calc(var(--cord) + var(--reach));
   padding-bottom: .5rem;
   border-bottom: 1px solid var(--line-2);
@@ -691,40 +769,112 @@ a:hover { color: var(--ink); }
 
 /* ---------- BUDS ----------------------------------------------------------- */
 
-.buds { margin-top: clamp(1.6rem, 4vh, 2.4rem); }
+/* Each run of places is strung across the page rather than down it: a pale
+   strand runs along the top of every row and each bud hangs from it by a short
+   tie, picture first. Read a row left to right, like a garland held up. */
+.buds {
+  margin-top: clamp(1.6rem, 4vh, 2.4rem);
+  margin-left: calc(var(--cord) + var(--reach));
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18.5rem), 1fr));
+  row-gap: clamp(1.6rem, 3vh, 2.25rem);
+}
 
 .bud {
-  --name: clamp(1.26rem, 1.12rem + .62vw, 1.68rem);
-  --pt: clamp(1.4rem, 3vh, 2rem);
+  --name: clamp(1.18rem, 1.08rem + .36vw, 1.38rem);
+  --knot: 1.15rem;
   position: relative;
-  display: grid;
-  grid-template-columns: var(--cord) 1fr;
-  column-gap: var(--reach);
-  padding-top: var(--pt);
-  padding-bottom: clamp(1.4rem, 3vh, 2rem);
-  border-top: 1px solid var(--line);
+  padding: 1.2rem clamp(1.1rem, 2.2vw, 1.9rem) 0 0;
+  border-top: 1px solid var(--orchid-pale);
+  scroll-margin-top: 6.5rem;
 }
-.bud.is-first { --pt: 0rem; border-top: 0; }
-.bud > .tie { top: calc(var(--pt) + var(--name) * .56); }
-
-/* the bud tied onto the cord */
+/* the tie the bud hangs by */
+.bud::before {
+  content: "";
+  position: absolute; left: var(--knot); top: 0;
+  width: 1px; height: 1.2rem;
+  background: var(--line-2);
+}
+/* the knot where it is tied onto the strand */
 .bud__mark {
-  grid-column: 1; grid-row: 1;
-  justify-self: end;
-  align-self: start;
-  translate: 50% 0;
-  margin-top: calc(var(--name) * .56 - 9px);
+  position: absolute; top: 0; left: var(--knot);
+  translate: -50% -50%;
   width: 18px; height: 18px;
   color: var(--orchid);
   background: var(--jasmine);
   z-index: 1;
 }
 
-.bud__head { grid-column: 2; grid-row: 1; display: flex; align-items: baseline; flex-wrap: wrap; gap: .25rem .85rem; }
-.bud__rest { grid-column: 2; grid-row: 2; }
+.bud__photo {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 16 / 10; object-fit: cover;
+  background: var(--jasmine-2);
+}
 
-.bud__name { font-size: var(--name); letter-spacing: -.015em; }
-.bud__name .th { display: block; font-size: .84em; font-weight: 500; color: var(--orchid-deep); }
+.bud__head {
+  margin-top: .95rem;
+  display: flex; align-items: center; flex-wrap: wrap; gap: .45rem .75rem;
+}
+.bud__name { flex: 1 0 100%; font-size: var(--name); letter-spacing: -.015em; }
+.bud__name .th { display: block; margin-top: .08em; font-size: .8em; font-weight: 500; color: var(--orchid-deep); }
+
+/* A phone gets a thumbnail beside the name instead of a full-width picture:
+   twenty-four of those would be the whole scroll. */
+@media (max-width: 599px) {
+  .bud {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    column-gap: 1rem;
+    padding-right: 0;
+  }
+  .bud__photo { grid-column: 1; grid-row: 1; aspect-ratio: 1; align-self: start; }
+  .bud__head { grid-column: 2; grid-row: 1; margin-top: 0; align-self: start; }
+  .bud__rest { grid-column: 1 / -1; }
+  .bud__name .th { font-size: .78em; }
+}
+
+/* From tablet width up, each bud lies on its side — picture on the left, words
+   beside it — and on a wide screen two hang from every row of the strand.
+   Half the height of a standing card. */
+@media (min-width: 600px) {
+  .buds { grid-template-columns: repeat(auto-fill, minmax(min(100%, 27rem), 1fr)); }
+  .bud {
+    display: grid;
+    grid-template-columns: minmax(8.5rem, 34%) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 1.25rem;
+    align-content: start;
+  }
+  /* contain: size, so the words set the height and the picture fills it */
+  .bud__photo {
+    grid-column: 1; grid-row: 1 / span 2;
+    align-self: stretch;
+    height: auto; min-height: 10rem;
+    aspect-ratio: auto;
+    contain: size;
+  }
+  .bud__head { grid-column: 2; grid-row: 1; margin-top: 0; }
+  .bud__rest { grid-column: 2; grid-row: 2; }
+  .bud__body:first-child { margin-top: .5rem; }
+}
+
+@media (min-width: 1000px) {
+  /* A bud with day tours of its own is a hub: it takes the whole row, the
+     tours hanging in a third column beside its words. */
+  .bud:has(.leafs) {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(8.5rem, 22%) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+  }
+  .bud:has(.leafs) .bud__photo { grid-row: 1 / span 6; }
+  .bud:has(.leafs) .bud__rest { display: contents; }
+  .bud:has(.leafs) .bud__rest > * { grid-column: 2; }
+  .bud:has(.leafs) .bud__rest > .leafs {
+    grid-column: 3; grid-row: 1 / span 6;
+    margin-top: 0; align-self: start;
+  }
+}
 
 /* the verdict — a drawn mark plus its name in words, never colour alone */
 .verdict {
@@ -735,26 +885,54 @@ a:hover { color: var(--ink); }
 .verdict svg { width: 13px; height: 13px; flex: none; }
 .verdict .th { letter-spacing: .02em; text-transform: none; font-size: 1.1em; }
 
+/* add to trip — tied on beside the verdict, pushed to the far edge */
+.keep {
+  appearance: none; cursor: pointer;
+  margin-left: auto; align-self: center;
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .4rem .75rem .4rem .5rem;
+  border: 1px solid var(--line-2);
+  border-radius: 99px;
+  background: transparent; color: var(--orchid-deep);
+  font-family: var(--sans); font-size: .78rem; font-weight: 600; letter-spacing: .03em;
+  white-space: nowrap;
+  transition: background .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease);
+}
+.keep svg { width: 16px; height: 16px; flex: none; }
+.keep:hover { border-color: var(--orchid); background: var(--orchid-wash); }
+/* the filled mark's tick reads --tick, so on the orchid pill it can invert */
+.keep[aria-pressed="true"] {
+  background: var(--orchid-deep); border-color: var(--orchid-deep); color: var(--jasmine);
+  --tick: var(--orchid-deep);
+}
+.keep .keep__on, .glance__keep .keep__on,
+.keep[aria-pressed="true"] .keep__off, .glance__keep[aria-pressed="true"] .keep__off { display: none; }
+.keep[aria-pressed="true"] .keep__on, .glance__keep[aria-pressed="true"] .keep__on { display: block; }
+
 .bud[data-mark="must"] .verdict   { color: var(--gold-ink); }
 .bud[data-mark="must"] .bud__mark { color: var(--orchid-deep); }
 .bud[data-mark="rec"]  .verdict   { color: var(--orchid-deep); }
 .bud[data-mark="time"] .verdict   { color: var(--ink-3); }
 .bud[data-mark="time"] .bud__mark { color: var(--orchid-pale); }
 
-.bud__body { margin-top: .65rem; max-width: 66ch; color: var(--ink-2); }
-.bud__body + .bud__body { margin-top: .55rem; }
+.bud__body { margin-top: .6rem; font-size: .97rem; line-height: 1.6; color: var(--ink-2); }
+.bud__body + .bud__body { margin-top: .5rem; }
 
 /* the fact tag hanging from a bud */
-.hangtag { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: .45rem; }
+.hangtag { margin-top: .9rem; display: flex; flex-wrap: wrap; gap: .4rem; }
 .hangtag > div {
   display: inline-flex; align-items: baseline; gap: .45rem;
-  padding: .3rem .7rem;
+  padding: .28rem .65rem;
   background: var(--jasmine-2);
   border: 1px solid var(--line);
-  font-size: .83rem;
+  font-size: .81rem;
 }
-.hangtag dt { font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.hangtag dt { font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
 .hangtag dd { color: var(--ink); }
+
+/* the place you jumped to says so, once */
+@keyframes found { from { background-color: var(--orchid-wash); } to { background-color: rgba(107, 63, 160, 0); } }
+.bud:target, .unstrung:target { animation: found 2.4s var(--ease) .2s backwards; }
 
 /* a run of buds that are themselves day trips wears the day-tour colour */
 .buds--day .bud .bud__mark { color: var(--leaf); }
@@ -762,7 +940,7 @@ a:hover { color: var(--ink); }
 /* ---------- DAY TOURS — the leaf layer ------------------------------------- */
 
 .leafs {
-  margin-top: 1.2rem;
+  margin-top: 1.1rem;
   padding-left: 1.1rem;
   border-left: 1px solid var(--line);
   display: grid; gap: .65rem;
@@ -775,32 +953,43 @@ a:hover { color: var(--ink); }
 
 /* ---------- THE UNSTRUNG BUD ----------------------------------------------- */
 
-/* Phuket. It stays on the page in full, with its tie cut. */
+/* Phuket. It stays on the page in full, beside the strand with its tie cut. */
 .unstrung {
   position: relative;
-  margin-top: clamp(1.6rem, 4vh, 2.4rem);
+  margin-top: clamp(1.8rem, 4vh, 2.5rem);
   margin-left: calc(var(--cord) + var(--reach));
-  padding: 1.1rem 1.25rem;
+  padding: 1rem;
   background: var(--jasmine-2);
-  border: 1px solid var(--line-2);
-  max-width: 62ch;
+  border: 1px dashed var(--line-2);
+  max-width: 46rem;
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  column-gap: 1.25rem;
+  align-items: start;
+  scroll-margin-top: 6.5rem;
 }
+.unstrung > .bud__photo { grid-row: 1 / span 2; aspect-ratio: 1; filter: grayscale(.85); opacity: .8; }
 /* the cut tie — a stitch that frays out before it reaches the box */
 .unstrung::before {
   content: "";
   position: absolute;
   top: 1.3rem; left: calc(var(--reach) * -1);
-  width: calc(var(--reach) - 8px); height: 1px;
+  width: calc(var(--reach) - 6px); height: 1px;
   background: repeating-linear-gradient(to right, var(--line-2) 0 3px, transparent 3px 6px);
 }
 .unstrung__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: .25rem .8rem; }
 .unstrung__head h3 { font-size: clamp(1.18rem, 1.08rem + .5vw, 1.46rem); }
 .unstrung__head h3 .th { color: var(--ink-3); font-weight: 500; font-size: .88em; }
 .unstrung .verdict { color: var(--ink-3); }
-.unstrung p { margin-top: .6rem; color: var(--ink-2); }
+.unstrung p { margin-top: .5rem; font-size: .96rem; color: var(--ink-2); }
+@media (max-width: 599px) {
+  .unstrung { grid-template-columns: 5rem minmax(0, 1fr); column-gap: .9rem; }
+  .unstrung > .bud__photo { grid-row: 1; }
+  .unstrung > p { grid-column: 1 / -1; }
+}
 
 .aside-note {
-  margin-top: 1.4rem;
+  margin-top: 1.6rem;
   margin-left: calc(var(--cord) + var(--reach));
   max-width: 62ch;
   font-size: .95rem;
@@ -809,38 +998,34 @@ a:hover { color: var(--ink); }
 
 /* ---------- MANNERS -------------------------------------------------------- */
 
-.rules { margin-top: clamp(1.6rem, 4vh, 2.4rem); }
+/* Eight short rules, two to a row on a wide screen, each tied on by its mark. */
+.rules {
+  margin-top: clamp(1.4rem, 3.5vh, 2rem);
+  margin-left: calc(var(--cord) + var(--reach));
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+  column-gap: clamp(1.5rem, 3vw, 2.75rem);
+}
 
 .rule {
-  --name: clamp(1.08rem, 1.02rem + .38vw, 1.28rem);
-  --pt: clamp(1.1rem, 2.4vh, 1.5rem);
   position: relative;
   display: grid;
-  grid-template-columns: var(--cord) 1fr;
-  column-gap: var(--reach);
-  padding-top: var(--pt);
-  padding-bottom: clamp(1.1rem, 2.4vh, 1.5rem);
+  grid-template-columns: 22px minmax(0, 1fr);
+  column-gap: .85rem;
+  padding-block: 1rem 1.1rem;
   border-top: 1px solid var(--line);
 }
-.rule.is-first { --pt: 0rem; border-top: 0; }
-.rule > .tie { top: calc(var(--pt) + var(--name) * .56); }
-
 .rule__mark {
-  grid-column: 1; grid-row: 1;
-  justify-self: end; align-self: start;
-  translate: 50% 0;
-  margin-top: calc(var(--name) * .56 - 9px);
-  width: 18px; height: 18px;
-  background: var(--jasmine);
-  z-index: 1;
+  width: 20px; height: 20px;
+  margin-top: .12rem;
 }
 .rule[data-do="no"]  .rule__mark { color: var(--ink); }
 .rule[data-do="yes"] .rule__mark { color: var(--leaf); }
 
-.rule__in { grid-column: 2; grid-row: 1; max-width: 66ch; }
-.rule h3 { font-size: var(--name); letter-spacing: -.01em; }
-.rule h3 .th { display: block; margin-top: .1em; font-weight: 500; font-size: .9em; color: var(--orchid-deep); }
-.rule p { margin-top: .42rem; color: var(--ink-2); }
+.rule__in { max-width: 60ch; }
+.rule h3 { font-size: clamp(1.04rem, 1rem + .25vw, 1.18rem); letter-spacing: -.01em; }
+.rule h3 .th { display: block; margin-top: .1em; font-weight: 500; font-size: .86em; color: var(--orchid-deep); }
+.rule p { margin-top: .35rem; font-size: .95rem; color: var(--ink-2); }
 
 /* ---------- THE TASSEL ----------------------------------------------------- */
 
@@ -878,6 +1063,23 @@ a:hover { color: var(--ink); }
   color: var(--ink);
 }
 
+/* the photographers, credited in full but folded away */
+.credits {
+  margin-top: clamp(2rem, 5vh, 3rem);
+  max-width: 62rem;
+  font-size: .8rem; color: var(--ink-3);
+}
+.credits summary {
+  cursor: pointer;
+  font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+.credits summary:hover { color: var(--orchid-deep); }
+.credits p { margin-top: .6rem; }
+.credits ul { margin-top: .6rem; columns: 2 18rem; column-gap: 2rem; }
+.credits li { break-inside: avoid; padding-block: .12rem; }
+.credits a { color: var(--ink-2); }
+
 /* the way out is not part of the sign-off: it is ruled off and sent to the corner */
 .tassel__back {
   margin-top: clamp(2.5rem, 7vh, 4rem);
@@ -890,25 +1092,212 @@ a:hover { color: var(--ink); }
 
 /* ---------- THE SHORT GARLAND ---------------------------------------------- */
 
-/* Only the must-dos stay strung; everything else comes off the cord. */
+/* Only the chosen buds stay strung; everything else comes off the cord.
+   top = must-do + recommended; mine = whatever you added to your trip. */
 .strand[data-sift="must"] .bud:not([data-mark="must"]),
-.strand[data-sift="must"] .unstrung,
-.strand[data-sift="must"] .aside-note,
+.strand[data-sift="top"]  .bud[data-mark="time"],
+.strand[data-sift="mine"] .bud:not(.is-kept),
+.strand[data-sift] .unstrung,
+.strand[data-sift] .aside-note,
 .strand[data-sift="must"] .leafs,
-.strand[data-sift="must"] .gloss,
-.strand[data-sift="must"] .tier__note--sub { display: none; }
+.strand[data-sift] .gloss,
+.strand[data-sift] .tier__note--sub { display: none; }
+
+/* ---------- AT A GLANCE — the garland laid flat ---------------------------- */
+
+/* Three short strands side by side, one per region, built by thailand.js from
+   the buds themselves. The same marks on the same pale cord, at index size. */
+.glance__strands {
+  margin-top: clamp(1.4rem, 3.5vh, 2rem);
+  margin-left: calc(var(--cord) + var(--reach));
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 2.25rem 2rem;
+}
+
+.glance__h {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: .1rem .55rem;
+  font-size: clamp(1.12rem, 1.06rem + .3vw, 1.3rem);
+}
+.glance__h a { color: var(--ink); text-decoration: none; }
+.glance__h a:hover { color: var(--orchid-deep); text-decoration: underline; }
+.glance__h .th { color: var(--orchid-deep); font-weight: 500; font-size: .84em; }
+.glance__col > .seasonmark { display: inline-block; margin-top: .45rem; }
+
+.glance__group {
+  margin-top: 1.1rem;
+  display: flex; align-items: center; flex-wrap: wrap; gap: .3rem .6rem;
+  font-size: .71rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+.glance__group .seasonmark { font-size: .66rem; }
+
+.glance__list { position: relative; margin-top: .55rem; padding-left: 1.5rem; }
+.glance__list::before {
+  content: "";
+  position: absolute; left: .5rem; top: .55rem; bottom: .55rem;
+  width: 1px; background: var(--orchid-pale);
+}
+
+.glance__item {
+  position: relative;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .6rem;
+  align-items: center;
+  padding-block: .28rem;
+}
+.glance__mark {
+  position: absolute; left: -1rem; top: .62rem;
+  translate: -50% 0;
+  width: 14px; height: 14px;
+  color: var(--orchid);
+  background: var(--jasmine);
+}
+.glance__item[data-mark="must"] .glance__mark { color: var(--orchid-deep); }
+.glance__item[data-mark="time"] .glance__mark { color: var(--orchid-pale); }
+.glance__item[data-mark="skip"] .glance__mark { color: var(--ink-3); }
+.glance__list--day .glance__mark { color: var(--leaf) !important; }
+
+.glance__name { display: block; text-decoration: none; color: var(--ink); line-height: 1.3; }
+.glance__name .en { font-family: var(--serif); font-weight: 600; font-size: .98rem; letter-spacing: -.005em; }
+.glance__name:hover .en { color: var(--orchid-deep); text-decoration: underline; text-underline-offset: .18em; }
+.glance__fact { display: block; margin-top: .05rem; font-size: .8rem; color: var(--ink-3); }
+.glance__item[data-mark="skip"] .en { color: var(--ink-3); text-decoration: line-through; text-decoration-thickness: 1px; }
+.glance__item[data-mark="must"] .glance__name .en::after {
+  content: "Must-do";
+  display: inline-block; margin-left: .45rem;
+  font-family: var(--sans);
+  font-size: .62rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--gold-ink);
+  vertical-align: .12em;
+}
+
+.glance__keep {
+  appearance: none; cursor: pointer;
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 50%;
+  background: transparent; color: var(--orchid);
+  transition: background .2s var(--ease), color .2s var(--ease);
+}
+.glance__keep svg { width: 20px; height: 20px; }
+.glance__keep:hover { background: var(--orchid-wash); color: var(--orchid-deep); }
+.glance__keep[aria-pressed="true"] { color: var(--orchid-deep); }
+
+.glance__plus { display: inline-block; vertical-align: -.2em; color: var(--orchid); }
+.glance__plus svg { width: 1.1em; height: 1.1em; display: block; }
+.glance__month { color: var(--ink-3); }
+.glance__month b { color: var(--ink); font-weight: 600; }
+
+/* ---------- MY TRIP — the panel ------------------------------------------- */
+
+/* A hang-tag the height of the window, slid in from the right; a sheet from
+   the bottom on a phone. No shadow: the backdrop does the separating. */
+.trip {
+  padding: 0; border: 0;
+  background: var(--jasmine); color: var(--ink-2);
+  font-family: var(--sans);
+  width: 100%; max-width: 100%;
+  margin: auto 0 0;
+  max-height: 86dvh;
+  border-top: 2px solid var(--orchid-deep);
+  overflow: hidden;
+}
+.trip[open] { display: flex; flex-direction: column; }
+.trip::backdrop { background: rgba(36, 26, 43, .4); }
+
+@media (min-width: 720px) {
+  .trip {
+    width: min(27rem, 100vw);
+    height: 100dvh; max-height: 100dvh;
+    margin: 0 0 0 auto;
+    border-top: 0;
+    border-left: 2px solid var(--orchid-deep);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .trip[open] { animation: trip-in .4s var(--ease); }
+  @keyframes trip-in { from { opacity: 0; translate: 0 24px; } }
+  @media (min-width: 720px) { @keyframes trip-in { from { opacity: 0; translate: 32px 0; } } }
+}
+
+.trip__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.1rem 1.25rem .4rem 1.5rem;
+}
+.trip__head h2 { font-size: 1.5rem; }
+.trip__head h2 .th { font-weight: 500; font-size: .66em; color: var(--orchid-deep); margin-left: .25rem; }
+.trip__close, .trip__drop {
+  appearance: none; cursor: pointer; flex: none;
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 50%;
+  background: transparent; color: var(--ink-3);
+  transition: background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+}
+.trip__close svg, .trip__drop svg { width: 16px; height: 16px; }
+.trip__close:hover, .trip__drop:hover { color: var(--ink); border-color: var(--line-2); background: var(--jasmine-2); }
+.trip__drop { width: 32px; height: 32px; border-color: transparent; }
+
+.trip__sub {
+  padding: 0 1.5rem;
+  font-size: .73rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--gold-ink);
+}
+
+.trip__body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: .4rem 1.25rem 1rem 1.5rem; }
+.trip__region { margin-top: 1.1rem; }
+.trip__region h3 {
+  padding-bottom: .4rem; border-bottom: 1px solid var(--line-2);
+  font-size: 1.08rem;
+}
+.trip__region h3 .th { font-weight: 500; font-size: .84em; color: var(--orchid-deep); margin-left: .4rem; }
+.trip__list { position: relative; margin-top: .5rem; padding-left: 1.5rem; }
+.trip__list::before {
+  content: ""; position: absolute; left: .5rem; top: .6rem; bottom: .6rem;
+  width: 1px; background: var(--orchid-pale);
+}
+.trip__item {
+  position: relative;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; align-items: center;
+  padding-block: .35rem;
+}
+.trip__item .glance__mark { left: -1rem; top: .7rem; }
+.trip__item[data-mark="must"] .glance__mark { color: var(--orchid-deep); }
+.trip__item[data-mark="time"] .glance__mark { color: var(--orchid-pale); }
+
+.trip__empty { margin-top: 1rem; color: var(--ink-3); max-width: 34ch; }
+.trip__empty b { color: var(--ink); font-weight: 600; }
+
+.trip__foot {
+  display: flex; flex-wrap: wrap; gap: .5rem;
+  padding: .9rem 1.25rem calc(.9rem + env(safe-area-inset-bottom)) 1.5rem;
+  border-top: 1px solid var(--line);
+  background: var(--jasmine-2);
+}
+.trip__act {
+  appearance: none; cursor: pointer;
+  padding: .55rem .95rem;
+  border: 1px solid var(--line-2); border-radius: 99px;
+  background: var(--jasmine); color: var(--ink);
+  font-family: var(--sans); font-size: .84rem; font-weight: 600;
+  transition: background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+.trip__act:hover { border-color: var(--orchid); background: var(--orchid-wash); }
+.trip__act--main { background: var(--orchid-deep); border-color: var(--orchid-deep); color: var(--jasmine); }
+.trip__act--main:hover { background: var(--ink); border-color: var(--ink); color: var(--jasmine); }
+.trip__act--quiet { margin-left: auto; border-color: transparent; background: transparent; color: var(--ink-3); }
+.trip:has(.trip__empty) .trip__foot { display: none; }
 
 /* ---------- HOVER — the tie pulls taut ------------------------------------- */
 
 /* Colour only, deliberately: the cinch owns scale and transform on these marks,
    and a hover must not race it. */
 @media (hover: hover) and (pointer: fine) {
-  .bud > .tie, .rule > .tie { transition: background .3s var(--ease); }
-  .bud .bud__mark, .rule .rule__mark, .bud__name, .rule h3 {
-    transition: color .3s var(--ease);
-  }
+  .bud::before { transition: background .3s var(--ease); }
+  .bud .bud__mark, .bud__name { transition: color .3s var(--ease); }
 
-  .bud:hover > .tie, .rule:hover > .tie { background: var(--orchid); }
+  .bud:hover::before { background: var(--orchid); }
   .bud:hover .bud__mark { color: var(--orchid-deep); }
   .buds--day .bud:hover .bud__mark { color: var(--leaf); }
   .bud:hover .bud__name { color: var(--orchid-deep); }
@@ -916,7 +1305,7 @@ a:hover { color: var(--ink); }
   .leafs > li svg { transition: transform .35s var(--ease); }
   .leafs > li:hover svg { transform: rotate(-12deg) scale(1.12); }
 
-  .hangtag > div { transition: border-color .3s var(--ease), background .3s var(--ease); }
+  .hangtag > div { transition: border-color .3s var(--ease); }
   .bud:hover .hangtag > div { border-color: var(--line-2); }
 }
 
@@ -926,8 +1315,7 @@ a:hover { color: var(--ink); }
    Hidden only while the page is scripted — .js is stamped inline in <head> and
    removed again if thailand.js never reports for duty, so content cannot be
    stranded invisible. */
-.js [data-cinch] { opacity: 0; transform: translateY(14px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
-.js [data-cinch] .tie { transform: scaleX(0); transition: transform .55s var(--ease) .1s; }
+.js [data-cinch] { opacity: 0; transform: translateY(10px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
 .js [data-cinch] .bud__mark,
 .js [data-cinch] .rule__mark { scale: .35; transition: scale .5s var(--ease) .18s; }
 .js [data-cinch] .band__orchid { scale: .35; transition: scale .5s var(--ease) .12s; }
@@ -947,7 +1335,6 @@ a:hover { color: var(--ink); }
 .js [data-cinch].strung { opacity: 1; transform: none; }
 .js [data-cinch].strung .season__span { transform: scaleX(1); }
 .js [data-cinch].strung .season__track::after { opacity: 1; }
-.js [data-cinch].strung .tie { transform: scaleX(1); }
 .js [data-cinch].strung .bud__mark,
 .js [data-cinch].strung .rule__mark,
 .js [data-cinch].strung .band__orchid { scale: 1; }
@@ -955,7 +1342,6 @@ a:hover { color: var(--ink); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .js [data-cinch],
-  .js [data-cinch] .tie,
   .js [data-cinch] .bud__mark,
   .js [data-cinch] .rule__mark,
   .js [data-cinch] .band__orchid,
@@ -973,8 +1359,11 @@ a:hover { color: var(--ink); }
 @media print {
   :root { --cord: 13px; --reach: 7px; }
 
-  .cord, .cord-thru, .tie, .knots, .top, .skip,
-  .tassel::after, .sift, .season__hint { display: none !important; }
+  .cord, .cord-thru, .knots, .top, .skip,
+  .tassel::after, .sift, .season__hint,
+  .keep, .glance__keep, .tripbtn, .trip, .glance__plus,
+  .bud__photo, .tier__photo, .credits { display: none !important; }
+  .tier__photo + .band { margin-top: 1.5rem; margin-right: 0; }
 
   .season__months button { color: #000; }
 
@@ -993,7 +1382,7 @@ a:hover { color: var(--ink); }
   .band { break-after: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .season__track, .season__span { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-  .bud, .rule, .callout, .unstrung, .dates > div, .kit > li, .season__line {
+  .bud, .rule, .callout, .unstrung, .dates > div, .kit > li, .season__line, .glance__col {
     break-inside: avoid;
   }
   .tier { break-before: page; }
