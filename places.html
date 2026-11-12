@@ -42,6 +42,10 @@
     <div class="atlas__bar">
       <p class="atlas__where" aria-live="polite">Showing <strong data-where>the whole world</strong>
         <button type="button" class="atlas__reset" data-reset hidden>Back to the world</button></p>
+      <div class="atlas__play">
+        <button type="button" class="play-btn" data-surprise><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l3 5-3 5H4M20 7h-5l-6 10M20 17h-5l-1.5-2.5M17 4l3 3-3 3M17 14l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Surprise me</button>
+        <button type="button" class="play-btn" data-onthisday><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4 10h16M9 3v4M15 3v4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>On this day</button>
+      </div>
       <ul class="atlas__layers" aria-label="Map layers"></ul>
     </div>
   </section>
@@ -59,6 +63,20 @@
     </div>
   </section>
 
+  <section class="continents" aria-labelledby="continents-title">
+    <div class="page page--wide">
+      <div class="continents__intro">
+        <h2 id="continents-title" class="continents__title">How much of the world is left</h2>
+        <p class="continents__lede"><span data-field="sovVisited">75</span> of the 195 countries so far. Every dot is a country; the filled ones have a stamp. Tap any dot to see which it is.</p>
+      </div>
+      <div class="continents__grid" data-continents></div>
+      <div class="next">
+        <button type="button" class="next__btn" data-next>Where next?</button>
+        <p class="next__out" aria-live="polite" data-next-out>Spin for a country I haven't been to yet.</p>
+      </div>
+    </div>
+  </section>
+
   <section class="facts" aria-labelledby="facts-title">
     <div class="page page--wide">
       <div class="facts__intro">
@@ -66,6 +84,16 @@
         <p class="facts__lede">Counted from the same places as the map, so every number moves when the timeline does.</p>
       </div>
       <div class="facts__grid" data-facts></div>
+    </div>
+  </section>
+
+  <section class="quiz" aria-labelledby="quiz-title">
+    <div class="page page--wide page--quiz">
+      <div class="quiz__intro">
+        <h2 id="quiz-title" class="quiz__title">How well do you know my travels?</h2>
+        <p class="quiz__lede">Five questions, all answered by the data above. No peeking.</p>
+      </div>
+      <div class="quiz__box" data-quiz></div>
     </div>
   </section>
 
@@ -97,8 +125,8 @@
 </main>
 
 <footer class="back-cover">
-  <p class="back-cover__note">Built from my Google Maps Timeline and last updated <time data-field="generated">12 Nov 2026</time>. The map lives on Google My Maps.</p>
-  <a class="back-cover__home" href="home.html">Back to the Swatch Book</a>
+  <p class="back-cover__note">Last updated <time data-field="generated">12 Nov 2026</time></p>
+  <a class="back-cover__home" href="home.html">Back home</a>
 </footer>
 
 <script src="assets/js/places-data.js"></script>

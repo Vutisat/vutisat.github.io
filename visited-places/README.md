@@ -29,8 +29,13 @@ What's in `private/`:
 
 Outside `private/`, `site` writes **`assets/js/places-data.js`** for `places.html`. It's committed,
 and it holds aggregates only: totals, layer counts, each country's first and last visit and
-map centre, and the fun facts. It never contains addresses, and personal places are
-filtered out first.
+map centre, the fun facts, and per continent which UN countries are done. It never
+contains addresses, and personal places are filtered out first. `site` also writes
+**`assets/js/places-pins.json`** (name, coordinates, category, first-visit date) for the
+page's "Surprise me" and "On this day" buttons, fetched only when someone presses one.
+It only holds places at least 50 km from any home, so the everyday neighbourhood and its
+dates never ship. `aggregate` also writes `private/stats.json`, the distance per travel
+mode (flying, walking, ferry…) behind the "Getting around" fact.
 
 ## How it flows
 

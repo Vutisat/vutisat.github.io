@@ -47,6 +47,7 @@ OUT = os.path.join(HERE, "private")
 PLACES = os.path.join(OUT, "places.json")
 DETAILS = os.path.join(OUT, "details.json")
 TRIPS = os.path.join(OUT, "trips.json")
+STATS = os.path.join(OUT, "stats.json")
 CSV = os.path.join(OUT, "places.csv")
 
 # One SKU per call is billed at the priciest field asked for; these are all
@@ -171,6 +172,20 @@ def aggregate(export_path):
         p["days"].sort()
     save(PLACES, rows)
     save(TRIPS, trips)
+    # How Pob got between places: distance, count and longest leg per travel mode.
+    modes = {}
+    for seg in segments:
+        act = seg.get("activity")
+        if not act:
+            continue
+        kind = act.get("topCandidate", {}).get("type", "UNKNOWN_ACTIVITY_TYPE")
+        km = act.get("distanceMeters", 0) / 1000
+        m = modes.setdefault(kind, {"count": 0, "km": 0.0, "longest": 0.0})
+        m["count"] += 1
+        m["km"] += km
+        m["longest"] = max(m["longest"], km)
+    save(STATS, {"modes": {k: {"count": v["count"], "km": round(v["km"]), "longest": round(v["longest"])}
+                           for k, v in modes.items()}})
     print(f"{len(segments)} segments -> {len(rows)} places "
           f"({sum(p['private'] for p in rows)} home/work, "
           f"{sum(p['parentOnly'] for p in rows)} parent-only), "
@@ -424,6 +439,21 @@ BRANDS = ["McDonald's", "Starbucks", "Target", "Popeyes", "Wendy's", "Dunkin'", 
 # Google's admin names, shown the way people say them.
 CITY_NAMES = {"Krung Thep Maha Nakhon": "Bangkok", "Kings County": "Brooklyn",
               "Queens County": "Queens", "Bronx County": "The Bronx"}
+# UN member states plus the two observers (Vatican, Palestine), by continent, for the
+# "how many left" count. Taiwan, Hong Kong, Kosovo and the like count as extras.
+SOVEREIGN = {
+    "Africa": "DZ AO BJ BW BF BI CV CM CF TD KM CG CD CI DJ EG GQ ER SZ ET GA GM GH GN GW KE LS LR LY "
+              "MG MW ML MR MU MA MZ NA NE NG RW ST SN SC SL SO ZA SS SD TZ TG TN UG ZM ZW",
+    "Asia": "AF AM AZ BH BD BT BN KH CN CY GE IN ID IR IQ IL JP JO KZ KW KG LA LB MY MV MN MM NP KP "
+            "OM PK PH QA SA SG KR LK SY TJ TH TL TR TM AE UZ VN YE PS",
+    "Europe": "AL AD AT BY BE BA BG HR CZ DK EE FI FR DE GR HU IS IE IT LV LI LT LU MT MD MC ME NL MK "
+              "NO PL PT RO RU SM RS SK SI ES SE CH UA GB VA",
+    "North America": "AG BS BB BZ CA CR CU DM DO SV GD GT HT HN JM MX NI PA KN LC VC TT US",
+    "South America": "AR BO BR CL CO EC GY PY PE SR UY VE",
+    "Oceania": "AU FJ KI MH FM NR NZ PW PG WS SB TO TV VU",
+    "Antarctica": "",
+}
+PINS = os.path.join(os.path.dirname(HERE), "assets", "js", "places-pins.json")
 SITE_DATA = os.path.join(os.path.dirname(HERE), "assets", "js", "places-data.js")
 
 
@@ -495,6 +525,74 @@ def site():
         "perYear": [{"year": y, "places": sum(1 for r in rows if r["First visit"][:4] == y),
                      "countries": sum(1 for c in countries if c["first"][:4] == y)} for y in years],
     }
+    # --- more facts: getting around, when, records, continents ---
+    stats = load(STATS, {"modes": {}})
+    MODE_NAMES = [("FLYING", "Flying"), ("IN_PASSENGER_VEHICLE", "By car"), ("IN_BUS", "By bus"),
+                  ("IN_TRAIN", "By train"), ("WALKING", "Walking"), ("IN_SUBWAY", "By subway"),
+                  ("IN_FERRY", "By ferry"), ("IN_TRAM", "By tram"), ("MOTORCYCLING", "By motorbike"),
+                  ("CYCLING", "Cycling"), ("RUNNING", "Running"), ("SKIING", "Skiing"),
+                  ("IN_GONDOLA_LIFT", "Gondola"), ("SAILING", "Sailing")]
+    facts["modes"] = [dict(stats["modes"][k], key=k, name=n) for k, n in MODE_NAMES if k in stats["modes"]]
+
+    kept = [places_by_id[r["Place ID"]] for r in rows if r["Place ID"] in places_by_id]
+    hours = [0] * 24
+    weekdays = [0] * 7
+    for p in kept:
+        hours = [a + b for a, b in zip(hours, p["hours"])]
+        weekdays = [a + b for a, b in zip(weekdays, p["weekdays"])]
+    facts["hours24"] = hours
+    facts["weekdays"] = weekdays
+
+    country_of = {r["Place ID"]: (r["Country"], r["Country code"]) for r in rows if r["Country"]}
+    by_day_c, by_day_n = collections.defaultdict(set), collections.Counter()
+    for p in kept:
+        for d in p["days"]:
+            by_day_n[d] += 1
+            if p["placeId"] in country_of:
+                by_day_c[d].add(country_of[p["placeId"]][0])
+    if by_day_c:
+        dmax = max(by_day_c, key=lambda d: (len(by_day_c[d]), d))
+        facts["mostCountriesDay"] = {"date": dmax, "countries": sorted(by_day_c[dmax])}
+    if by_day_n:
+        busy = max(by_day_n, key=lambda d: (by_day_n[d], d))
+        facts["busiestDay"] = {"date": busy, "places": by_day_n[busy]}
+    longest = max((p for p in kept if p["placeId"] in country_of), key=lambda p: p["longest"])
+    lrow = next(r for r in rows if r["Place ID"] == longest["placeId"])
+    facts["longestStop"] = dict(where(lrow), hours=round(longest["longest"] / 60))
+    trips_all = load(TRIPS, [])
+    trip_c = collections.defaultdict(set)
+    for p in kept:
+        for i in p.get("trips", []):
+            if p["placeId"] in country_of:
+                trip_c[i].add(country_of[p["placeId"]][0])
+    if trip_c:
+        ti = max(trip_c, key=lambda i: len(trip_c[i]))
+        facts["biggestTrip"] = {"start": trips_all[ti]["start"][:10], "end": trips_all[ti]["end"][:10],
+                                "countries": len(trip_c[ti]), "km": trips_all[ti].get("km")}
+    facts["hemispheres"] = {
+        "north": sum(1 for r in rows if float(r["Lat"]) >= 0), "south": sum(1 for r in rows if float(r["Lat"]) < 0),
+        "east": sum(1 for r in rows if float(r["Lng"]) >= 0), "west": sum(1 for r in rows if float(r["Lng"]) < 0)}
+
+    visited_codes = {c["code"] for c in countries if c["code"]}
+    sov_all = {code for codes in SOVEREIGN.values() for code in codes.split()}
+    facts["continents"] = [{"name": k, "codes": v.split(), "visited": sorted(visited_codes & set(v.split()))}
+                           for k, v in SOVEREIGN.items()]
+    facts["extras"] = sorted(c["name"] for c in countries if c["code"] and c["code"] not in sov_all)
+
+    # Pins for the page's "surprise me" and "on this day": named places at least 50 km from
+    # any home, so the everyday neighbourhood and its dates never ship.
+    homes = [(p["lat"], p["lng"]) for p in load(PLACES, []) if {"HOME", "INFERRED_HOME"} & set(p["semantic"])]
+    cats = list(LAYER_COLOURS)
+    pins = []
+    for r in rows:
+        lat, lng = float(r["Lat"]), float(r["Lng"])
+        if homes and min(km(lat, lng, h[0], h[1]) for h in homes) < 50:
+            continue
+        pins.append([r["Name"], round(lat, 4), round(lng, 4), cats.index(r["Category"]) if r["Category"] in cats else 3,
+                     int(r["First visit"][:10].replace("-", "")), r["Type"], r["City"] and CITY_NAMES.get(r["City"], r["City"]), r["Country"]])
+    with open(PINS, "w", encoding="utf-8") as f:
+        json.dump(pins, f, ensure_ascii=False, separators=(",", ":"))
+
     data = {
         "mapId": MYMAP_ID,
         "generated": dt.date.today().isoformat(),

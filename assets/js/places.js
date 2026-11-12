@@ -122,6 +122,266 @@
   }
   function plural(w) { return /[^aeiou]y$/i.test(w) ? w.slice(0, -1) + "ies" : /(s|sh|ch|x)$/i.test(w) ? w + "es" : w + "s"; }
 
+  /* ---------- play: more facts, the continents, surprise me, on this day, the quiz ---------- */
+  var regionName = (function () {
+    var dn = window.Intl && Intl.DisplayNames ? new Intl.DisplayNames(["en"], { type: "region" }) : null;
+    return function (code) { try { return dn ? dn.of(code) : code; } catch (e) { return code; } };
+  })();
+  var byCode = {};
+  D.countryList.forEach(function (c, i) { if (c.code) byCode[c.code] = { c: c, i: i }; });
+  function longDay(iso) { return day(iso.slice(0, 10)); }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  var HOURS = ["midnight", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "noon",
+    "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"];
+  var DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+  function fly(lat, lng, z, label) {
+    if (frame) {
+      if (loading) { $("[data-loading-name]", loading).textContent = label.split(",")[0]; loading.hidden = false; }
+      frame.src = mapSrc(lat, lng, z);
+    }
+    if (where) where.textContent = label;
+    if (reset) reset.hidden = false;
+    $$(".stamp").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  }
+
+  /* pins load only when someone asks for one */
+  var pinsPromise = null;
+  function pins() {
+    if (!pinsPromise) pinsPromise = fetch("assets/js/places-pins.json").then(function (r) { return r.json(); });
+    return pinsPromise;
+  }
+  function pinDate(n) { var s = String(n); return day(s.slice(0, 4) + "-" + s.slice(4, 6) + "-" + s.slice(6, 8)); }
+  function pinLabel(p) { return p[0] + ", " + [p[6], p[7]].filter(Boolean).join(", "); }
+  var surprise = $("[data-surprise]"), onDay = $("[data-onthisday]");
+  if (surprise) surprise.addEventListener("click", function () {
+    pins().then(function (all) {
+      var p = pick(all);
+      fly(p[1], p[2], 15, pinLabel(p) + ". First visit " + pinDate(p[4]));
+    }).catch(function () { if (where) where.textContent = "the whole world (couldn't load the pins, try again)"; });
+  });
+  if (onDay) onDay.addEventListener("click", function () {
+    pins().then(function (all) {
+      var now = new Date(), year = now.getFullYear();
+      for (var off = 0; off <= 10; off++) {
+        var hits = [];
+        [off, -off].forEach(function (o) {
+          var d = new Date(now.getTime() + o * 864e5), md = (d.getMonth() + 1) * 100 + d.getDate();
+          all.forEach(function (p) { if (p[4] % 10000 === md && Math.floor(p[4] / 10000) < year) hits.push(p); });
+        });
+        if (hits.length) {
+          var p = pick(hits), y = Math.floor(p[4] / 10000);
+          fly(p[1], p[2], 14, (off ? "Around this day in " : "On this day in ") + y + ": " + pinLabel(p));
+          return;
+        }
+      }
+      if (where) where.textContent = "nothing logged around this date, try Surprise me";
+    }).catch(function () { if (where) where.textContent = "the whole world (couldn't load the pins, try again)"; });
+  });
+
+  /* the continents: every country a dot */
+  var contEl = $("[data-continents]");
+  if (contEl && F && F.continents) {
+    var sovVisited = 0;
+    F.continents.forEach(function (k) { sovVisited += k.visited.length; });
+    $$('[data-field="sovVisited"]').forEach(function (el) { el.textContent = sovVisited; });
+    contEl.innerHTML = F.continents.map(function (k) {
+      var ink = INKS[k.name] || "--ink-antarctica", left = k.codes.length - k.visited.length;
+      var codes = k.visited.concat(k.codes.filter(function (c) { return k.visited.indexOf(c) < 0; }));
+      var count = k.codes.length
+        ? "<b>" + k.visited.length + "</b> of " + k.codes.length + (left ? ", " + left + " to go" : ", all done")
+        : (k.visited.length ? "been" : "no countries, just penguins");
+      return '<div class="cont" style="--c:var(' + ink + ')"><div class="cont__head"><h3>' + esc(k.name) + '</h3><p>' + count + "</p></div>" +
+        (k.codes.length ? '<div class="cont__dots">' + codes.map(function (c) {
+          var v = k.visited.indexOf(c) >= 0;
+          return '<button type="button" class="dot' + (v ? " is-v" : "") + '" data-code="' + c + '" aria-label="' + esc(regionName(c) + (v ? ", visited" : ", not yet")) + '"></button>';
+        }).join("") + "</div>" : '<div class="cont__dots cont__dots--ice" aria-hidden="true"><i></i><i></i><i></i></div>') +
+        '<p class="cont__out" aria-live="polite"></p></div>';
+    }).join("") + (F.extras && F.extras.length ? '<p class="cont__extra">Plus ' + esc(F.extras.join(", ")) + ", which the UN list doesn't count.</p>" : "");
+    contEl.addEventListener("click", function (e) {
+      var d = e.target.closest(".dot");
+      if (!d) return;
+      var code = d.dataset.code, out = $(".cont__out", d.closest(".cont")), hit = byCode[code];
+      $$(".dot.is-on", contEl).forEach(function (x) { x.classList.remove("is-on"); });
+      d.classList.add("is-on");
+      if (hit) {
+        out.innerHTML = "<b>" + esc(hit.c.name) + "</b>: first entry " + esc(day(hit.c.first)) + ", " + num(hit.c.places) + (hit.c.places === 1 ? " place." : " places.") +
+          ' <button type="button" class="linkish" data-fly="' + hit.i + '">Show it on the map</button>';
+      } else {
+        out.innerHTML = "<b>" + esc(regionName(code)) + "</b>: not yet.";
+      }
+    });
+    contEl.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-fly]");
+      if (b && typeof show === "function") show(+b.dataset.fly);
+    });
+
+    var nextBtn = $("[data-next]"), nextOut = $("[data-next-out]");
+    var todo = [];
+    F.continents.forEach(function (k) { k.codes.forEach(function (c) { if (k.visited.indexOf(c) < 0) todo.push({ code: c, cont: k.name }); }); });
+    if (nextBtn && nextOut && todo.length) nextBtn.addEventListener("click", function () {
+      var final = pick(todo), n = reduce ? 0 : 14, t = 0;
+      nextBtn.disabled = true;
+      (function tick(k) {
+        if (k < n) {
+          nextOut.textContent = regionName(pick(todo).code);
+          nextOut.classList.add("is-spin");
+          t = setTimeout(function () { tick(k + 1); }, 40 + k * k * 1.6);
+          return;
+        }
+        nextOut.classList.remove("is-spin");
+        nextOut.innerHTML = "Next stop: <b>" + esc(regionName(final.code)) + "</b>, in " + esc(final.cont) + ". " +
+          pick(["Booking it?", "Seems reasonable.", "Someone tell my manager.", "Pack light.", "Window seat, please."]);
+        $$(".dot.is-on", contEl).forEach(function (x) { x.classList.remove("is-on"); });
+        var dot = contEl.querySelector('.dot[data-code="' + final.code + '"]');
+        if (dot) dot.classList.add("is-on");
+        nextBtn.disabled = false;
+        nextBtn.textContent = "Spin again";
+      })(0);
+    });
+  }
+
+  /* more fact panels */
+  if (factsEl && F) {
+    var after = function (sel, html) { var el = $(sel, factsEl); if (el) el.insertAdjacentHTML("afterend", html); else factsEl.insertAdjacentHTML("beforeend", html); };
+    if (F.modes && F.modes.length) {
+      var UNITS = [
+        { id: "km", label: "km", f: function (k) { return num(Math.round(k)) + " km"; } },
+        { id: "mi", label: "miles", f: function (k) { return num(Math.round(k * 0.621371)) + " mi"; } },
+        { id: "earth", label: "laps of Earth", f: function (k) { var x = k / 40075; return (x >= 1 ? x.toFixed(1) : x.toFixed(2)) + " laps"; } },
+        { id: "moon", label: "Moon trips", f: function (k) { var x = k / 384400; return (x >= .1 ? Math.round(x * 100) : (x * 100).toFixed(2)) + "% to the Moon"; } }
+      ];
+      var top = F.modes.filter(function (m) { return m.km > 0; }).slice(0, 9), maxK = top[0] ? Math.max.apply(null, top.map(function (m) { return m.km; })) : 1;
+      var fl = F.modes.filter(function (m) { return m.key === "FLYING"; })[0];
+      after(".fact--compass",
+        '<article class="fact fact--modes"><h3>Getting around</h3>' +
+        (fl ? "<p>" + num(fl.count) + " flights add up to " + (fl.km / 40075).toFixed(1) + " times around the Earth. The longest single one: " + num(fl.longest) + " km.</p>" : "") +
+        '<div class="units" role="group" aria-label="Units">' + UNITS.map(function (u, i) {
+          return '<button type="button" class="unit" data-unit="' + i + '" aria-pressed="' + (i === 0) + '">' + esc(u.label) + "</button>";
+        }).join("") + "</div>" +
+        '<ul class="modes">' + top.map(function (m) {
+          return '<li><span class="modes__name">' + esc(m.name) + '</span><i style="--w:' + Math.max(1, Math.round(Math.sqrt(m.km / maxK) * 100)) + '%"></i><b data-km="' + m.km + '">' + UNITS[0].f(m.km) + "</b></li>";
+        }).join("") + "</ul></article>" +
+        '<article class="fact fact--clock"><h3>When I\'m out</h3><div class="clock"><svg viewBox="0 0 200 200" role="img" aria-label="Stops by hour of day"></svg>' +
+        '<p class="clock__mid" aria-live="polite"></p></div><p class="clock__line"></p></article>');
+      var unitsEl = $(".units", factsEl);
+      if (unitsEl) unitsEl.addEventListener("click", function (e) {
+        var b = e.target.closest(".unit");
+        if (!b) return;
+        var u = UNITS[+b.dataset.unit];
+        $$(".unit", unitsEl).forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+        $$(".modes b", factsEl).forEach(function (x) { x.textContent = u.f(+x.dataset.km); });
+      });
+      /* the clock */
+      var svg = $(".clock svg", factsEl), mid = $(".clock__mid", factsEl), line = $(".clock__line", factsEl);
+      if (svg && F.hours24) {
+        var H = F.hours24, total = H.reduce(function (a, b) { return a + b; }, 0), maxH = Math.max.apply(null, H), peakH = H.indexOf(maxH);
+        var paths = H.map(function (v, h) {
+          var a0 = (h / 24) * 2 * Math.PI - Math.PI / 2 + .02, a1 = ((h + 1) / 24) * 2 * Math.PI - Math.PI / 2 - .02;
+          var r0 = 58, r1 = 60 + (v / maxH) * 38;
+          var p = function (r, a) { return (100 + r * Math.cos(a)).toFixed(1) + " " + (100 + r * Math.sin(a)).toFixed(1); };
+          return '<path data-h="' + h + '" class="' + (h === peakH ? "is-peak" : "") + '" d="M' + p(r0, a0) + " L" + p(r1, a0) + " A" + r1 + " " + r1 + " 0 0 1 " + p(r1, a1) + " L" + p(r0, a1) + " A" + r0 + " " + r0 + ' 0 0 0 ' + p(r0, a0) + 'Z"/>';
+        }).join("");
+        var ticks = [0, 6, 12, 18].map(function (h) {
+          var a = (h / 24) * 2 * Math.PI - Math.PI / 2;
+          return '<text x="' + (100 + 50 * Math.cos(a)).toFixed(1) + '" y="' + (100 + 50 * Math.sin(a) + 3).toFixed(1) + '" text-anchor="middle">' + ["12a", "6a", "12p", "6p"][h / 6] + "</text>";
+        }).join("");
+        svg.innerHTML = paths + ticks;
+        var say = function (h) {
+          mid.innerHTML = "<b>" + HOURS[h] + "</b>" + Math.round(H[h] / total * 1000) / 10 + "% of stops";
+          $$("path", svg).forEach(function (p) { p.classList.toggle("is-on", +p.dataset.h === h); });
+        };
+        say(peakH);
+        svg.addEventListener("pointerover", function (e) { var p = e.target.closest("path"); if (p) say(+p.dataset.h); });
+        svg.addEventListener("click", function (e) { var p = e.target.closest("path"); if (p) say(+p.dataset.h); });
+        var W = F.weekdays || [], wmax = W.indexOf(Math.max.apply(null, W)), night = H.slice(22).concat(H.slice(0, 5)).reduce(function (a, b) { return a + b; }, 0);
+        line.innerHTML = "Busiest hour to be out: <b>" + HOURS[peakH] + "</b>. Favourite day: <b>" + (DAYS[wmax] || "") + "</b>. " +
+          Math.round(night / total * 100) + "% of stops start between 10 PM and 5 AM. Hover or tap the clock.";
+      }
+    }
+    var rec = [];
+    if (F.mostCountriesDay) rec.push("<li><b>" + F.mostCountriesDay.countries.length + " countries in one day</b><span>" + esc(F.mostCountriesDay.countries.join(", ")) + " on " + esc(longDay(F.mostCountriesDay.date)) + "</span></li>");
+    if (F.biggestTrip) {
+      var days = Math.round((new Date(F.biggestTrip.end) - new Date(F.biggestTrip.start)) / 864e5) + 1;
+      rec.push("<li><b>" + F.biggestTrip.countries + " countries in one trip</b><span>" + days + " days, " + esc(monthYear(F.biggestTrip.start)) + " to " + esc(monthYear(F.biggestTrip.end)) + "</span></li>");
+    }
+    if (F.busiestDay) rec.push("<li><b>" + F.busiestDay.places + " places in one day</b><span>" + esc(longDay(F.busiestDay.date)) + ". I was tired.</span></li>");
+    if (F.longestStop) rec.push("<li><b>" + num(F.longestStop.hours) + " hours without leaving</b><span>" + esc(F.longestStop.name) + ", " + esc(F.longestStop.city || F.longestStop.country) + "</span></li>");
+    if (rec.length) after(".fact--air", '<article class="fact fact--records"><h3>Personal records</h3><ul class="records">' + rec.join("") + "</ul></article>");
+    if (F.hemispheres) {
+      var hs = F.hemispheres, ns = hs.north + hs.south, ew = hs.east + hs.west;
+      var pc = function (a, b) { return Math.round(a / b * 100); };
+      after(".fact--records", '<article class="fact fact--hemi"><h3>Which half of the planet</h3>' +
+        '<div class="hemi"><div class="hemi__bar"><i style="--w:' + pc(hs.north, ns) + '%"></i></div><p><b>' + pc(hs.north, ns) + "%</b> north of the equator, " + pc(hs.south, ns) + "% south</p>" +
+        '<div class="hemi__bar hemi__bar--ew"><i style="--w:' + pc(hs.west, ew) + '%"></i></div><p><b>' + pc(hs.west, ew) + "%</b> west of Greenwich, " + pc(hs.east, ew) + "% east</p></div></article>");
+    }
+    /* the country alphabet */
+    var letters = {};
+    D.countryList.forEach(function (c) { var L = c.name.charAt(0).toUpperCase(); (letters[L] = letters[L] || []).push(c.name); });
+    var todoNames = [];
+    (F.continents || []).forEach(function (k) { k.codes.forEach(function (c) { if (k.visited.indexOf(c) < 0) todoNames.push(regionName(c)); }); });
+    var AZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""), lit = AZ.filter(function (L) { return letters[L]; });
+    after(".fact--cities", '<article class="fact fact--alpha"><h3>The country alphabet</h3><p>' + lit.length + " of 26 letters stamped. Tap a letter.</p>" +
+      '<div class="alpha">' + AZ.map(function (L) {
+        return '<button type="button" class="alpha__l' + (letters[L] ? " is-lit" : "") + '" data-l="' + L + '" aria-pressed="false">' + L + "</button>";
+      }).join("") + '</div><p class="alpha__out" aria-live="polite">&nbsp;</p></article>');
+    var alpha = $(".alpha", factsEl), alphaOut = $(".alpha__out", factsEl);
+    if (alpha) alpha.addEventListener("click", function (e) {
+      var b = e.target.closest(".alpha__l");
+      if (!b) return;
+      var L = b.dataset.l;
+      $$(".alpha__l", alpha).forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      if (letters[L]) alphaOut.innerHTML = "<b>" + L + "</b>: " + esc(letters[L].join(", "));
+      else {
+        var cand = todoNames.filter(function (n) { return n.charAt(0).toUpperCase() === L; });
+        alphaOut.innerHTML = "<b>" + L + "</b>: " + (cand.length ? "nothing yet. " + esc(pick(cand)) + " would fix that." : "no country starts with " + L + ". Off the hook.");
+      }
+    });
+  }
+
+  /* the quiz */
+  var quizEl = $("[data-quiz]");
+  if (quizEl && F) {
+    var Q = [];
+    var n = D.countries;
+    Q.push({ q: "How many countries have I been to?", a: String(n), o: [String(n), String(n - 23), String(n + 17), String(n - 41)], why: num(n) + ", counted from the stamps. " + (D.continents) + " continents too." });
+    if (F.brands && F.brands.length >= 4) Q.push({ q: "Which chain have I stopped at in the most different locations?", a: F.brands[0].name, o: F.brands.slice(0, 4).map(function (b) { return b.name; }), why: F.brands[0].name + ": " + F.brands[0].count + " different locations. No regrets." });
+    var per = (F.perYear || []).slice(), pk = per.reduce(function (a, y) { return y.countries > a.countries ? y : a; }, per[0]);
+    if (pk) Q.push({ q: "Which year did I add the most new countries?", a: pk.year, o: [pk.year].concat(shuffle(per.filter(function (y) { return y.year !== pk.year; }).map(function (y) { return y.year; })).slice(0, 3)), why: pk.year + ", with " + pk.countries + " new countries." });
+    var flm = (F.modes || []).filter(function (m) { return m.key === "FLYING"; })[0];
+    if (flm) { var laps = Math.round(flm.km / 40075); Q.push({ q: "Roughly how many times around the Earth have I flown?", a: laps + " times", o: [laps + " times", Math.max(1, Math.round(laps / 3)) + " times", laps * 3 + " times", laps + 12 + " times"], why: num(flm.km) + " km in the air, about " + (flm.km / 40075).toFixed(1) + " laps." }); }
+    if (F.north) Q.push({ q: "Where's the northernmost place I've been?", a: F.north.country, o: shuffle([F.north.country].concat(shuffle(D.countryList.map(function (c) { return c.name; }).filter(function (x) { return x !== F.north.country; })).slice(0, 3))), why: F.north.name + " in " + F.north.city + ", " + F.north.country + "." });
+    var qi = 0, score = 0;
+    var render = function () {
+      if (qi >= Q.length) {
+        var msg = score === Q.length ? "Perfect. Have you been following me?" : score >= Q.length - 1 ? "Very good. We should travel together." : score >= 2 ? "Not bad. Scroll up and study." : "Did you skip the page?";
+        quizEl.innerHTML = '<div class="quiz__end"><p class="quiz__score"><b>' + score + "</b> / " + Q.length + '</p><p>' + msg + '</p><button type="button" class="quiz__next" data-again>Play again</button></div>';
+        return;
+      }
+      var q = Q[qi];
+      quizEl.innerHTML = '<p class="quiz__count">Question ' + (qi + 1) + " of " + Q.length + '</p><h3 class="quiz__q">' + esc(q.q) + '</h3><div class="quiz__opts">' +
+        shuffle(q.o).map(function (o) { return '<button type="button" class="quiz__opt" data-o="' + esc(o) + '">' + esc(o) + "</button>"; }).join("") +
+        '</div><p class="quiz__why" aria-live="polite"></p>';
+    };
+    quizEl.addEventListener("click", function (e) {
+      var o = e.target.closest(".quiz__opt");
+      if (o && !quizEl.classList.contains("answered")) {
+        var q = Q[qi], right = o.dataset.o === q.a;
+        if (right) score++;
+        $$(".quiz__opt", quizEl).forEach(function (b) { b.disabled = true; if (b.dataset.o === q.a) b.classList.add("is-right"); });
+        if (!right) o.classList.add("is-wrong");
+        $(".quiz__why", quizEl).innerHTML = (right ? "<b>Yes.</b> " : "<b>Nope.</b> ") + esc(q.why) + ' <button type="button" class="quiz__next" data-next-q>' + (qi + 1 < Q.length ? "Next question" : "See my score") + "</button>";
+        quizEl.classList.add("answered");
+        return;
+      }
+      if (e.target.closest("[data-next-q]")) { qi++; quizEl.classList.remove("answered"); render(); return; }
+      if (e.target.closest("[data-again]")) { qi = 0; score = 0; render(); }
+    });
+    render();
+  }
+
   /* ---------- entry stamps ---------- */
   var grid = $("[data-stamps]");
   if (!grid || !D.countryList) return;
