@@ -1,0 +1,342 @@
+/* ==========================================================================
+   Pob's Places: "Passport Pages"
+   A navy leather passport cover is the ground; everything else is a sage visa
+   page printed with guilloche security lines. The map leads: it fills the first
+   screen inside a page-coloured frame, with its layer key beneath. Then every
+   country as a rubber entry stamp (inked by continent; tap one and the map
+   flies there), a grid of facts counted from the same data, and the passport's
+   data page closes the book.
+   Gold foil is the one reserved accent: it marks only where you are (the
+   chosen stamp, the active ink filter, focus) and titles on the cover.
+   Light pages on a dark cover, no theme switch. Cinzel (cover and titles,
+   caps only), Public Sans (everything read), JetBrains Mono (the MRZ only),
+   Anuphan for Thai. Guilloche art is procedural SVG in assets/img/places/.
+   Radii: pages 14px, panels 10px, controls full pill.
+   ========================================================================== */
+
+@font-face{ font-family:"Cinzel"; src:url("../fonts/cinzel-var.woff2") format("woff2"); font-weight:400 900; font-display:swap; }
+@font-face{ font-family:"Public Sans"; src:url("../fonts/publicsans-var.woff2") format("woff2"); font-weight:300 800; font-display:swap; }
+@font-face{ font-family:"MRZ"; src:url("../fonts/jetbrains-var.woff2") format("woff2"); font-weight:400 700; font-display:swap; }
+@font-face{ font-family:"Public Sans"; src:url("../fonts/anuphan-var-thai.woff2") format("woff2"); font-weight:300 700; font-display:swap;
+  unicode-range:U+0E01-0E5B, U+200C-200D, U+25CC; }
+
+:root{
+  color-scheme:light;
+  --cover:#1E2D4F;
+  --cover-deep:#152039;
+  --cover-edge:#2B3D66;
+  --foil:#C9A55A;
+  --foil-hi:#EBD08E;
+  --foil-ink:#7E5E1B;
+  --page:#E4ECE3;
+  --page-2:#D6E2D5;
+  --panel:rgba(255,255,255,.42);
+  --ink:#1E2D4F;
+  --ink-2:#34445F;
+  --ink-3:#556378;
+  --rule:rgba(30,45,79,.16);
+  --ink-asia:#B3261E;
+  --ink-europe:#1F4E99;
+  --ink-north-america:#5B3E96;
+  --ink-south-america:#7A4A22;
+  --ink-africa:#2F6B3A;
+  --ink-oceania:#14676C;
+  --ink-antarctica:#26262A;
+
+  --serif:"Cinzel", "Times New Roman", serif;
+  --sans:"Public Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono:"MRZ", "SFMono-Regular", Menlo, monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gutter:clamp(16px, 3vw, 40px);
+  --wrap:1400px;
+  --lift:0 18px 34px rgba(6,12,30,.42);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; scrollbar-color:var(--foil) var(--cover-deep); }
+@media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+
+body{
+  margin:0;
+  font:400 1rem/1.55 var(--sans);
+  color:var(--ink);
+  background-color:var(--cover);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 50% -10%, var(--cover-edge), transparent 60%);
+  background-blend-mode:soft-light, normal;
+}
+::selection{ background:var(--foil-hi); color:var(--cover-deep); }
+:focus-visible{ outline:2px solid var(--foil); outline-offset:3px; border-radius:4px; }
+a{ color:inherit; text-underline-offset:.2em; text-decoration-thickness:1px; }
+.defs{ position:absolute; width:0; height:0; overflow:hidden; }
+
+/* ---------- cover bar ---------- */
+.cover-bar{
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:1rem;
+  max-width:var(--wrap); margin:0 auto; padding:0 var(--gutter); height:64px;
+}
+.cover-bar__home{
+  justify-self:start; display:inline-flex; align-items:center; gap:.35rem;
+  font:600 .8rem/1 var(--sans); letter-spacing:.06em; text-transform:uppercase;
+  text-decoration:none; color:var(--foil); padding:.5rem .2rem;
+}
+.cover-bar__home svg{ width:18px; height:18px; }
+.cover-bar__home:hover{ color:var(--foil-hi); }
+.cover-bar__title{
+  margin:0; font:700 clamp(1.05rem, 2vw, 1.4rem)/1 var(--serif); letter-spacing:.24em; text-transform:uppercase;
+  color:var(--foil); white-space:nowrap;
+}
+.cover-bar__sum{
+  justify-self:end; margin:0; font:500 .84rem/1.3 var(--sans); color:#D6DDEE; text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.cover-bar__sum span{ color:#EEF0F5; font-weight:650; }
+
+/* ---------- the map, front and centre ---------- */
+.atlas{ max-width:var(--wrap); margin:0 auto; padding:0 var(--gutter); }
+.atlas__map{
+  position:relative; height:max(460px, calc(100dvh - 64px - 74px - 18px));
+  border-radius:14px 14px 0 0; overflow:hidden;
+  background:#C9D6CB; border:10px solid var(--page); border-bottom:0;
+  box-shadow:var(--lift);
+}
+.atlas__map iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+.atlas__loading{
+  position:absolute; right:12px; bottom:40px; margin:0; padding:.5rem .8rem; border-radius:999px;
+  background:var(--cover); color:var(--foil-hi); font:600 .8rem/1 var(--sans);
+}
+.atlas__bar{
+  display:flex; align-items:center; justify-content:space-between; gap:.8rem 2rem; flex-wrap:wrap;
+  min-height:74px; padding:12px 22px; border-radius:0 0 14px 14px;
+  background:var(--page) url("../img/places/guilloche.svg") 0 0/240px 120px;
+  box-shadow:var(--lift);
+}
+.atlas__where{ margin:0; display:flex; align-items:center; gap:.4rem .35rem; flex-wrap:wrap; font-size:.92rem; color:var(--ink-2); }
+.atlas__where strong{ color:var(--ink); font-weight:700; }
+.atlas__reset{ margin-left:.6rem;
+  appearance:none; cursor:pointer; padding:.45rem .8rem; border-radius:999px; border:1px solid var(--rule);
+  background:var(--panel); font:600 .78rem/1 var(--sans); color:var(--ink-2);
+}
+.atlas__reset:hover{ border-color:rgba(30,45,79,.4); background:#fff; }
+.atlas__reset:active{ transform:scale(.97); }
+.atlas__layers{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:.4rem 1.1rem; }
+.atlas__layers li{ display:flex; align-items:center; gap:.4rem; font:500 .82rem/1.2 var(--sans); color:var(--ink-2); white-space:nowrap; }
+.atlas__layers svg{ flex:none; width:12px; height:16px; }
+.atlas__layers b{ font-weight:650; color:var(--ink); font-variant-numeric:tabular-nums; }
+
+/* ---------- a page ---------- */
+.page{
+  position:relative; isolation:isolate;
+  background:var(--page) url("../img/places/guilloche.svg") 0 0/240px 120px;
+  padding:clamp(24px, 3.4vw, 48px);
+  border-radius:14px;
+  box-shadow:var(--lift);
+}
+.page::after{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:-1; border-radius:inherit;
+  background:linear-gradient(90deg, rgba(30,45,79,.08), transparent 8%, transparent 92%, rgba(30,45,79,.08));
+}
+.page__head{
+  display:flex; justify-content:space-between; gap:1rem; margin:0 0 1.4rem;
+  padding-bottom:.6rem; border-bottom:1px solid var(--rule);
+  font:600 .72rem/1.2 var(--sans); letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3);
+}
+.page__head [lang="th"]{ letter-spacing:.02em; text-transform:none; font-weight:500; }
+.stamps__title, .facts__title{
+  margin:0; font:700 clamp(1.9rem, 3.6vw, 3rem)/1.02 var(--serif); letter-spacing:.04em; text-transform:uppercase; color:var(--ink);
+  text-wrap:balance;
+}
+.stamps__lede, .facts__lede{ margin:.8rem 0 0; max-width:60ch; color:var(--ink-2); text-wrap:pretty; }
+
+/* ---------- entry stamps ---------- */
+.stamps, .facts, .holder{ max-width:var(--wrap); margin:clamp(32px, 5vw, 64px) auto 0; padding:0 var(--gutter); }
+.page--wide{ overflow:clip; }
+.stamps__intro, .facts__intro{ margin-bottom:1.6rem; }
+
+.inks{ display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 1.8rem; }
+.ink-chip{
+  --c:var(--ink);
+  appearance:none; cursor:pointer; display:inline-flex; align-items:center; gap:.45rem;
+  padding:.55rem .85rem; border-radius:999px; border:1px solid var(--rule); background:var(--panel);
+  font:600 .8rem/1 var(--sans); color:var(--ink-2);
+  transition:background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease), transform .15s var(--ease);
+}
+.ink-chip i{ width:10px; height:10px; border-radius:50%; background:var(--c); }
+.ink-chip .n{ color:var(--ink-3); font-variant-numeric:tabular-nums; font-weight:500; }
+.ink-chip:hover{ border-color:rgba(30,45,79,.4); background:rgba(255,255,255,.7); }
+.ink-chip:active{ transform:scale(.97); }
+.ink-chip[aria-pressed="true"]{ background:var(--cover); border-color:var(--cover); color:#F1EBD9; }
+.ink-chip[aria-pressed="true"] .n{ color:var(--foil-hi); }
+
+.stamps__grid{
+  list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:clamp(4px, 1vw, 14px) clamp(6px, 1.4vw, 18px);
+}
+.stamps__grid li{ display:flex; justify-content:center; }
+.stamps__grid li[hidden]{ display:none; }
+.stamp{
+  --c:var(--ink);
+  position:relative; appearance:none; border:0; padding:6px; margin:0; background:none; cursor:pointer;
+  color:var(--c); width:100%; max-width:176px; aspect-ratio:1;
+  transform:rotate(var(--r, 0deg)) translate(var(--dx, 0), var(--dy, 0));
+  transition:transform .25s var(--ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.stamp svg{ display:block; width:100%; height:100%; overflow:visible; opacity:.88; mix-blend-mode:multiply; }
+.stamp:hover{ transform:rotate(var(--r, 0deg)) translate(var(--dx, 0), var(--dy, 0)) scale(1.05); }
+.stamp:hover svg{ opacity:1; }
+.stamp:active{ transform:rotate(var(--r, 0deg)) translate(var(--dx, 0), var(--dy, 0)) scale(.96); }
+.stamp[aria-pressed="true"]::before{
+  content:""; position:absolute; inset:-2px; border-radius:50%;
+  border:2px solid var(--foil); box-shadow:0 0 0 4px rgba(201,165,90,.22);
+}
+.stamp:focus-visible{ outline-offset:0; border-radius:50%; }
+.stamp text{ font-family:var(--sans); fill:currentColor; }
+.stamp .t-big{ font-weight:800; letter-spacing:.06em; }
+.stamp .t-date{ font-weight:700; letter-spacing:.08em; font-variant-numeric:tabular-nums; }
+.stamp .t-small{ font-weight:600; letter-spacing:.16em; }
+
+/* the authored moment: stamps land as you reach them */
+.js-motion .stamp.pre{ opacity:0; transform:rotate(var(--r)) translate(var(--dx), var(--dy)) scale(1.35); filter:blur(2px); }
+.js-motion .stamp.landed{ animation:thunk .42s var(--ease) both; animation-delay:var(--delay, 0ms); }
+@keyframes thunk{
+  0%{ opacity:0; transform:rotate(var(--r)) translate(var(--dx), var(--dy)) scale(1.35); filter:blur(2px); }
+  55%{ opacity:1; transform:rotate(var(--r)) translate(var(--dx), var(--dy)) scale(.97); filter:blur(0); }
+  100%{ opacity:1; transform:rotate(var(--r)) translate(var(--dx), var(--dy)) scale(1); filter:blur(0); }
+}
+
+/* ---------- facts ---------- */
+.facts__grid{ display:grid; grid-template-columns:repeat(12, minmax(0, 1fr)); gap:14px; }
+.fact{
+  position:relative; border-radius:10px; padding:clamp(18px, 2vw, 26px); background:var(--panel);
+  box-shadow:inset 0 0 0 1px var(--rule); min-width:0;
+}
+.fact h3{ margin:0 0 .35rem; font:700 1.05rem/1.25 var(--sans); color:var(--ink); }
+.fact p{ margin:0; color:var(--ink-2); font-size:.95rem; text-wrap:pretty; }
+.fact .big{
+  display:block; font:800 clamp(2.4rem, 4.4vw, 3.6rem)/1 var(--sans); letter-spacing:-.02em; color:var(--ink);
+  font-variant-numeric:tabular-nums; margin:.1rem 0 .5rem;
+}
+.fact--year{ grid-column:span 8; background:var(--cover); box-shadow:none; }
+.fact--year h3{ color:#F1EBD9; font:700 clamp(1.3rem, 2.2vw, 1.7rem)/1.2 var(--serif); letter-spacing:.04em; text-transform:uppercase; }
+.fact--year p{ color:#C4CBDA; }
+.years{ display:grid; grid-auto-flow:column; grid-auto-columns:1fr; align-items:end; gap:6px; height:200px; margin-top:1.4rem; }
+.years__col{ display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:6px; height:100%; min-width:0; }
+.years__bar{
+  width:100%; max-width:46px; border-radius:4px 4px 1px 1px; background:#5C6E96; min-height:3px;
+  transform-origin:bottom; transition:transform .8s var(--ease); transition-delay:var(--d, 0ms);
+}
+.years__col.is-peak .years__bar{ background:var(--foil); }
+.years__n{ font:700 .72rem/1 var(--sans); color:#EEF0F5; font-variant-numeric:tabular-nums; }
+.years__c{ font:700 .7rem/1 var(--sans); color:var(--foil-hi); min-height:.7rem; }
+.years__y{ font:500 .7rem/1 var(--sans); color:#AEB7CA; font-variant-numeric:tabular-nums; }
+.years__key{ display:flex; flex-wrap:wrap; gap:.4rem 1.2rem; margin-top:1rem; font-size:.8rem; color:#AEB7CA; }
+.years__key b{ color:#EEF0F5; font-weight:700; }
+.years__key .c{ color:var(--foil-hi); }
+.js-motion .facts__grid:not(.shown) .years__bar{ transform:scaleY(0); }
+
+.fact--compass{ grid-column:span 4; background:var(--panel) url("../img/places/rosette.svg") center 62%/80% no-repeat; }
+.compass{ display:grid; grid-template-columns:1fr 1fr; gap:16px 12px; margin:1rem 0 0; }
+.compass div{ min-width:0; }
+.compass dt{ font:700 .74rem/1 var(--serif); letter-spacing:.14em; text-transform:uppercase; color:var(--foil-ink); }
+.compass dd{ margin:.35rem 0 0; font:650 .95rem/1.25 var(--sans); color:var(--ink); overflow-wrap:anywhere; }
+.compass dd span{ display:block; font-weight:400; font-size:.84rem; color:var(--ink-3); }
+
+.fact--hours{ grid-column:span 4; }
+.fact--brands{ grid-column:span 5; }
+.fact--air{ grid-column:span 3; background:var(--page-2); }
+.brands{ list-style:none; margin:.9rem 0 0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:.55rem 1.4rem; }
+.brands li{ display:flex; justify-content:space-between; align-items:baseline; gap:.6rem; font-size:.92rem; color:var(--ink-2); min-width:0; }
+.brands li span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.brands b{ font:800 1.15rem/1 var(--sans); color:var(--ink); font-variant-numeric:tabular-nums; }
+.brands li:first-child{ grid-column:1 / -1; padding-bottom:.6rem; border-bottom:1px solid var(--rule); }
+.brands li:first-child b{ font-size:2rem; }
+.brands li:first-child span{ font-weight:700; color:var(--ink); font-size:1.05rem; }
+
+.fact--far{ grid-column:span 5; background:var(--cover-deep); box-shadow:none; }
+.fact--far .big{ color:var(--foil-hi); }
+.fact--far h3{ color:#F1EBD9; }
+.fact--far p{ color:#C4CBDA; }
+.fact--far p + p{ margin-top:.8rem; }
+.fact--cities{ grid-column:span 7; }
+.cities{ list-style:none; margin:.9rem 0 0; padding:0; display:grid; gap:.6rem; }
+.cities li{ display:grid; grid-template-columns:minmax(90px, 9rem) 1fr auto; align-items:center; gap:.8rem; font-size:.92rem; color:var(--ink-2); }
+.cities i{ display:block; height:10px; border-radius:2px; background:var(--ink); width:var(--w); opacity:.85; }
+.cities b{ font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; }
+
+.fact--types{ grid-column:1 / -1; background:var(--page-2); }
+.types{ list-style:none; margin:.7rem 0 0; padding:0; display:flex; flex-wrap:wrap; gap:.7rem 2.4rem; }
+.types li{ display:flex; align-items:baseline; gap:.45rem; color:var(--ink-2); }
+.types b{ font:800 clamp(1.5rem, 2.4vw, 2rem)/1 var(--sans); color:var(--ink); font-variant-numeric:tabular-nums; }
+
+/* ---------- the holder page closes the book ---------- */
+.holder{ max-width:900px; }
+.page--data{ display:flex; flex-direction:column; }
+.data__title{ margin:0 0 1.4rem; font:700 clamp(1.8rem, 3.4vw, 2.6rem)/1 var(--serif); letter-spacing:.04em; text-transform:uppercase; }
+.data{ display:grid; grid-template-columns:minmax(120px, 30%) 1fr; gap:clamp(16px, 2.4vw, 28px); align-items:start; }
+.data__photo{
+  position:relative; margin:0; aspect-ratio:7/9; overflow:hidden; border-radius:4px;
+  background:#DCE6DD url("../img/places/rosette.svg") center/140% no-repeat;
+  box-shadow:inset 0 0 0 1px var(--rule);
+}
+.data__photo img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:50% 2%; transform:scale(1.55); transform-origin:50% 8%;
+  filter:grayscale(1) contrast(1.06) sepia(.18) hue-rotate(160deg) saturate(.7);
+  mix-blend-mode:multiply;
+}
+.data__fields{ margin:0; display:grid; gap:.95rem; }
+.data__pair{ display:grid; grid-template-columns:1fr 1fr; gap:.95rem; }
+.data__fields dt{ font:600 .72rem/1.25 var(--sans); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
+.data__fields dt [lang="th"]{ display:block; letter-spacing:.01em; text-transform:none; font-weight:500; font-size:.72rem; }
+.data__fields dd{
+  margin:.2rem 0 0; font:650 clamp(1rem, 1.6vw, 1.2rem)/1.15 var(--sans); color:var(--ink);
+  font-variant-numeric:tabular-nums; text-transform:uppercase; letter-spacing:.02em; white-space:nowrap;
+}
+.data__fields > div:not(.data__pair) dd{ white-space:normal; }
+.data__note{ max-width:60ch; margin:1.6rem 0 0; color:var(--ink-2); text-wrap:pretty; }
+.mrz{
+  margin-top:1.8rem; font:500 clamp(.6rem, 1.4vw, .86rem)/1.5 var(--mono); letter-spacing:.12em; color:var(--ink-2);
+  white-space:nowrap; overflow:hidden;
+}
+.mrz::before{ content:""; display:block; height:1px; background:var(--rule); margin-bottom:.7rem; }
+.mrz p{ margin:0; }
+
+/* ---------- back cover ---------- */
+.back-cover{ max-width:760px; margin:0 auto; padding:clamp(48px, 7vw, 88px) var(--gutter) 64px; text-align:center; color:#D6DDEE; }
+.back-cover__note{ margin:0 auto 1.4rem; max-width:52ch; font-size:.95rem; line-height:1.6; text-wrap:pretty; }
+.back-cover__home{
+  display:inline-block; padding:.75rem 1.2rem; border:1px solid rgba(201,165,90,.55); border-radius:999px;
+  font:600 .82rem/1 var(--sans); letter-spacing:.06em; text-transform:uppercase; text-decoration:none; color:var(--foil-hi);
+  transition:background-color .2s var(--ease), color .2s var(--ease);
+}
+.back-cover__home:hover{ background:var(--foil); color:var(--cover-deep); }
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .fact--year{ grid-column:1 / -1; }
+  .fact--compass, .fact--hours, .fact--brands, .fact--air, .fact--far, .fact--cities{ grid-column:span 6; }
+}
+@media (max-width:760px){
+  .cover-bar{ grid-template-columns:auto 1fr; height:auto; padding-top:14px; padding-bottom:12px; row-gap:.4rem; }
+  .cover-bar__title{ justify-self:end; letter-spacing:.18em; }
+  .cover-bar__sum{ grid-column:1 / -1; justify-self:start; text-align:left; }
+  .atlas__map{ height:min(68dvh, 560px); border-width:6px; }
+  .atlas__bar{ padding:12px 14px; }
+  .facts__grid > .fact{ grid-column:1 / -1; }
+  .years{ height:150px; gap:3px; }
+  .years__n, .years__y, .years__c{ font-size:.64rem; }
+}
+@media (max-width:520px){
+  .data{ grid-template-columns:1fr; }
+  .data__photo{ width:46%; }
+  .stamps__grid{ grid-template-columns:repeat(2, 1fr); }
+  .brands{ grid-template-columns:1fr; }
+  .compass{ grid-template-columns:1fr; }
+  .cities li{ grid-template-columns:minmax(76px, 6.5rem) 1fr auto; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .stamp, .ink-chip, .years__bar{ transition:none; }
+}

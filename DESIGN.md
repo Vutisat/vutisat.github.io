@@ -19,6 +19,7 @@ records each world so it can be worked on faithfully — see `CLAUDE.md` for the
 | **The Pantry Shelf** | `recipes.html` · `assets/css/recipes.css` | header comment in that file |
 | **The Shadow Board** | `uses.html` · `assets/css/uses.css` | header comment in that file |
 | **The Notebook** | `blog.html`, `post.html` · `assets/css/blog.css` | header comment in that file |
+| **Passport Pages** | `places.html` · `assets/css/places.css` | header comment in that file |
 | **House Notes** | `423.html` (inline) | inline, self-contained |
 | **Planetarium Atlas** | `worldtour.html` (inline) | inline, self-contained |
 

@@ -1,1 +1,5 @@
 .idea/
+
+# Private Google Maps Timeline data (visited-places/timeline.py). Never commit: home, work, routine.
+visited-places/private/
+__pycache__/

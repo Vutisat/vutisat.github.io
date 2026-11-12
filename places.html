@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Pob's Places</title>
+<meta name="description" content="Every place Pob has been since 2015, from Pob's Google Maps Timeline: a map of thousands of places, an entry stamp for every country, and what the data gives away.">
+<meta name="theme-color" content="#1E2D4F">
+<link rel="icon" type="image/png" href="assets/icons/favicon-32x32.png" sizes="32x32">
+<link rel="preload" href="assets/fonts/publicsans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/cinzel-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/places.css">
+</head>
+<body>
+
+<svg class="defs" aria-hidden="true" focusable="false">
+  <!-- Rubber-stamp ink: speckled gaps and a slightly wandering edge. -->
+  <filter id="ink" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7" result="grain"/>
+    <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.75" result="holes"/>
+    <feComposite in="SourceGraphic" in2="holes" operator="in" result="speckled"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="3" result="warp"/>
+    <feDisplacementMap in="speckled" in2="warp" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <symbol id="plane" viewBox="0 0 24 24"><path d="M21 15.5v-1.8l-8-5V3.3a1.3 1.3 0 0 0-2.6 0v5.4l-8 5v1.8l8-2.5v5.2l-2 1.5V21l3.3-1 3.3 1v-1.3l-2-1.5V13z"/></symbol>
+</svg>
+
+<header class="cover-bar">
+  <a class="cover-bar__home" href="home.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Home</a>
+  <h1 class="cover-bar__title">Pob's Places</h1>
+  <p class="cover-bar__sum"><span data-field="places">4,746</span> places in <span data-field="countries">76</span> countries since <span data-field="sinceMonth">May 2015</span></p>
+</header>
+
+<main>
+  <section class="atlas" aria-label="Map of every place">
+    <div class="atlas__map">
+      <iframe id="map" title="Map of Pob's places, from Google My Maps"
+              referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      <p class="atlas__loading" data-loading hidden>Turning to <span data-loading-name></span>…</p>
+    </div>
+    <div class="atlas__bar">
+      <p class="atlas__where" aria-live="polite">Showing <strong data-where>the whole world</strong>
+        <button type="button" class="atlas__reset" data-reset hidden>Back to the world</button></p>
+      <ul class="atlas__layers" aria-label="Map layers"></ul>
+    </div>
+  </section>
+
+  <section class="stamps" aria-labelledby="stamps-title">
+    <div class="page page--wide">
+      <div class="stamps__intro">
+        <h2 id="stamps-title" class="stamps__title">Entry stamps</h2>
+        <p class="stamps__lede"><span data-field="countries">76</span> countries, stamped in the order I first set foot in them. Tap a stamp and the map turns to it.</p>
+      </div>
+      <div class="inks" role="group" aria-label="Show stamps from">
+        <button type="button" class="ink-chip" aria-pressed="true" data-continent="">Everywhere</button>
+      </div>
+      <ol class="stamps__grid" data-stamps></ol>
+    </div>
+  </section>
+
+  <section class="facts" aria-labelledby="facts-title">
+    <div class="page page--wide">
+      <div class="facts__intro">
+        <h2 id="facts-title" class="facts__title">Things the data gave away</h2>
+        <p class="facts__lede">Counted from the same places as the map, so every number moves when the timeline does.</p>
+      </div>
+      <div class="facts__grid" data-facts></div>
+    </div>
+  </section>
+
+  <section class="holder" aria-labelledby="holder-title">
+    <article class="page page--data">
+      <p class="page__head"><span>Travel record</span><span lang="th">บันทึกการเดินทาง</span></p>
+      <h2 id="holder-title" class="data__title">The holder</h2>
+      <div class="data">
+        <figure class="data__photo">
+          <img src="assets/img/pob-tuxedo.webp" alt="Pob, in a navy tuxedo and bow tie" width="760" height="1122" loading="lazy">
+        </figure>
+        <dl class="data__fields">
+          <div><dt>Holder <span lang="th">ผู้ถือ</span></dt><dd>Vutisalchavakul, Pob</dd></div>
+          <div class="data__pair">
+            <div><dt>Places <span lang="th">สถานที่</span></dt><dd data-field="places">4,746</dd></div>
+            <div><dt>Countries <span lang="th">ประเทศ</span></dt><dd data-field="countries">76</dd></div>
+          </div>
+          <div class="data__pair">
+            <div><dt>First entry <span lang="th">วันแรก</span></dt><dd data-field="first">19 May 2015</dd></div>
+            <div><dt>Latest entry <span lang="th">ล่าสุด</span></dt><dd data-field="last">5 Nov 2026</dd></div>
+          </div>
+          <div><dt>Recorded by <span lang="th">บันทึกโดย</span></dt><dd>Google Maps Timeline</dd></div>
+        </dl>
+      </div>
+      <p class="data__note">Every restaurant, station, museum and hotel my phone noticed me stop at, from a first week in Vancouver in May 2015 to now. Homes, workplaces, plain street addresses and doctors are left out.</p>
+      <div class="mrz" aria-hidden="true"><p data-mrz="1">P&lt;PLACES&lt;VUTISALCHAVAKUL&lt;&lt;POB</p><p data-mrz="2"></p></div>
+    </article>
+  </section>
+</main>
+
+<footer class="back-cover">
+  <p class="back-cover__note">Built from my Google Maps Timeline and last updated <time data-field="generated">12 Nov 2026</time>. The map lives on Google My Maps.</p>
+  <a class="back-cover__home" href="home.html">Back to the Swatch Book</a>
+</footer>
+
+<script src="assets/js/places-data.js"></script>
+<script src="assets/js/places.js"></script>
+</body>
+</html>
