@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://vutisat.github.io/places.html">
 <title>Pob's Places</title>
 <meta name="description" content="Every place Pob has been since 2015, from Pob's Google Maps Timeline: a map of thousands of places, an entry stamp for every country, and what the data gives away.">
 <meta name="theme-color" content="#1E2D4F">
@@ -60,6 +60,17 @@
         <button type="button" class="ink-chip" aria-pressed="true" data-continent="">Everywhere</button>
       </div>
       <ol class="stamps__grid" data-stamps></ol>
+    </div>
+  </section>
+
+  <section class="photos" aria-labelledby="photos-title">
+    <div class="page page--wide">
+      <div class="photos__intro">
+        <h2 id="photos-title" class="photos__title">Photos from the road</h2>
+        <p class="photos__lede">Pick a country to see me there.</p>
+      </div>
+      <div class="photos__picker" role="group" aria-label="Choose a country" data-photo-picker></div>
+      <div class="album" data-album aria-live="polite"></div>
     </div>
   </section>
 
@@ -129,7 +140,13 @@
   <a class="back-cover__home" href="home.html">Back home</a>
 </footer>
 
+<dialog class="viewer" data-viewer aria-label="Photo">
+  <form method="dialog"><button class="viewer__close" type="submit">Close</button></form>
+  <figure><img alt="" data-viewer-img><figcaption data-viewer-cap></figcaption></figure>
+</dialog>
+
 <script src="assets/js/places-data.js"></script>
+<script src="assets/js/places-photos.js"></script>
 <script src="assets/js/places.js"></script>
 </body>
 </html>

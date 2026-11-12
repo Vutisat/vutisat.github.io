@@ -20,6 +20,9 @@
   function num(n) { return n.toLocaleString("en-US"); }
   function day(iso) { var p = iso.split("-"); return +p[2] + " " + MONTHS[+p[1] - 1] + " " + p[0]; }
   function monthYear(iso) { var p = iso.split("-"); return MONTHS[+p[1] - 1] + " " + p[0]; }
+  /* countries the Timeline never logged carry only a year */
+  function entry(c) { return c.yearOnly ? c.first.slice(0, 4) : day(c.first); }
+  function countLine(c) { return c.yearOnly ? "off the record (before or outside the Timeline)" : num(c.places) + (c.places === 1 ? " place" : " places"); }
   function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
   function rng(seed) { return function () { seed = (seed + 0x6D2B79F5) >>> 0; var t = seed; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 
@@ -207,7 +210,7 @@
       $$(".dot.is-on", contEl).forEach(function (x) { x.classList.remove("is-on"); });
       d.classList.add("is-on");
       if (hit) {
-        out.innerHTML = "<b>" + esc(hit.c.name) + "</b>: first entry " + esc(day(hit.c.first)) + ", " + num(hit.c.places) + (hit.c.places === 1 ? " place." : " places.") +
+        out.innerHTML = "<b>" + esc(hit.c.name) + "</b>: first entry " + esc(entry(hit.c)) + ", " + esc(countLine(hit.c)) + "." +
           ' <button type="button" class="linkish" data-fly="' + hit.i + '">Show it on the map</button>';
       } else {
         out.innerHTML = "<b>" + esc(regionName(code)) + "</b>: not yet.";
@@ -382,6 +385,51 @@
     render();
   }
 
+  /* ---------- photos from the road ---------- */
+  var picker = $("[data-photo-picker]"), album = $("[data-album]"), PH = window.PLACES_PHOTOS || {};
+  var viewer = $("[data-viewer]");
+  function photosFor(code) {
+    var c = byCode[code] && byCode[code].c;
+    if (!album || !c) return;
+    $$(".photo-chip", picker).forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.code === code)); });
+    var list = PH[code] || [], ink = INKS[c.continent] || "--ink-antarctica";
+    var head = '<div class="album__head"><h3>' + esc(c.name) + "</h3><p>" + (list.length ? list.length + (list.length === 1 ? " photo" : " photos") : "Photos coming soon") +
+      ' · <button type="button" class="linkish" data-fly="' + byCode[code].i + '">Show on the map</button></p></div>';
+    var prints = list.length ? list.map(function (p, i) {
+      return '<button type="button" class="print" data-photo="' + i + '" style="--r:' + ((i % 3) - 1) * 1.6 + 'deg"><img src="' + esc(p.src) + '" alt="' + esc(p.alt || "") + '" loading="lazy">' +
+        "<span>" + esc(p.caption || c.name) + "</span></button>";
+    }) : [0, 1, 2].map(function (i) {
+      return '<div class="print print--empty" style="--r:' + (i - 1) * 1.6 + 'deg;--c:var(' + ink + ')"><div class="print__ph" aria-hidden="true">' +
+        '<svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>' +
+        "<b>Photo coming soon</b></div><span>" + esc(c.name) + "</span></div>";
+    });
+    album.innerHTML = head + '<div class="album__prints">' + prints.join("") + "</div>";
+    album.dataset.code = code;
+  }
+  if (picker && album) {
+    picker.innerHTML = D.countryList.map(function (c) {
+      return c.code ? '<button type="button" class="photo-chip" aria-pressed="false" data-code="' + c.code + '" style="--c:var(' + (INKS[c.continent] || "--ink-antarctica") + ')">' +
+        esc(c.name) + (PH[c.code] && PH[c.code].length ? ' <span class="photo-chip__n">' + PH[c.code].length + "</span>" : "") + "</button>" : "";
+    }).join("");
+    picker.addEventListener("click", function (e) { var b = e.target.closest(".photo-chip"); if (b) photosFor(b.dataset.code); });
+    album.addEventListener("click", function (e) {
+      var f = e.target.closest("[data-fly]");
+      if (f && typeof show === "function") { show(+f.dataset.fly); return; }
+      var p = e.target.closest("[data-photo]"), list = PH[album.dataset.code] || [];
+      if (p && viewer && viewer.showModal && list[+p.dataset.photo]) {
+        var ph = list[+p.dataset.photo];
+        $("[data-viewer-img]", viewer).src = ph.src; $("[data-viewer-img]", viewer).alt = ph.alt || "";
+        $("[data-viewer-cap]", viewer).textContent = ph.caption || "";
+        viewer.showModal();
+      }
+    });
+    if (viewer) viewer.addEventListener("click", function (e) { if (e.target === viewer) viewer.close(); });
+    /* open on the country with photos, else the most-visited one abroad */
+    var withPhotos = D.countryList.filter(function (c) { return PH[c.code] && PH[c.code].length; });
+    var start = withPhotos[0] || D.countryList.filter(function (c) { return c.code !== "US"; }).reduce(function (a, c) { return c.places > a.places ? c : a; });
+    photosFor(start.code);
+  }
+
   /* ---------- entry stamps ---------- */
   var grid = $("[data-stamps]");
   if (!grid || !D.countryList) return;
@@ -390,8 +438,8 @@
 
   function stampSVG(c, i) {
     var r = rng(hash(c.code || c.name)), shape = Math.floor(r() * 5), id = "s" + i;
-    var name = esc(c.name.toUpperCase()), date = esc(day(c.first).toUpperCase());
-    var places = num(c.places) + (c.places === 1 ? " PLACE" : " PLACES");
+    var name = esc(c.name.toUpperCase()), date = esc(entry(c).toUpperCase());
+    var places = c.yearOnly ? "OFF THE RECORD" : num(c.places) + (c.places === 1 ? " PLACE" : " PLACES");
     var plane = '<use href="#plane" x="52" y="__Y" width="16" height="16" fill="currentColor"/>';
     var g = "";
     if (shape === 0) { // round, name around the rim
@@ -409,7 +457,7 @@
           '<text class="t-big" x="60" y="45" font-size="11" text-anchor="middle"' + fit(c.name, 15) + ">" + name + "</text>" +
           '<line x1="18" y1="51" x2="102" y2="51" stroke="currentColor" stroke-width="1"/>' +
           '<text class="t-date" x="60" y="68" font-size="11.5" text-anchor="middle">' + date + "</text>" +
-          '<text class="t-small" x="60" y="84" font-size="7" text-anchor="middle">ARRIVAL · ' + esc(places) + "</text>";
+          '<text class="t-small" x="60" y="84" font-size="7" text-anchor="middle">' + (c.yearOnly ? '' : 'ARRIVAL · ') + esc(places) + "</text>";
     } else if (shape === 2) { // oval
       g = '<ellipse cx="60" cy="60" rx="56" ry="40" fill="none" stroke="currentColor" stroke-width="3.2"/>' +
           '<ellipse cx="60" cy="60" rx="49" ry="33" fill="none" stroke="currentColor" stroke-width="1.1"/>' +
@@ -438,7 +486,7 @@
 
   grid.innerHTML = D.countryList.map(function (c, i) {
     var s = stampSVG(c, i), ink = INKS[c.continent] || "--ink-antarctica";
-    var label = c.name + ", first entry " + day(c.first) + ", " + num(c.places) + (c.places === 1 ? " place" : " places") + ". Show on the map";
+    var label = c.name + ", first entry " + entry(c) + ", " + countLine(c) + ". Show on the map";
     return '<li data-continent="' + esc(c.continent) + '"><button type="button" class="stamp" aria-pressed="false" data-i="' + i + '"' +
       ' aria-label="' + esc(label) + '" style="--c:var(' + ink + ");--r:" + s.tilt + "deg;--dx:" + s.dx + "px;--dy:" + s.dy + 'px">' +
       s.svg + "</button></li>";
@@ -447,12 +495,13 @@
   function show(i) {
     var c = D.countryList[i];
     $$(".stamp", grid).forEach(function (b) { b.setAttribute("aria-pressed", String(+b.dataset.i === i)); });
-    if (where) where.textContent = c.name + " · since " + monthYear(c.first);
+    if (where) where.textContent = c.name + " · since " + (c.yearOnly ? c.first.slice(0, 4) : monthYear(c.first));
     if (frame) {
       if (loading) { $("[data-loading-name]", loading).textContent = c.name; loading.hidden = false; }
       frame.src = mapSrc(c.lat, c.lng, c.zoom);
     }
     if (reset) reset.hidden = false;
+    if (c.code && album) photosFor(c.code);
     window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   }
   grid.addEventListener("click", function (e) {

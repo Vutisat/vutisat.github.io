@@ -453,6 +453,14 @@ SOVEREIGN = {
     "Oceania": "AU FJ KI MH FM NR NZ PW PG WS SB TO TV VU",
     "Antarctica": "",
 }
+# Countries Pob has been to that the Timeline never logged (phone off, history paused).
+# Only the year is known, so the page shows the year; "lat"/"lng"/"zoom" aim the map.
+MANUAL_COUNTRIES = [
+    {"name": "Hungary", "code": "HU", "continent": "Europe", "year": "2016",
+     "lat": 47.4979, "lng": 19.0402, "zoom": 6},
+    {"name": "Luxembourg", "code": "LU", "continent": "Europe", "year": "2026",
+     "lat": 49.6116, "lng": 6.1319, "zoom": 8},
+]
 PINS = os.path.join(os.path.dirname(HERE), "assets", "js", "places-pins.json")
 SITE_DATA = os.path.join(os.path.dirname(HERE), "assets", "js", "places-data.js")
 
@@ -483,6 +491,12 @@ def site():
                           "first": min(r["First visit"] for r in items)[:10],
                           "last": max(r["Last visit"] for r in items)[:10],
                           "places": len(items), "lat": lat, "lng": lng, "zoom": zoom})
+    logged = {c["code"] for c in countries}
+    for m in MANUAL_COUNTRIES:
+        if m["code"] not in logged:
+            countries.append({"name": m["name"], "code": m["code"], "continent": m["continent"],
+                              "first": m["year"] + "-01-01", "last": m["year"] + "-12-31", "places": 0,
+                              "lat": m["lat"], "lng": m["lng"], "zoom": m["zoom"], "yearOnly": True})
     countries.sort(key=lambda c: c["first"])
 
     # Fun facts, all counted from the same rows.

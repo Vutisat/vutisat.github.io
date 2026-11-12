@@ -281,6 +281,63 @@ a{ color:inherit; text-underline-offset:.2em; text-decoration-thickness:1px; }
 .play-btn:hover{ background:var(--cover-edge); }
 .play-btn:active{ transform:scale(.97); }
 
+/* ---------- photos from the road ---------- */
+.photos{ max-width:var(--wrap); margin:clamp(32px, 5vw, 64px) auto 0; padding:0 var(--gutter); }
+.photos__intro{ margin-bottom:1.2rem; }
+.photos__title{
+  margin:0; font:700 clamp(1.9rem, 3.6vw, 3rem)/1.02 var(--serif); letter-spacing:.04em; text-transform:uppercase; color:var(--ink); text-wrap:balance;
+}
+.photos__lede{ margin:.8rem 0 0; color:var(--ink-2); }
+.photos__picker{
+  display:flex; gap:.45rem; overflow-x:auto; padding:.3rem .1rem 1rem; margin-bottom:1.2rem;
+  scroll-snap-type:x proximity; scrollbar-width:thin; scrollbar-color:var(--ink-3) transparent;
+  mask-image:linear-gradient(90deg, #000 92%, transparent);
+}
+.photo-chip{
+  --c:var(--ink);
+  flex:none; scroll-snap-align:start; appearance:none; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem;
+  padding:.55rem .9rem; border-radius:999px; border:1.5px solid color-mix(in srgb, var(--c) 45%, transparent); background:var(--panel);
+  font:650 .84rem/1 var(--sans); color:var(--c); white-space:nowrap; transition:background-color .2s var(--ease), color .2s var(--ease), transform .15s var(--ease);
+}
+.photo-chip:hover{ background:#fff; }
+.photo-chip:active{ transform:scale(.97); }
+.photo-chip[aria-pressed="true"]{ background:var(--c); border-color:var(--c); color:#fff; }
+.photo-chip__n{ font-size:.72rem; opacity:.8; }
+.album__head{ display:flex; align-items:baseline; justify-content:space-between; gap:.6rem 1.6rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+.album__head h3{ margin:0; font:700 clamp(1.4rem, 2.6vw, 2rem)/1.1 var(--serif); letter-spacing:.06em; text-transform:uppercase; color:var(--ink); }
+.album__head p{ margin:0; color:var(--ink-2); font-size:.92rem; }
+.album__prints{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(14px, 2.4vw, 32px); padding:.4rem .6rem 1rem; }
+.print{
+  appearance:none; border:0; margin:0; cursor:zoom-in; display:flex; flex-direction:column; gap:.6rem;
+  padding:10px 10px 14px; background:#FBFBF7; border-radius:3px; text-align:left;
+  box-shadow:0 1px 2px rgba(30,45,79,.18), 0 10px 22px rgba(30,45,79,.16);
+  transform:rotate(var(--r, 0deg)); transition:transform .25s var(--ease);
+}
+.print:hover{ transform:rotate(0deg) translateY(-3px); }
+.print img{ display:block; width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:1px; background:var(--page-2); }
+.print span{ font:600 .86rem/1.3 var(--sans); color:var(--ink-2); }
+.print--empty{ cursor:default; }
+.print--empty:hover{ transform:rotate(var(--r, 0deg)); }
+.print__ph{
+  aspect-ratio:4/5; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem;
+  border-radius:1px; color:var(--c);
+  background:color-mix(in srgb, var(--c) 7%, #F1F4EE) url("../img/places/rosette.svg") center/70% no-repeat;
+  box-shadow:inset 0 0 0 1.5px color-mix(in srgb, var(--c) 30%, transparent);
+}
+.print__ph svg{ width:38px; height:38px; }
+.print__ph b{ font:700 .8rem/1 var(--sans); letter-spacing:.06em; text-transform:uppercase; }
+.viewer{
+  border:0; padding:14px; border-radius:6px; background:#FBFBF7; max-width:min(92vw, 1000px); box-shadow:0 30px 80px rgba(6,12,30,.6);
+}
+.viewer::backdrop{ background:rgba(10,18,40,.75); }
+.viewer figure{ margin:0; }
+.viewer img{ display:block; max-width:100%; max-height:78vh; margin:0 auto; }
+.viewer figcaption{ margin-top:.7rem; font:600 .92rem/1.3 var(--sans); color:var(--ink-2); }
+.viewer__close{
+  display:block; margin:0 0 10px auto; appearance:none; cursor:pointer; padding:.45rem .9rem; border-radius:999px;
+  border:0; background:var(--cover); color:#F1EBD9; font:650 .8rem/1 var(--sans);
+}
+
 /* ---------- continents ---------- */
 .continents{ max-width:var(--wrap); margin:clamp(32px, 5vw, 64px) auto 0; padding:0 var(--gutter); }
 .continents__intro{ margin-bottom:1.6rem; }
@@ -458,11 +515,13 @@ a{ color:inherit; text-underline-offset:.2em; text-decoration-thickness:1px; }
   .compass{ grid-template-columns:1fr; }
   .cities li{ grid-template-columns:minmax(76px, 6.5rem) 1fr auto; }
   .records, .quiz__opts{ grid-template-columns:1fr; }
+  .album__prints{ grid-template-columns:1fr 1fr; }
+  .album__prints > .print--empty:nth-child(3){ display:none; }
   .alpha{ grid-template-columns:repeat(7, minmax(0, 1fr)); }
   .modes li{ grid-template-columns:minmax(70px, 5.5rem) 1fr auto; gap:.5rem; }
   .continents__grid{ grid-template-columns:1fr; }
 }
 
 @media (prefers-reduced-motion:reduce){
-  .stamp, .ink-chip, .years__bar, .dot, .alpha__l, .quiz__opt, .play-btn{ transition:none; }
+  .stamp, .ink-chip, .years__bar, .dot, .alpha__l, .quiz__opt, .play-btn, .print, .photo-chip{ transition:none; }
 }

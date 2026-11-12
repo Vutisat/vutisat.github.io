@@ -55,6 +55,9 @@ python3 visited-places/timeline.py mymaps   # per-layer CSVs for My Maps
 python3 visited-places/timeline.py site     # assets/js/places-data.js for places.html
 ```
 
+**Countries the Timeline missed** (phone off, history paused) go in `MANUAL_COUNTRIES` in the
+script with the year and a map centre; `site` adds them to every count as "off the record".
+
 **For a new export later:** re-export from the app, then run all three steps. `aggregate`
 rebuilds from the whole export, `enrich` looks up only places it has never seen, and
 `export` rewrites the CSV.
@@ -167,7 +170,6 @@ be looked up again.
 
 ## Still to do
 
-- `places.html` is `noindex` and not linked from the hub yet. Add it to `home.html` when
-  it's ready to be found.
+- Add real photos to `assets/js/places-photos.js` once they have a home (format in its header).
 - My Maps doesn't sync with the Sheet, so after a new export the layers need re-importing
   (see the My Maps section).

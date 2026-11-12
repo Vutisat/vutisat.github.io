@@ -3,7 +3,7 @@ window.PLACES = {
  "mapId": "1qNKbzlGN0JvqP2t0xUbmEoV3pOKFli4",
  "generated": "2026-11-12",
  "places": 4746,
- "countries": 76,
+ "countries": 78,
  "continents": 6,
  "first": "2015-05-19",
  "last": "2026-11-05",
@@ -93,6 +93,18 @@ window.PLACES = {
    "lat": 13.7502,
    "lng": 100.642,
    "zoom": 7
+  },
+  {
+   "name": "Hungary",
+   "code": "HU",
+   "continent": "Europe",
+   "first": "2016-01-01",
+   "last": "2016-12-31",
+   "places": 0,
+   "lat": 47.4979,
+   "lng": 19.0402,
+   "zoom": 6,
+   "yearOnly": true
   },
   {
    "name": "Taiwan",
@@ -876,6 +888,18 @@ window.PLACES = {
    "zoom": 7
   },
   {
+   "name": "Luxembourg",
+   "code": "LU",
+   "continent": "Europe",
+   "first": "2026-01-01",
+   "last": "2026-12-31",
+   "places": 0,
+   "lat": 49.6116,
+   "lng": 6.1319,
+   "zoom": 8,
+   "yearOnly": true
+  },
+  {
    "name": "Liechtenstein",
    "code": "LI",
    "continent": "Europe",
@@ -1020,7 +1044,7 @@ window.PLACES = {
    {
     "year": "2016",
     "places": 84,
-    "countries": 0
+    "countries": 1
    },
    {
     "year": "2017",
@@ -1070,7 +1094,7 @@ window.PLACES = {
    {
     "year": "2026",
     "places": 346,
-    "countries": 1
+    "countries": 2
    }
   ],
   "modes": [
@@ -1446,11 +1470,13 @@ window.PLACES = {
      "GB",
      "GR",
      "HR",
+     "HU",
      "IE",
      "IS",
      "IT",
      "LI",
      "LT",
+     "LU",
      "LV",
      "MC",
      "ME",
