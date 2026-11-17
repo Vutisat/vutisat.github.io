@@ -2,7 +2,7 @@
    The last four films (Letterboxd) and books (Goodreads) Pob rated, and the last three
    games he played (Steam). Don't edit by hand. */
 window.LATELY = {
- "updated": "2026-11-16",
+ "updated": "2026-11-17",
  "films": [
   {
    "title": "Wild Horse Nine",
@@ -86,7 +86,7 @@ window.LATELY = {
    "last": "Oct 18",
    "url": "https://store.steampowered.com/app/45760/",
    "cover": "assets/img/lately/game-1.jpg",
-   "v": "7827a0c3"
+   "v": "30e5a21e"
   },
   {
    "title": "Dune: Imperium",
